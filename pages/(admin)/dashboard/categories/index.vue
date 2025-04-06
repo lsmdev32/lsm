@@ -1,9 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
-    layout: 'admin-layout'
+	layout: "admin-layout",
 })
 </script>
 
 <template lang="html">
-    <div>Categories Page</div>
+	<div>Categories Page</div>
 </template>
