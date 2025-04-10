@@ -33,7 +33,7 @@ const df = new DateFormatter('en-US', {
                   variant="outline"
                   :class="cn(
                     'w-full justify-start text-left font-normal',
-                    !slotProps.componentField.modelValue && 'text-neutral-500 dark:text-neutral-400',
+                    !slotProps.componentField.modelValue && 'text-muted-foreground',
                   )"
                 >
                   <CalendarIcon class="mr-2 h-4 w-4" />

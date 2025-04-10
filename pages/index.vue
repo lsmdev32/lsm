@@ -1,23 +1,13 @@
 <script setup lang="ts">
-import { Button } from '~/components/ui/button'
-
-function onClick() {
-
-}
+import { Button } from "~/components/ui/button"
 </script>
 
 <template lang="html">
-  <div>
-    <h1 class="text-my-red font-bold">
-      Welcome to Nuxt 3
-    </h1>
-    <p>
-      This is a simple Nuxt page
-    </p>
-    <Button class="flex w-full" @click.prevent="onClick">
-      Test 123
-    </Button>
-  </div>
+	<div>
+		<p class="text-blue-500">
+			Hello World
+		</p>
+		<Button>Test</Button>
+		<p> Test</p>
+	</div>
 </template>
-
-<style scoped></style>

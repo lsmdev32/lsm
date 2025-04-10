@@ -1,16 +1,37 @@
 // @ts-check
-import antfu from '@antfu/eslint-config'
-import withNuxt from './.nuxt/eslint.config.mjs'
+import withNuxt from "./.nuxt/eslint.config.mjs"
 
-export default withNuxt({
-	ignores: ['components/ui/*'],
-}).append(antfu({
-	stylistic: {
-		indent: 'tab',
+export default withNuxt(
+	// Your custom configs here
+
+	{
+		rules: {
+			"vue/max-attributes-per-line": [
+				"error", { singleline: 1 },
+			],
+			"vue/first-attribute-linebreak": "error",
+			"@stylistic/array-element-newline": [
+				"error", "consistent",
+			],
+			"@stylistic/array-bracket-newline": [
+				"error", {
+					minItems: 2, multiline: true,
+				},
+			],
+			"@stylistic/newline-per-chained-call": [
+				"error", { ignoreChainWithDepth: 1 },
+			],
+			"@stylistic/quotes": [
+				"error", "double", {
+					allowTemplateLiterals: true,
+				},
+			],
+			"@stylistic/object-curly-spacing": [
+				"error", "always",
+			],
+		},
 	},
-})).append({
-	rules: {
-		'no-console': 'off',
-		'antfu/consistent-chaining': 'error',
-	},
-})
+)
+	.prepend({
+		ignores: ["components/ui/**/*.{vue,ts}"],
+	})

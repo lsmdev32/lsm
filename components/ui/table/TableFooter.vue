@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <tfoot :class="cn('border-t bg-neutral-100/50 font-medium [&>tr]:last:border-b-0 dark:bg-neutral-800/50', props.class)">
+  <tfoot :class="cn('border-t bg-muted/50 font-medium [&>tr]:last:border-b-0', props.class)">
     <slot />
   </tfoot>
 </template>
