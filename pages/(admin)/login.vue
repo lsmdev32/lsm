@@ -1,13 +1,27 @@
 <script setup lang="ts">
-import { z } from "zod"
+import { toTypedSchema } from "@vee-validate/zod"
+// import { signInWithEmailAndPassword } from "firebase/auth"
+import { useForm } from "vee-validate"
+import { toast } from "vue-sonner"
 import { AutoForm } from "~/components/ui/auto-form"
 import { Button } from "~/components/ui/button"
+import { loginSchema, type LoginFormPayload } from "~/lib/schemas/form"
 
-const formSchema = z.object({
-	username: z.string()
-		.describe("Your username"),
-	password: z.string(), // Will be "Some Value"
+const form = useForm({
+	validationSchema: toTypedSchema(loginSchema),
 })
+
+// const auth = useFirebaseAuth()
+
+async function handleSubmit(_payload: LoginFormPayload) {
+	// if (!auth || auth?.currentUser) return
+
+	// const res = await signInWithEmailAndPassword(auth, _payload.username, _payload.password)
+
+	toast.success("Login successful!", {
+		dismissible: true,
+	})
+}
 </script>
 
 <template lang="html">
@@ -15,10 +29,14 @@ const formSchema = z.object({
 		<div class="flex flex-col items-center space-y-6 outline outline-1 outline-black p-4 rounded-lg shadow-xl">
 			<NuxtImg src="/lsm.svg" />
 			<AutoForm
-				:schema="formSchema"
+				:schema="loginSchema"
+				:form="form"
 				:field-config="{
 					username: {
 						label: 'Username',
+						inputProps: {
+							type: 'email',
+						},
 					},
 					password: {
 						label: 'Password',
@@ -28,7 +46,7 @@ const formSchema = z.object({
 					},
 				}"
 				class="space-y-4 w-96"
-				@submit="(data) => {}"
+				@submit="handleSubmit"
 			>
 				<Button
 					type="submit"
