@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ChevronUp, Inbox, Pencil, Tags } from "lucide-vue-next"
+import { ChevronUp, Inbox, Pencil, Tags, User2 } from "lucide-vue-next"
+import { signOut } from "firebase/auth"
+import { toast } from "vue-sonner"
 import {
 	Sidebar,
 	SidebarContent,
@@ -32,6 +34,27 @@ const items = [
 		icon: Tags,
 	},
 ]
+
+const auth = useFirebaseAuth()
+const username = auth?.currentUser?.displayName || auth?.currentUser?.email || "User"
+
+async function _signOut() {
+	if (!auth) return
+
+	await signOut(auth)
+		.then(() => {
+			toast.success("Sign out successful!", {
+				dismissible: true,
+			})
+			navigateTo("/login")
+		})
+		.catch((_) => {
+			toast.error("Sign out failed!", {
+				dismissible: true,
+				closeButton: true,
+			})
+		})
+}
 </script>
 
 <template>
@@ -71,8 +94,8 @@ const items = [
 				<SidebarMenuItem>
 					<DropdownMenu>
 						<DropdownMenuTrigger as-child>
-							<SidebarMenuButton>
-								<User2 /> Username
+							<SidebarMenuButton class="truncate flex items-center justify-between">
+								<User2 /> {{ username }}
 								<ChevronUp class="ml-auto" />
 							</SidebarMenuButton>
 						</DropdownMenuTrigger>
@@ -80,13 +103,10 @@ const items = [
 							side="top"
 							class="w-[--reka-popper-anchor-width]"
 						>
-							<DropdownMenuItem>
-								<span>Account</span>
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<span>Billing</span>
-							</DropdownMenuItem>
-							<DropdownMenuItem>
+							<DropdownMenuItem
+								v-if="!!$firebaseAuth"
+								@click="_signOut"
+							>
 								<span>Sign out</span>
 							</DropdownMenuItem>
 						</DropdownMenuContent>

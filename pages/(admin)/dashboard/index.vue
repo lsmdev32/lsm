@@ -2,6 +2,7 @@
 import { PATH_NAMES } from "~/lib/constants"
 
 definePageMeta({
+	middleware: ["auth"],
 	redirect(_) {
 		return {
 			path: PATH_NAMES.BLOGS,
