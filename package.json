@@ -57,5 +57,8 @@
       "maplibre-gl",
       "protobufjs"
     ]
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
