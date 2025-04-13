@@ -1,6 +1,6 @@
 <template>
 	<div class="flex items-center justify-center w-full h-screen">
-		<NuxtImg src="/lsm.svg" />
+		<NuxtImg src="images/logo.svg" />
 	</div>
 </template>
 
