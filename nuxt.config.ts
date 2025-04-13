@@ -1,5 +1,3 @@
-console.log(process.env.FIREBASE_CONFIG)
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	modules: [
@@ -12,6 +10,18 @@ export default defineNuxtConfig({
 		"nuxt-vuefire",
 	],
 	devtools: { enabled: true },
+	app: {
+		head: {
+			title: "Lubis Santosa & Partners Law firm",
+			link: [
+				{
+					rel: "icon",
+					type: "image/svg+xml",
+					href: "/assets/images/lsm.svg",
+				},
+			],
+		},
+	},
 	css: ["~/assets/css/main.css"],
 	compatibilityDate: "2024-11-01",
 	postcss: {
