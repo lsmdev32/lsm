@@ -103,7 +103,7 @@ async function _signOut() {
 							class="w-[--reka-popper-anchor-width]"
 						>
 							<DropdownMenuItem
-								v-if="!!$firebaseAuth"
+								v-if="!!auth"
 								@click="_signOut"
 							>
 								<span>Sign out</span>
