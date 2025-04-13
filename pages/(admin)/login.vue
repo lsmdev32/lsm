@@ -55,7 +55,7 @@ async function handleSubmit(_payload: LoginFormPayload) {
 					isSubmitting ? 'opacity-50' : 'opacity-100',
 				]"
 			>
-				<NuxtImg src="/lsm.svg" />
+				<NuxtImg src="images/logo.svg" />
 				<ClientOnly>
 					<AutoForm
 						:schema="loginSchema"
