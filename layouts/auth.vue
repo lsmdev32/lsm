@@ -6,7 +6,10 @@ import { Toaster } from "~/components/ui/sonner"
 
 <template>
 	<SidebarProvider>
-		<Toaster />
+		<Toaster
+			position="top-right"
+			:duration="2000"
+		/>
 		<AppSidebar />
 		<ClientOnly>
 			<main class="flex flex-col w-full min-h-full m-4">

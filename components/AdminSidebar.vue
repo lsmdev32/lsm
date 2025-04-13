@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronUp, Inbox, Pencil, Tags, User2 } from "lucide-vue-next"
+import { ChevronUp, Inbox, Pencil, Tags } from "lucide-vue-next"
 import { signOut } from "firebase/auth"
 import { toast } from "vue-sonner"
 import {
@@ -36,16 +36,15 @@ const items = [
 ]
 
 const auth = useFirebaseAuth()
-const username = auth?.currentUser?.displayName || auth?.currentUser?.email || "User"
+const username = auth?.currentUser?.email?.split("@")
+	.at(0) ?? ""
 
 async function _signOut() {
 	if (!auth) return
 
 	await signOut(auth)
 		.then(() => {
-			toast.success("Sign out successful!", {
-				dismissible: true,
-			})
+			toast.success("Sign out successful!", { dismissible: true })
 			navigateTo("/login")
 		})
 		.catch((_) => {
@@ -95,7 +94,7 @@ async function _signOut() {
 					<DropdownMenu>
 						<DropdownMenuTrigger as-child>
 							<SidebarMenuButton class="truncate flex items-center justify-between">
-								<User2 /> {{ username }}
+								{{ username }}
 								<ChevronUp class="ml-auto" />
 							</SidebarMenuButton>
 						</DropdownMenuTrigger>

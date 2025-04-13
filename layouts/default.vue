@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { Toaster } from "~/components/ui/sonner"
+import LoadingPage from "~/components/LoadingPage.vue"
+
+const indicator = useLoadingIndicator()
+console.log("LoadingPage", indicator.isLoading.value)
 </script>
 
 <template>
-	<div>
-		<NuxtLoadingIndicator />
-		<Toaster />
-		<NuxtPage />
-	</div>
+	<LoadingPage v-if="indicator.isLoading.value" />
+	<NuxtPage v-else />
 </template>

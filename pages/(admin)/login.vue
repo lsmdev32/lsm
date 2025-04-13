@@ -5,6 +5,7 @@ import { useForm } from "vee-validate"
 import { toast } from "vue-sonner"
 import { AutoForm } from "~/components/ui/auto-form"
 import { Button } from "~/components/ui/button"
+import { Toaster } from "~/components/ui/sonner"
 import { loginSchema, type LoginFormPayload } from "~/lib/schemas/form"
 
 definePageMeta({
@@ -13,6 +14,9 @@ definePageMeta({
 
 const auth = useFirebaseAuth()
 const form = useForm({ validationSchema: toTypedSchema(loginSchema) })
+const isSubmitting = computed(() => form.isSubmitting.value)
+
+const indicator = useLoadingIndicator()
 
 async function handleSubmit(_payload: LoginFormPayload) {
 	if (!auth || auth?.currentUser) return
@@ -22,6 +26,8 @@ async function handleSubmit(_payload: LoginFormPayload) {
 			toast.success("Login successful!", {
 				dismissible: true,
 			})
+
+			indicator.start()
 			navigateTo("/dashboard")
 		})
 		.catch((_) => {
@@ -30,44 +36,60 @@ async function handleSubmit(_payload: LoginFormPayload) {
 				closeButton: true,
 			})
 		})
+		.finally(() => {
+			indicator.finish()
+		})
 }
 </script>
 
 <template lang="html">
-	<div class="w-full min-h-screen flex flex-col items-center justify-center">
-		<div class="flex flex-col items-center space-y-6 outline outline-1 outline-black p-4 rounded-lg shadow-xl">
-			<NuxtImg src="/lsm.svg" />
-			<ClientOnly>
-				<AutoForm
-					:schema="loginSchema"
-					:form="form"
-					:field-config="{
-						email: {
-							label: 'Email',
-							inputProps: {
-								type: 'email',
-								placeholder: 'myemail@example.com',
+	<div>
+		<Toaster
+			position="top-right"
+			:duration="2000"
+		/>
+		<div class="w-full min-h-screen flex flex-col items-center justify-center">
+			<div
+				:class="[
+					'flex flex-col items-center space-y-6 outline outline-1 outline-black p-4 rounded-lg shadow-xl',
+					isSubmitting ? 'opacity-50' : 'opacity-100',
+				]"
+			>
+				<NuxtImg src="/lsm.svg" />
+				<ClientOnly>
+					<AutoForm
+						:schema="loginSchema"
+						:form="form"
+						:field-config="{
+							email: {
+								label: 'Email',
+								inputProps: {
+									type: 'email',
+									placeholder: 'myemail@example.com',
+									disabled: isSubmitting,
+								},
 							},
-						},
-						password: {
-							label: 'Password',
-							inputProps: {
-								type: 'password',
-								placeholder: '**********',
+							password: {
+								label: 'Password',
+								inputProps: {
+									type: 'password',
+									placeholder: '**********',
+									disabled: isSubmitting,
+								},
 							},
-						},
-					}"
-					class="space-y-4 w-96"
-					@submit="handleSubmit"
-				>
-					<Button
-						type="submit"
-						class="w-full shadow-lg"
+						}"
+						class="space-y-4 w-96"
+						@submit="handleSubmit"
 					>
-						Login
-					</Button>
-				</AutoForm>
-			</ClientOnly>
+						<Button
+							type="submit"
+							class="w-full shadow-lg"
+						>
+							{{ isSubmitting ? 'Please Wait...' : 'Login' }}
+						</Button>
+					</AutoForm>
+				</ClientOnly>
+			</div>
 		</div>
 	</div>
 </template>
