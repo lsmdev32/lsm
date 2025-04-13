@@ -2,7 +2,6 @@
 import LoadingPage from "~/components/LoadingPage.vue"
 
 const indicator = useLoadingIndicator()
-console.log("LoadingPage", indicator.isLoading.value)
 </script>
 
 <template>
