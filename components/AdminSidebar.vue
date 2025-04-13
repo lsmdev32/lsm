@@ -63,7 +63,7 @@ async function _signOut() {
 			<SidebarHeader class="flex flex-row items-center justify-center">
 				<NuxtLink to="/dashboard">
 					<NuxtImg
-						src="/lsm.svg"
+						src="images/logo.svg"
 						class="aspect-square"
 					/>
 				</NuxtLink>
