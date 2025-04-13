@@ -7,6 +7,7 @@ import { AutoForm } from "~/components/ui/auto-form"
 import { Button } from "~/components/ui/button"
 import { Toaster } from "~/components/ui/sonner"
 import { loginSchema, type LoginFormPayload } from "~/lib/schemas/form"
+import LogoSVG from "~/assets/images/logo.svg"
 
 definePageMeta({
 	middleware: "auth",
@@ -55,7 +56,10 @@ async function handleSubmit(_payload: LoginFormPayload) {
 					isSubmitting ? 'opacity-50' : 'opacity-100',
 				]"
 			>
-				<NuxtImg src="images/logo.svg" />
+				<NuxtImg
+					:src="LogoSVG"
+					class="aspect-square size-[75px]"
+				/>
 				<ClientOnly>
 					<AutoForm
 						:schema="loginSchema"
