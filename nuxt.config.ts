@@ -12,14 +12,7 @@ export default defineNuxtConfig({
 	devtools: { enabled: true },
 	app: {
 		head: {
-			title: "Lubis Santosa & Partners Law firm",
-			link: [
-				{
-					rel: "icon",
-					type: "image/svg+xml",
-					href: "/assets/images/lsm.svg",
-				},
-			],
+			title: "Lubis Santosa & Partners",
 		},
 	},
 	css: ["~/assets/css/main.css"],
