@@ -1,74 +1,80 @@
 <template>
-	<div>
-		<div
-			class="hamburger-menu"
+	<IconMenu
+		v-if="!isOpen"
+		class="hamburger-menu size-[40px] cursor-pointer my-4 text-[#4B3D2A] animate-in spin-in duration-200"
+		@click="toggleMenu"
+	/>
+	<IconX
+		v-else
+		class="hamburger-menu size-[40px] cursor-pointer my-auto text-[#4B3D2A] animate-in spin-in duration-200"
+		@click="toggleMenu"
+	/>
 
-			@click="toggleMenu"
-		>
-			<span />
-			<span />
-			<span />
-		</div>
-		<div
-			class="menu-panel"
-			:class="{ open: isOpen }"
-		>
-			<ul>
-				<li>
-					<NuxtLink
-						style="font-size:medium;"
-						to="#"
-					>Home</NuxtLink>
-				</li>
-				<li>
-					<NuxtLink
-						style="font-size:medium;"
-						to="#"
-					>About LSM</NuxtLink>
-				</li>
-				<li>
-					<NuxtLink
-						style="font-size:medium;"
-						to="#"
-					>Practice Area</NuxtLink>
-				</li>
-				<li>
-					<NuxtLink
-						style="font-size:medium;"
-						to="#"
-					>Attorneys</NuxtLink>
-				</li>
-				<li>
-					<NuxtLink
-						style="font-size:medium;"
-						to="#"
-					>Publication</NuxtLink>
-				</li>
-				<li>
-					<NuxtLink
-						style="font-size:medium;"
-						to="#"
-					>Blog</NuxtLink>
-				</li>
-				<li>
-					<NuxtLink
-						style="font-size:medium;"
-						to="#"
-					>Contact Us</NuxtLink>
-				</li>
-				<li>
-					<NuxtLink
-						style="font-size:medium;"
-						to="#"
-					>Career</NuxtLink>
-				</li>
-			</ul>
-		</div>
+	<div
+		class="menu-panel"
+		:class="{ open: isOpen }"
+	>
+		<ul>
+			<li>
+				<NuxtLink
+					style="font-size:medium;"
+					to="#"
+				>Home</NuxtLink>
+			</li>
+			<li>
+				<NuxtLink
+					style="font-size:medium;"
+					to="#"
+				>About LSM</NuxtLink>
+			</li>
+			<li>
+				<NuxtLink
+					style="font-size:medium;"
+					to="#"
+				>Practice Area</NuxtLink>
+			</li>
+			<li>
+				<NuxtLink
+					style="font-size:medium;"
+					to="#"
+				>Attorneys</NuxtLink>
+			</li>
+			<li>
+				<NuxtLink
+					style="font-size:medium;"
+					to="#"
+				>Publication</NuxtLink>
+			</li>
+			<li>
+				<NuxtLink
+					style="font-size:medium;"
+					to="#"
+				>Blog</NuxtLink>
+			</li>
+			<li>
+				<NuxtLink
+					style="font-size:medium;"
+					to="#"
+				>Contact Us</NuxtLink>
+			</li>
+			<li>
+				<NuxtLink
+					style="font-size:medium;"
+					to="#"
+				>Career</NuxtLink>
+			</li>
+		</ul>
 	</div>
 </template>
 
 <script>
+import { Menu as IconMenu, X as IconX } from "lucide-vue-next"
+
 export default {
+	components: {
+		IconMenu,
+		IconX,
+	},
 	data() {
 		return {
 			isOpen: false,
@@ -103,60 +109,45 @@ export default {
 </script>
 
 <style scoped>
-.hamburger-menu {
-    width: 30px;
-    height: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    margin-top: 30px;
-    margin-right: 10px;
-
-}
-
-.hamburger-menu span {
-    display: block;
-    height: 4px;
-    background-color: #4B3D2A;
-    border-radius: 2px;
-}
-
 .menu-panel {
-    position: fixed;
-    top: 0;
-    right: -250px;
-    width: 250px;
-    height: 100%;
-    background-color: #4B3D2A;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-    transition: right 0.3s ease;
-    padding: 20px;
+	position: fixed;
+	top: 100px; /* Start below the navbar */
+	right: -100%;
+	width: 100%;
+	height: calc(100% - 60px); /* Adjust height to not cover the navbar */
+	background: url('~/assets/images/accent2.svg');
+	background-color: #DAB38D;
+	background-size: cover;
+	background-position: center;
+	box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+	transition: right 0.3s ease;
+	padding: 20px;
+	z-index: 1000; /* Ensure it stays below the navbar */
 }
 
 .menu-panel.open {
-    right: 0;
+	right: 0;
 }
 
 .menu-panel ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
 .menu-panel li {
-    margin: 30px 0;
+	margin: 30px 0;
 }
 
 .menu-panel a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
+	text-decoration: none;
+	color: #fff;
+	font-size: 18px;
 }
 
 .menu-panel a:hover {
-    text-decoration: none;
-    color: #FAE4CE;
-    font-size: 18px;
+	text-decoration: none;
+	color: #4B3D2A;
+	font-size: 18px;
 }
 </style>

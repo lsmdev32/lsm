@@ -4,7 +4,7 @@ import Navbar from "~/components/audience/Navbar.vue"
 </script>
 
 <template lang="html">
-	<div>
+	<div class="h-[200vh]">
 		<Navbar />
 		<p class="text-blue-500 font-bold italic">
 			Hello World
