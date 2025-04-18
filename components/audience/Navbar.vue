@@ -16,54 +16,54 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
-						class="pr-4 hover:text-[#DAB38D]"
+						class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 					>
 						About LSM
 					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
-						class="pr-4 hover:text-[#DAB38D]"
+						class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 					>
 						Practice Area
 					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
-						class="pr-4 hover:text-[#DAB38D]"
+						class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 					>
 						Attorneys
 					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
-						class="pr-4 hover:text-[#DAB38D]"
+						class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 					>
 						Publication
 					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
-						class="pr-4 hover:text-[#DAB38D]"
+						class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 					>
 						Blog
 					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
-						class="pr-4 hover:text-[#DAB38D]"
+						class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 					>
 						Contact Us
 					</NuxtLink>
 					<NuxtLink
 						href="#"
 						style="font-size:medium;"
-						class="pr-8 hover:text-[#DAB38D]"
+						class="pr-8 hover:text-[#DAB38D] hover:cursor-pointer"
 					>
 						Career
 					</NuxtLink>
 				</div>
-				<div class="md:hidden items-center">
+				<div class="md:hidden items-center hover:cursor-pointer">
 					<HumbergerMenu />
 				</div>
 			</div>
