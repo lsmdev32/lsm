@@ -3,8 +3,8 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 </script>
 
 <template>
-	<nav class="bg-white h-[100px]">
-		<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+	<nav class="bg-white h-[100px] flex items-center justify-start">
+		<div class="w-full px-2 sm:px-6 lg:px-8">
 			<div class="flex justify-between items-center h-16">
 				<div class="flex-shrink-0 pt-10 px-4">
 					<NuxtImg
@@ -17,37 +17,51 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>About LSM</NuxtLink>
+					>
+						About LSM
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Practice Area</NuxtLink>
+					>
+						Practice Area
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Attorneys</NuxtLink>
+					>
+						Attorneys
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Publication</NuxtLink>
+					>
+						Publication
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Blog</NuxtLink>
+					>
+						Blog
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Contact Us</NuxtLink>
+					>
+						Contact Us
+					</NuxtLink>
 					<NuxtLink
 						href="#"
 						style="font-size:medium;"
 						class="pr-8 hover:text-[#DAB38D]"
-					>Career</NuxtLink>
+					>
+						Career
+					</NuxtLink>
 				</div>
 				<div class="md:hidden items-center">
 					<HumbergerMenu />
