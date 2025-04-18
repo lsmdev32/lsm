@@ -1,56 +1,63 @@
 <script setup lang="ts">
-import Button from '../../components/audience/Button.vue';
+import Button from "../../components/audience/Button.vue"
 </script>
 
 <template>
-  <div class="container-footer background-footer">
-    <div>
-      <img
-        src="../../assets/images/LSM_Logo-White.svg"
-        alt="lsm-white"
-        class="logo-white"
-      />
+	<div class="container-footer background-footer">
+		<div>
+			<img
+				src="../../assets/images/LSM_Logo-White.svg"
+				alt="lsm-white"
+				class="logo-white"
+			>
 
-      <div class="left-section">
-        Equity Tower, 12th Floor <br />
-        Sudirman Central Business District (SCBD) <br />
-		Jl. Jend. Sudirman Kav. 52-53, Jakarta 12190 <br />
-		Indonesia<br /><br />
-		
-        E-mail: lsmlawfirm@lsmlaw.co.id <br />Telephone: (62-21)2903-5900
-        <br />Fax: (62-21)2903-5909 <br /><br /><br />
-        <a href="WWW.LSMLAW.CO.ID" class="bottom-text-style">
-          WWW.LSMLAW.CO.ID
-        </a>
-        <br /><br /><br />
-        <div class="bottom-text-style">© 2025 All Rights Reserved.</div>
-      </div>
-    </div>
-    <div>
-      <div
-        class="font-marcellus"
-        style="font-size: 32px; color: black; margin-bottom: 40px"
-      >
-        Subscribe to our newsletter
-      </div>
-      <input
-        class=""
-        type="text"
-        placeholder="Name*"
-      />
-      <br />
-      <input
-        class=""
-        type="email"
-        placeholder="Email*"
-        
-      />
+			<div class="left-section">
+				Equity Tower, 12th Floor <br>
+				Sudirman Central Business District (SCBD) <br>
+				Jl. Jend. Sudirman Kav. 52-53, Jakarta 12190 <br>
+				Indonesia<br><br>
 
-      <div class="button-wrapper" >
-        <Button class="" textButton="Subscribe" />
-      </div>
-    </div>
-  </div>
+				E-mail: lsmlawfirm@lsmlaw.co.id <br>Telephone: (62-21)2903-5900
+				<br>Fax: (62-21)2903-5909 <br><br><br>
+				<a
+					href="/"
+					class="bottom-text-style"
+				>
+					WWW.LSMLAW.CO.ID
+				</a>
+				<br><br><br>
+				<div class="bottom-text-style">
+					© 2025 All Rights Reserved.
+				</div>
+			</div>
+		</div>
+		<div>
+			<div
+				class="font-marcellus"
+				style="font-size: 32px; color: black; margin-bottom: 40px"
+			>
+				Subscribe to our newsletter
+			</div>
+			<input
+				class=""
+				type="text"
+				placeholder="Name*"
+			>
+			<br>
+			<input
+				class=""
+				type="email"
+				placeholder="Email*"
+			>
+
+			<div class="button-wrapper">
+				<Button
+					class=""
+					text-button="Subscribe"
+				/>
+			</div>
+		</div>
+	</div>
 </template>
 
 <style scoped>
