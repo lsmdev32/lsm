@@ -6,8 +6,6 @@ export const StaffTypeFilter = z.enum([
 	"all",
 ])
 
-export type StaffTypeFilterType = z.infer<typeof StaffTypeFilter>
-
 export const HomeStaffsInputSchema = z.object({
 	query: z.object({
 		limit: z
@@ -41,3 +39,32 @@ export const HomeStaffsOutputSchema = z.object({
 		})),
 	}),
 })
+
+export const HomepageDataOutputSchema = z.object({
+	body: z.object({
+		message: z.string(),
+		status_code: z.number(),
+		result: z.object({
+			partners: z.object({
+				data: z.array(z.object({
+					id: z.string(),
+					slug: z.string()
+						.regex(/^[a-z0-9-]+$/),
+					image_url: z.string()
+						.url(),
+					linkedin_url: z.string()
+						.url(),
+					email: z.string()
+						.email(),
+					type: StaffTypeFilter,
+				})),
+				total: z.number(),
+			}),
+		}),
+	}),
+})
+
+export type StaffTypeFilterType = z.infer<typeof StaffTypeFilter>
+export type HomeStaffsInputType = z.infer<typeof HomeStaffsInputSchema>
+export type HomeStaffsOutputType = z.infer<typeof HomeStaffsOutputSchema>
+export type HomepageDataOutputType = z.infer<typeof HomepageDataOutputSchema>
