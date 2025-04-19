@@ -9,7 +9,7 @@ export const API_PATH_PREFIXES = {
 	 * api paths prefixes
 	 */
 	HOME: "/home",
-	HOME_LAWYER: "/home/lawyers",
+	HOME_STAFFS: "/home/staffs",
 	HOME_PUBLICATIONS: "/home/publications",
 } satisfies Record<string, `/${string}`>
 
