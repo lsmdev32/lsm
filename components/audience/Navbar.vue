@@ -17,37 +17,51 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>About LSM</NuxtLink>
+					>
+						About LSM
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Practice Area</NuxtLink>
+					>
+						Practice Area
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Attorneys</NuxtLink>
+					>
+						Attorneys
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Publication</NuxtLink>
+					>
+						Publication
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Blog</NuxtLink>
+					>
+						Blog
+					</NuxtLink>
 					<NuxtLink
 						to="#"
 						style="font-size:medium;"
 						class="pr-4 hover:text-[#DAB38D]"
-					>Contact Us</NuxtLink>
+					>
+						Contact Us
+					</NuxtLink>
 					<NuxtLink
 						href="#"
 						style="font-size:medium;"
 						class="pr-8 hover:text-[#DAB38D]"
-					>Career</NuxtLink>
+					>
+						Career
+					</NuxtLink>
 				</div>
 				<div class="lg:hidden items-center">
 					<HumbergerMenu />

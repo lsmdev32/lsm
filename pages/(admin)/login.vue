@@ -11,6 +11,7 @@ import LogoSVG from "~/assets/images/logo.svg"
 
 definePageMeta({
 	middleware: "auth",
+	layout: "login",
 })
 
 const auth = useFirebaseAuth()
