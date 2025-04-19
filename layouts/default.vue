@@ -6,7 +6,7 @@ import Navbar from "~/components/audience/Navbar.vue"
 <template>
 	<div class="w-full flex flex-col">
 		<Navbar />
-		<main class="w-full flex flex-col min-h-screen">
+		<main class="w-full flex flex-col min-h-screen pt-[80px]">
 			<slot />
 		</main>
 		<Footer />
