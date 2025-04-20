@@ -31,6 +31,9 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	fonts: {
+		provider: "google",
+	},
 	image: {
 		dir: "assets/images",
 	},

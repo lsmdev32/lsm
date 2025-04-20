@@ -1,13 +1,13 @@
 <script>
 export default {
-  props: ["textButton"],
-};
+	props: ["textButton"],
+}
 </script>
 
 <template>
-  <div class="custom-button font-ubuntu color-soft-orange">
-    <span>{{ textButton }}</span>
-  </div>
+	<div class="custom-button font-ubuntu color-soft-orange">
+		<span>{{ textButton }}</span>
+	</div>
 </template>
 
 <style scoped>
