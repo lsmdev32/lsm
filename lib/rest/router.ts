@@ -2,6 +2,7 @@ import { os } from "@orpc/server"
 import type { Firestore } from "firebase/firestore"
 import { faker } from "@faker-js/faker"
 import dayjs from "dayjs"
+import { z } from "zod"
 import { API_PATH_PREFIXES } from "~/lib/rest/config/constants"
 import {
 	ContentDetailPageDataInputSchema,
@@ -18,7 +19,16 @@ type Middleware = {
 	db: Firestore
 }
 
-const homePageData = os
+const base = os.errors({
+	NOT_FOUND: {
+		status: 404,
+		message: "Not found",
+		data: z.null()
+			.default(null),
+	},
+})
+
+const homePageData = base
 	.$context<Middleware>()
 	.route({
 		method: "GET",
@@ -34,7 +44,6 @@ const homePageData = os
 			.from({ length: staffCount })
 			.map(() => (
 				{
-					id: crypto.randomUUID(),
 					email: faker.internet.email(),
 					name: faker.person.firstName(),
 					image_url: faker.image.personPortrait(),
@@ -51,8 +60,8 @@ const homePageData = os
 		return {
 			body: {
 				message: "ok",
-				status_code: 200,
-				result: {
+				status: 200,
+				data: {
 					partners: {
 						data: partners,
 						total: partners.length,
@@ -62,7 +71,7 @@ const homePageData = os
 		}
 	})
 
-const practiceAreasPageData = os
+const practiceAreasPageData = base
 	.$context<Middleware>()
 	.route({
 		method: "GET",
@@ -113,8 +122,8 @@ const practiceAreasPageData = os
 		return {
 			body: {
 				message: "ok",
-				status_code: 200,
-				result: {
+				status: 200,
+				data: {
 					news_and_publications: {
 						data: newsAndPublications,
 						total: newsAndPublications.length,
@@ -128,7 +137,7 @@ const practiceAreasPageData = os
 		}
 	})
 
-const ourAttorneysPageData = os
+const ourAttorneysPageData = base
 	.$context<Middleware>()
 	.route({
 		method: "GET",
@@ -175,8 +184,8 @@ const ourAttorneysPageData = os
 		return {
 			body: {
 				message: "ok",
-				status_code: 200,
-				result: {
+				status: 200,
+				data: {
 					partners: {
 						data: partners,
 						total: partners.length,
@@ -190,7 +199,7 @@ const ourAttorneysPageData = os
 		}
 	})
 
-const ourAttorneyDetailPageData = os
+const ourAttorneyDetailPageData = base
 	.$context<Middleware>()
 	.route({
 		method: "GET",
@@ -204,8 +213,8 @@ const ourAttorneyDetailPageData = os
 		return {
 			body: {
 				message: "ok",
-				status_code: 200,
-				result: {
+				status: 200,
+				data: {
 					person: {
 						email: faker.internet.email(),
 						name: faker.person.firstName(),
@@ -259,7 +268,7 @@ const ourAttorneyDetailPageData = os
 		}
 	})
 
-const blogDetailPageData = os
+const blogDetailPageData = base
 	.$context<Middleware>()
 	.route({
 		method: "GET",
@@ -273,8 +282,8 @@ const blogDetailPageData = os
 		return {
 			body: {
 				message: "ok",
-				status_code: 200,
-				result: {
+				status: 200,
+				data: {
 					detail: {
 						title: faker.lorem.sentence(5),
 						slug: faker.lorem.sentence(5)
@@ -295,7 +304,7 @@ const blogDetailPageData = os
 		}
 	})
 
-const publicationDetailPageData = os
+const publicationDetailPageData = base
 	.$context<Middleware>()
 	.route({
 		method: "GET",
@@ -309,8 +318,8 @@ const publicationDetailPageData = os
 		return {
 			body: {
 				message: "ok",
-				status_code: 200,
-				result: {
+				status: 200,
+				data: {
 					detail: {
 						title: faker.lorem.sentence(5),
 						slug: faker.lorem.sentence(5)
