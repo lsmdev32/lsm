@@ -16,6 +16,7 @@ import {
 	SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
+import LogoSVG from "~/assets/images/logo.svg"
 
 const items = [
 	{
@@ -63,8 +64,8 @@ async function _signOut() {
 			<SidebarHeader class="flex flex-row items-center justify-center">
 				<NuxtLink to="/dashboard">
 					<NuxtImg
-						src="images/logo.svg"
-						class="aspect-square"
+						:src="LogoSVG"
+						class="aspect-square size-[75px]"
 					/>
 				</NuxtLink>
 			</SidebarHeader>

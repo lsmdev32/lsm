@@ -8,6 +8,7 @@ export default defineNuxtConfig({
 		"@nuxt/scripts",
 		"shadcn-nuxt",
 		"nuxt-vuefire",
+		"dayjs-nuxt",
 	],
 	devtools: { enabled: true },
 	app: {
@@ -22,6 +23,11 @@ export default defineNuxtConfig({
 			tailwindcss: {},
 			autoprefixer: {},
 		},
+	},
+	dayjs: {
+		plugins: [
+			"utc", "timezone",
+		],
 	},
 	// debug: process.env.NODE_ENV === "development",
 	eslint: {

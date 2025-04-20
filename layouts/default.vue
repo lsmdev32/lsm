@@ -1,10 +1,14 @@
-<script lang="ts" setup>
-import LoadingPage from "~/components/LoadingPage.vue"
-
-const indicator = useLoadingIndicator()
+<script setup lang="ts">
+import Footer from "~/components/audience/Footer.vue"
+import Navbar from "~/components/audience/Navbar.vue"
 </script>
 
 <template>
-	<LoadingPage v-if="indicator.isLoading.value" />
-	<NuxtPage v-else />
+	<div class="w-full flex flex-col">
+		<Navbar />
+		<main class="w-full flex flex-col min-h-screen pt-[80px]">
+			<slot />
+		</main>
+		<Footer />
+	</div>
 </template>
