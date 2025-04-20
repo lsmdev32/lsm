@@ -10,11 +10,11 @@ export const API_PATH_PREFIXES = {
 	 */
 	HOME: "/page-data/home",
 	PAGE_DATA_PRACTICE_AREA: "/page-data/practice-areas",
-	PAGE_DATA_BLOG_DETAIL: "/page-data/blog/{slug}",
-	PAGE_DATA_PUBLICATION_DETAIL: "/page-data/publication/{slug}",
-	PAGE_DATA_STAFF_DETAIL: "/page-data/staff/{slug}",
-	HOME_STAFFS: "/home/staffs",
-	HOME_PUBLICATIONS: "/home/publications",
+	PAGE_DATA_BLOG_AND_PUBLICATIONS: "/page-data/blogs-publications",
+	PAGE_DATA_BLOG_DETAIL: "/page-data/blogs/{slug}",
+	PAGE_DATA_PUBLICATION_DETAIL: "/page-data/publications/{slug}",
+	PAGE_DATA_STAFF_DETAIL: "/page-data/staffs/{slug}",
+	PAGE_DATA_STAFFS: "/page-data/staffs",
 } satisfies Record<string, `/${string}`>
 
 export const APP_OPENAPI_INFO = {
