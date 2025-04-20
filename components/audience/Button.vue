@@ -1,13 +1,15 @@
-<script>
-export default {
-  props: ["textButton"],
-};
+<script setup lang="ts">
+type Props = {
+	textButton: string
+}
+
+defineProps<Props>()
 </script>
 
 <template>
-  <div class="custom-button font-ubuntu color-soft-orange">
-    <span>{{ textButton }}</span>
-  </div>
+	<div class="custom-button font-ubuntu color-soft-orange">
+		<span>{{ textButton }}</span>
+	</div>
 </template>
 
 <style scoped>

@@ -15,11 +15,10 @@ export const ContentTypeFilter = z.enum([
 export const HomepageDataOutputSchema = z.object({
 	body: z.object({
 		message: z.string(),
-		status_code: z.number(),
-		result: z.object({
+		status: z.number(),
+		data: z.object({
 			partners: z.object({
 				data: z.array(z.object({
-					id: z.string(),
 					slug: z.string()
 						.regex(/^[a-z0-9-]+$/),
 					image_url: z.string()
@@ -39,8 +38,8 @@ export const HomepageDataOutputSchema = z.object({
 export const PracticeAreaPageDataOutputSchema = z.object({
 	body: z.object({
 		message: z.string(),
-		status_code: z.number(),
-		result: z.object({
+		status: z.number(),
+		data: z.object({
 			news_and_publications: z.object({
 				data: z.array(z.object({
 					title: z.string(),
@@ -79,8 +78,8 @@ export const PracticeAreaPageDataOutputSchema = z.object({
 export const OurAttorneysPageDataOutputSchema = z.object({
 	body: z.object({
 		message: z.string(),
-		status_code: z.number(),
-		result: z.object({
+		status: z.number(),
+		data: z.object({
 			partners: z.object({
 				data: z.array(z.object({
 					slug: z.string()
@@ -122,8 +121,8 @@ export const OurAttorneyDetailPageDataInputSchema = z.object({
 export const OurAttorneyDetailPageDataOutputSchema = z.object({
 	body: z.object({
 		message: z.string(),
-		status_code: z.number(),
-		result: z.object({
+		status: z.number(),
+		data: z.object({
 			person: z.object({
 				name: z.string(),
 				short_bio: z.string(),
@@ -174,8 +173,8 @@ export const BlogAndPublicationsPageDataInputSchema = z.object({
 export const BlogAndPublicationsPageDataOutputSchema = z.object({
 	body: z.object({
 		message: z.string(),
-		status_code: z.number(),
-		result: z.object({
+		status: z.number(),
+		data: z.object({
 			highlighted_content: z.array(z.object({
 				type: ContentTypeFilter,
 				slug: z.string()
@@ -210,8 +209,8 @@ export const ContentDetailPageDataInputSchema = z.object({
 export const ContentDetailPageDataOutputSchema = z.object({
 	body: z.object({
 		message: z.string(),
-		status_code: z.number(),
-		result: z.object({
+		status: z.number(),
+		data: z.object({
 			detail: z.object({
 				type: ContentTypeFilter,
 				slug: z.string()

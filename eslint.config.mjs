@@ -36,5 +36,7 @@ export default withNuxt(
 	},
 )
 	.prepend({
-		ignores: ["components/ui/**/*.{vue,ts}"],
+		ignores: [
+			"components/ui/**/*.{vue,ts}", "lib/utils.ts",
+		],
 	})
