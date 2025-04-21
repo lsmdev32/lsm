@@ -39,13 +39,13 @@ import Button from "../../components/audience/Button.vue"
 				Subscribe to our newsletter
 			</div>
 			<input
-				class=""
+				class="text-black"
 				type="text"
 				placeholder="Name*"
 			>
 			<br>
 			<input
-				class=""
+				class="text-black"
 				type="email"
 				placeholder="Email*"
 			>
