@@ -48,8 +48,23 @@ import ArrowIcon from "~/assets/images/arrow-icon.svg"
 				</div>
 			</div>
 		</section>
+
+		<section class="sm:justify-center md:hidden md:min-w-full">
+			<h1 class="text-3xl font-[philosopher] text-center pt-[15px] pb-[30px]">
+				News and Publication
+			</h1>
+		</section>
+
+		<!-- News and Publication Section here! -->
+		<section class="sm:justify-center md:hidden md:min-w-full">
+			<h1 class="text-3xl font-[philosopher] text-center pt-[15px] pb-[30px]">
+				Our Attorneys
+			</h1>
+		</section>
+		<!-- Our Attorneys Section -->
+
 		<!-- Website -->
-		<section class="md:min-w-full">
+		<section class="hidden md:block md:min-w-full">
 			<div class="flex bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center bg-cover items-end justify-start text-left w-full h-[575px] pl-[30px] py-[30px] md:pl-12">
 				<div class="flex flex-col items-start justify-start text-left pl-[30px] py-[60px] md:pl-12 ">
 					<div>
@@ -61,7 +76,7 @@ import ArrowIcon from "~/assets/images/arrow-icon.svg"
 			</div>
 		</section>
 		<!-- Bedge here! -->
-		<section class="md:min-w-full">
+		<section class="visible sm:max-[hidden] md:min-w-full">
 			<div class="flex h-[480px] w-full">
 				<!-- Panel 1 -->
 				<div class="relative bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
@@ -136,20 +151,24 @@ import ArrowIcon from "~/assets/images/arrow-icon.svg"
 				</div>
 			</div>
 		</section>
-
-		<section class="sm:justify-center md:min-w-full">
-			<h1 class="text-3xl font-[philosopher] text-center pt-[15px] pb-[30px]">
-				News and Publication
-			</h1>
+		<section class="hidden md:block md:min-w-full">
+			<div class="flex h-[480px] w-full relative bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
+				<div class="absolute inset-0 flex items-center justify-start bg-[rgba(106,129,127,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+					<!-- Heading -->
+					<div class="flex flex-col items-start justify-center pl-8 pr-8 font-[Marcellus] transition-all duration-300 group-hover:block max-w-md">
+						<h2 class="text-4xl text-white">
+							News Title: Lorem ipsum dolor sit amet,<br> consectetur adipiscing elit.
+						</h2>
+						<!-- Animated on hover (pops from the bottom) -->
+						<div class="mt-4 translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100">
+							<p class="text-xl text-left text-white">
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		</section>
-
-		<!-- News and Publication Section here! -->
-		<section class="sm:justify-center md:min-w-full">
-			<h1 class="text-3xl font-[philosopher] text-center pt-[15px] pb-[30px]">
-				Our Attorneys
-			</h1>
-		</section>
-		<!-- Our Attorneys Section -->
 	</div>
 </template>
 
