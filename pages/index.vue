@@ -1,5 +1,43 @@
 <script setup lang="ts">
+import { ref } from "vue"
+import { NuxtLink } from "#components"
 import ArrowIcon from "~/assets/images/arrow-icon.svg"
+import DRThumbnail from "~/assets/images/dr-thumbnail.svg"
+import CCThumbnail from "~/assets/images/cc-thumbnail.svg"
+import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
+
+// Define available background images and corresponding text
+const contentOptions = [
+	{
+		bgImage: DRThumbnail,
+		text: "Dispute Resolution",
+		paragraph:
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+	},
+	{
+		bgImage: CCThumbnail,
+		text: "Corporate Commercial",
+		paragraph:
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+	},
+	{
+		bgImage: IPThumbnail,
+		text: "Intellectual Property",
+		paragraph:
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+	},
+]
+
+// Reactive state to track current option
+const currentOptionIndex = ref(0)
+
+// Function to cycle through options
+const cycleContent = () => {
+	currentOptionIndex.value = (currentOptionIndex.value + 1) % contentOptions.length
+}
+const setOption = (index: number) => {
+	currentOptionIndex.value = index
+}
 </script>
 
 <template lang="html">
@@ -152,23 +190,104 @@ import ArrowIcon from "~/assets/images/arrow-icon.svg"
 			</div>
 		</section>
 		<section class="hidden md:block md:min-w-full">
-			<div class="flex h-[480px] w-full relative bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
-				<div class="absolute inset-0 flex items-center justify-start bg-[rgba(106,129,127,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+			<div class="flex flex-nowrap h-[480px] w-full relative bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center bg-cover items-center justify-center hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
+				<div class="flex items-center justify-start w-full h-full bg-[rgba(106,129,127,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 py-16 px-12">
 					<!-- Heading -->
-					<div class="flex flex-col items-start justify-center pl-8 pr-8 font-[Marcellus] transition-all duration-300 group-hover:block max-w-md">
-						<h2 class="text-4xl text-white">
+					<div class="flex flex-col items-center justify-center px-8 font-[Marcellus] transition-all duration-300 max-w-full">
+						<h2 class="text-5xl text-white text-left">
 							News Title: Lorem ipsum dolor sit amet,<br> consectetur adipiscing elit.
 						</h2>
-						<!-- Animated on hover (pops from the bottom) -->
-						<div class="mt-4 translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100">
-							<p class="text-xl text-left text-white">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-							</p>
+						<div class="mt-4 flex flex-row items-center justify-start w-full translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100">
+							<div class="flex justify-center text-center text-sm text-[#DAB38D]">
+								<button
+									type="button"
+									class="mt-4 bg-white rounded-md px-10 py-4 hover:cursor-pointer"
+								>
+									Read
+								</button>
+							</div>
+							<div class="ml-4 mt-4 flex items-center">
+								<NuxtLink
+									to="#"
+									class="text-sm text-white hover:cursor-pointer"
+								>
+									View All >>
+								</NuxtLink>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
+		<section class="block sm:block md:min-w-full">
+			<div class="flex h-[442px] w-full">
+				<!-- First Div: Clickable Background Image -->
+				<div
+					role="button"
+					tabindex="0"
+					class="flex flex-1 bg-no-repeat bg-center bg-cover cursor-pointer transition-all duration-500"
+					:style="{ backgroundImage: `url(${contentOptions[currentOptionIndex].bgImage})` }"
+					@click="cycleContent"
+				/>
+				<!-- Second Div: Text and Clickable Option -->
+				<div class="flex flex-1 flex-col">
+					<!-- First Child: Text Display -->
+					<div class="basis-2/3 bg-[#4A3C32] flex items-center justify-center transition-all duration-500">
+						<p class="text-white text-xl font-semibold text-center p-4">
+							{{ contentOptions[currentOptionIndex].text }}
+						</p>
+						<p>
+							{{ contentOptions[currentOptionIndex].paragraph }}
+						</p>
+					</div>
+					<!-- Second Child: Clickable Text Option -->
+					<div class="basis-1/3 bg-[#6A817F] flex items-center justify-center">
+						<span
+							role="button"
+							tabindex="0"
+							class="text-white text-lg cursor-pointer hover:underline transition-colors duration-200"
+							:class="{ 'font-bold underline': currentOptionIndex === 0 }"
+							@click="setOption(0)"
+							@keyup.enter="setOption(0)"
+							@keyup.space="setOption(0)"
+						>
+							DR
+						</span>
+						<span
+							role="button"
+							tabindex="0"
+							class="text-white text-lg cursor-pointer hover:underline transition-colors duration-200"
+							:class="{ 'font-bold underline': currentOptionIndex === 1 }"
+							@click="setOption(1)"
+							@keyup.enter="setOption(1)"
+							@keyup.space="setOption(1)"
+						>
+							CC
+						</span>
+						<span
+							role="button"
+							tabindex="0"
+							class="text-white text-lg cursor-pointer hover:underline transition-colors duration-200"
+							:class="{ 'font-bold underline': currentOptionIndex === 2 }"
+							@click="setOption(2)"
+							@keyup.enter="setOption(2)"
+							@keyup.space="setOption(2)"
+						>
+							IP
+						</span>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- <section class="visible sm:max-[hidden] md:min-w-full">
+			<div class="flex h-[442px] w-full">
+				<div class="flex flex-1 bg-[url('~/assets/images/banner1.svg')]" />
+				<div class="flex flex-1 flex-col">
+					<div class="basis-2/3 bg-[#4A3C32]" />
+					<dic class="basis-1/3 bg-[#6A817F]" />
+				</div>
+			</div>
+		</section -->
 	</div>
 </template>
 
