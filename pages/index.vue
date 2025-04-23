@@ -12,19 +12,19 @@ const contentOptions = [
 		bgImage: DRThumbnail,
 		text: "Dispute Resolution",
 		paragraph:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+			"Lorem ipsum dolor sit amet, kata mereka adipiscing elit,",
 	},
 	{
 		bgImage: CCThumbnail,
 		text: "Corporate Commercial",
 		paragraph:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+			"Lorem ipsum dolor sit amet, kata dia adipiscing elit,",
 	},
 	{
 		bgImage: IPThumbnail,
 		text: "Intellectual Property",
 		paragraph:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+			"Lorem ipsum dolor sit amet, kata gua adipiscing elit,",
 	},
 ]
 
@@ -232,21 +232,21 @@ const setOption = (index: number) => {
 				<!-- Second Div: Text and Clickable Option -->
 				<div class="flex flex-1 flex-col">
 					<!-- First Child: Text Display -->
-					<div class="basis-2/3 bg-[#4A3C32] flex items-center justify-center transition-all duration-500">
-						<p class="text-white text-xl font-semibold text-center p-4">
+					<div class="basis-2/3 bg-[#4A3C32] flex flex-col  items-start justify-center px-20 transition-all duration-500">
+						<p class="text-[#DAB38D] text-md font-semibold text-left font-[ubuntu] py-4">
 							{{ contentOptions[currentOptionIndex].text }}
 						</p>
-						<p>
+						<p class="text-white text-3xl font-normal font-[Marcellus] text-left">
 							{{ contentOptions[currentOptionIndex].paragraph }}
 						</p>
 					</div>
 					<!-- Second Child: Clickable Text Option -->
-					<div class="basis-1/3 bg-[#6A817F] flex items-center justify-center">
+					<div class="basis-1/3 bg-[#6A817F] font-[Marcellus] flex flex-row items-center justify-start px-20">
 						<span
 							role="button"
 							tabindex="0"
-							class="text-white text-lg cursor-pointer hover:underline transition-colors duration-200"
-							:class="{ 'font-bold underline': currentOptionIndex === 0 }"
+							class="px-2 text-white text-3xl font-light opacity-50 cursor-pointer hover:opacity-100 transition-colors duration-200"
+							:class="{ 'font-bold opacity-100': currentOptionIndex === 0 }"
 							@click="setOption(0)"
 							@keyup.enter="setOption(0)"
 							@keyup.space="setOption(0)"
@@ -256,8 +256,8 @@ const setOption = (index: number) => {
 						<span
 							role="button"
 							tabindex="0"
-							class="text-white text-lg cursor-pointer hover:underline transition-colors duration-200"
-							:class="{ 'font-bold underline': currentOptionIndex === 1 }"
+							class="px-2 text-white text-3xl font-light opacity-50 cursor-pointer hover:opacity-100 transition-colors duration-200"
+							:class="{ 'font-bold opacity-100': currentOptionIndex === 1 }"
 							@click="setOption(1)"
 							@keyup.enter="setOption(1)"
 							@keyup.space="setOption(1)"
@@ -267,8 +267,8 @@ const setOption = (index: number) => {
 						<span
 							role="button"
 							tabindex="0"
-							class="text-white text-lg cursor-pointer hover:underline transition-colors duration-200"
-							:class="{ 'font-bold underline': currentOptionIndex === 2 }"
+							class="px-2 text-white text-3xl font-light opacity-50 cursor-pointer hover:opacity-100 transition-colors duration-200"
+							:class="{ 'font-bold opacity-100': currentOptionIndex === 2 }"
 							@click="setOption(2)"
 							@keyup.enter="setOption(2)"
 							@keyup.space="setOption(2)"
