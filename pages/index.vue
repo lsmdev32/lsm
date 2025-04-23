@@ -12,13 +12,13 @@ const contentOptions = [
 		bgImage: DRThumbnail,
 		text: "Dispute Resolution",
 		paragraph:
-			"Lorem ipsum dolor sit amet, kata mereka adipiscing elit,",
+			"Our Dispute Resolution practice group has extensive experience representing a wide range of clients including individuals, corporations, and government entities in complex litigation matters.",
 	},
 	{
 		bgImage: CCThumbnail,
 		text: "Corporate Commercial",
 		paragraph:
-			"Lorem ipsum dolor sit amet, kata dia adipiscing elit,",
+			"We have provided assistance to and maintained relationships with a wide range of clients throughout Indonesia and abroad",
 	},
 	{
 		bgImage: IPThumbnail,
@@ -114,10 +114,16 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 		<!-- Bedge here! -->
-		<section class="visible sm:max-[hidden] md:min-w-full">
+		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
+			<div class="flex h-[265px] w-full items-center justify-center">
+				Bedge here!
+			</div>
+		</section>
+
+		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
 			<div class="flex h-[480px] w-full">
 				<!-- Panel 1 -->
-				<div class="relative bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
+				<div class="relative bg-[url('~/assets/images/bg-whoarewe.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
 					<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 					<!-- Heading -->
 					<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
@@ -141,7 +147,7 @@ const setOption = (index: number) => {
 				</div>
 
 				<!-- Panel 2 -->
-				<div class="relative bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
+				<div class="relative bg-[url('~/assets/images/bg-practicearea.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
 					<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 					<!-- Heading -->
 					<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
@@ -165,7 +171,7 @@ const setOption = (index: number) => {
 				</div>
 
 				<!-- Panel 3 -->
-				<div class="relative bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
+				<div class="relative bg-[url('~/assets/images/bg-ourattorneys.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
 					<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 					<!-- Heading -->
 					<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
@@ -189,9 +195,10 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
+
 		<section class="hidden md:block md:min-w-full">
-			<div class="flex flex-nowrap h-[480px] w-full relative bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center bg-cover items-center justify-center hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
-				<div class="flex items-center justify-start w-full h-full bg-[rgba(106,129,127,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 py-16 px-12">
+			<div class="flex flex-nowrap h-[480px] w-full relative bg-[url('~/assets/images/bg-publication.svg')] bg-no-repeat bg-center bg-cover items-center justify-center hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
+				<div class="flex items-center justify-start w-full h-full bg-[rgba(145,174,172,0.4)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 py-16 px-12">
 					<!-- Heading -->
 					<div class="flex flex-col items-center justify-center px-8 font-[Marcellus] transition-all duration-300 max-w-full">
 						<h2 class="text-5xl text-white text-left">
@@ -219,7 +226,7 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
-		<section class="block sm:block md:min-w-full">
+		<section class="hidden md:block md:min-w-full">
 			<div class="flex h-[442px] w-full">
 				<!-- First Div: Clickable Background Image -->
 				<div
@@ -279,15 +286,21 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
-		<!-- <section class="visible sm:max-[hidden] md:min-w-full">
-			<div class="flex h-[442px] w-full">
-				<div class="flex flex-1 bg-[url('~/assets/images/banner1.svg')]" />
-				<div class="flex flex-1 flex-col">
-					<div class="basis-2/3 bg-[#4A3C32]" />
-					<dic class="basis-1/3 bg-[#6A817F]" />
-				</div>
+		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
+			<div class="flex h-[265px] w-full items-center justify-center">
+				Our Attorneys here!
 			</div>
-		</section -->
+		</section>
+		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
+			<div class="flex h-[265px] w-full bg-[#BFE7E4] items-center justify-center">
+				Reviews here!
+			</div>
+		</section>
+		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
+			<div class="flex h-[265px] w-full items-center justify-center">
+				Clients here!
+			</div>
+		</section>
 	</div>
 </template>
 
