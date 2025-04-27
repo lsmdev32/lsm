@@ -59,8 +59,8 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
-		<section class="md:min-w-full md:hidden">
-			<div class="banner-small pl-[30px] z-0">
+		<section class="md:min-w-full md:hidden font-[philosopher] ">
+			<div class="flex items-center justify-start bg-[url('~/assets/images/dr-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
 				<div>
 					<h2 class="text-2xl text-white">
 						Dispute Resolution
@@ -69,7 +69,7 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 		<section class="md:min-w-full md:hidden">
-			<div class="banner-small sm:w-auto pl-[30px] z-0">
+			<div class="flex items-center justify-start bg-[url('~/assets/images/cc-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
 				<div>
 					<h2 class="text-2xl text-white">
 						Corporate Commercial
@@ -78,7 +78,7 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 		<section class="md:min-w-full md:hidden">
-			<div class="banner-small sm:h-[445px] sm:w-auto pl-[30px] z-0">
+			<div class="flex items-center justify-start bg-[url('~/assets/images/ip-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
 				<div>
 					<h2 class="text-2xl text-white">
 						Intelectual Property
