@@ -68,7 +68,7 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
-		<section class="md:min-w-full md:hidden">
+		<section class="md:min-w-full md:hidden font-[philosopher] ">
 			<div class="flex items-center justify-start bg-[url('~/assets/images/cc-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
 				<div>
 					<h2 class="text-2xl text-white">
@@ -77,7 +77,7 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
-		<section class="md:min-w-full md:hidden">
+		<section class="md:min-w-full md:hidden font-[philosopher] ">
 			<div class="flex items-center justify-start bg-[url('~/assets/images/ip-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
 				<div>
 					<h2 class="text-2xl text-white">
