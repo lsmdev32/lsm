@@ -111,7 +111,7 @@ export default {
 <style scoped>
 .menu-panel {
 	position: fixed;
-	top: 100px; /* Start below the navbar */
+	top: 80px; /* Start below the navbar */
 	right: -100%;
 	width: 100%;
 	height: calc(100% - 60px); /* Adjust height to not cover the navbar */
