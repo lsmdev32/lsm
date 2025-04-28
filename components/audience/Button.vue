@@ -1,7 +1,9 @@
-<script>
-export default {
-	props: ["textButton"],
+<script setup lang="ts">
+type Props = {
+	textButton: string
 }
+
+defineProps<Props>()
 </script>
 
 <template>

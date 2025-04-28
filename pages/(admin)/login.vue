@@ -6,7 +6,8 @@ import { toast } from "vue-sonner"
 import { AutoForm } from "~/components/ui/auto-form"
 import { Button } from "~/components/ui/button"
 import { Toaster } from "~/components/ui/sonner"
-import { loginSchema, type LoginFormPayload } from "~/lib/schemas/form"
+import { loginSchema } from "~/lib/schemas/form"
+import type { LoginFormPayload } from "~/lib/schemas/form"
 import LogoSVG from "~/assets/images/logo.svg"
 
 definePageMeta({
