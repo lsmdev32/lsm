@@ -3,7 +3,6 @@ import withNuxt from "./.nuxt/eslint.config.mjs"
 
 export default withNuxt(
 	// Your custom configs here
-
 	{
 		rules: {
 			"vue/max-attributes-per-line": [
@@ -29,9 +28,15 @@ export default withNuxt(
 			"@stylistic/object-curly-spacing": [
 				"error", "always",
 			],
+			"import/consistent-type-specifier-style": [
+				"error", "prefer-top-level",
+			],
+
 		},
 	},
 )
 	.prepend({
-		ignores: ["components/ui/**/*.{vue,ts}"],
+		ignores: [
+			"components/ui/**/*.{vue,ts}", "lib/utils.ts",
+		],
 	})
