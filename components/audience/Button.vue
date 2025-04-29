@@ -15,7 +15,8 @@ defineProps<Props>()
 <style scoped>
 .custom-button {
   width: 40%;
-  background-color: #4b3d2a;
+  background-color: #4B3D2A;
+  color: #DAB38D;
   padding: 20px 12px;
   border-radius: 10px;
   font-size: 14px;
@@ -27,7 +28,6 @@ defineProps<Props>()
 @media (max-width: 768px) {
   .custom-button {
     padding: 15px 12px;
-    width: 50%;
   }
 }
 </style>
