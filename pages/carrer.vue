@@ -23,10 +23,10 @@
 						Requirements:
 					</p>
 					<div class="flex flex-col mt-6 text-xl font-[Ubuntu] font-light text-left text-[#4B3D2A] list-disk list-inside">
-						<li>A Law Degree (Sarjana Hukum), with impressive academic record</li>
-						<li>A Law Degree (Sarjana Hukum), with impressive academic record</li>
-						<li>A Law Degree (Sarjana Hukum), with impressive academic record</li>
-						<li>A Law Degree (Sarjana Hukum), with impressive academic record</li>
+						<div>A Law Degree (Sarjana Hukum), with impressive academic record</div>
+						<div>A Law Degree (Sarjana Hukum), with impressive academic record</div>
+						<div>A Law Degree (Sarjana Hukum), with impressive academic record</div>
+						<div>A Law Degree (Sarjana Hukum), with impressive academic record</div>
 					</div>
 				</div>
 			</div>
