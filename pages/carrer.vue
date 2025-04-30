@@ -115,7 +115,7 @@ import CheckIc from "~/assets/images/check-icon.svg"
 			</div>
 		</section>
 		<!-- Desktop -->
-		<section class="hidden md:flex flex-row md:min-w-full px-16 py-16 gap-6">
+		<section class="hidden md:flex flex-row md:min-w-full justify-center items-start px-16 py-16 gap-6">
 			<div class="flex flex-col px-4 py-6 z-0 w-1/2">
 				<div class="flex-1">
 					<h1 class="text-4xl font-[marcellus] text-[#4B3D2A]">
@@ -160,9 +160,9 @@ import CheckIc from "~/assets/images/check-icon.svg"
 					/>
 				</div>
 			</div>
-			<div class="flex flex-col px-4 py-4 z-0 w-1/2">
+			<div class="flex flex-col px-4 py-6 z-0 w-1/2">
 				<div class="flex-1">
-					<h1 class="mt-6 text-4xl font-[marcellus] text-[#DAB38D]">
+					<h1 class=" text-4xl font-[marcellus] text-[#DAB38D]">
 						Lawyers
 					</h1>
 					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#4B3D2A]">
