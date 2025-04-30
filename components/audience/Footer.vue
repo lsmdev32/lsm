@@ -50,9 +50,9 @@ import Button from "../../components/audience/Button.vue"
 				placeholder="Email*"
 			>
 
-			<div class="button-wrapper">
+			<div class="button-wrapper ">
 				<Button
-					class=""
+					class="cursor-pointer"
 					text-button="Subscribe"
 				/>
 			</div>
