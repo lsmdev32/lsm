@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronUp, Inbox, Pencil, Tags } from "lucide-vue-next"
+import { ChevronUp, Inbox, Pencil, Tags, Notebook, User } from "lucide-vue-next"
 import { signOut } from "firebase/auth"
 import { toast } from "vue-sonner"
 import {
@@ -20,9 +20,14 @@ import LogoSVG from "~/assets/images/logo.svg"
 
 const items = [
 	{
-		title: "Blog and Publications",
+		title: "Blogs",
 		path: "/dashboard/blogs",
 		icon: Pencil,
+	},
+	{
+		title: "Publications",
+		path: "/dashboard/publications",
+		icon: Notebook,
 	},
 	{
 		title: "Content Category",
@@ -33,6 +38,11 @@ const items = [
 		title: "Content Tags",
 		path: "/dashboard/tags",
 		icon: Tags,
+	},
+	{
+		title: "Staffs",
+		path: "/dashboard/staffs",
+		icon: User,
 	},
 ]
 
