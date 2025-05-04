@@ -1,6 +1,6 @@
-<script lang="ts">
-import { NuxtImg } from "#components"
+<script setup lang="ts">
 import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
+import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 </script>
 
 <template>
@@ -19,14 +19,13 @@ import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
 			<div class="flex flex-row px-4 py-6 gap-44 z-0 w-full">
 				<div class="flex-1/3">
 					<NuxtImg
-						class="w-6 h-12 mt-4"
+						class="w-4 h-6 mt-4"
 						:src="ArrowSm"
-						alt="Arrow"
 					/>
 				</div>
-				<div class="flex flex-col justify-stretch z-0 w-2/3">
+				<div class="flex flex-col items-start justify-stretch z-0 w-2/3">
 					<div class="flex-1">
-						<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#4B3D2A]">
+						<p class="text-xl font-[Ubuntu] font-light text-left text-[#4B3D2A]">
 							Lawyers at LSM are experts in their fields and are
 							dedicated to providing the best legal services to our
 							clients. We have a wide range of practice areas, and we
@@ -35,6 +34,14 @@ import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
 						</p>
 					</div>
 				</div>
+			</div>
+		</section>
+		<section class="md:hidden">
+			<PracticeAreaDetails />
+		</section>
+		<section class="md:hidden items-center justify-center w-full">
+			<div class="items-center justify-center">
+				Publications And News Here!
 			</div>
 		</section>
 	</div>
