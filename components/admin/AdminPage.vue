@@ -52,8 +52,10 @@ const breadcrumbs = pathSegments.map((segment, index) => ({
 			{{ pageTitle }}
 		</p>
 
-		<div class="w-full h-full">
-			<slot />
-		</div>
+		<ClientOnly>
+			<div class="w-full h-full">
+				<slot />
+			</div>
+		</ClientOnly>
 	</div>
 </template>

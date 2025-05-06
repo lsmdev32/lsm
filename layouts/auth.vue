@@ -5,16 +5,18 @@ import { Toaster } from "~/components/ui/sonner"
 </script>
 
 <template>
-	<SidebarProvider>
-		<Toaster
-			position="top-right"
-			:duration="2000"
-		/>
-		<AppSidebar />
-		<ClientOnly>
-			<main class="flex flex-col w-full min-h-full m-4">
-				<slot />
-			</main>
-		</ClientOnly>
-	</SidebarProvider>
+	<client-only>
+		<SidebarProvider>
+			<Toaster
+				position="top-right"
+				:duration="2000"
+			/>
+			<AppSidebar />
+			<ClientOnly>
+				<main class="flex flex-col w-full min-h-full m-4">
+					<slot />
+				</main>
+			</ClientOnly>
+		</SidebarProvider>
+	</client-only>
 </template>
