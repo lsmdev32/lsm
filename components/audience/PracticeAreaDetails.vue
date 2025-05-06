@@ -89,6 +89,7 @@ const activeSubItem = ref(0)
 
 <template>
 	<div class="md:hidden w-full mx-auto mb-4 py-4 z-0">
+		<!-- Mobile -->
 		<!-- Main Category Selector -->
 		<div class="flex overflow-x-auto gap-6 px-4 py-4 border-b font-[Marcellus] text-[#DAB38D]">
 			<span

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
+import ImgPA from "~/assets/images/img-practice-area.svg"
 import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 </script>
 
@@ -46,27 +47,39 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 		</section>
 		<!-- Desktop -->
 		<section class="hidden md:flex w-full h-120 z-0">
-			<div class="flex flex-row items-start justify-start">
-				<div class="basis-1/3">
-					<div
-						class="flex flex-col"
-					>
-						<div class="flex-4/12">
-							<h1
-								class="text-4xl font-[marcellus] text-[#DAB38D]"
-							>
-								Practice Area
-							</h1>
-						</div>
-						<div class="flex-8/12">
-							<NuxtImg
-								class="w-4 h-6 mt-4"
-								:src="ArrowSm"
-							/>
-						</div>
+			<div class="flex flex-row items-stretch justify-start w-full">
+				<div class="basis-1/3 flex flex-col">
+					<div class="flex-4/12">
+						<p
+							class="text-5xl font-[marcellus] text-[#DAB38D]"
+						>
+							Practice Area
+						</p>
 					</div>
-					<div class="grid grid-rows-8">
-						disisni
+					<div class="flex-8/12 flex items-center">
+						<NuxtImg
+							class="w-auto h-[60px] mt-4"
+							:src="ArrowSm"
+						/>
+					</div>
+				</div>
+				<div class="basis-2/3 flex flex-col">
+					<div class="flex-4/12">
+						<h1
+							class="text-lg font-[marcellus] text-[#949494]"
+						>
+							Lawyers at LSM are experts in their fields and are
+							dedicated to providing the best legal services to our
+							clients. We have a wide range of practice areas, and we
+							work closely with our clients to understand their needs
+							and provide tailored solutions.
+						</h1>
+					</div>
+					<div class="flex-8/12 flex items-center">
+						<NuxtImg
+							class="max-w-full h-full mt-4"
+							:src="ImgPA"
+						/>
 					</div>
 				</div>
 			</div>
