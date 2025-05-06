@@ -44,5 +44,32 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 				Publications And News Here!
 			</div>
 		</section>
+		<!-- Desktop -->
+		<section class="hidden md:flex w-full h-120 z-0">
+			<div class="flex flex-row items-start justify-start">
+				<div class="basis-1/3">
+					<div
+						class="flex flex-col"
+					>
+						<div class="flex-4/12">
+							<h1
+								class="text-4xl font-[marcellus] text-[#DAB38D]"
+							>
+								Practice Area
+							</h1>
+						</div>
+						<div class="flex-8/12">
+							<NuxtImg
+								class="w-4 h-6 mt-4"
+								:src="ArrowSm"
+							/>
+						</div>
+					</div>
+					<div class="grid grid-rows-8">
+						disisni
+					</div>
+				</div>
+			</div>
+		</section>
 	</div>
 </template>
