@@ -5,9 +5,11 @@ import ArrowIcon from "~/assets/images/arrow-icon.svg"
 import DRThumbnail from "~/assets/images/dr-thumbnail.svg"
 import CCThumbnail from "~/assets/images/cc-thumbnail.svg"
 import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
-import { useRestClient } from "~/hooks/useRestClient"
+import useCustomFetch from "~/hooks/useCustomFetch"
 
-const _data = await useRestClient("/page-data/home", undefined)
+const { data } = await useCustomFetch("/rest/page-data/home")
+
+console.log(data)
 
 // Define available background images and corresponding text
 const contentOptions = [

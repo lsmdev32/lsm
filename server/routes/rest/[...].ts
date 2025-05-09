@@ -37,7 +37,6 @@ export default defineEventHandler(async (event) => {
 		},
 	)
 
-	console.log("matched", matched)
 	if (matched) {
 		return response
 	}

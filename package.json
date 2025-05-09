@@ -8,8 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint . --fix",
-    "type-gen": "openapi-typescript http://localhost:3000/rest/reference/docs.json -o ./types/openapi.ts"
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "@firebase/app-types": "^0.9.3",
@@ -21,6 +20,7 @@
     "@nuxt/ui": "3.0.2",
     "@orpc/client": "^1.0.3",
     "@orpc/openapi": "^1.0.3",
+    "@orpc/openapi-client": "^1.2.0",
     "@orpc/server": "^1.0.3",
     "@orpc/zod": "^1.0.3",
     "@unhead/vue": "^2.0.0-rc.8",
@@ -39,7 +39,6 @@
     "lucide-vue-next": "^0.487.0",
     "nuxt": "^3.16.2",
     "nuxt-vuefire": "1.0.5",
-    "openapi-fetch": "^0.13.7",
     "reka-ui": "^2.2.0",
     "shadcn-nuxt": "2.0.0",
     "tailwind-merge": "^3.1.0",
@@ -55,7 +54,6 @@
   "devDependencies": {
     "@faker-js/faker": "^9.7.0",
     "autoprefixer": "^10.4.21",
-    "openapi-typescript": "^7.7.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"
