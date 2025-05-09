@@ -48,7 +48,7 @@
 				<img
 					:src="image"
 					alt="Profile photo"
-					class="w-full h-[182px] object-cover object-center transition duration-300 group-hover:opacity-70"
+					class="w-full h-[182px] object-cover object-[50%_30%] transition duration-300 group-hover:opacity-70"
 				>
 
 				<!-- Nama & role -->
