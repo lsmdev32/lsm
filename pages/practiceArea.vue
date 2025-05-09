@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { NuxtImg } from "#components"
 import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
-import ImgPA from "~/assets/images/img-practice-area.svg"
 import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 </script>
 
@@ -47,7 +47,7 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 		</section>
 		<!-- Desktop -->
 		<section class="hidden md:flex w-full h-120 z-0">
-			<div class="flex flex-row items-stretch justify-start w-full">
+			<div class="flex flex-row items-stretch justify-start w-full px-8">
 				<div class="basis-1/3 flex flex-col">
 					<div class="flex-4/12">
 						<p
@@ -56,14 +56,14 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 							Practice Area
 						</p>
 					</div>
-					<div class="flex-8/12 flex items-center">
+					<div class="flex-[8/12] flex items-center">
 						<NuxtImg
 							class="w-auto h-[60px] mt-4"
 							:src="ArrowSm"
 						/>
 					</div>
 				</div>
-				<div class="basis-2/3 flex flex-col">
+				<div class="basis-2/3 flex flex-col pb-8">
 					<div class="flex-4/12">
 						<h1
 							class="text-lg font-[marcellus] text-[#949494]"
@@ -76,13 +76,21 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 						</h1>
 					</div>
 					<div class="flex-8/12 flex items-center">
-						<NuxtImg
-							class="max-w-full h-full mt-4"
+						<img
+							src="../assets/about-1.png"
+							alt=""
+							class="w-full h-80 mt-4 object-cover"
+						>
+						<!-- <NuxtImg
+							class="w-auto h-[60px] mt-4"
 							:src="ImgPA"
-						/>
+						/> -->
 					</div>
 				</div>
 			</div>
+		</section>
+		<section class="hidden md:flex w-full h-120 z-0">
+			<PracticeAreaDetails />
 		</section>
 	</div>
 </template>

@@ -240,10 +240,83 @@ const activeSubItem = ref(0)
 			</div>
 		</section>
 		<!-- Desktop -->
-		<section class="hidden md:flex w-full">
-			<div class="flex flex-row grid">
-				Here
+		<div class="w-full mx-auto mb-4 py-4 z-0">
+			<!-- Main Category Selector -->
+			<div class="flex flex-row px-4 py-6 gap-4 z-0 w-full">
+				<!-- Left Column: Categories -->
+				<div class="flex-1/3 flex flex-col gap-2 text-[#DAB38D] font-[Marcellus]">
+					<div
+						v-for="(category, index) in categories"
+						:key="index"
+						class="text-xl cursor-pointer hover:text-[#4B3D2A] transition-colors"
+						@click="activeCategory = index; activeSubItem = null"
+					>
+						{{ category.title }}
+					</div>
+				</div>
+
+				<!-- Right Column: Sub-items and Details -->
+				<div class="flex-2/3 flex flex-col">
+					<!-- Sub-items -->
+					<div
+						v-if="activeCategory !== null"
+						class="mt-4 px-4 flex flex-col gap-2"
+					>
+						<div
+							v-for="(item, idx) in categories[activeCategory].items"
+							:key="idx"
+							class="text-lg text-[#DAB38D] font-[Ubuntu] hover:text-[#4B3D2A] transition-colors cursor-pointer"
+							@click="activeSubItem = item; scrollToDetails()"
+						>
+							{{ item.title }}
+						</div>
+					</div>
+
+					<!-- Sub-item Detail Default -->
+					<section
+						ref="detailsSection"
+						class="mt-6"
+					>
+						<div
+							v-if="activeCategory === 0 && !activeSubItem"
+							class="w-full transition-all duration-300 bg-[url('~/assets/images/dotted-pattern.jpg')] bg-cover bg-center p-6"
+						>
+							<h2 class="text-3xl text-white font-[Marcellus] font-light mb-4">
+								Corporate and Investment
+							</h2>
+							<div class="text-[#DAB38D] font-[Ubuntu]">
+								<p class="mb-2">
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum duis consectetur morbi.
+								</p>
+								<p class="mb-2">
+									Partitor ultricies purus dictum scelerisque pharetra. Elit est sed quam mauris id sit lacuis. Aliquam duis ipsum a facilisi vestibulum hac.
+								</p>
+								<p class="mb-2">
+									Ullamcorper ultricies tristique id auctor. Hendrerit sit tortor mi nunc risus ut ornare mattis sed. Nunc vitae elit id faucibus.
+								</p>
+							</div>
+						</div>
+						<!-- Sub-item Details -->
+						<div
+							v-if="activeSubItem && activeCategory === 0"
+							class="w-full transition-all duration-300 bg-[url('~/assets/images/dotted-pattern.jpg')] bg-cover bg-center p-6"
+						>
+							<h2 class="text-3xl text-white font-[Marcellus] font-light mb-4">
+								{{ activeSubItem.title }}
+							</h2>
+							<div class="text-[#DAB38D] font-[Ubuntu]">
+								<p
+									v-for="(line, index) in activeSubItem.description"
+									:key="index"
+									class="mb-2"
+								>
+									{{ line }}
+								</p>
+							</div>
+						</div>
+					</section>
+				</div>
 			</div>
-		</section>
+		</div>
 	</div>
 </template>
