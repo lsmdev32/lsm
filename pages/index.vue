@@ -5,6 +5,9 @@ import ArrowIcon from "~/assets/images/arrow-icon.svg"
 import DRThumbnail from "~/assets/images/dr-thumbnail.svg"
 import CCThumbnail from "~/assets/images/cc-thumbnail.svg"
 import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
+import { useRestClient } from "~/hooks/useRestClient"
+
+const _data = await useRestClient("/page-data/home", undefined)
 
 // Define available background images and corresponding text
 const contentOptions = [
@@ -233,7 +236,7 @@ const setOption = (index: number) => {
 					role="button"
 					tabindex="0"
 					class="flex flex-1 bg-no-repeat bg-center bg-cover cursor-pointer transition-all duration-500"
-					:style="{ backgroundImage: `url(${contentOptions[currentOptionIndex].bgImage})` }"
+					:style="{ backgroundImage: `url(${contentOptions[currentOptionIndex]?.bgImage})` }"
 					@click="cycleContent"
 				/>
 				<!-- Second Div: Text and Clickable Option -->
@@ -241,10 +244,10 @@ const setOption = (index: number) => {
 					<!-- First Child: Text Display -->
 					<div class="basis-2/3 bg-[#4A3C32] flex flex-col  items-start justify-center px-20 transition-all duration-500">
 						<p class="text-[#DAB38D] text-md font-semibold text-left font-[ubuntu] py-4">
-							{{ contentOptions[currentOptionIndex].text }}
+							{{ contentOptions[currentOptionIndex]?.text }}
 						</p>
 						<p class="text-white text-3xl font-normal font-[Marcellus] text-left">
-							{{ contentOptions[currentOptionIndex].paragraph }}
+							{{ contentOptions[currentOptionIndex]?.paragraph }}
 						</p>
 					</div>
 					<!-- Second Child: Clickable Text Option -->
