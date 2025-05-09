@@ -135,7 +135,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 						alt=""
 						class="w-full h-auto object-cover"
 					>
-					<h2 class="absolute bottom-6 left-6 text-white text-5xl font-[Marcellus] font-light">
+					<h2 class="absolute bottom-6 left-6 text-white text-3xl font-[Marcellus] font-light">
 						ABOUT LSM
 					</h2>
 				</div>
@@ -144,15 +144,13 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 					<div class="">
 						<img
 							src="../assets/Arrow 1.png"
-							height="60px"
-							width="16px"
 							alt=""
-							style=""
+							style="height: 34px; width: 16px;"
 						>
 					</div>
 
 					<!-- Deskripsi -->
-					<p class="text-[#D9B28C] text-2xl font-[Marcellus] ml-[-180px] eading-relaxed">
+					<p class="text-[#D9B28C] text-1xl font-[Marcellus] ml-[-100px] eading-relaxed">
 						We are committed to providing responsive attorneys, efficiently managed transactions and cases that meet the needs of our Clients
 					</p>
 				</div>
