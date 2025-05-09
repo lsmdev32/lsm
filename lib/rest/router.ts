@@ -350,7 +350,7 @@ const publicationDetailPageData = base
 		}
 	})
 
-export default {
+const router = {
 	homePageData,
 	practiceAreasPageData,
 	ourAttorneysPageData,
@@ -358,3 +358,6 @@ export default {
 	blogDetailPageData,
 	publicationDetailPageData,
 }
+
+export default router
+export type ContractRouterClient = typeof router
