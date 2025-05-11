@@ -50,8 +50,6 @@ const auth = useFirebaseAuth()
 const username = auth?.currentUser?.email?.split("@")
 	.at(0) ?? ""
 
-console.log(auth?.currentUser?.email)
-
 async function _signOut() {
 	if (!auth) return
 

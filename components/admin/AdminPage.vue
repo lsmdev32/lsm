@@ -29,7 +29,7 @@ const breadcrumbs = pathSegments.map((segment, index) => ({
 </script>
 
 <template>
-	<div class="w-full flex flex-col justify">
+	<div class="w-full flex flex-col justify min-h-[120vh]">
 		<Breadcrumb>
 			<BreadcrumbList>
 				<template

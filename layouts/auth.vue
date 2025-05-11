@@ -2,6 +2,10 @@
 import { SidebarProvider } from "~/components/ui/sidebar"
 import AppSidebar from "~/components/AdminSidebar.vue"
 import { Toaster } from "~/components/ui/sonner"
+
+useHead({
+	title: "LSM Dashboard",
+})
 </script>
 
 <template>
