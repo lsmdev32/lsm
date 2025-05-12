@@ -106,7 +106,7 @@ const setOption = (index: number) => {
 		</section>
 		<!-- Our Attorneys Section -->
 
-		<!-- Website -->
+		<!-- Desktop -->
 		<section class="hidden md:block md:min-w-full">
 			<div class="flex bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center bg-cover items-end justify-start text-left w-full h-[575px] pl-[30px] py-[30px] md:pl-12">
 				<div class="flex flex-col items-start justify-start text-left pl-[30px] py-[60px] md:pl-12 ">
