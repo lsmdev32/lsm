@@ -24,25 +24,25 @@
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="#about"
 				>About LSM</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/practiceArea"
 				>Practice Area</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/Attorneys"
 				>Attorneys</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/publication"
 				>Publication</NuxtLink>
 			</li>
 			<li>
@@ -54,13 +54,13 @@
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/ContactUs"
 				>Contact Us</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/career"
 				>Career</NuxtLink>
 			</li>
 		</ul>
