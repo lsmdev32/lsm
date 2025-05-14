@@ -18,49 +18,57 @@
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/"
+					@click="closeMenu"
 				>Home</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#about"
+					to="/about"
+					@click="closeMenu"
 				>About LSM</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
 					to="/practiceArea"
+					@click="closeMenu"
 				>Practice Area</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
 					to="/Attorneys"
+					@click="closeMenu"
 				>Attorneys</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
 					to="/publication"
+					@click="closeMenu"
 				>Publication</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
 					to="#"
+					@click="closeMenu"
 				>Blog</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
 					to="/ContactUs"
+					@click="closeMenu"
 				>Contact Us</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
 					to="/career"
+					@click="closeMenu"
 				>Career</NuxtLink>
 			</li>
 		</ul>

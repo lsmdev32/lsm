@@ -62,7 +62,7 @@
 			<!-- Archives Menu -->
 			<div
 				v-if="showArchives"
-				class="bg-white  p-2 w-full"
+				class="bg-white p-2 w-full"
 			>
 				<div class="flex justify-end mb-2">
 					<button
@@ -94,10 +94,28 @@ export default {
 			showCategories: false,
 			showArchives: false,
 			categories: [
-				"Category 1", "Category 2", "Category 3",
+				"Category 1",
+				"Category 2",
+				"Category 3",
+				"Category 4",
+				"Category 5",
+				"Category 6",
+				"Category 7",
+				"Category 8",
 			],
 			archives: [
-				"January 2023", "February 2023", "March 2023",
+				"2025",
+				"2024",
+				"2023",
+				"2022",
+				"2021",
+				"2020",
+				"2019",
+				"2018",
+				"2017",
+				"2016",
+				"2015",
+				"2014",
 			],
 		}
 	},

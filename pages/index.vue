@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue"
+import Dummy_GilangMSantosa from "../assets/images/Dummy_GilangMSantosa.jpg"
+import Dummy_DamianAgataYuvens from "../assets/images/Dummy_DamianAgataYuvens.jpg"
+import Dummy_LelyanaSantosa from "../assets/images/Dummy_LelyanaSantosa.jpg"
 import { NuxtLink } from "#components"
 import ArrowIcon from "~/assets/images/arrow-icon.svg"
 import DRThumbnail from "~/assets/images/dr-thumbnail.svg"
 import CCThumbnail from "~/assets/images/cc-thumbnail.svg"
 import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
 import useCustomFetch from "~/hooks/useCustomFetch"
+import Partners from "~/components/audience/Partners.vue"
 
 const { data } = await useCustomFetch("/rest/page-data/home")
 
@@ -291,9 +295,34 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
-		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
-			<div class="flex h-[265px] w-full items-center justify-center">
-				Our Attorneys here!
+		<section class="hidden md:block sm:max-[hidden] max-w-7xl items-center justify-center mx-auto">
+			<div class="flex flex-col h-172 w-full">
+				<div class="flex flex-row items-center justify-between">
+					<h1 class="text-3xl font-[Marcellus] text-left py-4">
+						Partners
+					</h1>
+					<NuxtLink
+						to="/Attorneys"
+						class="text-sm font-[Ubuntu] text-[#DAB38D] hover:cursor-pointer"
+					>
+						View All >
+					</NuxtLink>
+				</div>
+			</div>
+			<div class="flex items-center justify-center gap-8">
+				<Partners
+					calass="flex flex-row items-center justify-start px-20"
+					:image="Dummy_DamianAgataYuvens"
+					:name="'Damian Agata Yuvens'"
+				/>
+				<Partners
+					:image="Dummy_GilangMSantosa"
+					:name="'Gilang M. Santosa'"
+				/>
+				<Partners
+					:image="Dummy_LelyanaSantosa"
+					:name="'Lelyana Santosa'"
+				/>
 			</div>
 		</section>
 		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
