@@ -1,7 +1,6 @@
 import { z } from "zod"
 import {
 	CREATE_STAFF_FORM_CONSTANTS,
-	PROFILE_PICTURE,
 } from "~/lib/constants"
 
 export const LOGIN_FORM_SCHEMA_KEYS = {
@@ -41,16 +40,16 @@ export const STAFF_TYPES_LIST = [
 export const CREATE_STAFF_FORM_SCHEMA = z.object({
 	[CREATE_STAFF_FORM_SCHEMA_KEYS.profile_picture]: z
 		.instanceof(File, {
-			message: CREATE_STAFF_FORM_CONSTANTS.MSG.CV_TYPE_MSG,
+			message: CREATE_STAFF_FORM_CONSTANTS.MSG.PP_IMAGE_TYPE_MSG,
 		})
 
 		.refine(
-			v => PROFILE_PICTURE.IMAGE_TYPES.includes(v.type),
+			v => CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.IMAGE_TYPES.includes(v.type),
 			CREATE_STAFF_FORM_CONSTANTS.MSG.PP_IMAGE_TYPE_MSG,
 		)
 
 		.refine(
-			v => v.size <= PROFILE_PICTURE.MAX_SIZE,
+			v => v.size <= CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_SIZE,
 			CREATE_STAFF_FORM_CONSTANTS.MSG.PP_IMAGE_SIZE_MSG,
 		)
 
@@ -93,7 +92,11 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
 		.email(),
 	[CREATE_STAFF_FORM_SCHEMA_KEYS.linkedin_url]: z
 		.string()
-		.url(),
+		.url()
+		.regex(
+			CREATE_STAFF_FORM_CONSTANTS.LINKEDIN.REGEX,
+			CREATE_STAFF_FORM_CONSTANTS.MSG.LINKEDIN_URL_MSG,
+		),
 	[CREATE_STAFF_FORM_SCHEMA_KEYS.slug]: z
 		.string()
 		.regex(CREATE_STAFF_FORM_CONSTANTS.SLUG.REGEX)
@@ -113,5 +116,6 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
 		),
 })
 
+export type StaffType = typeof STAFF_TYPES
 export type LoginFormPayload = z.infer<typeof LOGIN_FORM_SCHEMA>
 export type CreateStaffFormPayload = z.infer<typeof CREATE_STAFF_FORM_SCHEMA>

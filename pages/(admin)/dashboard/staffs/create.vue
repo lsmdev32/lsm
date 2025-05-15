@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Pencil, UserIcon } from "lucide-vue-next"
 import RichTextEditor from "~/components/rte/RichTextEditor.vue"
-import { useCreateStaffForm } from "~/hooks/form/use-create-staff-form"
 
 definePageMeta({
 	layout: "auth",
@@ -16,6 +15,7 @@ const breadcrumbs = [
 ]
 
 const form = useCreateStaffForm()
+const isFormSubmitting = form.form.isSubmitting
 
 const imageURL = computed(() => {
 	const value = form.form.values.profile_picture
@@ -35,8 +35,12 @@ function onChooseFile() {
 }
 
 function onCancel() {
-	form.form.resetForm()
+	onResetForm()
 	router.replace({ path: "/dashboard/staffs" })
+}
+
+function onResetForm() {
+	form.resetFields()
 }
 </script>
 
@@ -104,7 +108,7 @@ function onCancel() {
 									accept=".jpg,.jpeg,.png"
 									placeholder="shadcn"
 									class="bg-transparent text-transparent outline hidden"
-
+									:disabled="isFormSubmitting"
 									@change="handleChange"
 								/>
 							</UiFormControl>
@@ -125,7 +129,10 @@ function onCancel() {
 								<UiFormLabel :required="meta.required">
 									Tipe Staff
 								</UiFormLabel>
-								<UiSelect v-bind="componentField">
+								<UiSelect
+									v-bind="componentField"
+									:disabled="isFormSubmitting"
+								>
 									<UiFormControl>
 										<UiSelectTrigger>
 											<UiSelectValue class="pr-4" />
@@ -153,7 +160,9 @@ function onCancel() {
 							v-slot="{ componentField, meta }"
 							name="fullname"
 						>
-							<UiFormItem class="w-full">
+							<UiFormItem
+								class="w-full"
+							>
 								<UiFormLabel :required="meta.required">
 									Nama Lengkap
 								</UiFormLabel>
@@ -162,6 +171,7 @@ function onCancel() {
 										type="text"
 										placeholder="John Doe"
 										v-bind="componentField"
+										:disabled="isFormSubmitting"
 									/>
 								</UiFormControl>
 								<UiFormMessage />
@@ -181,6 +191,7 @@ function onCancel() {
 										type="email"
 										placeholder="john@doe.com"
 										v-bind="componentField"
+										:disabled="isFormSubmitting"
 									/>
 								</UiFormControl>
 								<UiFormMessage />
@@ -200,6 +211,7 @@ function onCancel() {
 										type="url"
 										placeholder="https://www.linkedin.com/in/johndoe"
 										v-bind="componentField"
+										:disabled="isFormSubmitting"
 									/>
 								</UiFormControl>
 								<UiFormMessage />
@@ -219,6 +231,7 @@ function onCancel() {
 										type="text"
 										placeholder="Saya adalah..."
 										v-bind="componentField"
+										:disabled="isFormSubmitting"
 									/>
 								</UiFormControl>
 								<UiFormMessage />
@@ -237,6 +250,7 @@ function onCancel() {
 									<RichTextEditor
 										class="min-h-[200px] max-w-full"
 										:initial-value="value"
+										:disabled="isFormSubmitting"
 										@handle-change="handleChange($event)"
 									/>
 								</UiFormControl>
@@ -258,6 +272,7 @@ function onCancel() {
 										accept=".pdf"
 										placeholder="shadcn"
 										class="bg-transparent text-transparent outline w-[150px]"
+										:disabled="isFormSubmitting"
 										@change="handleChange"
 									/>
 								</UiFormControl>
@@ -270,15 +285,31 @@ function onCancel() {
 								</UiFormDescription>
 							</UiFormItem>
 						</UiFormField>
-						<ui-button type="submit">
+						<ui-button
+							type="submit"
+							class=""
+							:disabled="isFormSubmitting"
+						>
 							Simpan
 						</ui-button>
-						<ui-button
-							variant="outline"
-							@click="onCancel"
-						>
-							Batal
-						</ui-button>
+						<div class="flex justify-between gap-x-2">
+							<ui-button
+								variant="secondary"
+								class="flex-grow"
+								:disabled="isFormSubmitting"
+								@click="onResetForm()"
+							>
+								Reset
+							</ui-button>
+							<ui-button
+								variant="outline"
+								class="flex-grow"
+								:disabled="isFormSubmitting"
+								@click="onCancel"
+							>
+								Batal
+							</ui-button>
+						</div>
 					</div>
 				</keep-alive>
 			</div>

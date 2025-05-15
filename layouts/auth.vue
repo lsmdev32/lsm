@@ -14,6 +14,7 @@ useHead({
 			<Toaster
 				position="top-right"
 				:duration="2000"
+				rich-colors
 			/>
 			<AppSidebar />
 			<ClientOnly>

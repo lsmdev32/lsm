@@ -4,7 +4,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css"
 
 type Props = {
 	class?: string
-	editable?: boolean
+	disabled?: boolean
 	initialValue?: string
 }
 
@@ -13,7 +13,7 @@ type Emits = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	editable: true,
+	disabled: false,
 	initialValue: "",
 })
 
@@ -24,12 +24,11 @@ defineEmits<Emits>()
 	<ClientOnly>
 		<quill-editor
 			:content="initialValue"
-			:class="['min-h-[50px] mb-40', props.class, props.editable ? '' : 'opacity-40']"
-			:enable="props.editable"
+			:class="['min-h-[50px] mb-40', props.class, props.disabled ? 'opacity-40' : '']"
+			:enable="!props.disabled"
 			toolbar="minimal"
-			:read-only="!props.editable"
+			:read-only="props.disabled"
 			content-type="html"
-
 			@update:content="$emit('handleChange', $event)"
 		/>
 	</ClientOnly>

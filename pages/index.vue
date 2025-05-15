@@ -5,7 +5,6 @@ import ArrowIcon from "~/assets/images/arrow-icon.svg"
 import DRThumbnail from "~/assets/images/dr-thumbnail.svg"
 import CCThumbnail from "~/assets/images/cc-thumbnail.svg"
 import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
-import useCustomFetch from "~/hooks/useCustomFetch"
 
 const { data } = await useCustomFetch("/rest/page-data/home")
 

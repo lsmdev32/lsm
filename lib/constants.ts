@@ -14,25 +14,15 @@ export const LOCAL_STORAGE_KEYS = {
 
 export const DEBOUNCE_DEFAULT_TIME = 500
 
-export const PROFILE_PICTURE = {
-	MAX_WIDTH: 100,
-	MAX_HEIGHT: 433,
-	MAX_SIZE: 2 * 1024 * 1024, // 2MB
-	IMAGE_TYPES: [
-		"image/jpeg",
-		"image/png",
-	],
-}
-
 export const CREATE_STAFF_FORM_CONSTANTS = {
 	PROFILE_PICTURE: {
-		MAX_WIDTH: 375 as const,
-		MAX_HEIGHT: 433 as const,
-		MAX_SIZE: 2 * 1024 * 1024, // 2MB
+		MAX_WIDTH: 4000 as const,
+		MAX_HEIGHT: 6000 as const,
+		MAX_SIZE: 10 * 1024 * 1024, // 2MB
 		IMAGE_TYPES: [
 			"image/jpeg",
 			"image/png",
-		],
+		] as string[],
 	},
 	SLUG: {
 		REGEX: /^[a-z0-9]*(?:-[a-z0-9]+)*$/,
@@ -44,6 +34,9 @@ export const CREATE_STAFF_FORM_CONSTANTS = {
 		MAX_SIZE: 10 * 1024 * 1024, // 10MB
 		FILE_TYPES: ["application/pdf"] as string[],
 	},
+	LINKEDIN: {
+		REGEX: /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/,
+	},
 	MSG: {
 		PP_IMAGE_TYPE_MSG: "Gambar harus berupa PNG atau JPEG",
 		PP_IMAGE_SIZE_MSG: "Ukuran file maksimal 2MB",
@@ -51,5 +44,12 @@ export const CREATE_STAFF_FORM_CONSTANTS = {
 		BIO_MIN_LENGTH_MSG: "Panjang bio minimal 100 karakter",
 		CV_SIZE_MSG: "Ukuran file maksimal 10MB",
 		CV_TYPE_MSG: "File harus berupa PDF",
+		LINKEDIN_URL_MSG: "URL LinkedIn harus seperti ini: https://www.linkedin.com/in/john-doe",
 	},
+} as const
+
+export const IMAGES_STORAGE_PATH = {
+	PROFILE_PICTURE: "profile_pictures",
+	BLOG: "blogs",
+	CV: "cv",
 } as const
