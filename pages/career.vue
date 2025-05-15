@@ -10,7 +10,7 @@ import CheckIc from "~/assets/images/check-icon.svg"
 			<div class="flex flex-col items-start justify-center px-4 py-6 z-0">
 				<div class="flex-1">
 					<h1 class="text-4xl font-[marcellus] text-[#4B3D2A]">
-						Carrer
+						Career
 					</h1>
 					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#4B3D2A]">
 						LUBIS, SANTOSA & MARAMIS (LSM) is a leading Indonesia law firm with strong dispute

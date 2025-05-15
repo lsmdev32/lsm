@@ -8,35 +8,41 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 			<div class="w-full max-w-7xl mx-auto">
 				<div class="flex justify-between items-center h-16">
 					<div class="flex-shrink-0 lg:pr-4">
-						<NuxtImg
-							class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
-							src="https://ik.imagekit.io/in10rksrb/Group_U0FdwZWJX.png?ik-sdk-version=javascript-1.4.3&updatedAt=1663914596318"
-						/>
+						<NuxtLink
+							to="/"
+							class="flex items-center hover:cursor-pointer"
+						>
+							<NuxtImg
+								class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
+								to="/"
+								src="https://ik.imagekit.io/in10rksrb/Group_U0FdwZWJX.png?ik-sdk-version=javascript-1.4.3&updatedAt=1663914596318"
+							/>
+						</NuxtLink>
 					</div>
 					<div class="hidden sm:justify-center sm:text-center text-[#4B3D2A] lg:flex space-x-4">
 						<NuxtLink
-							to="#"
+							to="/about"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
 							About LSM
 						</NuxtLink>
 						<NuxtLink
-							to="#"
+							to="/practiceArea"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
 							Practice Area
 						</NuxtLink>
 						<NuxtLink
-							to="#"
+							to="/Attorneys"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
 							Attorneys
 						</NuxtLink>
 						<NuxtLink
-							to="#"
+							to="/publication"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
@@ -50,14 +56,14 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 							Blog
 						</NuxtLink>
 						<NuxtLink
-							to="#"
+							to="/ContactUs"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
 							Contact Us
 						</NuxtLink>
 						<NuxtLink
-							href="#"
+							href="/career"
 							style="font-size:medium;"
 							class="pr-8 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
