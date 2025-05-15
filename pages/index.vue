@@ -13,6 +13,15 @@ import Partners from "~/components/audience/Partners.vue"
 
 const { data } = await useCustomFetch("/rest/page-data/home")
 
+const images = [
+	"/images/bedge1.png",
+	"/images/bedge2.png",
+	"/images/bedge3.png",
+	"/images/bedge4.png",
+	"/images/bedge5.png",
+	"/images/bedge6.png",
+]
+
 console.log(data)
 
 // Define available background images and corresponding text
@@ -33,7 +42,7 @@ const contentOptions = [
 		bgImage: IPThumbnail,
 		text: "Intellectual Property",
 		paragraph:
-			"Lorem ipsum dolor sit amet, kata gua adipiscing elit,",
+			"Our Intellectual Property practice group advises on a wide range of intellectual property matters for diverse industries",
 	},
 ]
 
@@ -96,19 +105,19 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 
+		<!-- Blog and Publication Section here! -->
 		<section class="sm:justify-center md:hidden md:min-w-full">
 			<h1 class="text-3xl font-[philosopher] text-center pt-[15px] pb-[30px]">
-				News and Publication
+				Blog and Publication
 			</h1>
 		</section>
 
-		<!-- News and Publication Section here! -->
+		<!-- Our Attorneys Section -->
 		<section class="sm:justify-center md:hidden md:min-w-full">
 			<h1 class="text-3xl font-[philosopher] text-center pt-[15px] pb-[30px]">
 				Our Attorneys
 			</h1>
 		</section>
-		<!-- Our Attorneys Section -->
 
 		<!-- Desktop -->
 		<section class="hidden md:block md:min-w-full">
@@ -123,9 +132,19 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 		<!-- Bedge here! -->
-		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
-			<div class="flex h-[265px] w-full items-center justify-center">
-				Bedge here!
+		<section class="hidden md:flex justify-center items-center md:min-w-full">
+			<div class="flex h-64 max-w-7xl items-center justify-center gap-x-4">
+				<div
+					v-for="(image, index) in images"
+					:key="index"
+					class="flex flex-row items-center justify-center "
+				>
+					<img
+						:src="image"
+						:alt="`Badge ${index + 1}`"
+						class="h-37 w-44 object-center"
+					>
+				</div>
 			</div>
 		</section>
 
@@ -150,7 +169,7 @@ const setOption = (index: number) => {
 					<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 pl-8 pr-8 pb-8">
 						<p class="text-xl text-justify text-white">
 							<!-- cahnge the text -->
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+							Lubis Santosa & Partners (formerly Lubis Santosa & Maramis), is one of the leading law firms in Indonesia. It was established in 1986 and has grown to become one of Indonesia's law firms with comprehensive range of practice.
 						</p>
 					</div>
 				</div>
@@ -174,7 +193,7 @@ const setOption = (index: number) => {
 					<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100 pl-8 pr-8 pb-8">
 						<p class="text-xl text-justify text-white">
 							<!-- cahnge the text -->
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+							Lawyers at LSM are experts in their fields and are dedicated to providing the best legal services to our clients. We have a wide range of practice areas, and we work closely with our clients to understand their needs and provide tailored solutions.
 						</p>
 					</div>
 				</div>
@@ -198,7 +217,7 @@ const setOption = (index: number) => {
 					<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100 pl-8 pr-8 pb-8">
 						<p class="text-xl text-justify text-white">
 							<!-- cahnge the text -->
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+							We are dedicated to providing top-quality legal representation for our clients. Our attorneys are highly skilled and experienced in their respective areas of practice, and are committed to achieving the best possible outcomes for our clients.
 						</p>
 					</div>
 				</div>
@@ -211,7 +230,7 @@ const setOption = (index: number) => {
 					<!-- Heading -->
 					<div class="flex flex-col items-center justify-center px-8 font-[Marcellus] transition-all duration-300 max-w-full">
 						<h2 class="text-5xl text-white text-left">
-							News Title: Lorem ipsum dolor sit amet,<br> consectetur adipiscing elit.
+							Blog Title: Lorem ipsum dolor sit amet,<br> consectetur adipiscing elit.
 						</h2>
 						<div class="mt-4 flex flex-row items-center justify-start w-full translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100">
 							<div class="flex justify-center text-center text-sm text-[#DAB38D]">
@@ -224,7 +243,7 @@ const setOption = (index: number) => {
 							</div>
 							<div class="ml-4 mt-4 flex items-center">
 								<NuxtLink
-									to="#"
+									to="/Attorneys"
 									class="text-sm text-white hover:cursor-pointer"
 								>
 									View All >>
