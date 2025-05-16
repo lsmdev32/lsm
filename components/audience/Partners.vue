@@ -65,16 +65,16 @@
 
 				<!-- Hover icons -->
 				<div class="absolute bottom-[120px] right-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition duration-300">
-					<button class="w-10 h-10 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
+					<button class="w-8 h-8 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
 						<Icon
 							name="mdi:linkedin"
-							size="20"
+							size="16"
 						/>
 					</button>
-					<button class="w-10 h-10 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
+					<button class="w-8 h-8 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
 						<Icon
 							name="mdi:email-outline"
-							size="20"
+							size="16"
 						/>
 					</button>
 				</div>
