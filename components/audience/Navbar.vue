@@ -4,7 +4,7 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 
 <template>
 	<nav class="flex fixed justify-between w-full items-center bg-white h-[80px] shadow-sm z-50">
-		<div class="w-full max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+		<div class="w-full max-w-7xl mx-auto ">
 			<div class="w-full max-w-7xl mx-auto">
 				<div class="flex justify-between items-center h-16">
 					<div class="flex-shrink-0 lg:pr-4">
