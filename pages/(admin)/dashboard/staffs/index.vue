@@ -7,10 +7,7 @@ definePageMeta({
 	middleware: ["auth"],
 })
 
-const breadcrumbs = [
-	{ text: "Staffs", href: "/dashboard/staffs" },
-	{ text: "List Staffs", href: "/dashboard/staffs/create" },
-]
+const breadcrumbs = [{ text: "Staffs", href: "/dashboard/staffs" }]
 
 const keyword = ref("")
 const debouncedKeyword = useDebounce(keyword, 500)
@@ -32,7 +29,7 @@ watch(debouncedKeyword, async (value) => {
 
 <template>
 	<AdminPage
-		page-title="Create Staff"
+		page-title="Staffs"
 		:breadcrumbs="breadcrumbs"
 	>
 		<div class="flex flex-col py-10">
