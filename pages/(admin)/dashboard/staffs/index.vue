@@ -1,74 +1,80 @@
 <script setup lang="ts">
-import { useDebounce } from "@vueuse/core"
-import { cn } from "~/lib/utils"
+import { useRouteQuery } from "@vueuse/router"
+import { useDeleteStaff } from "~/composables/form/use-delete-staff"
+import type { StaffAppModel } from "~/lib/firestore-model"
+
+const BREADCRUMBS = [{ text: "Staffs", href: "/dashboard/staffs" }]
 
 definePageMeta({
 	layout: "auth",
 	middleware: ["auth"],
 })
 
-const breadcrumbs = [{ text: "Staffs", href: "/dashboard/staffs" }]
+const keyword = useRouteQuery("keyword", "")
 
-const keyword = ref("")
-const debouncedKeyword = useDebounce(keyword, 500)
+const { isLoading, result } = useSearch<StaffAppModel>("staffs", keyword, [
+	"fullname", "email", "linkedin_url", "profile_picture_url", "type",
+])
 
-const { result, search } = useAlgoliaSearch<Record<string, unknown>>("staffs")
-
-onMounted(async () => {
-	await search({
-		query: debouncedKeyword.value,
-	})
-})
-
-watch(debouncedKeyword, async (value) => {
-	await search({
-		query: value,
-	})
-})
+const {
+	isDialogOpen,
+	onOpenDialog,
+	cancelDialog,
+	confirmDialog,
+	currentDialogData,
+} = useDeleteStaff()
 </script>
 
 <template>
 	<AdminPage
 		page-title="Staffs"
-		:breadcrumbs="breadcrumbs"
+		:breadcrumbs="BREADCRUMBS"
 	>
 		<div class="flex flex-col py-10">
 			<UiInput
-				v-model="keyword"
+				v-model:model-value="keyword"
 				placeholder="Cari staff berdasarkan nama"
 			/>
 			<div class="flex flex-wrap gap-6 mt-8">
-				<div
-					v-for="person in result?.hits || []"
-					:key="person.objectID"
-					class="flex flex-col items-center bg-white rounded-lg shadow p-6 w-64"
-				>
-					<NuxtImg
-						:src="person.profile_picture_url"
-						alt="Profile"
-						:class="cn(`w-24 h-24 rounded-full object-cover mb-4`)"
+				<template v-if="isLoading">
+					<UiSkeleton
+						v-for="i in 8"
+						:key="i"
+						class="w-[255px] h-[219px] rounded-xl shadow-md"
 					/>
-					<div class="font-semibold text-center text-lg mb-1">
-						{{ person.fullname }}
-					</div>
-					<div class="flex flex-row items-center gap-2 mb-2">
-						<a
-							:href="`mailto:${person.email}`"
-							class="text-gray-500 text-sm hover:underline"
-						>
-							Email
-						</a>
-						<a
-							:href="person.linkedin_url as string"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="text-blue-600 hover:underline text-sm"
-						>
-							LinkedIn
-						</a>
-					</div>
-				</div>
+				</template>
+				<AdminStaffCard
+					v-for="person in result.hits ?? []"
+					v-else
+					:id="person.objectID"
+					:key="person.objectID"
+					:fullname="person.fullname"
+					:email="person.email"
+					:type="person.type"
+					:linkedin-url="person.linkedin_url"
+					:pp-url="person.profile_picture_url"
+					@click-delete="onOpenDialog($event)"
+				/>
 			</div>
 		</div>
+		<UiAlertDialog :open="isDialogOpen">
+			<UiAlertDialogContent>
+				<UiAlertDialogHeader>
+					<UiAlertDialogTitle>Hapus Profile <span class="font-bold">{{ currentDialogData?.fullname }}</span> ?</UiAlertDialogTitle>
+					<UiAlertDialogDescription>
+						Ini akan menghapus profile {{ currentDialogData?.fullname }} dari sistem.
+						Apakah Anda yakin ingin melanjutkan?
+					</UiAlertDialogDescription>
+				</UiAlertDialogHeader>
+				<UiAlertDialogFooter>
+					<UiAlertDialogCancel @click="cancelDialog">
+						Batalkan
+					</UiAlertDialogCancel>
+					<UiAlertDialogAction @click="confirmDialog()">
+						Lanjut
+					</UiAlertDialogAction>
+				</UiAlertDialogFooter>
+			</UiAlertDialogContent>
+		</UiAlertDialog>
 	</AdminPage>
 </template>
