@@ -42,7 +42,7 @@ function onResetForm() {
 
 <template>
 	<AdminPage
-		page-title="Create Staff"
+		page-title="Create Profile"
 	>
 		<form
 			class="w-full flex flex-col py-10"
