@@ -25,6 +25,8 @@ export const STAFF_FORM_SCHEMA_KEYS = {
 	linkedin_url: "linkedin_url",
 	slug: "slug",
 	cv: "cv",
+	cv_url: "cv_url",
+	pp_url: "pp_url",
 } as const
 
 export const STAFF_TYPES = {
@@ -117,9 +119,16 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
 })
 
 export const EDIT_STAFF_FORM_SCHEMA = CREATE_STAFF_FORM_SCHEMA
-	.omit({
-		profile_picture: true,
-		cv: true,
+	.omit({ cv: true, profile_picture: true })
+	.extend({
+		[STAFF_FORM_SCHEMA_KEYS.cv_url]: z
+			.string()
+			.url()
+			.default(""),
+		[STAFF_FORM_SCHEMA_KEYS.pp_url]: z
+			.string()
+			.url()
+			.default(""),
 	})
 
 export type StaffType = typeof STAFF_TYPES

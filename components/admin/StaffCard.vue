@@ -15,14 +15,13 @@ type Emits = {
 }
 
 const emit = defineEmits<Emits>()
-
 const props = withDefaults(defineProps<Props>(), {})
 </script>
 
 <template>
 	<div
 		:class="cn(
-			'flex flex-col items-center bg-white rounded-lg shadow-sm p-4 w-64 bg-gradient-to-br from-white to-orange-100 border')"
+			'flex flex-col items-center bg-white rounded-lg shadow-sm p-4 w-64 h-[340px] bg-gradient-to-br from-white to-orange-100 border')"
 	>
 		<div class="hover:opacity-50 self-end">
 			<UiDropdownMenu>
@@ -51,10 +50,10 @@ const props = withDefaults(defineProps<Props>(), {})
 		<NuxtImg
 			:src="props.ppUrl"
 			alt="Profile"
-			class="size-36 rounded-full object-cover mb-4"
+			class="size-36 rounded-full object-cover mb-4 flex items-center justify-center"
 		/>
 		<div class="mb-4">
-			<span class="capitalize p-2 bg-orange-300 rounded-full text-xs">{{ type }}</span>
+			<span class="capitalize p-2 bg-orange-300 rounded-full text-xs font-bold text-black tracking-wide">{{ type }}</span>
 		</div>
 		<div class="flex items-center gap-2 mb-2 [&_a]:cursor-pointer">
 			<NuxtLink
@@ -78,7 +77,7 @@ const props = withDefaults(defineProps<Props>(), {})
 				/>
 			</NuxtLink>
 		</div>
-		<div class="font-semibold text-center text-sm mb-1">
+		<div class="font-semibold text-center text-sm mb-1 truncate text-wrap line-clamp-2 text-ellipsis">
 			{{ props.fullname }}
 		</div>
 	</div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouteQuery } from "@vueuse/router"
-import { RefreshCcw } from "lucide-vue-next"
+import { RefreshCcw, UserPlus2 } from "lucide-vue-next"
+import EmptyListPlaceholder from "~/components/admin/EmptyListPlaceholder.vue"
 import { useDeleteStaff } from "~/composables/form/use-delete-staff"
 import type { StaffAppModel } from "~/lib/firestore-model"
 
@@ -35,6 +36,20 @@ const {
 		page-title="Profil Staff"
 	>
 		<div class="flex flex-col py-10 gap-y-4">
+			<div class="flex justify-end w-full">
+				<NuxtLink
+					to="/dashboard/profiles/create"
+					target="_blank"
+					class=" flex items-center border justify-center"
+				>
+					<UiButton variant="outline">
+						<UserPlus2 />
+						<span>
+							Create Profile
+						</span>
+					</UiButton>
+				</NuxtLink>
+			</div>
 			<UiInput
 				v-model:model-value="keyword"
 				placeholder="Cari profile dengan nama atau email"
@@ -55,18 +70,28 @@ const {
 						class="w-[255px] h-[219px] rounded-xl shadow-md"
 					/>
 				</template>
-				<AdminStaffCard
+				<template v-else-if="result.hits.length === 0">
+					<EmptyListPlaceholder
+						v-if="result.hits.length === 0 && !isLoading"
+						class="w-full h-[300px] flex items-center justify-center"
+						item-name="profiles"
+					/>
+				</template>
+				<template
 					v-for="person in result.hits ?? []"
 					v-else
-					:id="person.objectID!"
 					:key="person.objectID"
-					:fullname="person.fullname"
-					:email="person.email"
-					:type="person.type"
-					:linkedin-url="person.linkedin_url"
-					:pp-url="person.profile_picture_url"
-					@click-delete="onOpenDialog($event)"
-				/>
+				>
+					<AdminStaffCard
+						:id="person.objectID!"
+						:fullname="person.fullname"
+						:email="person.email"
+						:type="person.type"
+						:linkedin-url="person.linkedin_url"
+						:pp-url="person.profile_picture_url"
+						@click-delete="onOpenDialog($event)"
+					/>
+				</template>
 			</div>
 		</div>
 
@@ -81,10 +106,13 @@ const {
 				</UiAlertDialogHeader>
 				<UiAlertDialogFooter>
 					<UiAlertDialogCancel @click="cancelDialog">
-						Batalkan
+						Batal
 					</UiAlertDialogCancel>
-					<UiAlertDialogAction @click="confirmDialog">
-						Lanjut
+					<UiAlertDialogAction
+						class="bg-red-500 text-white hover:bg-red-600"
+						@click="confirmDialog"
+					>
+						Hapus
 					</UiAlertDialogAction>
 				</UiAlertDialogFooter>
 			</UiAlertDialogContent>

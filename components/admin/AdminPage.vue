@@ -9,7 +9,7 @@ import {
 
 type Props = {
 	pageTitle: string
-	transformCrumbs?: Record<number, (segment: string) => string>
+	transformCrumbs?: Record<number, (segment: string) => string | undefined>
 }
 const props = withDefaults(defineProps<Props>(), {
 	transformCrumbs() {
