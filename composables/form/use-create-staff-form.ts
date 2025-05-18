@@ -63,7 +63,6 @@ export function useCreateStaffForm() {
 	function resetForm() {
 		sessionStorage.removeItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
 		form.resetForm()
-		location.reload()
 	}
 
 	function resetFields() {

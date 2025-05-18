@@ -36,6 +36,7 @@ function onCancel() {
 
 function onResetForm() {
 	form.resetForm()
+	window.location.reload()
 }
 </script>
 
