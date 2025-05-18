@@ -1,3 +1,13 @@
+function createPairFromEnum<const T extends string>(...e: T[]): {
+	[K in T]: K
+} {
+	const initialValue = {} as { [K in T]: K }
+	return e.reduce((acc, curr) => ({
+		...acc,
+		[curr]: curr,
+	}), initialValue)
+}
+
 export const PATH_NAMES = {
 	LOGIN: "/login",
 	DASHBOARD: "/dashboard",
@@ -8,9 +18,9 @@ export const PATH_NAMES = {
 	BLOG_PREVIEW: (id: string) => `/dashboard/blogs/preview/${id}`,
 } as const
 
-export const LOCAL_STORAGE_KEYS = {
-	CREATE_STAFF_FORM: "create-staff-form",
-} as const
+export const LOCAL_STORAGE_KEYS = createPairFromEnum()
+
+export const SESSION_STORAGE_KEYS = createPairFromEnum("CREATE_STAFF_FORM")
 
 export const DEBOUNCE_DEFAULT_TIME = 500
 

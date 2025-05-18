@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouteQuery } from "@vueuse/router"
+import { RefreshCcw } from "lucide-vue-next"
 import { useDeleteStaff } from "~/composables/form/use-delete-staff"
 import type { StaffAppModel } from "~/lib/firestore-model"
 
@@ -36,8 +37,11 @@ const {
 				placeholder="Cari profile dengan nama atau email"
 			/>
 			<div class="flex">
-				<UiButton @click="refresh">
-					Refresh list
+				<UiButton
+					class="capitalize"
+					@click="refresh"
+				>
+					<RefreshCcw /> Refresh list
 				</UiButton>
 			</div>
 			<div class="flex flex-wrap gap-6">

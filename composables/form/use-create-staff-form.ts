@@ -7,7 +7,7 @@ import { useUploader } from "~/composables"
 import {
 	DEBOUNCE_DEFAULT_TIME,
 	IMAGES_STORAGE_PATH,
-	LOCAL_STORAGE_KEYS,
+	SESSION_STORAGE_KEYS,
 } from "~/lib/constants"
 import { getCollectionRef } from "~/lib/firestore-model"
 import {
@@ -20,7 +20,7 @@ const validationSchema = toTypedSchema(CREATE_STAFF_FORM_SCHEMA)
 export function useCreateStaffForm() {
 	const form = useForm({
 		validationSchema,
-		keepValuesOnUnmount: true,
+		validateOnMount: false,
 	})
 
 	const firestore = useFirestore()
@@ -30,7 +30,7 @@ export function useCreateStaffForm() {
 	const cvUploader = useUploader(IMAGES_STORAGE_PATH.CV)
 
 	onMounted(() => {
-		const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.CREATE_STAFF_FORM)
+		const saved = localStorage.getItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
 		if (!saved) return
 
 		const parsed = JSON.parse(saved)
@@ -39,7 +39,7 @@ export function useCreateStaffForm() {
 
 	watch(values, (v) => {
 		localStorage.setItem(
-			LOCAL_STORAGE_KEYS.CREATE_STAFF_FORM,
+			SESSION_STORAGE_KEYS.CREATE_STAFF_FORM,
 			JSON.stringify(v),
 		)
 	}, {
@@ -61,8 +61,9 @@ export function useCreateStaffForm() {
 	})
 
 	function resetForm() {
+		localStorage.removeItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
 		form.resetForm()
-		localStorage.removeItem(LOCAL_STORAGE_KEYS.CREATE_STAFF_FORM)
+		location.reload()
 	}
 
 	function resetFields() {

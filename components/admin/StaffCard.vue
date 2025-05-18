@@ -27,13 +27,16 @@ const props = withDefaults(defineProps<Props>(), {})
 		<div class="hover:opacity-50 self-end">
 			<UiDropdownMenu>
 				<UiDropdownMenuTrigger>
-					<Icon
-						name="material-symbols:action-key"
-						size="24"
-					/>
+					<div class="flex items-center group">
+						<Icon
+							name="material-symbols:action-key"
+							size="16"
+						/>
+						<span class="text-sm hidden group-hover:block">Menu</span>
+					</div>
 				</UiDropdownMenuTrigger>
 				<UiDropdownMenuContent>
-					<UiDropdownMenuLabel>Actions</UiDropdownMenuLabel>
+					<UiDropdownMenuLabel>Menu</UiDropdownMenuLabel>
 					<UiDropdownMenuItem>
 						<NuxtLink :to="`/dashboard/profiles/${props.id}/edit`">
 							<Icon name="mdi:pencil" /> Ubah Profil
