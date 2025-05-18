@@ -9,11 +9,6 @@ definePageMeta({
 
 const router = useRouter()
 
-const breadcrumbs = [
-	{ text: "Profil", href: "/dashboard/profiles" },
-	{ text: "Buat Profil", href: "/dashboard/profiles/create" },
-]
-
 const form = useCreateStaffForm()
 const isFormSubmitting = form.form.isSubmitting
 
@@ -47,7 +42,6 @@ function onResetForm() {
 <template>
 	<AdminPage
 		page-title="Create Staff"
-		:breadcrumbs="breadcrumbs"
 	>
 		<form
 			class="w-full flex flex-col py-10"

@@ -20,7 +20,10 @@ export const PATH_NAMES = {
 
 export const LOCAL_STORAGE_KEYS = createPairFromEnum()
 
-export const SESSION_STORAGE_KEYS = createPairFromEnum("CREATE_STAFF_FORM")
+export const SESSION_STORAGE_KEYS = createPairFromEnum(
+	"CREATE_STAFF_FORM",
+	"EDIT_STAFF_FORM",
+)
 
 export const DEBOUNCE_DEFAULT_TIME = 500
 

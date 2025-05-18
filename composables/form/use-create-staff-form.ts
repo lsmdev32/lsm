@@ -12,7 +12,7 @@ import {
 import { getCollectionRef } from "~/lib/firestore-model"
 import {
 	CREATE_STAFF_FORM_SCHEMA,
-	CREATE_STAFF_FORM_SCHEMA_KEYS,
+	STAFF_FORM_SCHEMA_KEYS,
 } from "~/lib/schemas/form"
 
 const validationSchema = toTypedSchema(CREATE_STAFF_FORM_SCHEMA)
@@ -30,7 +30,7 @@ export function useCreateStaffForm() {
 	const cvUploader = useUploader(IMAGES_STORAGE_PATH.CV)
 
 	onMounted(() => {
-		const saved = localStorage.getItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
+		const saved = sessionStorage.getItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
 		if (!saved) return
 
 		const parsed = JSON.parse(saved)
@@ -38,7 +38,7 @@ export function useCreateStaffForm() {
 	})
 
 	watch(values, (v) => {
-		localStorage.setItem(
+		sessionStorage.setItem(
 			SESSION_STORAGE_KEYS.CREATE_STAFF_FORM,
 			JSON.stringify(v),
 		)
@@ -48,7 +48,7 @@ export function useCreateStaffForm() {
 
 	watch(() => values.value.fullname, (v) => {
 		if (!v) {
-			form.resetField(CREATE_STAFF_FORM_SCHEMA_KEYS.slug)
+			form.resetField(STAFF_FORM_SCHEMA_KEYS.slug)
 			return
 		}
 
@@ -57,11 +57,11 @@ export function useCreateStaffForm() {
 			.replaceAll(/[^a-z0-9]+/g, "-")
 			.replaceAll(/^-|-$/g, "")
 
-		form.setFieldValue(CREATE_STAFF_FORM_SCHEMA_KEYS.slug, slug)
+		form.setFieldValue(STAFF_FORM_SCHEMA_KEYS.slug, slug)
 	})
 
 	function resetForm() {
-		localStorage.removeItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
+		sessionStorage.removeItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
 		form.resetForm()
 		location.reload()
 	}

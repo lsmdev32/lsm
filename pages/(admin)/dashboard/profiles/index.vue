@@ -4,8 +4,6 @@ import { RefreshCcw } from "lucide-vue-next"
 import { useDeleteStaff } from "~/composables/form/use-delete-staff"
 import type { StaffAppModel } from "~/lib/firestore-model"
 
-const BREADCRUMBS = [{ text: "Staffs", href: "/dashboard/staffs" }]
-
 definePageMeta({
 	layout: "auth",
 	middleware: ["auth"],
@@ -14,7 +12,13 @@ definePageMeta({
 const keyword = useRouteQuery("keyword", "")
 
 const { refresh, isLoading, result } = useSearch<StaffAppModel>("staffs", keyword, [
-	"fullname", "email", "linkedin_url", "profile_picture_url", "type",
+	"fullname",
+	"email",
+	"linkedin_url",
+	"type",
+	"profile_picture_url",
+	"slug",
+	"id",
 ])
 
 const {
@@ -29,7 +33,6 @@ const {
 <template>
 	<AdminPage
 		page-title="Profil Staff"
-		:breadcrumbs="BREADCRUMBS"
 	>
 		<div class="flex flex-col py-10 gap-y-4">
 			<UiInput
@@ -55,7 +58,7 @@ const {
 				<AdminStaffCard
 					v-for="person in result.hits ?? []"
 					v-else
-					:id="person.objectID"
+					:id="person.objectID!"
 					:key="person.objectID"
 					:fullname="person.fullname"
 					:email="person.email"
