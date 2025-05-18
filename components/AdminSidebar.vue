@@ -40,8 +40,8 @@ const items = [
 		icon: Tags,
 	},
 	{
-		title: "Staffs",
-		path: "/dashboard/staffs",
+		title: "Profil staff",
+		path: "/dashboard/profles",
 		icon: User,
 	},
 ]
@@ -91,7 +91,7 @@ async function _signOut() {
 							<SidebarMenuButton as-child>
 								<a :href="item.path">
 									<component :is="item.icon" />
-									<span>{{ item.title }}</span>
+									<span class="capitalize">{{ item.title }}</span>
 								</a>
 							</SidebarMenuButton>
 						</SidebarMenuItem>

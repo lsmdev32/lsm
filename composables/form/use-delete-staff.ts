@@ -9,7 +9,6 @@ type DeleteConfirmPayload = {
 }
 
 export function useDeleteStaff() {
-	const router = useRouter()
 	const firestore = useFirestore()
 	const currentDialogData = ref<DeleteConfirmPayload>()
 	const deleteDialog = useConfirmDialog<DeleteConfirmPayload, DeleteConfirmPayload>()
@@ -18,15 +17,16 @@ export function useDeleteStaff() {
 		const docRef = getDocRef(firestore, "staff", payload.id)
 
 		toast.info(`Menghapus profil ${payload.fullname}...`)
+		const DELAY = 5000
 		await deleteDoc(docRef)
 			.catch(() => {
-				toast.error(`Profil ${payload.fullname} gagal dihapus`)
+				setTimeout(() => toast.error(`Profil ${payload.fullname} gagal dihapus`), DELAY)
 			})
 			.then(() => {
-				toast.success(`Profil ${payload.fullname} berhasil dihapus`)
+				setTimeout(() => toast.success(`Profil ${payload.fullname} berhasil dihapus`), DELAY)
 			})
 			.finally(() => {
-				router.replace(router.currentRoute.value)
+				setTimeout(() => window.location.reload(), 3000)
 			})
 	}
 

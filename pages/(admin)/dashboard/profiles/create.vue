@@ -10,8 +10,8 @@ definePageMeta({
 const router = useRouter()
 
 const breadcrumbs = [
-	{ text: "Staffs", href: "/dashboard/staffs" },
-	{ text: "Create", href: "/dashboard/staffs/create" },
+	{ text: "Profil", href: "/dashboard/profiles" },
+	{ text: "Buat Profil", href: "/dashboard/profiles/create" },
 ]
 
 const form = useCreateStaffForm()
@@ -36,11 +36,11 @@ function onChooseFile() {
 
 function onCancel() {
 	onResetForm()
-	router.replace({ path: "/dashboard/staffs" })
+	router.replace({ path: "/dashboard/profiles" })
 }
 
 function onResetForm() {
-	form.resetFields()
+	form.resetForm()
 }
 </script>
 
@@ -297,7 +297,7 @@ function onResetForm() {
 								variant="secondary"
 								class="flex-grow"
 								:disabled="isFormSubmitting"
-								@click="onResetForm()"
+								@click="onResetForm"
 							>
 								Reset
 							</ui-button>

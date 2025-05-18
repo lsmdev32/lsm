@@ -21,8 +21,6 @@ export function useSearch<
 	}
 
 	watch(debouncedValue, async (v) => {
-		console.log("searching", v)
-
 		isLoading.value = true
 		await search({ query: v, requestOptions })
 			.finally(() => {
@@ -33,8 +31,14 @@ export function useSearch<
 	},
 	)
 
+	async function refresh() {
+		isLoading.value = true
+		window.location.reload()
+	}
+
 	return {
 		result,
 		isLoading,
+		refresh,
 	}
 }

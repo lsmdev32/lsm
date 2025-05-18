@@ -12,7 +12,7 @@ definePageMeta({
 
 const keyword = useRouteQuery("keyword", "")
 
-const { isLoading, result } = useSearch<StaffAppModel>("staffs", keyword, [
+const { refresh, isLoading, result } = useSearch<StaffAppModel>("staffs", keyword, [
 	"fullname", "email", "linkedin_url", "profile_picture_url", "type",
 ])
 
@@ -27,15 +27,20 @@ const {
 
 <template>
 	<AdminPage
-		page-title="Staffs"
+		page-title="Profil Staff"
 		:breadcrumbs="BREADCRUMBS"
 	>
-		<div class="flex flex-col py-10">
+		<div class="flex flex-col py-10 gap-y-4">
 			<UiInput
 				v-model:model-value="keyword"
-				placeholder="Cari staff berdasarkan nama"
+				placeholder="Cari profile dengan nama atau email"
 			/>
-			<div class="flex flex-wrap gap-6 mt-8">
+			<div class="flex">
+				<UiButton @click="refresh">
+					Refresh list
+				</UiButton>
+			</div>
+			<div class="flex flex-wrap gap-6">
 				<template v-if="isLoading">
 					<UiSkeleton
 						v-for="i in 8"
@@ -57,6 +62,7 @@ const {
 				/>
 			</div>
 		</div>
+
 		<UiAlertDialog :open="isDialogOpen">
 			<UiAlertDialogContent>
 				<UiAlertDialogHeader>
@@ -70,7 +76,7 @@ const {
 					<UiAlertDialogCancel @click="cancelDialog">
 						Batalkan
 					</UiAlertDialogCancel>
-					<UiAlertDialogAction @click="confirmDialog()">
+					<UiAlertDialogAction @click="confirmDialog">
 						Lanjut
 					</UiAlertDialogAction>
 				</UiAlertDialogFooter>

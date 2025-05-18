@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {})
 				<UiDropdownMenuContent>
 					<UiDropdownMenuLabel>Actions</UiDropdownMenuLabel>
 					<UiDropdownMenuItem>
-						<NuxtLink :to="`/dashboard/staffs/${props.id}/edit`">
+						<NuxtLink :to="`/dashboard/profiles/${props.id}/edit`">
 							<Icon name="mdi:pencil" /> Ubah Profil
 						</NuxtLink>
 					</UiDropdownMenuItem>
@@ -75,7 +75,7 @@ const props = withDefaults(defineProps<Props>(), {})
 				/>
 			</NuxtLink>
 		</div>
-		<div class="font-semibold text-center text-lg mb-1">
+		<div class="font-semibold text-center text-sm mb-1">
 			{{ props.fullname }}
 		</div>
 	</div>

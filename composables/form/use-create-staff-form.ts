@@ -1,6 +1,6 @@
 import { toTypedSchema } from "@vee-validate/zod"
 import { useDebounce } from "@vueuse/core"
-import { addDoc } from "firebase/firestore"
+import { addDoc, getDocs, query, where } from "firebase/firestore"
 import { useForm } from "vee-validate"
 import { toast } from "vue-sonner"
 import { useUploader } from "~/composables"
@@ -71,7 +71,7 @@ export function useCreateStaffForm() {
 	}
 
 	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Uploading files...", { duration: 3000 })
+		toast.info("Mengupload file...", { duration: 3000 })
 
 		// TODO: handle submit
 		const res = await Promise.all([
@@ -83,7 +83,7 @@ export function useCreateStaffForm() {
 
 		const success = res.every(p => !!p)
 		if (!success) {
-			toast.error("Failed to upload files")
+			toast.error("Gagal mengupload file")
 			return
 		}
 
@@ -94,7 +94,15 @@ export function useCreateStaffForm() {
 
 		const collectionRef = getCollectionRef(firestore, "staff")
 
-		toast.info("Creating Staff, please wait...", { duration: 3000 })
+		const duplicateSlugQuery = query(collectionRef, where("slug", "==", v.slug))
+		const docs = await getDocs(duplicateSlugQuery)
+
+		if (docs.size > 0) {
+			toast.error("Harap gunakan nama lain, nama ini sudah digunakan")
+			return
+		}
+
+		toast.info("Harap tunggu profil sedang dibuat...", { duration: 3000 })
 		try {
 			await addDoc(collectionRef, {
 				type: v.type,
@@ -110,14 +118,20 @@ export function useCreateStaffForm() {
 		}
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		catch (e) {
-			toast.error("Failed to create staff")
+			toast.error("Gagal membuat profil")
 			return
 		}
 
-		toast.success("Staff created successfully")
+		const DELAY = 5000
+		await new Promise(() => {
+			setTimeout(() => {
+				toast.success("Profil sukses dibuat")
+				resetForm()
+				Promise.resolve()
+			}, DELAY)
+		})
 
-		resetForm()
-		router.replace("/dashboard/staffs")
+		router.replace("/dashboard/profiles")
 	})
 
 	return {
