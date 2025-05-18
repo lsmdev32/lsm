@@ -1,0 +1,53 @@
+import { createColumnHelper } from "@tanstack/vue-table"
+import { Pencil, Trash2 } from "lucide-vue-next"
+import TableAction from "~/components/admin/table/TableAction.vue"
+import { cn } from "~/lib/utils"
+
+export type Category = {
+	name: string
+	created_at: Date
+}
+
+const categoryHelper = createColumnHelper<Category>()
+
+export const categoryColumns = [
+	categoryHelper.display({
+		id: "rowNumber",
+		header: () => h("span", { class: cn("text-center w-[20px]") }, "#"),
+		cell: ({ row }) => {
+			const numbering = row.index + 1
+
+			return h("span", { class: cn("text-center") }, `${numbering}.`)
+		},
+		enableHiding: false,
+		filterFn: "includesString",
+		sortingFn: "alphanumeric",
+		enableSorting: true,
+	}),
+	categoryHelper.accessor("name", {
+		header: "Category Name",
+		enableHiding: false,
+		cell: ({ getValue }) => getValue(),
+	}),
+
+	categoryHelper.display({
+		id: "action",
+		enableHiding: false,
+		header: () => h("span", { class: cn("text-center") }, "Action"),
+		cell: () => h(TableAction, {
+			class: cn(""),
+			title: "Action",
+			actions: [
+				{
+					label: "Ubah Kategori",
+					icon: Pencil,
+				},
+				{
+					label: "Hapus Kategori",
+					icon: Trash2,
+					iconClass: cn("text-red-500"),
+				},
+			],
+		}),
+	}),
+]
