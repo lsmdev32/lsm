@@ -39,7 +39,6 @@ const {
 			<div class="flex justify-end w-full">
 				<NuxtLink
 					to="/dashboard/profiles/create"
-					target="_blank"
 					class=" flex items-center border justify-center"
 				>
 					<UiButton variant="outline">
