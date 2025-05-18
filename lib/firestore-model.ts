@@ -59,7 +59,7 @@ const createFirestoreConverter = <
 
 type StaffTypes = keyof StaffType
 
-type StaffAppModel = AppModelOfType<{
+export type StaffAppModel = AppModelOfType<{
 	type: StaffTypes
 	profile_picture_url: string
 	fullname: string

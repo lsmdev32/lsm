@@ -9,8 +9,13 @@ import {
 
 type Props = {
 	pageTitle: string
+	transformCrumbs?: Record<number, (segment: string) => string | undefined>
 }
-defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+	transformCrumbs() {
+		return {}
+	},
+})
 
 const router = useRouter()
 
@@ -18,13 +23,17 @@ const pathSegments = router.currentRoute.value.path
 	.split("/")
 	.filter(segment => segment)
 
-const breadcrumbs = pathSegments.map((segment, index) => ({
-	text: segment
-		.replaceAll(/-/g, " ")
-		.toLowerCase(),
-	path: "/" + pathSegments
-		.slice(0, index + 1)
-		.join("/"),
+const breadcrumbs = computed(() => pathSegments.map((segment, idx) => {
+	const newSegment = props.transformCrumbs[idx]?.(segment) ?? segment
+	return ({
+		text: newSegment
+			.replaceAll(/-/g, " ")
+			.toLowerCase(),
+
+		path: "/" + pathSegments
+			.slice(0, idx + 1)
+			.join("/"),
+	})
 }))
 </script>
 
@@ -38,7 +47,7 @@ const breadcrumbs = pathSegments.map((segment, index) => ({
 				>
 					<BreadcrumbItem>
 						<BreadcrumbLink
-							class="capitalize"
+							class="capitalize truncate max-w-[200px]"
 							:href="item.path"
 						>
 							{{ item.text }}

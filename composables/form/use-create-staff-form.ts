@@ -1,18 +1,18 @@
 import { toTypedSchema } from "@vee-validate/zod"
 import { useDebounce } from "@vueuse/core"
-import { addDoc } from "firebase/firestore"
+import { addDoc, getDocs, query, where } from "firebase/firestore"
 import { useForm } from "vee-validate"
 import { toast } from "vue-sonner"
 import { useUploader } from "~/composables"
 import {
 	DEBOUNCE_DEFAULT_TIME,
 	IMAGES_STORAGE_PATH,
-	LOCAL_STORAGE_KEYS,
+	SESSION_STORAGE_KEYS,
 } from "~/lib/constants"
 import { getCollectionRef } from "~/lib/firestore-model"
 import {
 	CREATE_STAFF_FORM_SCHEMA,
-	CREATE_STAFF_FORM_SCHEMA_KEYS,
+	STAFF_FORM_SCHEMA_KEYS,
 } from "~/lib/schemas/form"
 
 const validationSchema = toTypedSchema(CREATE_STAFF_FORM_SCHEMA)
@@ -20,7 +20,7 @@ const validationSchema = toTypedSchema(CREATE_STAFF_FORM_SCHEMA)
 export function useCreateStaffForm() {
 	const form = useForm({
 		validationSchema,
-		keepValuesOnUnmount: true,
+		validateOnMount: false,
 	})
 
 	const firestore = useFirestore()
@@ -30,7 +30,7 @@ export function useCreateStaffForm() {
 	const cvUploader = useUploader(IMAGES_STORAGE_PATH.CV)
 
 	onMounted(() => {
-		const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.CREATE_STAFF_FORM)
+		const saved = sessionStorage.getItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
 		if (!saved) return
 
 		const parsed = JSON.parse(saved)
@@ -38,8 +38,8 @@ export function useCreateStaffForm() {
 	})
 
 	watch(values, (v) => {
-		localStorage.setItem(
-			LOCAL_STORAGE_KEYS.CREATE_STAFF_FORM,
+		sessionStorage.setItem(
+			SESSION_STORAGE_KEYS.CREATE_STAFF_FORM,
 			JSON.stringify(v),
 		)
 	}, {
@@ -48,7 +48,7 @@ export function useCreateStaffForm() {
 
 	watch(() => values.value.fullname, (v) => {
 		if (!v) {
-			form.resetField(CREATE_STAFF_FORM_SCHEMA_KEYS.slug)
+			form.resetField(STAFF_FORM_SCHEMA_KEYS.slug)
 			return
 		}
 
@@ -57,12 +57,12 @@ export function useCreateStaffForm() {
 			.replaceAll(/[^a-z0-9]+/g, "-")
 			.replaceAll(/^-|-$/g, "")
 
-		form.setFieldValue(CREATE_STAFF_FORM_SCHEMA_KEYS.slug, slug)
+		form.setFieldValue(STAFF_FORM_SCHEMA_KEYS.slug, slug)
 	})
 
 	function resetForm() {
+		sessionStorage.removeItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
 		form.resetForm()
-		localStorage.removeItem(LOCAL_STORAGE_KEYS.CREATE_STAFF_FORM)
 	}
 
 	function resetFields() {
@@ -71,7 +71,7 @@ export function useCreateStaffForm() {
 	}
 
 	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Uploading files...", { duration: 3000 })
+		toast.info("Mengupload file...", { duration: 3000 })
 
 		// TODO: handle submit
 		const res = await Promise.all([
@@ -83,7 +83,7 @@ export function useCreateStaffForm() {
 
 		const success = res.every(p => !!p)
 		if (!success) {
-			toast.error("Failed to upload files")
+			toast.error("Gagal mengupload file")
 			return
 		}
 
@@ -94,7 +94,15 @@ export function useCreateStaffForm() {
 
 		const collectionRef = getCollectionRef(firestore, "staff")
 
-		toast.info("Creating Staff, please wait...", { duration: 3000 })
+		const duplicateSlugQuery = query(collectionRef, where("slug", "==", v.slug))
+		const docs = await getDocs(duplicateSlugQuery)
+
+		if (docs.size > 0) {
+			toast.error("Harap gunakan nama lain, nama ini sudah digunakan")
+			return
+		}
+
+		toast.info("Harap tunggu profil sedang dibuat...", { duration: 3000 })
 		try {
 			await addDoc(collectionRef, {
 				type: v.type,
@@ -110,14 +118,20 @@ export function useCreateStaffForm() {
 		}
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		catch (e) {
-			toast.error("Failed to create staff")
+			toast.error("Gagal membuat profil")
 			return
 		}
 
-		toast.success("Staff created successfully")
+		const DELAY = 5000
+		await new Promise(() => {
+			setTimeout(() => {
+				toast.success("Profil sukses dibuat")
+				resetForm()
+				Promise.resolve()
+			}, DELAY)
+		})
 
-		resetForm()
-		router.replace("/dashboard/staffs")
+		router.replace("/dashboard/profiles")
 	})
 
 	return {

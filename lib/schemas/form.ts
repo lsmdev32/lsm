@@ -15,7 +15,7 @@ export const LOGIN_FORM_SCHEMA = z.object({
 		.nonempty(),
 })
 
-export const CREATE_STAFF_FORM_SCHEMA_KEYS = {
+export const STAFF_FORM_SCHEMA_KEYS = {
 	profile_picture: "profile_picture",
 	type: "type",
 	fullname: "fullname",
@@ -25,6 +25,8 @@ export const CREATE_STAFF_FORM_SCHEMA_KEYS = {
 	linkedin_url: "linkedin_url",
 	slug: "slug",
 	cv: "cv",
+	cv_url: "cv_url",
+	pp_url: "pp_url",
 } as const
 
 export const STAFF_TYPES = {
@@ -38,7 +40,7 @@ export const STAFF_TYPES_LIST = [
 ] as const
 
 export const CREATE_STAFF_FORM_SCHEMA = z.object({
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.profile_picture]: z
+	[STAFF_FORM_SCHEMA_KEYS.profile_picture]: z
 		.instanceof(File, {
 			message: CREATE_STAFF_FORM_CONSTANTS.MSG.PP_IMAGE_TYPE_MSG,
 		})
@@ -67,15 +69,15 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
 			},
 			CREATE_STAFF_FORM_CONSTANTS.MSG.PP_IMAGE_DIMENSION_MSG,
 		),
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.type]: z
+	[STAFF_FORM_SCHEMA_KEYS.type]: z
 		.enum(STAFF_TYPES_LIST)
 		.default("associate"),
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.fullname]: z
+	[STAFF_FORM_SCHEMA_KEYS.fullname]: z
 		.string(),
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.short_bio]: z
+	[STAFF_FORM_SCHEMA_KEYS.short_bio]: z
 		.string()
 		.default(""),
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.bio]: z
+	[STAFF_FORM_SCHEMA_KEYS.bio]: z
 		.string()
 
 		.refine((v) => {
@@ -87,21 +89,21 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
 
 			return str.length >= CREATE_STAFF_FORM_CONSTANTS.BIO.MIN_LENGTH
 		}, CREATE_STAFF_FORM_CONSTANTS.MSG.BIO_MIN_LENGTH_MSG),
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.email]: z
+	[STAFF_FORM_SCHEMA_KEYS.email]: z
 		.string()
 		.email(),
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.linkedin_url]: z
+	[STAFF_FORM_SCHEMA_KEYS.linkedin_url]: z
 		.string()
 		.url()
 		.regex(
 			CREATE_STAFF_FORM_CONSTANTS.LINKEDIN.REGEX,
 			CREATE_STAFF_FORM_CONSTANTS.MSG.LINKEDIN_URL_MSG,
 		),
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.slug]: z
+	[STAFF_FORM_SCHEMA_KEYS.slug]: z
 		.string()
 		.regex(CREATE_STAFF_FORM_CONSTANTS.SLUG.REGEX)
 		.default(""),
-	[CREATE_STAFF_FORM_SCHEMA_KEYS.cv]: z
+	[STAFF_FORM_SCHEMA_KEYS.cv]: z
 		.instanceof(File)
 
 		.refine(
@@ -116,6 +118,20 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
 		),
 })
 
+export const EDIT_STAFF_FORM_SCHEMA = CREATE_STAFF_FORM_SCHEMA
+	.omit({ cv: true, profile_picture: true })
+	.extend({
+		[STAFF_FORM_SCHEMA_KEYS.cv_url]: z
+			.string()
+			.url()
+			.default(""),
+		[STAFF_FORM_SCHEMA_KEYS.pp_url]: z
+			.string()
+			.url()
+			.default(""),
+	})
+
 export type StaffType = typeof STAFF_TYPES
 export type LoginFormPayload = z.infer<typeof LOGIN_FORM_SCHEMA>
 export type CreateStaffFormPayload = z.infer<typeof CREATE_STAFF_FORM_SCHEMA>
+export type EditStaffFormPayload = z.infer<typeof EDIT_STAFF_FORM_SCHEMA>

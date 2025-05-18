@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ChevronUp, Inbox, Pencil, Tags, Notebook, User } from "lucide-vue-next"
+import { ChevronUp, Inbox, Pencil, Tags, Notebook, User, UserPlus, ListOrdered } from "lucide-vue-next"
 import { signOut } from "firebase/auth"
 import { toast } from "vue-sonner"
+import type { FunctionalComponent } from "vue"
 import {
 	Sidebar,
 	SidebarContent,
@@ -18,7 +19,14 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "~/components/ui/dropdown-menu"
 import LogoSVG from "~/assets/images/logo.svg"
 
-const items = [
+type SidebarItem = {
+	title: string
+	path: string
+	icon: FunctionalComponent
+	submenus?: Omit<SidebarItem, "submenus">[]
+}
+
+const items: SidebarItem[] = [
 	{
 		title: "Blogs",
 		path: "/dashboard/blogs",
@@ -40,10 +48,23 @@ const items = [
 		icon: Tags,
 	},
 	{
-		title: "Staffs",
-		path: "/dashboard/staffs",
+		title: "Profil staff",
+		path: "/dashboard/profiles",
 		icon: User,
+		submenus: [
+			{
+				title: "Tambahkan profil",
+				icon: UserPlus,
+				path: "/dashboard/profiles/create",
+			},
+			{
+				title: "Atur susunan profil",
+				icon: ListOrdered,
+				path: "/dashboard/profiles/order-settings",
+			},
+		],
 	},
+
 ]
 
 const auth = useFirebaseAuth()
@@ -86,14 +107,29 @@ async function _signOut() {
 						<SidebarMenuItem
 							v-for="item in items"
 							:key="item.title"
-							:class="$route.path.includes(item.path) ? 'border border-black border-opacity-45 rounded-full bg-opacity-50' : ''"
 						>
-							<SidebarMenuButton as-child>
-								<a :href="item.path">
+							<SidebarMenuButton
+								as-child
+								:class="$route.path.includes(item.path) ? 'border border-black border-opacity-45 rounded-full bg-opacity-50' : ''"
+							>
+								<NuxtLink :to="item.path">
 									<component :is="item.icon" />
-									<span>{{ item.title }}</span>
-								</a>
+									<span class="capitalize">{{ item.title }}</span>
+								</NuxtLink>
 							</SidebarMenuButton>
+							<UiSidebarMenuSub v-if="item.submenus">
+								<UiSidebarMenuSubItem
+									v-for="subItem in item.submenus"
+									:key="subItem.title"
+								>
+									<NuxtLink :to="subItem.path">
+										<UiSidebarMenuSubButton>
+											<component :is="subItem.icon" />
+											<span class="capitalize">{{ subItem.title }}</span>
+										</UiSidebarMenuSubButton>
+									</NuxtLink>
+								</UiSidebarMenuSubItem>
+							</UiSidebarMenuSub>
 						</SidebarMenuItem>
 					</SidebarMenu>
 				</SidebarGroupContent>

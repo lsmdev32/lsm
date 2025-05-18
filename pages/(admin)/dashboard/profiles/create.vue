@@ -9,11 +9,6 @@ definePageMeta({
 
 const router = useRouter()
 
-const breadcrumbs = [
-	{ text: "Staffs", href: "/dashboard/staffs" },
-	{ text: "Create", href: "/dashboard/staffs/create" },
-]
-
 const form = useCreateStaffForm()
 const isFormSubmitting = form.form.isSubmitting
 
@@ -36,18 +31,18 @@ function onChooseFile() {
 
 function onCancel() {
 	onResetForm()
-	router.replace({ path: "/dashboard/staffs" })
+	router.replace({ path: "/dashboard/profiles" })
 }
 
 function onResetForm() {
-	form.resetFields()
+	form.resetForm()
+	window.location.reload()
 }
 </script>
 
 <template>
 	<AdminPage
 		page-title="Create Staff"
-		:breadcrumbs="breadcrumbs"
 	>
 		<form
 			class="w-full flex flex-col py-10"
@@ -297,7 +292,7 @@ function onResetForm() {
 								variant="secondary"
 								class="flex-grow"
 								:disabled="isFormSubmitting"
-								@click="onResetForm()"
+								@click="onResetForm"
 							>
 								Reset
 							</ui-button>
