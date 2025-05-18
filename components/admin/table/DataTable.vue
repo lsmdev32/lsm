@@ -191,7 +191,12 @@ const table = useVueTable({
 							:colspan="columns.length"
 							class="h-24 text-center"
 						>
-							No results.
+							<slot
+								v-if="$slots['empty-list']"
+								name="empty-list"
+								:table="table"
+							/>
+							<span v-else>No results.</span>
 						</UiTableCell>
 					</UiTableRow>
 				</UiTableBody>

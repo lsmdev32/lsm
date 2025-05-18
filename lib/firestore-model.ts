@@ -83,7 +83,16 @@ type StaffDocumentModel = DocumentModelOfType<{
 	cv_url: string
 }>
 
+export type CategoryAppModel = AppModelOfType<{
+	name: string
+}>
+
+type CategoryDocumentModel = DocumentModelOfType<{
+	name: string
+}>
+
 const staffConverter = createFirestoreConverter<StaffAppModel, StaffDocumentModel>()
+const categoryConverter = createFirestoreConverter<CategoryAppModel, CategoryDocumentModel>()
 
 const map = {
 	staff: [
@@ -101,4 +110,14 @@ export function getDocRef(firestore: Firestore, name: CollectionNames, id?: stri
 export function getCollectionRef(firestore: Firestore, name: CollectionNames) {
 	return collection(firestore, map[name][0])
 		.withConverter(map[name][1])
+}
+
+export function getCategoryCollectionRef(firestore: Firestore) {
+	return collection(firestore, "categories")
+		.withConverter(categoryConverter)
+}
+
+export function getCategoryDocRef(firestore: Firestore, id: string) {
+	return doc(firestore, "categories", id)
+		.withConverter(categoryConverter)
 }
