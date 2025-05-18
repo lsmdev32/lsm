@@ -13,11 +13,15 @@ const page = useRouteQuery<number>("page", 0)
 
 const params = computed(() => ({ search: search.value, page: page.value }))
 
-const { result, refresh } = useCategoryList(params)
+const { result } = useCategoryList(params)
+
+function refresh() {
+	location.reload()
+}
 </script>
 
 <template>
-	<AdminPage page-title="Categories">
+	<AdminPage page-title="Kategori">
 		<div>
 			<AdminTableDataTable
 				:columns="categoryColumns"

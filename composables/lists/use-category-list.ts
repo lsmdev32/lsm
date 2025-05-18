@@ -31,24 +31,8 @@ export function useCategoryList(params: Params) {
 		immediate: true,
 	})
 
-	async function refresh() {
-		const requestOptions: SearchOptions & RequestOptions = {
-			page: params.value.page,
-		}
-
-		isLoading.value = true
-		await search({
-			query: params.value.search,
-			requestOptions,
-		})
-			.finally(() => {
-				isLoading.value = false
-			})
-	}
-
 	return {
 		isLoading,
 		result,
-		refresh,
 	}
 }
