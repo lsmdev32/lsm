@@ -6,7 +6,7 @@ import { toast } from "vue-sonner"
 import { AutoForm } from "~/components/ui/auto-form"
 import { Button } from "~/components/ui/button"
 import { Toaster } from "~/components/ui/sonner"
-import { loginSchema } from "~/lib/schemas/form"
+import { LOGIN_FORM_SCHEMA } from "~/lib/schemas/form"
 import type { LoginFormPayload } from "~/lib/schemas/form"
 import LogoSVG from "~/assets/images/logo.svg"
 
@@ -16,7 +16,7 @@ definePageMeta({
 })
 
 const auth = useFirebaseAuth()
-const form = useForm({ validationSchema: toTypedSchema(loginSchema) })
+const form = useForm({ validationSchema: toTypedSchema(LOGIN_FORM_SCHEMA) })
 const isSubmitting = computed(() => form.isSubmitting.value)
 
 const indicator = useLoadingIndicator()
@@ -64,7 +64,7 @@ async function handleSubmit(_payload: LoginFormPayload) {
 				/>
 				<ClientOnly>
 					<AutoForm
-						:schema="loginSchema"
+						:schema="LOGIN_FORM_SCHEMA"
 						:form="form"
 						:field-config="{
 							email: {

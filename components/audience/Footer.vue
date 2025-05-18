@@ -39,20 +39,20 @@ import Button from "../../components/audience/Button.vue"
 				Subscribe to our newsletter
 			</div>
 			<input
-				class=""
+				class="text-black"
 				type="text"
 				placeholder="Name*"
 			>
 			<br>
 			<input
-				class=""
+				class="text-black"
 				type="email"
 				placeholder="Email*"
 			>
 
-			<div class="button-wrapper">
+			<div class="button-wrapper ">
 				<Button
-					class=""
+					class="cursor-pointer"
 					text-button="Subscribe"
 				/>
 			</div>

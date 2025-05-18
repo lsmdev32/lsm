@@ -18,49 +18,57 @@
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/"
+					@click="closeMenu"
 				>Home</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/about"
+					@click="closeMenu"
 				>About LSM</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/practiceArea"
+					@click="closeMenu"
 				>Practice Area</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/Attorneys"
+					@click="closeMenu"
 				>Attorneys</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/publication"
+					@click="closeMenu"
 				>Publication</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
 					to="#"
+					@click="closeMenu"
 				>Blog</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/ContactUs"
+					@click="closeMenu"
 				>Contact Us</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/career"
+					@click="closeMenu"
 				>Career</NuxtLink>
 			</li>
 		</ul>
@@ -111,7 +119,7 @@ export default {
 <style scoped>
 .menu-panel {
 	position: fixed;
-	top: 100px; /* Start below the navbar */
+	top: 80px; /* Start below the navbar */
 	right: -100%;
 	width: 100%;
 	height: calc(100% - 60px); /* Adjust height to not cover the navbar */

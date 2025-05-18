@@ -9,6 +9,7 @@ export default defineNuxtConfig({
 		"shadcn-nuxt",
 		"nuxt-vuefire",
 		"dayjs-nuxt",
+		"@nuxtjs/algolia",
 	],
 	devtools: { enabled: true },
 	app: {
@@ -24,6 +25,10 @@ export default defineNuxtConfig({
 			autoprefixer: {},
 		},
 	},
+	algolia: {
+		applicationId: process.env.NUXT_PUBLIC_ALGOLIA_APP_ID,
+		apiKey: process.env.NUXT_PUBLIC_ALGOLIA_API_KEY,
+	},
 	dayjs: {
 		plugins: [
 			"utc", "timezone",
@@ -36,6 +41,9 @@ export default defineNuxtConfig({
 				indent: "tab",
 			},
 		},
+	},
+	fonts: {
+		provider: "google",
 	},
 	image: {
 		dir: "assets/images",
