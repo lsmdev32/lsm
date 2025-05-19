@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/vue-table"
-import { Pencil, Trash2 } from "lucide-vue-next"
+import { Pencil } from "lucide-vue-next"
 import TableAction from "~/components/admin/table/TableAction.vue"
 import { cn } from "~/lib/utils"
 
@@ -41,11 +41,7 @@ export const categoryColumns = [
 				{
 					label: "Ubah Kategori",
 					icon: Pencil,
-				},
-				{
-					label: "Hapus Kategori",
-					icon: Trash2,
-					iconClass: cn("text-red-500"),
+					iconClass: cn("hover:cursor-pointer"),
 				},
 			],
 		}),

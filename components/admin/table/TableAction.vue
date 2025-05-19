@@ -39,7 +39,7 @@ withDefaults(defineProps<Props>(), {
 				:key="item.label"
 				:as="item.href ? 'a' : 'button'"
 				:href="item.href"
-				class="w-full flex items-center gap-x-2"
+				class="w-full flex items-center gap-x-2 cursor-pointer"
 				@click="item.onClick"
 			>
 				<component

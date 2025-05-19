@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table"
 
 type Props = {
-	data?: T[]
+	data: Ref<T[]>
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	columns: ColumnDef<T, any>[]
 	pagination?: {
@@ -34,7 +34,6 @@ type Props = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	data: () => [],
 	pagination: () => ({
 		pageIndex: 0,
 		pageSize: 10,
@@ -48,7 +47,9 @@ const rowSelection = ref({})
 const expanded = ref<ExpandedState>({})
 
 const table = useVueTable({
-	data: props.data,
+	get data() {
+		return props.data
+	},
 	columns: props.columns,
 	getCoreRowModel: getCoreRowModel(),
 	getPaginationRowModel: getPaginationRowModel(),
@@ -196,7 +197,9 @@ const table = useVueTable({
 								name="empty-list"
 								:table="table"
 							/>
-							<span v-else>No results.</span>
+							<span v-else>
+								No results.
+							</span>
 						</UiTableCell>
 					</UiTableRow>
 				</UiTableBody>

@@ -11,9 +11,8 @@ definePageMeta({
 const search = useRouteQuery<string>("search", "")
 const page = useRouteQuery<number>("page", 0)
 
-const params = computed(() => ({ search: search.value, page: page.value }))
-
-const { result } = useCategoryList(params)
+const { result } = useCategoryList(search, page)
+const { onChange, submit } = useCreateCategory()
 
 function refresh() {
 	location.reload()
@@ -24,11 +23,9 @@ function refresh() {
 	<AdminPage page-title="Kategori">
 		<div>
 			<AdminTableDataTable
+				v-if="result"
 				:columns="categoryColumns"
-				:data="result?.hits.map((item) => ({
-					name: item.name,
-					created_at: item.created_at!,
-				})) ?? []"
+				:data="result.hits"
 				:pagination="{ pageSize: 10, pageIndex: 0 }"
 			>
 				<template #upper="{ }">
@@ -46,12 +43,33 @@ function refresh() {
 							<RefreshCwIcon :size="24" />
 							<span>Refresh</span>
 						</UiButton>
+
 						<UiButton
 							class="ml-auto"
 							color="primary"
 						>
-							<PlusIcon :size="24" />
-							<span>Tambah Kategori</span>
+							<UiDialog>
+								<UiDialogTrigger class="flex gap-x-2 items-center">
+									<PlusIcon :size="24" />
+									<span>Tambah Kategori</span>
+								</UiDialogTrigger>
+								<UiDialogContent>
+									<UiDialogHeader>
+										<UiDialogTitle>Tambah Kategori</UiDialogTitle>
+									</UiDialogHeader>
+
+									<UiInput
+										placeholder="Nama Kategori"
+										@update:model-value="onChange($event as string)"
+									/>
+
+									<UiDialogFooter>
+										<UiButton @click="submit">
+											Buat
+										</UiButton>
+									</UiDialogFooter>
+								</UiDialogContent>
+							</UiDialog>
 						</UiButton>
 					</div>
 				</template>

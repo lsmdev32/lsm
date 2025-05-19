@@ -3,25 +3,25 @@ import { useDebounce } from "@vueuse/core"
 import { DEBOUNCE_DEFAULT_TIME } from "~/lib/constants"
 import type { CategoryAppModel } from "~/lib/firestore-model"
 
-type Params = Ref<{
-	search: string
-	page: number
-}>
-
-export function useCategoryList(params: Params) {
-	const debouncedParams = useDebounce(params, DEBOUNCE_DEFAULT_TIME)
+export function useCategoryList(keyword: Ref<string>, page: Ref<number>) {
+	const debouncedSearch = useDebounce(keyword, DEBOUNCE_DEFAULT_TIME)
+	const debouncedPage = useDebounce(page, DEBOUNCE_DEFAULT_TIME)
 	const isLoading = ref(false)
 
 	const { search, result } = useAlgoliaSearch<CategoryAppModel>("categories")
 
-	watch(debouncedParams, async (v) => {
+	watch([
+		debouncedSearch, debouncedPage,
+	], async ([
+		s, p,
+	]) => {
 		const requestOptions: SearchOptions & RequestOptions = {
-			page: v.page,
+			page: p,
 		}
 
 		isLoading.value = true
 		await search({
-			query: v.search,
+			query: s,
 			requestOptions,
 		})
 			.finally(() => {
