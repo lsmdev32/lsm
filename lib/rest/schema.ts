@@ -21,6 +21,7 @@ export const HomepageDataOutputSchema = z.object({
 				data: z.array(z.object({
 					slug: z.string()
 						.regex(/^[a-z0-9-]+$/),
+					name: z.string(),
 					image_url: z.string()
 						.url(),
 					linkedin_url: z.string()

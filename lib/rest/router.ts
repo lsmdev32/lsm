@@ -45,7 +45,7 @@ const homePageData = base
 			.map(() => (
 				{
 					email: faker.internet.email(),
-					name: faker.person.firstName(),
+					name: faker.person.fullName(),
 					image_url: faker.image.personPortrait(),
 					linkedin_url: faker.internet.url(),
 					slug: faker.person.fullName()
