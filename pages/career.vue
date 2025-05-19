@@ -115,9 +115,9 @@ import CheckIc from "~/assets/images/check-icon.svg"
 			</div>
 		</section>
 		<!-- Desktop -->
-		<section class="hidden md:flex flex-row md:min-w-full justify-center items-start px-8 py-12 ">
-			<div class="flex flex-row max-w-7xl gap-12">
-				<div class="flex flex-col z-0 w-1/2">
+		<section class="hidden md:flex flex-row md:min-w-full justify-center items-start px-10 sm:px6 lg:px-8">
+			<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
+				<div class="flex flex-col z-0 ">
 					<div class="flex-1">
 						<h1 class="text-5xl font-[marcellus] text-[#4B3D2A]">
 							Carrer
@@ -130,14 +130,14 @@ import CheckIc from "~/assets/images/check-icon.svg"
 						</p>
 					</div>
 					<div class="flex flex-row w-full gap-6 mt-6">
-						<div class="flex-1 w-1/2">
+						<div class="flex-1 ">
 							<input
 								type="text"
 								placeholder="Name*"
 								class="w-full h-[55px] px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
 							>
 						</div>
-						<div class="flex-1 w-1/2">
+						<div class="flex-1 ">
 							<input
 								type="text"
 								placeholder="Email*"
@@ -161,7 +161,7 @@ import CheckIc from "~/assets/images/check-icon.svg"
 						/>
 					</div>
 				</div>
-				<div class="flex flex-col z-0 w-1/2 justify-center items-center">
+				<div class="flex flex-col z-0 justify-center items-center">
 					<div class="flex-1 mt-14 pl-16">
 						<h1 class=" text-3xl font-[marcellus] text-[#DAB38D]">
 							Lawyers

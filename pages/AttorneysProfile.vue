@@ -58,7 +58,7 @@ function closeAssociates() {
 	<div>
 		<!-- Desktop -->
 		<section class="hidden md:block">
-			<div class="max-w-7xl mx-auto py-12 flex flex-col md:flex-row gap-28">
+			<div class="max-w-7xl mx-auto py-12 flex flex-col md:flex-row gap-28 px-2 sm:px-6 lg:px-8">
 				<!-- Sidebar: List Partners -->
 				<aside class="md:col-span-1 space-y-4 pr-8">
 					<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
@@ -131,7 +131,7 @@ function closeAssociates() {
 					</div>
 				</div>
 			</div>
-			<div class="max-w-7xl mx-auto pb-12 flex flex-col md:flex-row gap-28">
+			<div class="max-w-7xl mx-auto pb-12 flex flex-col md:flex-row gap-28 px-2 sm:px-6 lg:px-8">
 				<!-- Sidebar: List Partners -->
 				<aside class="md:col-span-1 space-y-4 pr-8">
 					<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
