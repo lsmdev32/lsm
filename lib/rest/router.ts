@@ -44,6 +44,7 @@ const homePageData = base
 			.from({ length: staffCount })
 			.map(() => (
 				{
+					id: faker.string.nanoid(),
 					email: faker.internet.email(),
 					name: faker.person.fullName(),
 					image_url: faker.image.personPortrait(),
@@ -86,6 +87,7 @@ const practiceAreasPageData = base
 		const newsAndPublications = Array
 			.from({ length: 4 })
 			.map(() => ({
+				id: faker.string.nanoid(),
 				title: faker.lorem.sentence(5),
 				slug: faker.lorem.sentence(5)
 					.replace(/[^a-zA-Z0-9\s]/g, "")
@@ -97,6 +99,7 @@ const practiceAreasPageData = base
 					.format("MMM D, YYYY"),
 				category: faker.lorem.word(),
 				author: {
+					id: faker.string.nanoid(),
 					name: faker.person.fullName(),
 					photo_url: faker.image.personPortrait(),
 				},
@@ -106,6 +109,7 @@ const practiceAreasPageData = base
 			.from({ length: staffCount })
 			.map(() => (
 				{
+					id: faker.string.nanoid(),
 					email: faker.internet.email(),
 					name: faker.person.firstName(),
 					image_url: faker.image.personPortrait(),
@@ -151,6 +155,7 @@ const ourAttorneysPageData = base
 			.from({ length: 3 })
 			.map(() => (
 				{
+					id: faker.string.nanoid(),
 					email: faker.internet.email(),
 					name: faker.person.firstName(),
 					image_url: faker.image.personPortrait(),
@@ -168,6 +173,7 @@ const ourAttorneysPageData = base
 			.from({ length: 12 })
 			.map(() => (
 				{
+					id: faker.string.nanoid(),
 					email: faker.internet.email(),
 					name: faker.person.firstName(),
 					image_url: faker.image.personPortrait(),
@@ -216,6 +222,7 @@ const ourAttorneyDetailPageData = base
 				status: 200,
 				data: {
 					person: {
+						id: faker.string.nanoid(),
 						email: faker.internet.email(),
 						name: faker.person.firstName(),
 						image_url: faker.image.personPortrait(),
@@ -231,6 +238,7 @@ const ourAttorneyDetailPageData = base
 					},
 					publications: [
 						{
+							id: faker.string.nanoid(),
 							title: faker.lorem.sentence(5),
 							slug: faker.lorem.sentence(5)
 								.replace(/[^a-zA-Z0-9\s]/g, "")
@@ -245,6 +253,7 @@ const ourAttorneyDetailPageData = base
 					],
 					other_associates: [
 						{
+							id: faker.string.nanoid(),
 							name: faker.person.firstName(),
 							slug: faker.person.fullName()
 								.replace(/[^a-zA-Z0-9\s]/g, "")
@@ -255,6 +264,7 @@ const ourAttorneyDetailPageData = base
 					],
 					other_partners: [
 						{
+							id: faker.string.nanoid(),
 							name: faker.person.firstName(),
 							slug: faker.person.fullName()
 								.replace(/[^a-zA-Z0-9\s]/g, "")
@@ -285,6 +295,7 @@ const blogDetailPageData = base
 				status: 200,
 				data: {
 					detail: {
+						id: faker.string.nanoid(),
 						title: faker.lorem.sentence(5),
 						slug: faker.lorem.sentence(5)
 							.replace(/[^a-zA-Z0-9\s]/g, "")
@@ -321,6 +332,7 @@ const publicationDetailPageData = base
 				status: 200,
 				data: {
 					detail: {
+						id: faker.string.nanoid(),
 						title: faker.lorem.sentence(5),
 						slug: faker.lorem.sentence(5)
 							.replace(/[^a-zA-Z0-9\s]/g, "")
@@ -335,6 +347,7 @@ const publicationDetailPageData = base
 						tags: [faker.lorem.word()],
 						type: "publication",
 						publication_author: {
+							id: faker.string.nanoid(),
 							name: faker.person.fullName(),
 							photo_url: faker.image.personPortrait(),
 							slug: faker.person.fullName()
