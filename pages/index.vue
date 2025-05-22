@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import Dummy_GilangMSantosa from "../assets/images/Dummy_GilangMSantosa.jpg"
-import Dummy_DamianAgataYuvens from "../assets/images/Dummy_DamianAgataYuvens.jpg"
-import Dummy_LelyanaSantosa from "../assets/images/Dummy_LelyanaSantosa.jpg"
 import { NuxtLink } from "#components"
 import ArrowIcon from "~/assets/images/arrow-icon.svg"
 import DRThumbnail from "~/assets/images/dr-thumbnail.svg"
@@ -21,8 +18,6 @@ const images = [
 	"/images/bedge5.png",
 	"/images/bedge6.png",
 ]
-
-console.log(data)
 
 // Define available background images and corresponding text
 const contentOptions = [
@@ -330,17 +325,11 @@ const setOption = (index: number) => {
 			</div>
 			<div class="flex items-center justify-center gap-8">
 				<Partners
-					calass="flex flex-row items-center justify-start px-20"
-					:image="Dummy_DamianAgataYuvens"
-					:name="'Damian Agata Yuvens'"
-				/>
-				<Partners
-					:image="Dummy_GilangMSantosa"
-					:name="'Gilang M. Santosa'"
-				/>
-				<Partners
-					:image="Dummy_LelyanaSantosa"
-					:name="'Lelyana Santosa'"
+					v-for="(partner, index) in data?.data?.partners.data.slice(0, 4)"
+					:key="index"
+					class="capitalize"
+					:image="partner.image_url"
+					:name="partner.name"
 				/>
 			</div>
 		</section>
