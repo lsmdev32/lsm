@@ -157,7 +157,7 @@ const ourAttorneysPageData = base
 				{
 					id: faker.string.nanoid(),
 					email: faker.internet.email(),
-					name: faker.person.firstName(),
+					name: faker.person.fullName(),
 					image_url: faker.image.personPortrait(),
 					linkedin_url: faker.internet.url(),
 					slug: faker.person.fullName()
@@ -175,7 +175,7 @@ const ourAttorneysPageData = base
 				{
 					id: faker.string.nanoid(),
 					email: faker.internet.email(),
-					name: faker.person.firstName(),
+					name: faker.person.fullName(),
 					image_url: faker.image.personPortrait(),
 					linkedin_url: faker.internet.url(),
 					slug: faker.person.fullName()
@@ -224,7 +224,7 @@ const ourAttorneyDetailPageData = base
 					person: {
 						id: faker.string.nanoid(),
 						email: faker.internet.email(),
-						name: faker.person.firstName(),
+						name: faker.person.fullName(),
 						image_url: faker.image.personPortrait(),
 						linkedin_url: faker.internet.url(),
 						slug: faker.person.fullName()
@@ -254,7 +254,7 @@ const ourAttorneyDetailPageData = base
 					other_associates: [
 						{
 							id: faker.string.nanoid(),
-							name: faker.person.firstName(),
+							name: faker.person.fullName(),
 							slug: faker.person.fullName()
 								.replace(/[^a-zA-Z0-9\s]/g, "")
 								.split(" ")
@@ -265,7 +265,7 @@ const ourAttorneyDetailPageData = base
 					other_partners: [
 						{
 							id: faker.string.nanoid(),
-							name: faker.person.firstName(),
+							name: faker.person.fullName(),
 							slug: faker.person.fullName()
 								.replace(/[^a-zA-Z0-9\s]/g, "")
 								.split(" ")

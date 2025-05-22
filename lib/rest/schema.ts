@@ -93,6 +93,8 @@ export const PracticeAreaPageDataOutputSchema = z.object({
 									id: z
 										.string()
 										.nanoid(),
+									name: z
+										.string(),
 									slug: z
 										.string()
 										.regex(/^[a-z0-9-]+$/),
@@ -127,6 +129,8 @@ export const OurAttorneysPageDataOutputSchema = z.object({
 									id: z
 										.string()
 										.nanoid(),
+									name: z
+										.string(),
 									slug: z
 										.string()
 										.regex(/^[a-z0-9-]+$/),
@@ -151,6 +155,8 @@ export const OurAttorneysPageDataOutputSchema = z.object({
 									id: z
 										.string()
 										.nanoid(),
+									name: z
+										.string(),
 									slug: z
 										.string()
 										.regex(/^[a-z0-9-]+$/),
