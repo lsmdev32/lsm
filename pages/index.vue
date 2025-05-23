@@ -325,7 +325,7 @@ const setOption = (index: number) => {
 			</div>
 			<div class="flex items-center justify-center gap-8">
 				<Partners
-					v-for="(partner, index) in data?.data?.partners.data"
+					v-for="(partner, index) in data?.data?.partners.data.slice(0, 4)"
 					:key="index"
 					class="capitalize"
 					:image="partner.image_url"
