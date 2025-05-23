@@ -66,10 +66,10 @@ console.log("response", response.data)
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-4 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 ">
 				<Partners
-					v-for="(partner, index) in response.data?.data?.partners.data"
-					:key="index"
+					v-for="(partner) in response.data?.data?.partners.data"
+					:key="partner.id"
 					:image="partner.image_url"
-					:name="partner.slug"
+					:name="partner.name"
 					:linkedin="partner.linkedin_url"
 					:email="partner.email"
 				/>
@@ -81,10 +81,12 @@ console.log("response", response.data)
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-4 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mb-8">
 				<Associate
-					v-for="(associate, index) in response.data?.data?.associates.data"
-					:key="index"
+					v-for="(associate) in response.data?.data?.associates.data"
+					:key="associate.id"
 					:image="associate.image_url"
-					:name="associate.slug"
+					:name="associate.name"
+					:linkedin="associate.linkedin_url"
+					:email="associate.email"
 				/>
 			</div>
 		</section>
@@ -129,10 +131,12 @@ console.log("response", response.data)
 			</div>
 			<div class="grid grid-cols-1 gap-4 container max-w-7xl mx-auto px-20 sm:px-6 lg:px-8 py-4 ">
 				<Partners
-					v-for="(partner, index) in response.data?.data?.partners.data"
-					:key="index"
+					v-for="(partner) in response.data?.data?.partners.data"
+					:key="partner.id"
 					:image="partner.image_url"
-					:name="partner.slug"
+					:name="partner.name"
+					:linkedin="partner.linkedin_url"
+					:email="partner.email"
 				/>
 			</div>
 			<div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 py-2">
@@ -142,10 +146,12 @@ console.log("response", response.data)
 			</div>
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-10 mt-2 container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 mb-8">
 				<Associate
-					v-for="(associate, index) in response.data?.data?.associates.data"
-					:key="index"
+					v-for="(associate) in response.data?.data?.associates.data"
+					:key="associate.id"
 					:image="associate.image_url"
-					:name="associate.slug"
+					:name="associate.name"
+					:linkedin="associate.linkedin_url"
+					:email="associate.email"
 				/>
 			</div>
 		</section>
