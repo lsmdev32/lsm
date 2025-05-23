@@ -1,21 +1,15 @@
 <script setup lang="ts">
-import Dummy_GilangMSantosa from "../assets/images/Dummy_GilangMSantosa.jpg"
-import Dummy_DamianAgataYuvens from "../assets/images/Dummy_DamianAgataYuvens.jpg"
-import Dummy_LelyanaSantosa from "../assets/images/Dummy_LelyanaSantosa.jpg"
-import DummyAsc_BiancaJanet from "../assets/images/DummyAsc_BiancaJanet.jpg"
-import DummyAsc_DeniDaniel from "../assets/images/DummyAsc_DeniDaniel.jpg"
-import DummyAsc_DindaRaihan from "../assets/images/DummyAsc_DindaRaihan.jpg"
-import DummyAsc_DolyJames from "../assets/images/DummyAsc_DolyJames.jpg"
-import DummyAsc_FransiskusXaverius from "../assets/images/DummyAsc_FransiskusXaverius.jpg"
-import DummyAsc_OliviaNabilaSambas from "../assets/images/DummyAsc_OliviaNabilaSambas.jpg"
-import DummyAsc_RanggaSujudWidigda from "../assets/images/DummyAsc_RanggaSujudWidigda.jpg"
-import DummyAsc_YosefTatangWidjaja from "../assets/images/DummyAsc_YosefTatangWidjaja.jpg"
 import Partners from "~/components/audience/Partners.vue"
 import Associate from "~/components/audience/Associate.vue"
+
+const response = await useCustomFetch("/rest/page-data/staffs")
+
+console.log("response", response.data)
 </script>
 
 <template>
 	<div>
+		<!-- Desktop -->
 		<section class="hidden md:block">
 			<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
 				<!-- Left column with title and arrow -->
@@ -72,16 +66,12 @@ import Associate from "~/components/audience/Associate.vue"
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-4 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 ">
 				<Partners
-					:image="Dummy_DamianAgataYuvens"
-					:name="'Damian Agata Yuvens'"
-				/>
-				<Partners
-					:image="Dummy_GilangMSantosa"
-					:name="'Gilang M. Santosa'"
-				/>
-				<Partners
-					:image="Dummy_LelyanaSantosa"
-					:name="'Lelyana Santosa'"
+					v-for="(partner, index) in response.data?.data?.partners.data"
+					:key="index"
+					:image="partner.image_url"
+					:name="partner.slug"
+					:linkedin="partner.linkedin_url"
+					:email="partner.email"
 				/>
 			</div>
 			<div class="container max-w-7xl mx-auto px-2  lg:px-8 mt-4 py-2">
@@ -91,36 +81,10 @@ import Associate from "~/components/audience/Associate.vue"
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-4 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mb-8">
 				<Associate
-					:image="DummyAsc_BiancaJanet"
-					:name="'Bianca Janet'"
-				/>
-				<Associate
-					:image="DummyAsc_DeniDaniel"
-					:name="'Deni Daniel'"
-				/>
-				<Associate
-					:image="DummyAsc_DindaRaihan"
-					:name="'Dinda Raihan'"
-				/>
-				<Associate
-					:image="DummyAsc_DolyJames"
-					:name="'Doly James'"
-				/>
-				<Associate
-					:image="DummyAsc_FransiskusXaverius"
-					:name="'Fransiskus Xaverius'"
-				/>
-				<Associate
-					:image="DummyAsc_OliviaNabilaSambas"
-					:name="'Olivia Nabila Sambas'"
-				/>
-				<Associate
-					:image="DummyAsc_RanggaSujudWidigda"
-					:name="'Rangga Sujud Widigda'"
-				/>
-				<Associate
-					:image="DummyAsc_YosefTatangWidjaja"
-					:name="'Yosef Tatang Widjaja'"
+					v-for="(associate, index) in response.data?.data?.associates.data"
+					:key="index"
+					:image="associate.image_url"
+					:name="associate.slug"
 				/>
 			</div>
 		</section>
@@ -158,52 +122,30 @@ import Associate from "~/components/audience/Associate.vue"
 					</p>
 				</div>
 			</div>
+			<div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 py-2">
+				<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
+					PARTNERS
+				</h2>
+			</div>
 			<div class="grid grid-cols-1 gap-4 container max-w-7xl mx-auto px-20 sm:px-6 lg:px-8 py-4 ">
 				<Partners
-					:image="Dummy_DamianAgataYuvens"
-					:name="'Damian Agata Yuvens'"
+					v-for="(partner, index) in response.data?.data?.partners.data"
+					:key="index"
+					:image="partner.image_url"
+					:name="partner.slug"
 				/>
-				<Partners
-					:image="Dummy_GilangMSantosa"
-					:name="'Gilang M. Santosa'"
-				/>
-				<Partners
-					:image="Dummy_LelyanaSantosa"
-					:name="'Lelyana Santosa'"
-				/>
+			</div>
+			<div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 py-2">
+				<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
+					ASSOCIATE
+				</h2>
 			</div>
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-10 mt-2 container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 mb-8">
 				<Associate
-					:image="DummyAsc_BiancaJanet"
-					:name="'Bianca Janet'"
-				/>
-				<Associate
-					:image="DummyAsc_DeniDaniel"
-					:name="'Deni Daniel'"
-				/>
-				<Associate
-					:image="DummyAsc_DindaRaihan"
-					:name="'Dinda Raihan'"
-				/>
-				<Associate
-					:image="DummyAsc_DolyJames"
-					:name="'Doly James'"
-				/>
-				<Associate
-					:image="DummyAsc_FransiskusXaverius"
-					:name="'Fransiskus Xaverius'"
-				/>
-				<Associate
-					:image="DummyAsc_OliviaNabilaSambas"
-					:name="'Olivia Nabila Sambas'"
-				/>
-				<Associate
-					:image="DummyAsc_RanggaSujudWidigda"
-					:name="'Rangga Sujud Widigda'"
-				/>
-				<Associate
-					:image="DummyAsc_YosefTatangWidjaja"
-					:name="'Yosef Tatang Widjaja'"
+					v-for="(associate, index) in response.data?.data?.associates.data"
+					:key="index"
+					:image="associate.image_url"
+					:name="associate.slug"
 				/>
 			</div>
 		</section>
