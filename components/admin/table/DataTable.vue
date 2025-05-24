@@ -5,7 +5,8 @@ import type {
 	ExpandedState,
 	SortingState,
 	VisibilityState,
-} from "@tanstack/vue-table"
+
+	PaginationState } from "@tanstack/vue-table"
 import {
 	FlexRender,
 	getCoreRowModel,
@@ -23,21 +24,30 @@ import {
 	TableCell,
 } from "@/components/ui/table"
 
+type Emits = {
+	(ev: "update:page" | "update:pageSize", value: number): void
+}
+
+defineEmits<Emits>()
+
 type Props = {
-	data: Ref<T[]>
+	data: T[]
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	columns: ColumnDef<T, any>[]
-	pagination?: {
-		pageIndex: number
-		pageSize: number
-	}
+	isLoading?: boolean
+	selectable?: boolean
+	totalPages?: number
+	currentPage?: number
+	pageSize?: number
+
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	pagination: () => ({
-		pageIndex: 0,
-		pageSize: 10,
-	}),
+	isLoading: false,
+	selectable: false,
+	totalPages: 0,
+	currentPage: 1,
+	pageSize: 10,
 })
 
 const sorting = ref<SortingState>([])
@@ -45,6 +55,10 @@ const columnFilters = ref<ColumnFiltersState>([])
 const columnVisibility = ref<VisibilityState>({})
 const rowSelection = ref({})
 const expanded = ref<ExpandedState>({})
+const pagination = computed<PaginationState>(() => ({
+	pageIndex: props.currentPage,
+	pageSize: props.pageSize,
+}))
 
 const table = useVueTable({
 	get data() {
@@ -59,7 +73,7 @@ const table = useVueTable({
 	onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
 	onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
 	onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
-	onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
+	onRowSelectionChange: props.selectable ? updaterOrValue => valueUpdater(updaterOrValue, rowSelection) : undefined,
 	onExpandedChange: updaterOrValue => valueUpdater(updaterOrValue, expanded),
 	state: {
 		get sorting() {
@@ -77,6 +91,9 @@ const table = useVueTable({
 		get expanded() {
 			return expanded.value
 		},
+	},
+	meta: {
+		isLoading: props.isLoading,
 	},
 })
 </script>
@@ -155,7 +172,22 @@ const table = useVueTable({
 					</UiTableRow>
 				</UiTableHeader>
 				<UiTableBody>
-					<template v-if="table.getRowModel().rows?.length">
+					<!-- Loading skeleton -->
+					<template v-if="table.options.meta?.isLoading">
+						<UiTableRow
+							v-for="n in props.pageSize"
+							:key="'skeleton-' + n"
+						>
+							<UiTableCell
+								v-for="col in columns"
+								:key="'skeleton-cell-' + n + '-' + col.id"
+							>
+								<div class="animate-pulse h-4 bg-muted rounded w-full" />
+							</UiTableCell>
+						</UiTableRow>
+					</template>
+					<!-- Table rows -->
+					<template v-else-if="table.getRowModel().rows?.length">
 						<template
 							v-for="row in table.getRowModel().rows"
 							:key="row.id"
@@ -186,7 +218,7 @@ const table = useVueTable({
 							</UiTableRow>
 						</template>
 					</template>
-
+					<!-- Empty state -->
 					<UiTableRow v-else>
 						<UiTableCell
 							:colspan="columns.length"
@@ -207,24 +239,28 @@ const table = useVueTable({
 		</div>
 
 		<div class="flex items-center justify-end space-x-2 py-4">
-			<div class="flex-1 text-sm text-muted-foreground">
+			<div
+				v-if="props.selectable"
+				class="flex-1 text-sm text-muted-foreground"
+			>
 				{{ table.getFilteredSelectedRowModel().rows.length }} of
 				{{ table.getFilteredRowModel().rows.length }} row(s) selected.
 			</div>
-			<div class="space-x-2">
+			<div class="space-x-2 flex justify-end items-center">
+				<span class="text-xs">Halaman <b>{{ pagination.pageIndex + 1 }}</b> dari <b>{{ props.totalPages }}</b></span>
 				<UiButton
 					variant="outline"
 					size="sm"
-					:disabled="!table.getCanPreviousPage()"
-					@click="table.previousPage()"
+					:disabled="!(props.totalPages > 0 && props.currentPage > 0)"
+					@click="$emit('update:page', pagination.pageIndex - 1)"
 				>
 					Previous
 				</UiButton>
 				<UiButton
 					variant="outline"
 					size="sm"
-					:disabled="!table.getCanNextPage()"
-					@click="table.nextPage()"
+					:disabled="!(props.totalPages> 0 && props.currentPage < (props.totalPages - 1))"
+					@click="$emit('update:page', pagination.pageIndex + 1)"
 				>
 					Next
 				</UiButton>

@@ -12,18 +12,20 @@ type Props = {
 		onClick?(...args: unknown[]): void
 		href?: string
 	}>
+	disabled?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
 	title: "Actions",
 	// open: false,
 	actions: () => [],
+	disabled: false,
 })
 </script>
 
 <template>
 	<DropdownMenu>
-		<DropdownMenuTrigger>
+		<DropdownMenuTrigger :disabled="disabled">
 			<Icon
 				name="mage:dots"
 				size="24"

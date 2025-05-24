@@ -1,4 +1,5 @@
 import { createColumnHelper } from "@tanstack/vue-table"
+import type { ColumnDef } from "@tanstack/vue-table"
 import { Pencil } from "lucide-vue-next"
 import TableAction from "~/components/admin/table/TableAction.vue"
 import { cn } from "~/lib/utils"
@@ -10,7 +11,7 @@ export type Category = {
 
 const categoryHelper = createColumnHelper<Category>()
 
-export const categoryColumns = [
+export const categoryColumns: ColumnDef<Category, string>[] = [
 	categoryHelper.display({
 		id: "rowNumber",
 		header: () => h("span", { class: cn("text-center w-[20px]") }, "#"),
@@ -27,16 +28,22 @@ export const categoryColumns = [
 	categoryHelper.accessor("name", {
 		header: "Category Name",
 		enableHiding: false,
-		cell: ({ getValue }) => getValue(),
+		cell: ({ getValue }) => h(
+			"span",
+			{
+				class: cn("text-sm"),
+			},
+			getValue()),
 	}),
 
 	categoryHelper.display({
 		id: "action",
 		enableHiding: false,
 		header: () => h("span", { class: cn("text-center") }, "Action"),
-		cell: () => h(TableAction, {
+		cell: ({ table }) => h(TableAction, {
 			class: cn(""),
 			title: "Action",
+			disabled: table.options.meta?.isLoading,
 			actions: [
 				{
 					label: "Ubah Kategori",

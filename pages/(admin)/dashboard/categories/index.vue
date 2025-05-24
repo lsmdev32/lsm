@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRouteQuery } from "@vueuse/router"
 import { PlusIcon, RefreshCwIcon } from "lucide-vue-next"
 import { categoryColumns } from "~/components/admin/table/columns"
 
@@ -8,14 +7,23 @@ definePageMeta({
 	middleware: ["auth"],
 })
 
-const search = useRouteQuery<string>("search", "")
-const page = useRouteQuery<number>("page", 0)
+const isCreateModalOpen = ref(false)
 
-const { result } = useCategoryList(search, page)
-const { onChange, submit } = useCreateCategory()
+const { results, searchString, totalPages, currentPage, setPage, isLoading } = useCategoryList()
+const { onChange, submit, isSubmitting } = useCreateCategory()
+
+const tableLoading = computed(() => isSubmitting.value || isLoading.value)
 
 function refresh() {
 	location.reload()
+}
+
+async function submitCreateCategory() {
+	await submit()
+		.then(() => {
+			isCreateModalOpen.value = false
+			refresh()
+		})
 }
 </script>
 
@@ -23,21 +31,28 @@ function refresh() {
 	<AdminPage page-title="Kategori">
 		<div>
 			<AdminTableDataTable
-				v-if="result"
-				:columns="categoryColumns"
-				:data="result.hits"
-				:pagination="{ pageSize: 10, pageIndex: 0 }"
+				v-if="results"
+				:columns="categoryColumns as []"
+				:data="results"
+				:current-page="currentPage"
+				:total-pages="totalPages"
+				:page-size="10"
+				:loading="tableLoading"
+				:selectable="false"
+				@update:page="setPage($event)"
 			>
 				<template #upper="{ }">
 					<div class="flex gap-x-2 items-center w-full">
 						<UiInput
-							v-model="search"
+							v-model="searchString"
 							class="max-w-xs"
 							placeholder="Cari kategori"
+							:disabled="isSubmitting"
 						/>
 						<UiButton
 							class=""
 							color="primary"
+							:disabled="isSubmitting"
 							@click="refresh"
 						>
 							<RefreshCwIcon :size="24" />
@@ -49,7 +64,9 @@ function refresh() {
 							color="primary"
 						>
 							<UiDialog>
-								<UiDialogTrigger class="flex gap-x-2 items-center">
+								<UiDialogTrigger
+									class="flex gap-x-2 items-center"
+								>
 									<PlusIcon :size="24" />
 									<span>Tambah Kategori</span>
 								</UiDialogTrigger>
@@ -59,12 +76,13 @@ function refresh() {
 									</UiDialogHeader>
 
 									<UiInput
-										placeholder="Nama Kategori"
+										type="text"
+										placeholder="Masukkan nama Kategori"
 										@update:model-value="onChange($event as string)"
 									/>
 
 									<UiDialogFooter>
-										<UiButton @click="submit">
+										<UiButton @click="submitCreateCategory">
 											Buat
 										</UiButton>
 									</UiDialogFooter>

@@ -1,4 +1,4 @@
-import { addDoc } from "firebase/firestore"
+import { addDoc, getDocs, query, where } from "firebase/firestore"
 import { toast } from "vue-sonner"
 import { getCategoryCollectionRef } from "~/lib/firestore-model"
 
@@ -9,7 +9,39 @@ export function useCreateCategory() {
 	const tempCategory = ref("")
 
 	async function submit() {
+		const value = tempCategory.value.trim()
+
+		if (!value) {
+			toast.error("Nama kategori tidak boleh kosong")
+			return
+		}
+
+		if (value.length < 4) {
+			toast.error("Nama kategori harus lebih dari 4 karakter")
+			return
+		}
+
+		if (value.length > 50) {
+			toast.error("Nama kategori tidak boleh lebih dari 50 karakter")
+			return
+		}
+
 		isSubmitting.value = true
+
+		// check if category already exists
+		const q = query(
+			getCategoryCollectionRef(firestore),
+			where("name", "==", value),
+		)
+		const result = await getDocs(q)
+		if (!result.empty) {
+			toast.error("Nama kategori sudah ada")
+			isSubmitting.value = false
+			return
+		}
+
+		await new Promise(resolve => setTimeout(resolve, 3000)) // simulate loading
+
 		await addDoc(getCategoryCollectionRef(firestore), {
 			name: tempCategory.value,
 		})

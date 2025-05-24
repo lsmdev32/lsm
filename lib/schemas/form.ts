@@ -1,5 +1,7 @@
+import { toTypedSchema } from "@vee-validate/zod"
 import { z } from "zod"
 import {
+	CREATE_CATEGORY_FORM_CONSTANTS,
 	CREATE_STAFF_FORM_CONSTANTS,
 } from "~/lib/constants"
 
@@ -131,7 +133,29 @@ export const EDIT_STAFF_FORM_SCHEMA = CREATE_STAFF_FORM_SCHEMA
 			.default(""),
 	})
 
+export const CREATE_CATEGORY_FORM_SCHEMA_KEYS = {
+	name: "name",
+} as const
+
+const CREATE_CATEGORY_FORM_SCHEMA = z.object({
+	[CREATE_CATEGORY_FORM_SCHEMA_KEYS.name]: z
+		.string()
+		.trim()
+		.min(CREATE_CATEGORY_FORM_CONSTANTS.NAME.MIN_LENGTH,
+			CREATE_CATEGORY_FORM_CONSTANTS.MSG.CATEGORY_NAME_MIN_LENGTH_MSG)
+		.max(CREATE_CATEGORY_FORM_CONSTANTS.NAME.MAX_LENGTH,
+			CREATE_CATEGORY_FORM_CONSTANTS.MSG.CATEGORY_NAME_MAX_LENGTH_MSG),
+})
+
+export const validationSchemas = {
+	loginForm: toTypedSchema(LOGIN_FORM_SCHEMA),
+	createStaffForm: toTypedSchema(CREATE_STAFF_FORM_SCHEMA),
+	editStaffForm: toTypedSchema(EDIT_STAFF_FORM_SCHEMA),
+	createCategoryForm: toTypedSchema(CREATE_CATEGORY_FORM_SCHEMA),
+}
+
 export type StaffType = typeof STAFF_TYPES
 export type LoginFormPayload = z.infer<typeof LOGIN_FORM_SCHEMA>
 export type CreateStaffFormPayload = z.infer<typeof CREATE_STAFF_FORM_SCHEMA>
 export type EditStaffFormPayload = z.infer<typeof EDIT_STAFF_FORM_SCHEMA>
+export type CreateCategoryFormPayload = z.infer<typeof CREATE_CATEGORY_FORM_SCHEMA>
