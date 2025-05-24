@@ -47,7 +47,7 @@ const { data } = await useCustomFetch("/rest/page-data/home")
 		</section>
 		<section class="md:hidden items-center justify-center w-full">
 			<div class="w-full mx-auto sm:px-6 lg:px-8">
-				<h1 class="text-3xl font-[Marcellus] text-left py-4">
+				<h1 class="text-3xl font-[Marcellus] text-center py-4">
 					Publications
 				</h1>
 			</div>
@@ -57,7 +57,7 @@ const { data } = await useCustomFetch("/rest/page-data/home")
 		</section>
 		<section class="md:hidden items-center justify-center w-full">
 			<div class="w-full mx-auto sm:px-6 lg:px-8">
-				<h1 class="text-3xl font-[Marcellus] text-left py-4">
+				<h1 class="text-3xl font-[Marcellus] text-center py-4">
 					Our Attorneys
 				</h1>
 			</div>
