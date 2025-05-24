@@ -67,7 +67,7 @@ const archives = [
 		</section>
 		<!-- Desktop -->
 		<section class="hidden md:flex justify-center w-full">
-			<div class="flex flex-row max-w-7xl p-4 gap-8 mx-auto w-full">
+			<div class="flex flex-row max-w-7xl p-4 gap-8 mx-auto w-full px-2 sm:px-6 lg:px-8">
 				<!-- Sidebar -->
 				<div class="w-1/4">
 					<div class="flex flex-col mb-4">
