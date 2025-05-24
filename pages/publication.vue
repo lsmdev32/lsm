@@ -114,7 +114,7 @@ const archives = [
 						<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">
 							<div class="flex items-center space-x-1 ">
 								<img
-									src="../../assets/images/Dummy_DamianAgataYuvens.jpg"
+									src="~/assets/images/Dummy_DamianAgataYuvens.jpg"
 									alt="Author"
 									class="w-8 h-8 rounded-full mr-1"
 								>
@@ -156,7 +156,7 @@ const archives = [
 							<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">
 								<div class="flex items-center space-x-1 ">
 									<img
-										src="../../assets/images/Dummy_DamianAgataYuvens.jpg"
+										src="~/assets/images/Dummy_DamianAgataYuvens.jpg"
 										alt="Author"
 										class="w-8 h-8 rounded-full mr-1"
 									>
@@ -171,9 +171,6 @@ const archives = [
 									<span class="uppercase text-[#DAB38D]">Jan 18, 2019</span>
 								</div>
 							</div>
-							<p class="mt-4 text-gray-700 text-sm">
-								{{ truncateWords(post.description, 20) }}
-							</p>
 							<button class="mt-4 px-4 py-2 bg-[#91AEAC] text-white hover:bg-[#9aaea1] rounded w-fit text-sm">
 								Read More
 							</button>

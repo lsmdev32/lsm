@@ -2,13 +2,16 @@
 import { NuxtImg } from "#components"
 import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
 import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
+import Publications from "~/components/audience/Publications.vue"
+
+const { data } = await useCustomFetch("/rest/page-data/home")
 </script>
 
 <template>
 	<div class="z-10">
 		<!-- Mobile -->
 		<section class="md:hidden ">
-			<div class="flex flex-col items-start justify-center px-4 py-6 z-0">
+			<div class="flex flex-col items-start justify-center px-6 py-6 z-0">
 				<div class="flex flex-col bg-[url('/images/img-practice-area.svg')] bg-no-repeat bg-cover justify-end items-start w-full h-[556px] p-4">
 					<h1 class="text-4xl font-[marcellus] text-white">
 						Practice Area
@@ -17,7 +20,7 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 			</div>
 		</section>
 		<section class="md:hidden py-3">
-			<div class="flex flex-row px-4 py-6 gap-44 z-0 w-full">
+			<div class="flex flex-row px-6 py-6 gap-44 z-0 w-full">
 				<div class="flex-1/3">
 					<NuxtImg
 						class="w-4 h-6 mt-4"
@@ -37,12 +40,26 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 				</div>
 			</div>
 		</section>
-		<section class="md:hidden">
-			<PracticeAreaDetails />
+		<section class="md:hidden items-center justify-center w-full">
+			<div class="w-full mx-auto sm:px-6 lg:px-8">
+				<PracticeAreaDetails />
+			</div>
 		</section>
 		<section class="md:hidden items-center justify-center w-full">
-			<div class="items-center justify-center">
-				Publications And News Here!
+			<div class="w-full mx-auto sm:px-6 lg:px-8">
+				<h1 class="text-3xl font-[Marcellus] text-left py-4">
+					Publications
+				</h1>
+			</div>
+			<div class="items-center justify-center px-6 py-6 z-0">
+				<Publications />
+			</div>
+		</section>
+		<section class="md:hidden items-center justify-center w-full">
+			<div class="w-full mx-auto sm:px-6 lg:px-8">
+				<h1 class="text-3xl font-[Marcellus] text-left py-4">
+					Our Attorneys
+				</h1>
 			</div>
 		</section>
 		<!-- Desktop -->
@@ -93,6 +110,30 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 		</section>
 		<section class="hidden md:flex w-full h-120 z-0 mt-4">
 			<PracticeAreaDetails />
+		</section>
+		<div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+			<h1 class="text-3xl font-[Marcellus] text-left py-4">
+				Publications
+			</h1>
+		</div>
+		<section class="hidden md:flex w-full justify-center items-start h-120 z-0 mt-4">
+			<Publications />
+		</section>
+		<div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mt-4">
+			<h1 class="text-3xl font-[Marcellus] text-left py-4">
+				Our Attorneys
+			</h1>
+		</div>
+		<section class="hidden md:flex w-full h-120 z-0 mt-4">
+			<div class="flex items-center justify-center gap-8">
+				<Partners
+					v-for="(partner, index) in data?.data?.partners.data.slice(0, 4)"
+					:key="index"
+					class="capitalize"
+					:image="partner.image_url"
+					:name="partner.name"
+				/>
+			</div>
 		</section>
 	</div>
 </template>

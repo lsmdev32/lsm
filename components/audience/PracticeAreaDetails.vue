@@ -209,7 +209,7 @@ const getBackgroundImage = (categoryIndex: number) => {
 			</div>
 		</section>
 		<!-- Desktop -->
-		<section class="hidden md:flex max-w-7xl h-auto py-4 items-center justify-center mx-auto">
+		<section class="hidden md:flex max-w-7xl h-auto py-4 px-2 sm:px-6 lg:px-8 items-center justify-center mx-auto">
 			<div class="w-full mx-auto px-4">
 				<div class="flex flex-row gap-14">
 					<!-- Column 1: Main Categories -->
@@ -226,7 +226,7 @@ const getBackgroundImage = (categoryIndex: number) => {
 							{{ category.title }}
 						</div>
 					</div>
-					<div class="flex-1 flex flex-row w-full justify-between">
+					<div class="flex-1 flex flex-row w-full gap-20">
 						<!-- Column 2: First Half of Sub-items -->
 						<div class="flex-1/2 flex flex-col gap-12 text-[#DAB38D] font-[Marcellus]">
 							<div

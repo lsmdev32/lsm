@@ -7,6 +7,7 @@ import CCThumbnail from "~/assets/images/cc-thumbnail.svg"
 import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
 import useCustomFetch from "~/composables/useCustomFetch"
 import Partners from "~/components/audience/Partners.vue"
+import Publications from "~/components/audience/Publications.vue"
 
 const { data } = await useCustomFetch("/rest/page-data/home")
 
@@ -91,7 +92,7 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 		<section class="md:min-w-full md:hidden font-[philosopher] ">
-			<div class="flex items-center justify-start bg-[url('~/assets/images/ip-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
+			<div class="flex items-center justify-start bg-[url('~/assets/images/ip-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[24px]  z-0">
 				<div>
 					<h2 class="text-2xl text-white">
 						Intelectual Property
@@ -102,16 +103,23 @@ const setOption = (index: number) => {
 
 		<!-- Blog and Publication Section here! -->
 		<section class="sm:justify-center md:hidden md:min-w-full">
-			<h1 class="text-3xl font-[philosopher] text-center pt-[15px] pb-[30px]">
-				Blog and Publication
-			</h1>
+			<div class="w-full mx-auto sm:px-6 lg:px-8">
+				<h1 class="text-3xl font-[Marcellus] text-center py-4">
+					Publications
+				</h1>
+			</div>
+			<div class="items-center justify-center px-6 py-6 z-0">
+				<Publications />
+			</div>
 		</section>
 
 		<!-- Our Attorneys Section -->
 		<section class="sm:justify-center md:hidden md:min-w-full">
-			<h1 class="text-3xl font-[philosopher] text-center pt-[15px] pb-[30px]">
-				Our Attorneys
-			</h1>
+			<div class="w-full mx-auto sm:px-6 lg:px-8">
+				<h1 class="text-3xl font-[Marcellus] text-center py-4">
+					Our Attorneys
+				</h1>
+			</div>
 		</section>
 
 		<!-- Desktop -->
