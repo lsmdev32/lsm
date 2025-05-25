@@ -8,6 +8,7 @@ import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
 import useCustomFetch from "~/composables/useCustomFetch"
 import Partners from "~/components/audience/Partners.vue"
 import Publications from "~/components/audience/Publications.vue"
+import Reviews from "~/components/audience/Reviews.vue"
 
 const { data } = await useCustomFetch("/rest/page-data/home")
 
@@ -342,9 +343,7 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
-			<div class="flex h-[265px] w-full bg-[#BFE7E4] items-center justify-center">
-				Reviews here!
-			</div>
+			<Reviews />
 		</section>
 		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
 			<div class="flex h-[265px] w-full items-center justify-center">

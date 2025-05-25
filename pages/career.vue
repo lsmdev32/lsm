@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { NuxtImg } from "#components"
 import CheckIc from "~/assets/images/check-icon.svg"
+import Button from "~/components/audience/Button.vue"
 </script>
 
 <template>
@@ -74,7 +75,7 @@ import CheckIc from "~/assets/images/check-icon.svg"
 			</div>
 		</section>
 		<section class="md:min-w-full md:hidden">
-			<div class="flex flex-col px-4 py-4 z-0">
+			<div class="flex flex-col px-4 pt-4 pb-6 z-0">
 				<div class="flex-1 w-full">
 					<input
 						type="text"
@@ -103,21 +104,17 @@ import CheckIc from "~/assets/images/check-icon.svg"
 						:rows="4"
 						required
 					/>
+					<Button
+						class="mt-6 cursor-pointer"
+						text-button="Submit"
+					/>
 				</div>
-			</div>
-			<div class="flex flex-1 font-[Ubuntu] font-light text-white items-center justify-start px-4 pb-20 z-0">
-				<button
-					type="button"
-					class="mt-4 bg-[#4B3D2A] rounded-md px-10 py-4 hover:cursor-pointer"
-				>
-					Submit
-				</button>
 			</div>
 		</section>
 		<!-- Desktop -->
 		<section class="hidden md:flex flex-row md:min-w-full justify-center items-start px-10 sm:px6 lg:px-8">
-			<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
-				<div class="flex flex-col z-0 ">
+			<div class="max-w-7xl mx-auto pb-12 px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
+				<div class="flex flex-col z-0">
 					<div class="flex-1">
 						<h1 class="text-5xl font-[marcellus] text-[#4B3D2A]">
 							Carrer
@@ -158,6 +155,10 @@ import CheckIc from "~/assets/images/check-icon.svg"
 							placeholder="Please describe your interest in joining LSM*"
 							:rows="4"
 							required
+						/>
+						<Button
+							class="mt-6 cursor-pointer"
+							text-button="Submit"
 						/>
 					</div>
 				</div>
