@@ -91,8 +91,29 @@ type CategoryDocumentModel = DocumentModelOfType<{
 	name: string
 }>
 
+export type BlogAppModel = AppModelOfType<{
+	title: string
+	slug: string
+	cover_image_url: string
+	content: string
+	status: "draft" | "published"
+	author_id: string
+	category_id: string
+}>
+
+export type BlogDocumentModel = DocumentModelOfType<{
+	title: string
+	slug: string
+	cover_image_url: string
+	content: string
+	status: "draft" | "published"
+	author_id: string
+	category_id: string
+}>
+
 const staffConverter = createFirestoreConverter<StaffAppModel, StaffDocumentModel>()
 const categoryConverter = createFirestoreConverter<CategoryAppModel, CategoryDocumentModel>()
+const blogsConverter = createFirestoreConverter<BlogAppModel, BlogDocumentModel>()
 
 const map = {
 	staff: [
@@ -120,4 +141,14 @@ export function getCategoryCollectionRef(firestore: Firestore) {
 export function getCategoryDocRef(firestore: Firestore, id: string) {
 	return doc(firestore, "categories", id)
 		.withConverter(categoryConverter)
+}
+
+export function getBlogCollectionRef(firestore: Firestore) {
+	return collection(firestore, "blogs")
+		.withConverter(blogsConverter)
+}
+
+export function getBlogDocRef(firestore: Firestore, id: string) {
+	return doc(firestore, "blogs", id)
+		.withConverter(blogsConverter)
 }
