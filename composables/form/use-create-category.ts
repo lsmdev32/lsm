@@ -1,4 +1,4 @@
-import { addDoc, getDocs, query, where } from "firebase/firestore"
+import { addDoc, getDocs, limit, query, where } from "firebase/firestore"
 import { toast } from "vue-sonner"
 import { getCategoryCollectionRef } from "~/lib/firestore-model"
 
@@ -32,6 +32,7 @@ export function useCreateCategory() {
 		const q = query(
 			getCategoryCollectionRef(firestore),
 			where("name", "==", value),
+			limit(1),
 		)
 		const result = await getDocs(q)
 		if (!result.empty) {
