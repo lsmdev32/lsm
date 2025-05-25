@@ -24,6 +24,7 @@ export const SESSION_STORAGE_KEYS = createPairFromEnum(
 	"CREATE_STAFF_FORM",
 	"EDIT_STAFF_FORM",
 	"CREATE_BLOG_FORM",
+	"EDIT_BLOG_FORM",
 )
 
 export const DEBOUNCE_DEFAULT_TIME = 500
