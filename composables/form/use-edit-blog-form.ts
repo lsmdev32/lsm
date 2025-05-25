@@ -1,5 +1,5 @@
 import { useDebounce } from "@vueuse/core"
-import { addDoc, updateDoc } from "firebase/firestore"
+import { updateDoc } from "firebase/firestore"
 import { useForm } from "vee-validate"
 import { toast } from "vue-sonner"
 import {
@@ -7,7 +7,7 @@ import {
 	IMAGES_STORAGE_PATH,
 	SESSION_STORAGE_KEYS,
 } from "~/lib/constants"
-import { getBlogCollectionRef, getBlogDocRef } from "~/lib/firestore-model"
+import { getBlogDocRef } from "~/lib/firestore-model"
 import {
 	validationSchemas,
 	CONTENT_FORM_TYPE,
@@ -91,11 +91,9 @@ export function useEditBlogForm(id: string) {
 	}
 
 	const onSubmit = form.handleSubmit(async (v) => {
-		const colRef = getBlogCollectionRef(firestore)
-
 		toast.info("Harap tunggu blogs sedang dibuat...")
 		try {
-			await addDoc(colRef, {
+			await updateDoc(getBlogDocRef(firestore, id), {
 				type: v.type,
 				cover_image_url: v.image_url,
 				title: v.title,
