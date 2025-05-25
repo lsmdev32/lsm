@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronUp, Inbox, Pencil, Tags, Notebook, User, UserPlus, ListOrdered } from "lucide-vue-next"
+import { ChevronUp, Inbox, Pencil, Notebook, User, UserPlus } from "lucide-vue-next"
 import { signOut } from "firebase/auth"
 import { toast } from "vue-sonner"
 import type { FunctionalComponent } from "vue"
@@ -51,11 +51,6 @@ const items: SidebarItem[] = [
 				title: "Tambahkan profil",
 				icon: UserPlus,
 				path: "/dashboard/profiles/create",
-			},
-			{
-				title: "Atur susunan profil",
-				icon: ListOrdered,
-				path: "/dashboard/profiles/order-settings",
 			},
 		],
 	},
