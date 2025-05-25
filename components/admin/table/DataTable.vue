@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends Record<string, unknown>">
+<script setup lang="ts" generic="T extends Record<string, unknown>, TData extends any = any">
 import type {
 	ColumnDef,
 	ColumnFiltersState,
@@ -32,14 +32,13 @@ defineEmits<Emits>()
 
 type Props = {
 	data: T[]
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	columns: ColumnDef<T, any>[]
+	columns: ColumnDef<T, TData>[]
 	isLoading?: boolean
 	selectable?: boolean
 	totalPages?: number
 	currentPage?: number
 	pageSize?: number
-
+	meta?: Record<string, unknown>
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -94,6 +93,7 @@ const table = useVueTable({
 	},
 	meta: {
 		isLoading: props.isLoading,
+		...props.meta,
 	},
 })
 </script>

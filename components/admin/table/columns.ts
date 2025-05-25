@@ -1,10 +1,14 @@
 import { createColumnHelper } from "@tanstack/vue-table"
 import type { ColumnDef } from "@tanstack/vue-table"
-import { Pencil } from "lucide-vue-next"
-import TableAction from "~/components/admin/table/TableAction.vue"
+import { SaveIcon } from "lucide-vue-next"
+import { updateDoc } from "firebase/firestore"
+import { toast } from "vue-sonner"
+import { UiButton, UiInput } from "#components"
 import { cn } from "~/lib/utils"
+import { getCategoryDocRef } from "~/lib/firestore-model"
 
 export type Category = {
+	objectID: string
 	name: string
 	created_at: Date
 }
@@ -28,29 +32,75 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
 	categoryHelper.accessor("name", {
 		header: "Category Name",
 		enableHiding: false,
-		cell: ({ getValue }) => h(
-			"span",
-			{
-				class: cn("text-sm"),
-			},
-			getValue()),
-	}),
+		cell: ({ row, getValue }) => {
+			const id = row.original.objectID
+			const inputRef = ref("")
+			const firestore = useFirestore()
+			const docRef = getCategoryDocRef(firestore, id)
 
-	categoryHelper.display({
-		id: "action",
-		enableHiding: false,
-		header: () => h("span", { class: cn("text-center") }, "Action"),
-		cell: ({ table }) => h(TableAction, {
-			class: cn(""),
-			title: "Action",
-			disabled: table.options.meta?.isLoading,
-			actions: [
+			async function updateCategoryName() {
+				const inputValue = inputRef.value.trim()
+				console.log(inputValue)
+
+				if (inputValue === getValue()) {
+					toast.info("Tidak ada perubahan pada nama kategori")
+					return
+				}
+
+				if (!inputValue) {
+					toast.error("Nama kategori tidak boleh kosong")
+					return
+				}
+
+				if (inputValue.length < 4) {
+					toast.error("Nama kategori harus lebih dari 4 karakter")
+					return
+				}
+
+				if (inputValue.length > 50) {
+					toast.error("Nama kategori tidak boleh lebih dari 50 karakter")
+					return
+				}
+
+				await updateDoc(docRef, {
+					name: inputValue,
+				})
+					.then(() => {
+						toast.success("Kategori berhasil diperbarui")
+					})
+					.catch((error) => {
+						toast.error(`Gagal memperbarui kategori: ${error.message}`)
+					})
+			}
+
+			function handleChange(value: string | number) {
+				inputRef.value = value as string
+			}
+
+			return h(
+				"div",
 				{
-					label: "Ubah Kategori",
-					icon: Pencil,
-					iconClass: cn("hover:cursor-pointer"),
+					key: id,
+					class: cn("text-sm flex gap-x-2"),
 				},
-			],
-		}),
+				[
+					h(
+						UiInput,
+						{
+							"defaultValue": getValue(),
+							"onUpdate:modelValue": handleChange,
+							"class": cn("w-[200px]"),
+						},
+					),
+					h(
+						UiButton,
+						{
+							variant: "ghost",
+							onClick: updateCategoryName,
+						},
+						h(SaveIcon)),
+				],
+			)
+		},
 	}),
 ]
