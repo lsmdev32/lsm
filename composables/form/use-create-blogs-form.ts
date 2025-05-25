@@ -15,7 +15,7 @@ import {
 	validationSchemas,
 } from "~/lib/schemas/form"
 
-export function useCreateBlogs() {
+export function useCreateBlogForm() {
 	const form = useForm({
 		validationSchema: validationSchemas.createBlogsForm,
 		initialValues: {
@@ -23,6 +23,7 @@ export function useCreateBlogs() {
 			status: CONTENT_FORM_STATUS.not_published,
 		},
 	})
+	const isSubmitting = form.isSubmitting
 
 	const firestore = useFirestore()
 	const router = useRouter()
@@ -70,8 +71,21 @@ export function useCreateBlogs() {
 		form.resetForm()
 	}
 
-	const submit = form.handleSubmit(async (v) => {
+	const onSubmit = form.handleSubmit(async (v) => {
 		toast.info("Mengupload file...", { duration: 3000 })
+
+		const colRef = getBlogCollectionRef(firestore)
+		const duplicateSlugQuery = query(
+			colRef,
+			where("slug", "==", v.slug),
+			limit(1),
+		)
+
+		const docs = await getDocs(duplicateSlugQuery)
+		if (!docs.empty) {
+			toast.error("Harap gunakan judul lain, judul ini sudah digunakan")
+			return
+		}
 
 		// TODO: handle submit
 		const res = await Promise.all([
@@ -86,22 +100,9 @@ export function useCreateBlogs() {
 			return
 		}
 
-		const colRef = getBlogCollectionRef(firestore)
-
 		const [coverImageURL] = res
-		const duplicateSlugQuery = query(
-			colRef,
-			where("slug", "==", v.slug),
-			limit(1),
-		)
-		const docs = await getDocs(duplicateSlugQuery)
 
-		if (!docs.empty) {
-			toast.error("Harap gunakan judul lain, judul ini sudah digunakan")
-			return
-		}
-
-		toast.info("Harap tunggu blogs sedang dibuat...", { duration: 3000 })
+		toast.info("Harap tunggu blogs sedang dibuat...")
 		try {
 			await addDoc(colRef, {
 				type: v.type,
@@ -109,33 +110,44 @@ export function useCreateBlogs() {
 				title: v.title,
 				content: v.content,
 				category_id: v.category,
+				author_id: v.author ?? null,
 				slug: v.slug,
 				status: v.status,
-				author_id: v.author,
-				published_at: v.status === CONTENT_FORM_STATUS.publish ? new Date() : undefined,
+				published_at: v.status === CONTENT_FORM_STATUS.publish ? new Date() : null,
 			})
 		}
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 		catch (e) {
+			console.log(e)
+
 			toast.error("Gagal membuat blog")
 			return
 		}
 
-		const DELAY = 5000
-		await new Promise(() => {
-			setTimeout(() => {
-				toast.success("Blog sukses dibuat")
-				resetForm()
-				Promise.resolve()
-			}, DELAY)
-		})
-
+		toast.success("Blog sukses dibuat")
+		resetForm()
 		router.replace("/dashboard/blogs")
 	})
 
+	async function saveAsDraft() {
+		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.status, CONTENT_FORM_STATUS.not_published)
+		await onSubmit()
+	}
+
+	async function saveAsPublished() {
+		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.status, CONTENT_FORM_STATUS.publish)
+		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.published_at, new Date())
+		await onSubmit()
+	}
+
 	return {
-		submit,
+		form,
+		isSubmitting,
+		values,
+		onSubmit,
 		resetForm,
 		resetFields,
+		saveAsDraft,
+		saveAsPublished,
 	}
 }

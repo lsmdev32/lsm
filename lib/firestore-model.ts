@@ -98,8 +98,8 @@ export type BlogAppModel = AppModelOfType<{
 	cover_image_url: string
 	content: string
 	status: "not_published" | "published"
-	published_at?: Date
-	author_id?: string
+	published_at?: Date | null
+	author_id?: string | null
 	category_id: string
 }>
 
@@ -110,8 +110,8 @@ export type BlogDocumentModel = DocumentModelOfType<{
 	cover_image_url: string
 	content: string
 	status: "not_published" | "published"
-	published_at?: Date
-	author_id?: string
+	published_at?: Date | null
+	author_id?: string | null
 	category_id: string
 }>
 
@@ -135,6 +135,16 @@ export function getDocRef(firestore: Firestore, name: CollectionNames, id?: stri
 export function getCollectionRef(firestore: Firestore, name: CollectionNames) {
 	return collection(firestore, map[name][0])
 		.withConverter(map[name][1])
+}
+
+export function getStaffCollectionRef(firestore: Firestore) {
+	return collection(firestore, "staffs")
+		.withConverter(staffConverter)
+}
+
+export function getStaffDocRef(firestore: Firestore, id: string) {
+	return doc(firestore, "staffs", id)
+		.withConverter(staffConverter)
 }
 
 export function getCategoryCollectionRef(firestore: Firestore) {
