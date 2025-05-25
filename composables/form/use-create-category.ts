@@ -28,9 +28,10 @@ export function useCreateCategory() {
 
 		isSubmitting.value = true
 
+		const colRef = getCategoryCollectionRef(firestore)
 		// check if category already exists
 		const q = query(
-			getCategoryCollectionRef(firestore),
+			colRef,
 			where("name", "==", value),
 			limit(1),
 		)
@@ -43,7 +44,7 @@ export function useCreateCategory() {
 
 		await new Promise(resolve => setTimeout(resolve, 3000)) // simulate loading
 
-		await addDoc(getCategoryCollectionRef(firestore), {
+		await addDoc(colRef, {
 			name: tempCategory.value,
 		})
 			.then(() => {

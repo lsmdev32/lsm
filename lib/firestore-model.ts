@@ -92,22 +92,26 @@ type CategoryDocumentModel = DocumentModelOfType<{
 }>
 
 export type BlogAppModel = AppModelOfType<{
+	type: "blog" | "publication"
 	title: string
 	slug: string
 	cover_image_url: string
 	content: string
-	status: "draft" | "published"
-	author_id: string
+	status: "not_published" | "published"
+	published_at?: Date
+	author_id?: string
 	category_id: string
 }>
 
 export type BlogDocumentModel = DocumentModelOfType<{
+	type: "blog" | "publication"
 	title: string
 	slug: string
 	cover_image_url: string
 	content: string
-	status: "draft" | "published"
-	author_id: string
+	status: "not_published" | "published"
+	published_at?: Date
+	author_id?: string
 	category_id: string
 }>
 
@@ -144,11 +148,11 @@ export function getCategoryDocRef(firestore: Firestore, id: string) {
 }
 
 export function getBlogCollectionRef(firestore: Firestore) {
-	return collection(firestore, "blogs")
+	return collection(firestore, "contents")
 		.withConverter(blogsConverter)
 }
 
 export function getBlogDocRef(firestore: Firestore, id: string) {
-	return doc(firestore, "blogs", id)
+	return doc(firestore, "contents", id)
 		.withConverter(blogsConverter)
 }

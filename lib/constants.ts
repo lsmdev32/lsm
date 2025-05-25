@@ -23,6 +23,7 @@ export const LOCAL_STORAGE_KEYS = createPairFromEnum()
 export const SESSION_STORAGE_KEYS = createPairFromEnum(
 	"CREATE_STAFF_FORM",
 	"EDIT_STAFF_FORM",
+	"CREATE_BLOG_FORM",
 )
 
 export const DEBOUNCE_DEFAULT_TIME = 500
@@ -74,8 +75,55 @@ export const CREATE_CATEGORY_FORM_CONSTANTS = {
 	},
 } as const
 
+export const CREATE_CONTENT_FORM_CONSTANTS = {
+	TITLE: {
+		MIN_LENGTH: 10,
+		MAX_LENGTH: 100,
+	},
+	SLUG: {
+		REGEX: /^[a-z0-9]*(?:-[a-z0-9]+)*$/,
+	},
+	COVER_IMAGE: {
+		MAX_WIDTH: 6000 as const,
+		MAX_HEIGHT: 4000 as const,
+		MAX_SIZE: 10 * 1024 * 1024, // 10MB
+		IMAGE_TYPES: [
+			"image/jpeg",
+			"image/png",
+		] as string[],
+	},
+	CONTENT: {
+		MIN_LENGTH: 100,
+	},
+	STATUS: {
+		VALID_STATUSES: [
+			"draft", "published",
+		] as const,
+	},
+	PUBLICATION: {
+		FILE_TYPES: ["application/pdf"] as string[],
+		MAX_SIZE: 20 * 1024 * 1024, // 20MB
+	},
+	MSG: {
+		TITLE_MIN_LENGTH_MSG: "Judul minimal 10 karakter",
+		TITLE_MAX_LENGTH_MSG: "Judul maksimal 100 karakter",
+		SLUG_REGEX_MSG: "Slug hanya boleh mengandung huruf kecil, angka, dan tanda hubung",
+		COVER_IMAGE_TYPE_MSG: "Gambar harus berupa PNG atau JPEG",
+		COVER_IMAGE_SIZE_MSG: "Ukuran file maksimal 10MB",
+		COVER_IMAGE_DIMENSION_MSG: "Ukuran maksimal gambar 4000x6000",
+		CONTENT_MIN_LENGTH_MSG: "Konten minimal 100 karakter",
+		CATEGORY_REQUIRED_MSG: "Kategori harus dipilih",
+		AUTHOR_REQUIRED_MSG: "Penulis harus dipilih",
+		COVER_IMAGE_REQUIRED_MSG: "Gambar sampul harus diunggah",
+		PUBLICATION_FILE_TYPE_MSG: "File publikasi harus berupa PDF",
+		PUBLICATION_FILE_SIZE_MSG: "Ukuran file publikasi maksimal 20MB",
+	},
+} as const
+
 export const IMAGES_STORAGE_PATH = {
 	PROFILE_PICTURE: "profile_pictures",
 	BLOG: "blogs",
 	CV: "cv",
+	BLOG_IMAGES: "blog_images",
+	PUBLICATIONS: "publications",
 } as const

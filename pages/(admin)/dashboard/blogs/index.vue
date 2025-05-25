@@ -5,6 +5,8 @@ definePageMeta({
 })
 </script>
 
-<template lang="html">
-	<div>Blogs Page</div>
+<template>
+	<AdminPage page-title="Blogs">
+		<p>Test Blog</p>
+	</AdminPage>
 </template>
