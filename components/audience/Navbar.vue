@@ -49,7 +49,7 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 							Publication
 						</NuxtLink>
 						<NuxtLink
-							to="#"
+							to="/blogs"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
