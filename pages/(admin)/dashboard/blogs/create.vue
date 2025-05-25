@@ -133,7 +133,7 @@ const mappedAuthors = computed(() => {
 					class="w-full"
 				>
 					<UiFormLabel :required="meta.required">
-						Title
+						Judul
 					</UiFormLabel>
 					<UiFormControl>
 						<UiInput
@@ -191,7 +191,7 @@ const mappedAuthors = computed(() => {
 					v-slot="{ handleChange, meta }"
 					name="author"
 				>
-					<UiFormItem class="w-full">
+					<UiFormItem class="w-[400px]">
 						<UiFormLabel :required="meta.required">
 							Penulis
 						</UiFormLabel>
@@ -225,7 +225,7 @@ const mappedAuthors = computed(() => {
 				</UiFormItem>
 			</UiFormField>
 
-			<div class="flex w-full items-center justify-center pt-20 gap-x-4">
+			<div class="flex w-full items-center justify-center pt-10 gap-x-4">
 				<ui-button
 					class="capitalize flex-1 items-center"
 					:disabled="isFormSubmitting"
