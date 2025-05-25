@@ -101,6 +101,7 @@ export type BlogAppModel = AppModelOfType<{
 	published_at?: Date | null
 	author_id?: string | null
 	category_id: string
+	tags: string[]
 }>
 
 export type BlogDocumentModel = DocumentModelOfType<{
@@ -113,6 +114,7 @@ export type BlogDocumentModel = DocumentModelOfType<{
 	published_at?: Date | null
 	author_id?: string | null
 	category_id: string
+	tags: string[]
 }>
 
 const staffConverter = createFirestoreConverter<StaffAppModel, StaffDocumentModel>()

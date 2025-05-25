@@ -163,6 +163,7 @@ export const CONTENT_FORM_SCHEMA_KEYS = {
 	status: "status",
 	cover_image: "cover_image",
 	published_at: "published_at",
+	tags: "tags",
 } as const
 
 export const CONTENT_FORM_STATUS = {
@@ -251,6 +252,13 @@ export const MUTATE_BLOGS_FORM_SCHEMA = z.object({
 	[CONTENT_FORM_SCHEMA_KEYS.published_at]: z
 		.date()
 		.optional(),
+	[CONTENT_FORM_SCHEMA_KEYS.tags]: z
+		.array(z
+			.string()
+			.trim())
+		.optional()
+		.default([]),
+
 })
 
 export const EDIT_BLOGS_FORM_SCHEMA = MUTATE_BLOGS_FORM_SCHEMA

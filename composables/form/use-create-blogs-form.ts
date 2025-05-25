@@ -21,6 +21,7 @@ export function useCreateBlogForm() {
 		initialValues: {
 			type: CONTENT_FORM_TYPE.blog,
 			status: CONTENT_FORM_STATUS.not_published,
+			tags: [],
 		},
 	})
 	const isSubmitting = form.isSubmitting
@@ -114,6 +115,7 @@ export function useCreateBlogForm() {
 				slug: v.slug,
 				status: v.status,
 				published_at: v.status === CONTENT_FORM_STATUS.publish ? new Date() : null,
+				tags: v.tags,
 			})
 		}
 

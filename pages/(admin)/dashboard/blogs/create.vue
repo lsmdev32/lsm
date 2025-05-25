@@ -3,7 +3,7 @@ import { useDebounce } from "@vueuse/core"
 import { getDoc } from "firebase/firestore"
 import { PencilIcon } from "lucide-vue-next"
 import RichTextEditor from "~/components/rte/RichTextEditor.vue"
-import { DEBOUNCE_DEFAULT_TIME, SESSION_STORAGE_KEYS } from "~/lib/constants"
+import { DEBOUNCE_DEFAULT_TIME, LOCAL_STORAGE_KEYS, SESSION_STORAGE_KEYS } from "~/lib/constants"
 import { getCategoryDocRef, getStaffDocRef } from "~/lib/firestore-model"
 import type { CategoryAppModel, StaffAppModel } from "~/lib/firestore-model"
 
@@ -13,6 +13,7 @@ definePageMeta({
 })
 
 const firestore = useFirestore()
+
 const form = useCreateBlogForm()
 const isFormSubmitting = form.isSubmitting
 
@@ -22,6 +23,12 @@ const imageURL = computed(() => {
 	if (!(value instanceof File)) return undefined
 
 	return URL.createObjectURL(value)
+})
+
+watch(imageURL, (v) => {
+	if (!v) return
+
+	localStorage.setItem(LOCAL_STORAGE_KEYS.IMAGE_COVER, v)
 })
 
 const category = ref("")
@@ -78,7 +85,7 @@ const mappedAuthors = computed(() => {
 <template>
 	<AdminPage page-title="Buat Blog">
 		<form
-			class="w-full flex flex-col py-20"
+			class="w-full flex flex-col gap-y-4 py-20"
 			@submit="form.onSubmit"
 		>
 			<UiFormField
@@ -150,7 +157,7 @@ const mappedAuthors = computed(() => {
 					</UiFormLabel>
 					<UiFormControl>
 						<RichTextEditor
-							class="min-h-[300px] max-w-full"
+							class="max-w-full"
 							:initial-value="value"
 							:disabled="isFormSubmitting"
 							@handle-change="handleChange($event)"
@@ -199,6 +206,24 @@ const mappedAuthors = computed(() => {
 					</UiFormItem>
 				</UiFormField>
 			</div>
+
+			<UiFormField
+				v-slot="{ handleChange, meta, value }"
+				name="tags"
+			>
+				<UiFormItem class="w-full">
+					<UiFormLabel :required="meta.required">
+						Tag
+					</UiFormLabel>
+					<UiFormControl>
+						<AdminTagInput
+							:initial-values="value"
+							@on-change="handleChange($event)"
+						/>
+					</UiFormControl>
+					<UiFormMessage />
+				</UiFormItem>
+			</UiFormField>
 
 			<div class="flex w-full items-center justify-center pt-20 gap-x-4">
 				<ui-button

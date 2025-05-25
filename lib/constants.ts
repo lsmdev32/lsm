@@ -18,7 +18,7 @@ export const PATH_NAMES = {
 	BLOG_PREVIEW: (id: string) => `/dashboard/blogs/preview/${id}`,
 } as const
 
-export const LOCAL_STORAGE_KEYS = createPairFromEnum()
+export const LOCAL_STORAGE_KEYS = createPairFromEnum("IMAGE_COVER")
 
 export const SESSION_STORAGE_KEYS = createPairFromEnum(
 	"CREATE_STAFF_FORM",
