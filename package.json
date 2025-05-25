@@ -24,6 +24,7 @@
     "@orpc/openapi-client": "^1.2.0",
     "@orpc/server": "^1.0.3",
     "@orpc/zod": "^1.0.3",
+    "@tanstack/vue-table": "^8.21.3",
     "@unhead/vue": "^2.0.0-rc.8",
     "@unovis/ts": "^1.5.1",
     "@unovis/vue": "^1.5.1",

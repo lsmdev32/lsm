@@ -61,6 +61,19 @@ export const CREATE_STAFF_FORM_CONSTANTS = {
 	},
 } as const
 
+export const CREATE_CATEGORY_FORM_CONSTANTS = {
+	NAME: {
+		MIN_LENGTH: 4,
+		MAX_LENGTH: 50,
+	},
+	MSG: {
+		CATEGORY_NAME_EMPTY_MSG: "Nama kategori tidak boleh kosong",
+		CATEGORY_NAME_MIN_LENGTH_MSG: "Nama kategori harus lebih dari 4 karakter",
+		CATEGORY_NAME_MAX_LENGTH_MSG: "Nama kategori tidak boleh lebih dari 50 karakter",
+		CATEGORY_NAME_EXISTS_MSG: "Nama kategori sudah ada",
+	},
+} as const
+
 export const IMAGES_STORAGE_PATH = {
 	PROFILE_PICTURE: "profile_pictures",
 	BLOG: "blogs",

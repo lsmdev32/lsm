@@ -33,19 +33,14 @@ const items: SidebarItem[] = [
 		icon: Pencil,
 	},
 	{
-		title: "Publications",
+		title: "Publikasi",
 		path: "/dashboard/publications",
 		icon: Notebook,
 	},
 	{
-		title: "Content Category",
+		title: "Kategori Konten",
 		path: "/dashboard/categories",
 		icon: Inbox,
-	},
-	{
-		title: "Content Tags",
-		path: "/dashboard/tags",
-		icon: Tags,
 	},
 	{
 		title: "Profil staff",

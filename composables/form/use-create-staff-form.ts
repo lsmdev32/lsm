@@ -1,6 +1,6 @@
 import { toTypedSchema } from "@vee-validate/zod"
 import { useDebounce } from "@vueuse/core"
-import { addDoc, getDocs, query, where } from "firebase/firestore"
+import { addDoc, getDocs, limit, query, where } from "firebase/firestore"
 import { useForm } from "vee-validate"
 import { toast } from "vue-sonner"
 import { useUploader } from "~/composables"
@@ -94,10 +94,10 @@ export function useCreateStaffForm() {
 
 		const collectionRef = getCollectionRef(firestore, "staff")
 
-		const duplicateSlugQuery = query(collectionRef, where("slug", "==", v.slug))
+		const duplicateSlugQuery = query(collectionRef, where("slug", "==", v.slug), limit(1))
 		const docs = await getDocs(duplicateSlugQuery)
 
-		if (docs.size > 0) {
+		if (!docs.empty) {
 			toast.error("Harap gunakan nama lain, nama ini sudah digunakan")
 			return
 		}
