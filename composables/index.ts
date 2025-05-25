@@ -1,5 +1,7 @@
 export * from "./firebase/use-uploader"
 export * from "./form/use-create-staff-form"
 export * from "./form/use-edit-staff-form"
+export * from "./form/use-create-category"
 export * from "./algolia/use-search"
 export * from "./algolia/use-search-with-firestore"
+export * from "./lists/use-category-list"
