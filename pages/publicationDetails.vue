@@ -61,6 +61,42 @@ const archives = [
 			<PublicationQuery />
 		</section>
 		<section class="md:hidden">
+			<div class="mb-4">
+				<img
+					:src="posts[0].image"
+					alt="Thumbnail"
+					class="w-full h-72 object-cover mb-4"
+				>
+				<div class="p-4">
+					<span class="text-sm text-[#DAB38D] font-[Ubuntu]">Lorem ipsum dolor</span>
+					<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
+						Lorem ipsum dolor sit amet, consectetur
+					</h3>
+					<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">
+						<div class="flex items-center space-x-1 ">
+							<img
+								src="~/assets/images/Dummy_DamianAgataYuvens.jpg"
+								alt="Author"
+								class="w-8 h-8 rounded-full mr-1"
+							>
+							<span class="uppercase tracking-wider text-[#DAB38D]">John Doe</span>
+						</div>
+						<div class="flex items-center space-x-1">
+							<Icon
+								name="mdi:calendar"
+								size="20"
+								class="text-[#DAB38D]"
+							/>
+							<span class="uppercase text-[#DAB38D]">Jan 18, 2019</span>
+						</div>
+					</div>
+				</div>
+				<p class="mt-4 p-4 text-gray-700">
+					{{ posts[0].description }}
+				</p>
+			</div>
+		</section>
+		<section class="md:hidden">
 			<div class="p-4">
 				<Publications />
 			</div>
@@ -105,7 +141,7 @@ const archives = [
 						<img
 							:src="posts[0].image"
 							alt="Thumbnail"
-							class="w-full h-64 object-cover mb-4"
+							class="w-full h-80 object-cover mb-4"
 						>
 						<span class="text-sm text-[#DAB38D] font-[Ubuntu]">Lorem ipsum dolor</span>
 						<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
@@ -130,11 +166,8 @@ const archives = [
 							</div>
 						</div>
 						<p class="mt-4 text-gray-700">
-							{{ truncateWords(posts[0].description, 40) }}
+							{{ posts[0].description }}
 						</p>
-						<button class="mt-4 px-4 py-2 bg-[#91AEAC] text-white hover:bg-[#9aaea1] rounded w-fit text-sm">
-							Read More
-						</button>
 					</div>
 
 					<!-- Grid of Posts -->
