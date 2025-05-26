@@ -70,7 +70,12 @@ const archives = [
 			<div class="flex flex-row max-w-7xl p-4 gap-8 mx-auto w-full px-2 sm:px-6 lg:px-8">
 				<!-- Sidebar -->
 				<div class="w-1/4">
-					<div class="flex flex-col mb-4">
+					<div class="flex flex-col mb-8">
+						<div class="flex mb-8">
+							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
+								Search
+							</h2>
+						</div>
 						<input
 							v-model="searchQuery"
 							type="text"
@@ -78,7 +83,12 @@ const archives = [
 							class="w-full p-2 border bg-[#F5F5F5] text-[#C5C5C5] border-gray-300 rounded-md"
 						>
 					</div>
-					<div class="flex flex-col mb-4">
+					<div class="flex flex-col mb-8">
+						<div class="flex mb-8">
+							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
+								Categories
+							</h2>
+						</div>
 						<NuxtLink
 							v-for="category in categories"
 							:key="category"
@@ -87,7 +97,12 @@ const archives = [
 						>{{ category }}
 						</NuxtLink>
 					</div>
-					<div class="flex flex-col mb-4">
+					<div class="flex flex-col mb-8">
+						<div class="flex mb-8">
+							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
+								Archaives
+							</h2>
+						</div>
 						<NuxtLink
 							v-for="archive in archives"
 							:key="archive"

@@ -1,8 +1,11 @@
 import { os } from "@orpc/server"
+import { getDocs, limit, query, where } from "firebase/firestore"
 import type { Firestore } from "firebase/firestore"
 import { faker } from "@faker-js/faker"
 import dayjs from "dayjs"
 import { z } from "zod"
+import type { algoliasearch } from "algoliasearch"
+import type { Database } from "firebase/database"
 import { API_PATH_PREFIXES } from "~/lib/rest/config/constants"
 import {
 	ContentDetailPageDataInputSchema,
@@ -13,10 +16,13 @@ import {
 	OurAttorneysPageDataOutputSchema,
 	PracticeAreaPageDataOutputSchema,
 } from "~/lib/rest/schema"
-import type { StaffTypeFilterType } from "~/lib/rest/schema"
+
+import { getPublicationCollectionRef, getStaffCollectionRef } from "~/lib/firestore-model"
 
 type Middleware = {
-	db: Firestore
+	firestore: Firestore
+	rtdb: Database
+	algoliaClient: ReturnType<typeof algoliasearch>
 }
 
 const base = os.errors({
@@ -37,31 +43,30 @@ const homePageData = base
 		outputStructure: "detailed",
 	})
 	.output(HomepageDataOutputSchema)
-	.handler(async function () {
-		const staffCount = 5
+	.handler(async function ({ context }) {
+		const q = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "partner"),
+			limit(4),
+		)
+		const res = await getDocs(q)
 
-		const partners = Array
-			.from({ length: staffCount })
-			.map(() => (
-				{
-					id: faker.string.nanoid(),
-					email: faker.internet.email(),
-					name: faker.person.fullName(),
-					image_url: faker.image.personPortrait(),
-					linkedin_url: faker.internet.url(),
-					slug: faker.person.fullName()
-						.replace(/[^a-zA-Z0-9\s]/g, "")
-						.split(" ")
-						.join("-")
-						.toLowerCase(),
-					type: faker.helpers.arrayElement<StaffTypeFilterType>(["partners"]),
-				}
-			))
+		const partners = res.docs
+			.map(doc => doc.data())
+			.map(v => ({
+				type: v.type,
+				id: v.id!,
+				slug: v.slug,
+				name: v.fullname,
+				image_url: v.profile_picture_url,
+				linkedin_url: v.linkedin_url,
+				email: v.email,
+			}))
 
 		return {
 			body: {
-				message: "ok",
 				status: 200,
+				message: "ok",
 				data: {
 					partners: {
 						data: partners,
@@ -82,59 +87,18 @@ const practiceAreasPageData = base
 	})
 	.output(PracticeAreaPageDataOutputSchema)
 	.handler(async function () {
-		const staffCount = 5
-
-		const newsAndPublications = Array
-			.from({ length: 4 })
-			.map(() => ({
-				id: faker.string.nanoid(),
-				title: faker.lorem.sentence(5),
-				slug: faker.lorem.sentence(5)
-					.replace(/[^a-zA-Z0-9\s]/g, "")
-					.split(" ")
-					.join("-")
-					.toLowerCase(),
-				image_url: faker.image.urlPicsumPhotos(),
-				published_at: dayjs(faker.date.past())
-					.format("MMM D, YYYY"),
-				category: faker.lorem.word(),
-				author: {
-					id: faker.string.nanoid(),
-					name: faker.person.fullName(),
-					photo_url: faker.image.personPortrait(),
-				},
-			}))
-
-		const ourAttorneys = Array
-			.from({ length: staffCount })
-			.map(() => (
-				{
-					id: faker.string.nanoid(),
-					email: faker.internet.email(),
-					name: faker.person.firstName(),
-					image_url: faker.image.personPortrait(),
-					linkedin_url: faker.internet.url(),
-					slug: faker.person.fullName()
-						.replace(/[^a-zA-Z0-9\s]/g, "")
-						.split(" ")
-						.join("-")
-						.toLowerCase(),
-					type: faker.helpers.arrayElement<StaffTypeFilterType>(["partners"]),
-				}
-			))
-
 		return {
 			body: {
 				message: "ok",
 				status: 200,
 				data: {
 					news_and_publications: {
-						data: newsAndPublications,
-						total: newsAndPublications.length,
+						data: [],
+						total: 0,
 					},
 					our_attorneys: {
-						data: ourAttorneys,
-						total: ourAttorneys.length,
+						data: [],
+						total: 0,
 					},
 				},
 			},
@@ -150,42 +114,45 @@ const ourAttorneysPageData = base
 		outputStructure: "detailed",
 	})
 	.output(OurAttorneysPageDataOutputSchema)
-	.handler(async function () {
-		const partners = Array
-			.from({ length: 3 })
-			.map(() => (
-				{
-					id: faker.string.nanoid(),
-					email: faker.internet.email(),
-					name: faker.person.fullName(),
-					image_url: faker.image.personPortrait(),
-					linkedin_url: faker.internet.url(),
-					slug: faker.person.fullName()
-						.replace(/[^a-zA-Z0-9\s]/g, "")
-						.split(" ")
-						.join("-")
-						.toLowerCase(),
-					type: faker.helpers.arrayElement<StaffTypeFilterType>(["partners"]),
-				}
-			))
+	.handler(async function ({ context }) {
+		const partnersQuery = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "partner"),
+			limit(6),
+		)
+		const partnersSnapshot = await getDocs(partnersQuery)
+		const partners = partnersSnapshot.docs.map((doc) => {
+			const partnerData = doc.data()
+			return {
+				id: partnerData.id!,
+				name: partnerData.fullname,
+				slug: partnerData.slug,
+				image_url: partnerData.profile_picture_url,
+				type: partnerData.type,
+				email: partnerData.email,
+				linkedin_url: partnerData.linkedin_url,
+			}
+		})
 
-		const associates = Array
-			.from({ length: 12 })
-			.map(() => (
-				{
-					id: faker.string.nanoid(),
-					email: faker.internet.email(),
-					name: faker.person.fullName(),
-					image_url: faker.image.personPortrait(),
-					linkedin_url: faker.internet.url(),
-					slug: faker.person.fullName()
-						.replace(/[^a-zA-Z0-9\s]/g, "")
-						.split(" ")
-						.join("-")
-						.toLowerCase(),
-					type: faker.helpers.arrayElement<StaffTypeFilterType>(["associates"]),
-				}
-			))
+		const associatesQuery = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "associate"),
+			limit(6),
+		)
+
+		const associatesSnapshot = await getDocs(associatesQuery)
+		const associates = associatesSnapshot.docs.map((doc) => {
+			const associateData = doc.data()
+			return {
+				id: associateData.id!,
+				name: associateData.fullname,
+				slug: associateData.slug,
+				image_url: associateData.profile_picture_url,
+				email: associateData.email,
+				linkedin_url: associateData.linkedin_url,
+				type: associateData.type,
+			}
+		})
 
 		return {
 			body: {
@@ -215,64 +182,94 @@ const ourAttorneyDetailPageData = base
 	})
 	.input(OurAttorneyDetailPageDataInputSchema)
 	.output(OurAttorneyDetailPageDataOutputSchema)
-	.handler(async function () {
+	.handler(async function ({ context, input, errors }) {
+		const staffColRef = getStaffCollectionRef(context.firestore)
+
+		const q = query(
+			staffColRef,
+			where("slug", "==", input.params.slug),
+		)
+		const staffDoc = await getDocs(q)
+
+		if (staffDoc.empty) {
+			throw errors.NOT_FOUND()
+		}
+
+		const staffData = staffDoc.docs.at(0)!.data()
+
+		const publicationsQuery = query(
+			getPublicationCollectionRef(context.firestore),
+			where("author_id", "==", staffData.id),
+			limit(6),
+		)
+
+		const publicationsSnapshot = await getDocs(publicationsQuery)
+		const publications = publicationsSnapshot.docs.map((doc) => {
+			const pubData = doc.data()
+			return {
+				id: doc.id,
+				title: pubData.title,
+				slug: pubData.slug,
+				image_url: pubData.cover_image_url,
+				published_at: dayjs(pubData.published_at)
+					.format("MMM D, YYYY"),
+				category: pubData.category_id,
+			}
+		})
+
+		const otherAssociatesQuery = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "associate"),
+			where("slug", "!=", staffData.slug),
+			limit(3),
+		)
+
+		const otherAssociatesSnapshot = await getDocs(otherAssociatesQuery)
+		const otherAssociates = otherAssociatesSnapshot.docs.map((doc) => {
+			const associateData = doc.data()
+			return {
+				id: associateData.id!,
+				name: associateData.fullname,
+				slug: associateData.slug,
+			}
+		})
+
+		const otherPartnersQuery = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "partner"),
+			where("slug", "!=", staffData.slug),
+			limit(3),
+		)
+
+		const otherPartnersSnapshot = await getDocs(otherPartnersQuery)
+		const otherPartners = otherPartnersSnapshot.docs.map((doc) => {
+			const partnerData = doc.data()
+			return {
+				id: partnerData.id!,
+				name: partnerData.fullname,
+				slug: partnerData.slug,
+			}
+		})
+
 		return {
 			body: {
 				message: "ok",
 				status: 200,
 				data: {
 					person: {
-						id: faker.string.nanoid(),
-						email: faker.internet.email(),
-						name: faker.person.fullName(),
-						image_url: faker.image.personPortrait(),
-						linkedin_url: faker.internet.url(),
-						slug: faker.person.fullName()
-							.replace(/[^a-zA-Z0-9\s]/g, "")
-							.split(" ")
-							.join("-")
-							.toLowerCase(),
-						type: faker.helpers.arrayElement<Exclude<StaffTypeFilterType, "all">>(["partners"]),
-						short_bio: faker.lorem.paragraph(2),
-						bio: faker.lorem.paragraph(10),
+						id: staffData.id!,
+						email: staffData.email,
+						name: staffData.fullname,
+						image_url: staffData.profile_picture_url,
+						linkedin_url: staffData.linkedin_url,
+						slug: staffData.slug,
+						type: staffData.type,
+						short_bio: staffData.short_bio,
+						bio: staffData.bio,
 					},
-					publications: [
-						{
-							id: faker.string.nanoid(),
-							title: faker.lorem.sentence(5),
-							slug: faker.lorem.sentence(5)
-								.replace(/[^a-zA-Z0-9\s]/g, "")
-								.split(" ")
-								.join("-")
-								.toLowerCase(),
-							image_url: faker.image.urlPicsumPhotos(),
-							published_at: dayjs(faker.date.past())
-								.format("MMM D, YYYY"),
-							category: faker.lorem.word(),
-						},
-					],
-					other_associates: [
-						{
-							id: faker.string.nanoid(),
-							name: faker.person.fullName(),
-							slug: faker.person.fullName()
-								.replace(/[^a-zA-Z0-9\s]/g, "")
-								.split(" ")
-								.join("-")
-								.toLowerCase(),
-						},
-					],
-					other_partners: [
-						{
-							id: faker.string.nanoid(),
-							name: faker.person.fullName(),
-							slug: faker.person.fullName()
-								.replace(/[^a-zA-Z0-9\s]/g, "")
-								.split(" ")
-								.join("-")
-								.toLowerCase(),
-						},
-					],
+					publications: publications,
+					other_associates: otherAssociates,
+					other_partners: otherPartners,
 				},
 			},
 		}
