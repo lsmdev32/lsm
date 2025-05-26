@@ -56,7 +56,7 @@ export const CREATE_STAFF_FORM_CONSTANTS = {
 	},
 	MSG: {
 		PP_IMAGE_TYPE_MSG: "Gambar harus berupa PNG atau JPEG",
-		PP_IMAGE_SIZE_MSG: "Ukuran file maksimal 2MB",
+		PP_IMAGE_SIZE_MSG: "Ukuran file maksimal 10MB",
 		PP_IMAGE_DIMENSION_MSG: "Ukuran maksimal gambar 375x433",
 		BIO_MIN_LENGTH_MSG: "Panjang bio minimal 100 karakter",
 		CV_SIZE_MSG: "Ukuran file maksimal 10MB",

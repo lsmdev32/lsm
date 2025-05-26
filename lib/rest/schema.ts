@@ -1,8 +1,8 @@
 import { z } from "zod"
 
 export const StaffTypeFilter = z.enum([
-	"partners",
-	"associates",
+	"partner",
+	"associate",
 	"all",
 ])
 
@@ -22,11 +22,9 @@ export const HomepageDataOutputSchema = z.object({
 					data: z
 						.array(z.object({
 							id: z
-								.string()
-								.nanoid(),
+								.string(),
 							slug: z
-								.string()
-								.regex(/^[a-z0-9-]+$/),
+								.string(),
 							name: z
 								.string(),
 							image_url: z
@@ -127,13 +125,11 @@ export const OurAttorneysPageDataOutputSchema = z.object({
 							.array(z
 								.object({
 									id: z
-										.string()
-										.nanoid(),
+										.string(),
 									name: z
 										.string(),
 									slug: z
-										.string()
-										.regex(/^[a-z0-9-]+$/),
+										.string(),
 									image_url: z
 										.string()
 										.url(),
@@ -153,13 +149,11 @@ export const OurAttorneysPageDataOutputSchema = z.object({
 							.array(z
 								.object({
 									id: z
-										.string()
-										.nanoid(),
+										.string(),
 									name: z
 										.string(),
 									slug: z
-										.string()
-										.regex(/^[a-z0-9-]+$/),
+										.string(),
 									image_url: z
 										.string()
 										.url(),
@@ -193,8 +187,7 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 					person: z
 						.object({
 							id: z
-								.string()
-								.nanoid(),
+								.string(),
 							name: z
 								.string(),
 							short_bio: z
@@ -202,8 +195,7 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 							bio: z
 								.string(),
 							slug: z
-								.string()
-								.regex(/^[a-z0-9-]+$/),
+								.string(),
 							image_url: z
 								.string()
 								.url(),
@@ -219,13 +211,11 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 						.array(z
 							.object({
 								id: z
-									.string()
-									.nanoid(),
+									.string(),
 								title: z
 									.string(),
 								slug: z
-									.string()
-									.regex(/^[a-z0-9-]+$/),
+									.string(),
 								image_url: z
 									.string()
 									.url(),
@@ -238,25 +228,21 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 						.array(z
 							.object({
 								id: z
-									.string()
-									.nanoid(),
+									.string(),
 								name: z
 									.string(),
 								slug: z
-									.string()
-									.regex(/^[a-z0-9-]+$/),
+									.string(),
 							})),
 					other_associates: z
 						.array(z
 							.object({
 								id: z
-									.string()
-									.nanoid(),
+									.string(),
 								name: z
 									.string(),
 								slug: z
-									.string()
-									.regex(/^[a-z0-9-]+$/),
+									.string(),
 							})),
 				}),
 		}),
