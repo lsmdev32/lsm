@@ -17,9 +17,15 @@ export function useUploader<P extends Paths>(path: P) {
      * returns the download URL of the file
      */
 	async function upload(file: File) {
-		await storageFile.upload(file)
+		try {
+			await storageFile.upload(file)
 
-		return await getDownloadURL(fileRef)
+			return await getDownloadURL(fileRef)
+		}
+		catch (error) {
+			console.log(error)
+			return ""
+		}
 	}
 
 	return {

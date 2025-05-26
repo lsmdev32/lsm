@@ -53,7 +53,7 @@
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="#"
+					to="/blogs"
 					@click="closeMenu"
 				>Blog</NuxtLink>
 			</li>

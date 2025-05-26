@@ -91,8 +91,35 @@ type CategoryDocumentModel = DocumentModelOfType<{
 	name: string
 }>
 
+export type BlogAppModel = AppModelOfType<{
+	type: "blog" | "publication"
+	title: string
+	slug: string
+	cover_image_url: string
+	content: string
+	status: "not_published" | "published"
+	published_at?: Date | null
+	author_id?: string | null
+	category_id: string
+	tags: string[]
+}>
+
+export type BlogDocumentModel = DocumentModelOfType<{
+	type: "blog" | "publication"
+	title: string
+	slug: string
+	cover_image_url: string
+	content: string
+	status: "not_published" | "published"
+	published_at?: Date | null
+	author_id?: string | null
+	category_id: string
+	tags: string[]
+}>
+
 const staffConverter = createFirestoreConverter<StaffAppModel, StaffDocumentModel>()
 const categoryConverter = createFirestoreConverter<CategoryAppModel, CategoryDocumentModel>()
+const blogsConverter = createFirestoreConverter<BlogAppModel, BlogDocumentModel>()
 
 const map = {
 	staff: [
@@ -112,6 +139,16 @@ export function getCollectionRef(firestore: Firestore, name: CollectionNames) {
 		.withConverter(map[name][1])
 }
 
+export function getStaffCollectionRef(firestore: Firestore) {
+	return collection(firestore, "staffs")
+		.withConverter(staffConverter)
+}
+
+export function getStaffDocRef(firestore: Firestore, id: string) {
+	return doc(firestore, "staffs", id)
+		.withConverter(staffConverter)
+}
+
 export function getCategoryCollectionRef(firestore: Firestore) {
 	return collection(firestore, "categories")
 		.withConverter(categoryConverter)
@@ -120,4 +157,14 @@ export function getCategoryCollectionRef(firestore: Firestore) {
 export function getCategoryDocRef(firestore: Firestore, id: string) {
 	return doc(firestore, "categories", id)
 		.withConverter(categoryConverter)
+}
+
+export function getBlogCollectionRef(firestore: Firestore) {
+	return collection(firestore, "contents")
+		.withConverter(blogsConverter)
+}
+
+export function getBlogDocRef(firestore: Firestore, id: string) {
+	return doc(firestore, "contents", id)
+		.withConverter(blogsConverter)
 }

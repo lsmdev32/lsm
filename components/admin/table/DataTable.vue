@@ -39,6 +39,7 @@ type Props = {
 	currentPage?: number
 	pageSize?: number
 	meta?: Record<string, unknown>
+	noToggleColumnVisibility?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -47,6 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
 	totalPages: 0,
 	currentPage: 1,
 	pageSize: 10,
+	noToggleColumnVisibility: false,
 })
 
 const sorting = ref<SortingState>([])
@@ -106,7 +108,7 @@ const table = useVueTable({
 				:table="table"
 			/>
 			<UiDropdownMenu
-				v-if="table.getAllColumns().some((column) => column.getCanHide())"
+				v-if="table.getAllColumns().some((column) => column.getCanHide()) && !props.noToggleColumnVisibility"
 			>
 				<UiDropdownMenuTrigger as-child>
 					<UiButton
