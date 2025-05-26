@@ -92,7 +92,7 @@ type CategoryDocumentModel = DocumentModelOfType<{
 }>
 
 export type BlogAppModel = AppModelOfType<{
-	type: "publication"
+	type: "blog"
 	title: string
 	slug: string
 	cover_image_url: string
@@ -105,7 +105,7 @@ export type BlogAppModel = AppModelOfType<{
 }>
 
 export type BlogDocumentModel = DocumentModelOfType<{
-	type: "publication"
+	type: "blog"
 	title: string
 	slug: string
 	cover_image_url: string

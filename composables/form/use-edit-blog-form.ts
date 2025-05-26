@@ -27,7 +27,8 @@ export function useEditBlogForm(id: string) {
 	const firestore = useFirestore()
 	const router = useRouter()
 
-	const blog = useDocument(getBlogDocRef(firestore, id))
+	const blogDocRef = getBlogDocRef(firestore, id)
+	const blog = useDocument(blogDocRef)
 
 	const values = useDebounce(form.controlledValues, DEBOUNCE_DEFAULT_TIME)
 	const coverUploader = useUploader(IMAGES_STORAGE_PATH.BLOG_IMAGES)
@@ -43,27 +44,11 @@ export function useEditBlogForm(id: string) {
 			author: v.author_id ?? undefined,
 			status: v.status,
 			image_url: v.cover_image_url ?? undefined,
+			// @ts-expect-error - assuming v.published_at is a Firestore Timestamp
 			published_at: v.published_at ? new Date(v.published_at.seconds * 1000) : undefined,
 			tags: v.tags,
 			type: "blog",
 		})
-	})
-
-	onMounted(() => {
-		const saved = sessionStorage.getItem(SESSION_STORAGE_KEYS.EDIT_BLOG_FORM)
-		if (!saved) return
-
-		const parsed = JSON.parse(saved)
-		form.setValues(parsed)
-	})
-
-	watch(values, (v) => {
-		sessionStorage.setItem(
-			SESSION_STORAGE_KEYS.EDIT_BLOG_FORM,
-			JSON.stringify(v),
-		)
-	}, {
-		deep: true,
 	})
 
 	watch(() => values.value.title, (v) => {
@@ -81,7 +66,7 @@ export function useEditBlogForm(id: string) {
 	})
 
 	function resetForm() {
-		sessionStorage.removeItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
+		sessionStorage.removeItem(SESSION_STORAGE_KEYS.EDIT_BLOG_FORM)
 		form.resetForm()
 	}
 
@@ -93,8 +78,8 @@ export function useEditBlogForm(id: string) {
 	const onSubmit = form.handleSubmit(async (v) => {
 		toast.info("Harap tunggu blogs sedang dibuat...")
 		try {
-			await updateDoc(getBlogDocRef(firestore, id), {
-				type: v.type,
+			await updateDoc(blogDocRef, {
+				type: CONTENT_FORM_TYPE.blog,
 				cover_image_url: v.image_url,
 				title: v.title,
 				content: v.content,
@@ -141,7 +126,7 @@ export function useEditBlogForm(id: string) {
 			return
 		}
 
-		await updateDoc(getBlogDocRef(firestore, id), {
+		await updateDoc(blogDocRef, {
 			cover_image_url: url,
 		})
 			.catch(() => {

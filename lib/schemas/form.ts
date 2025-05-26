@@ -275,6 +275,7 @@ export const EDIT_BLOGS_FORM_SCHEMA = MUTATE_BLOGS_FORM_SCHEMA
 export const PUBLICATIONS_FORM_SCHEMA_KEYS = {
 	...CONTENT_FORM_SCHEMA_KEYS,
 	publication: "publication",
+	image_url: "image_url",
 	publication_url: "publication_url",
 } as const
 
@@ -305,11 +306,11 @@ export const EDIT_PUBLICATION_FORM_SCHEMA = MUTATE_PUBLICATION_FORM_SCHEMA
 		publication: true,
 	})
 	.extend({
-		image_url: z
+		[PUBLICATIONS_FORM_SCHEMA_KEYS.image_url]: z
 			.string()
 			.url()
 			.default(""),
-		publication_url: z
+		[PUBLICATIONS_FORM_SCHEMA_KEYS.publication_url]: z
 			.string()
 			.url()
 			.default(""),

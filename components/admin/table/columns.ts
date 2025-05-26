@@ -161,7 +161,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 			return h(
 				UiBadge,
 				{
-					class: cn("text-xs", isPublished ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"),
+					class: cn("text-xs w-[100px] flex justify-center", isPublished ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"),
 
 				},
 				isPublished ? "Terbit" : "Tidak Terbit",

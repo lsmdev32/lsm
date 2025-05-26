@@ -52,11 +52,11 @@ const debouncedCategory = useDebounce(category, DEBOUNCE_DEFAULT_TIME)
 const author = ref("")
 const debouncedAuthor = useDebounce(author, DEBOUNCE_DEFAULT_TIME)
 
+const status = ref("")
+
 watch(form.form.values, async (v) => {
 	if (!v.image_url) return
 	localStorage.setItem(LOCAL_STORAGE_KEYS.IMAGE_COVER, v.image_url)
-
-	console.log(`watch form values`, v)
 
 	if (v.category) {
 		const doc = await getDoc(getCategoryDocRef(firestore, v.category))
@@ -66,6 +66,12 @@ watch(form.form.values, async (v) => {
 	if (v.author) {
 		const doc = await getDoc(getStaffDocRef(firestore, v.author))
 		author.value = doc.data()?.fullname || ""
+	}
+
+	if (v.status) {
+		console.log(v.status)
+
+		status.value = v.status
 	}
 }, { deep: true })
 
@@ -98,11 +104,34 @@ function onChooseFile() {
 </script>
 
 <template>
-	<AdminPage page-title="Ubah Blog">
+	<AdminPage
+		page-title="Ubah Blog"
+		:transform-crumbs="{
+			2: () => form.values.value.title,
+		}"
+	>
 		<form
 			class="w-full flex flex-col gap-y-4 py-20"
 			@submit="form.onSubmit"
 		>
+			<div class="flex text-base tracking-wider">
+				<template v-if="status === 'published'">
+					<UiBadge
+						variant="default"
+						class="p-2 bg-green-100 text-green-800"
+					>
+						Terbit
+					</UiBadge>
+				</template>
+				<template v-else>
+					<UiBadge
+						variant="default"
+						class="p-2 bg-red-100 text-red-800"
+					>
+						Belum Terbit
+					</UiBadge>
+				</template>
+			</div>
 			<UiFormField
 				v-slot="{ handleChange, meta }"
 				name="cover_image"
@@ -268,6 +297,5 @@ function onChooseFile() {
 				Reset Formulir
 			</ui-button>
 		</form>
-		{{ form.form.errors }}
 	</AdminPage>
 </template>
