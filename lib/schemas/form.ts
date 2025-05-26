@@ -322,6 +322,8 @@ export const validationSchemas = {
 	createCategoryForm: toTypedSchema(CREATE_CATEGORY_FORM_SCHEMA),
 	createBlogsForm: toTypedSchema(MUTATE_BLOGS_FORM_SCHEMA),
 	editBlogsForm: toTypedSchema(EDIT_BLOGS_FORM_SCHEMA),
+	createPublicationForm: toTypedSchema(MUTATE_PUBLICATION_FORM_SCHEMA),
+	editPublicationForm: toTypedSchema(EDIT_PUBLICATION_FORM_SCHEMA),
 }
 
 export type StaffType = typeof STAFF_TYPES

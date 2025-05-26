@@ -25,6 +25,7 @@ export const SESSION_STORAGE_KEYS = createPairFromEnum(
 	"EDIT_STAFF_FORM",
 	"CREATE_BLOG_FORM",
 	"EDIT_BLOG_FORM",
+	"CREATE_PUBLICATION_FORM",
 )
 
 export const DEBOUNCE_DEFAULT_TIME = 500
@@ -127,4 +128,5 @@ export const IMAGES_STORAGE_PATH = {
 	CV: "cv",
 	BLOG_IMAGES: "blog_images",
 	PUBLICATIONS: "publications",
+	PUBLICATION_IMAGES: "publication_images",
 } as const
