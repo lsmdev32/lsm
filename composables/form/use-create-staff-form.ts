@@ -71,7 +71,7 @@ export function useCreateStaffForm() {
 	}
 
 	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Mengupload file...", { duration: 3000 })
+		toast.info("Mengupload file...")
 
 		// TODO: handle submit
 		const res = await Promise.all([
@@ -122,14 +122,8 @@ export function useCreateStaffForm() {
 			return
 		}
 
-		const DELAY = 5000
-		await new Promise(() => {
-			setTimeout(() => {
-				toast.success("Profil sukses dibuat")
-				resetForm()
-				Promise.resolve()
-			}, DELAY)
-		})
+		toast.success("Profil sukses dibuat")
+		resetForm()
 
 		router.replace("/dashboard/profiles")
 	})

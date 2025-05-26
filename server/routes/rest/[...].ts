@@ -1,4 +1,7 @@
+import { algoliasearch } from "algoliasearch"
 import { getFirestore } from "firebase/firestore"
+import { getDatabase } from "firebase/database"
+import { defineEventHandler } from "#imports"
 import { API_PATH_PREFIXES } from "~/lib/rest/config/constants"
 import { generateDocs, handler } from "~/lib/rest/handler"
 import { createHTMLScalarJSONDoc } from "~/lib/rest/utils"
@@ -9,8 +12,17 @@ const notFoundResponseBody = {
 }
 
 export default defineEventHandler(async (event) => {
+	const algoliaClient = algoliasearch(
+		process.env.NUXT_PUBLIC_ALGOLIA_APP_ID || "",
+		process.env.NUXT_PUBLIC_ALGOLIA_API_KEY || "",
+	)
+
+	const firestore = getFirestore()
+	const rtdb = getDatabase()
+
+	console.log(`REST API request: ${event.path}`)
+
 	const request = toWebRequest(event)
-	const db = getFirestore()
 
 	if (!request) {
 		setResponseStatus(event, 404, "Not Found")
@@ -32,7 +44,9 @@ export default defineEventHandler(async (event) => {
 		{
 			prefix: API_PATH_PREFIXES.REST,
 			context: {
-				db,
+				algoliaClient,
+				rtdb,
+				firestore,
 			},
 		},
 	)
