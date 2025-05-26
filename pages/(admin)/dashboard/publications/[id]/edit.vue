@@ -289,7 +289,7 @@ function handlePublicationChange(event: Event) {
 					<UiFormLabel :required="meta.required">
 						Publikasi
 					</UiFormLabel>
-					<div class="flex items-center gap-x-2 justify-between">
+					<div class="flex items-center gap-x-2">
 						<div>
 							<UiFormControl>
 								<UiInput

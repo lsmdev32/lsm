@@ -84,7 +84,7 @@ export function useEditBlogForm(id: string) {
 				title: v.title,
 				content: v.content,
 				category_id: v.category,
-				author_id: v.author ?? null,
+				author_id: v.author,
 				slug: v.slug,
 				status: v.status,
 				published_at: v.status === CONTENT_FORM_STATUS.publish ? new Date() : null,

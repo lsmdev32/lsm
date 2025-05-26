@@ -1,9 +1,9 @@
 import { createColumnHelper } from "@tanstack/vue-table"
 import type { ColumnDef } from "@tanstack/vue-table"
-import { ArrowDownIcon, ArrowUpIcon, PencilIcon, SaveIcon, TrashIcon } from "lucide-vue-next"
+import { ArrowDownIcon, ArrowUpIcon, DownloadIcon, PencilIcon, SaveIcon, TrashIcon } from "lucide-vue-next"
 import { deleteDoc, updateDoc } from "firebase/firestore"
 import { toast } from "vue-sonner"
-import { AdminTableAction, NuxtImg, UiBadge, UiButton, UiInput } from "#components"
+import { AdminTableAction, NuxtImg, NuxtLink, UiBadge, UiButton, UiInput } from "#components"
 import { cn } from "~/lib/utils"
 import { getBlogDocRef, getCategoryDocRef } from "~/lib/firestore-model"
 
@@ -23,8 +23,20 @@ export type Blog = {
 	published_at: { _seconds: number, _nanoseconds: number } | null
 }
 
+export type Publication = {
+	objectID: string
+	title: string
+	status: "published" | "not_published"
+	cover_image_url: string
+	tags: string[]
+	created_at: { _seconds: number, _nanoseconds: number }
+	published_at: { _seconds: number, _nanoseconds: number } | null
+	publication: string
+}
+
 const categoryHelper = createColumnHelper<Category>()
 const blogHelper = createColumnHelper<Blog>()
+const publicationHelper = createColumnHelper<Publication>()
 
 export const categoryColumns: ColumnDef<Category, string>[] = [
 	categoryHelper.display({
@@ -123,7 +135,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 			"span",
 			{
 				class: cn("text-center w-[20px]") },
-			"Cover Image",
+			"Gambar Sampul",
 		),
 		cell: ({ getValue }) => h(
 			NuxtImg,
@@ -139,7 +151,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 			"span",
 			{
 				class: cn("text-center w-[20px]") },
-			"Title",
+			"Judul",
 		),
 		cell: ({ row }) => h(
 			"span",
@@ -246,10 +258,18 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 
 			function handleUpdatePublish() {
 				const newStatus = isPublished ? "not_published" : "published"
+				const publishedAt = newStatus === "published" ? new Date() : undefined
 
-				updateDoc(docRef, {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const newValue: Record<string, any> = {
 					status: newStatus,
-				})
+				}
+
+				if (newStatus === "published") {
+					newValue["published_at"] = publishedAt
+				}
+
+				updateDoc(docRef, newValue)
 					.then(() => {
 						toast.success(`Blog status updated to ${newStatus}`)
 					})
@@ -267,6 +287,203 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 						label: "Edit",
 						icon: PencilIcon,
 						href: `/dashboard/blogs/${row.original.objectID}/edit`,
+					},
+					{
+						label: isPublished ? "Unpublish" : "Publish",
+						icon: isPublished ? ArrowDownIcon : ArrowUpIcon,
+						onClick: handleUpdatePublish,
+					},
+					{
+						label: "Delete",
+						icon: TrashIcon,
+						onClick: handleDelete,
+					},
+				],
+			})
+		},
+	}),
+]
+
+export const publicationColumns: ColumnDef<Publication, never>[] = [
+	publicationHelper.accessor("cover_image_url", {
+		id: "Gambar sampul",
+		header: () => h(
+			"span",
+			{
+				class: cn("text-center w-[20px]") },
+			"Gambar Sampul",
+		),
+		cell: ({ getValue }) => h(
+			NuxtImg,
+			{
+				src: getValue() as string,
+				class: cn("w-[100px] aspect-video object-cover"),
+			},
+		),
+	}),
+	publicationHelper.accessor("title", {
+		id: "Judul",
+		header: () => h(
+			"span",
+			{
+				class: cn("text-center w-[20px]") },
+			"Judul",
+		),
+		cell: ({ row }) => h(
+			"span",
+			{},
+			row.original.title,
+		),
+	}),
+	publicationHelper.accessor("status", {
+		id: "Status",
+		header: () => h(
+			"span",
+			{
+				class: cn("text-center w-[20px]") },
+			"Status",
+		),
+		cell: ({ getValue }) => {
+			const value = getValue() as "published" | "not_published"
+			const isPublished = value === "published"
+			return h(
+				UiBadge,
+				{
+					class: cn("text-xs w-[100px] flex justify-center", isPublished ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"),
+
+				},
+				isPublished ? "Terbit" : "Tidak Terbit",
+			)
+		},
+	}),
+	publicationHelper.accessor("created_at", {
+		id: "Dibuat",
+		header: () => h(
+			"span",
+			{
+				class: cn("text-center w-[20px]") },
+			"Dibuat pada",
+		),
+		cell: ({ getValue }) => {
+			const dayjs = useDayjs()
+			const value = getValue() as { _seconds: number, _nanoseconds: number }
+			const ms = value._seconds * 1000
+			console.log(`value`, value)
+
+			return h(
+				"span",
+				{},
+				dayjs(new Date(ms))
+					.format("DD/MM/YYYY"),
+			)
+		},
+	}),
+	publicationHelper.accessor("published_at", {
+		id: "Terbit",
+		header: () => h(
+			"span",
+			{
+				class: cn("text-center w-[20px]") },
+			"Diterbitkan pada",
+		),
+		cell: ({ getValue }) => {
+			const dayjs = useDayjs()
+			const value = getValue() as { _seconds: number, _nanoseconds: number } | null
+			if (!value) return h("span", {}, "Belum diterbitkan")
+
+			const ms = value._seconds * 1000
+
+			return h(
+				"span",
+				{},
+				dayjs(new Date(ms))
+					.format("DD/MM/YYYY"),
+			)
+		},
+	}),
+
+	publicationHelper.accessor("publication", {
+		id: "publikasi",
+		header: () => h(
+			"span",
+			{
+				class: cn("text-center w-[20px]") },
+			"Link Publikasi",
+		),
+		cell: ({ getValue }) => {
+			return h(
+				NuxtLink,
+				{
+					href: getValue() as string,
+					class: cn("text-blue-600 hover:underline flex w-[50px] justify-center"),
+					target: "_blank",
+				},
+				h(DownloadIcon),
+			)
+		},
+	}),
+
+	publicationHelper.display({
+		id: "actions",
+		enableHiding: false,
+		header: () => h(
+			"span",
+			{
+				class: cn("text-center w-[20px]") },
+			"Aksi",
+		),
+		cell: ({ row }) => {
+			const id = row.original.objectID
+			const firestore = useFirestore()
+			const docRef = getBlogDocRef(firestore, id)
+			const currentStatus = row.original.status
+			const isPublished = currentStatus === "published"
+
+			async function handleDelete() {
+				// Implement delete logic here
+				const confirmed = window.confirm("Are you sure you want to delete this blog?")
+				if (!confirmed) return
+
+				await deleteDoc(docRef)
+					.then(() => {
+						toast.success("Blog berhasil dihapus")
+					})
+					.catch(() => {
+						toast.error("Gagal menghapus blog")
+					})
+			}
+
+			function handleUpdatePublish() {
+				const newStatus = isPublished ? "not_published" : "published"
+				const publishedAt = newStatus === "published" ? new Date() : undefined
+
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const newValue: Record<string, any> = {
+					status: newStatus,
+				}
+
+				if (newStatus === "published") {
+					newValue["published_at"] = publishedAt
+				}
+
+				updateDoc(docRef, newValue)
+					.then(() => {
+						toast.success(`Blog status updated to ${newStatus}`)
+					})
+					.catch((error) => {
+						toast.error(`Failed to update blog status: ${error.message}`)
+					})
+					.finally(() => {
+						window.location.reload()
+					})
+			}
+
+			return h(AdminTableAction, {
+				actions: [
+					{
+						label: "Edit",
+						icon: PencilIcon,
+						href: `/dashboard/publications/${row.original.objectID}/edit`,
 					},
 					{
 						label: isPublished ? "Unpublish" : "Publish",

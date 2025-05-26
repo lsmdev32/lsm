@@ -62,6 +62,7 @@ export const CREATE_STAFF_FORM_CONSTANTS = {
 		CV_SIZE_MSG: "Ukuran file maksimal 10MB",
 		CV_TYPE_MSG: "File harus berupa PDF",
 		LINKEDIN_URL_MSG: "URL LinkedIn harus seperti ini: https://www.linkedin.com/in/john-doe",
+		CV_FILE_TYPE_MSG: "File CV harus berupa PDF",
 	},
 } as const
 
@@ -120,6 +121,7 @@ export const CREATE_CONTENT_FORM_CONSTANTS = {
 		COVER_IMAGE_REQUIRED_MSG: "Gambar sampul harus diunggah",
 		PUBLICATION_FILE_TYPE_MSG: "File publikasi harus berupa PDF",
 		PUBLICATION_FILE_SIZE_MSG: "Ukuran file publikasi maksimal 20MB",
+		PUBLICATION_FILE_REQUIRED_MSG: "File publikasi harus diunggah",
 	},
 } as const
 
