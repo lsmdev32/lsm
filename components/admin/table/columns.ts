@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/vue-table"
 import type { ColumnDef } from "@tanstack/vue-table"
 import { ArrowDownIcon, ArrowUpIcon, PencilIcon, SaveIcon, TrashIcon } from "lucide-vue-next"
-import { updateDoc } from "firebase/firestore"
+import { deleteDoc, updateDoc } from "firebase/firestore"
 import { toast } from "vue-sonner"
 import { AdminTableAction, NuxtImg, UiBadge, UiButton, UiInput } from "#components"
 import { cn } from "~/lib/utils"
@@ -230,9 +230,18 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 			const currentStatus = row.original.status
 			const isPublished = currentStatus === "published"
 
-			function handleDelete() {
+			async function handleDelete() {
 				// Implement delete logic here
-				toast.info(`Delete action for blog with ID: ${id}`)
+				const confirmed = window.confirm("Are you sure you want to delete this blog?")
+				if (!confirmed) return
+
+				await deleteDoc(docRef)
+					.then(() => {
+						toast.success("Blog berhasil dihapus")
+					})
+					.catch(() => {
+						toast.error("Gagal menghapus blog")
+					})
 			}
 
 			function handleUpdatePublish() {
