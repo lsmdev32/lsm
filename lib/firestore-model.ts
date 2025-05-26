@@ -92,7 +92,7 @@ type CategoryDocumentModel = DocumentModelOfType<{
 }>
 
 export type BlogAppModel = AppModelOfType<{
-	type: "blog" | "publication"
+	type: "blog"
 	title: string
 	slug: string
 	cover_image_url: string
@@ -105,7 +105,7 @@ export type BlogAppModel = AppModelOfType<{
 }>
 
 export type BlogDocumentModel = DocumentModelOfType<{
-	type: "blog" | "publication"
+	type: "blog"
 	title: string
 	slug: string
 	cover_image_url: string
@@ -117,9 +117,38 @@ export type BlogDocumentModel = DocumentModelOfType<{
 	tags: string[]
 }>
 
+export type PublicationAppModel = AppModelOfType<{
+	type: "publication"
+	title: string
+	slug: string
+	cover_image_url: string
+	content: string
+	status: "not_published" | "published"
+	published_at?: Date | null
+	author_id?: string | null
+	category_id: string
+	tags: string[]
+	publication: string
+}>
+
+export type PublicationDocumentModel = DocumentModelOfType<{
+	type: "publication"
+	title: string
+	slug: string
+	cover_image_url: string
+	content: string
+	status: "not_published" | "published"
+	published_at?: Date | null
+	author_id?: string | null
+	category_id: string
+	tags: string[]
+	publication: string
+}>
+
 const staffConverter = createFirestoreConverter<StaffAppModel, StaffDocumentModel>()
 const categoryConverter = createFirestoreConverter<CategoryAppModel, CategoryDocumentModel>()
 const blogsConverter = createFirestoreConverter<BlogAppModel, BlogDocumentModel>()
+const publicationConverter = createFirestoreConverter<PublicationAppModel, PublicationDocumentModel>()
 
 const map = {
 	staff: [
@@ -167,4 +196,14 @@ export function getBlogCollectionRef(firestore: Firestore) {
 export function getBlogDocRef(firestore: Firestore, id: string) {
 	return doc(firestore, "contents", id)
 		.withConverter(blogsConverter)
+}
+
+export function getPublicationCollectionRef(firestore: Firestore) {
+	return collection(firestore, "contents")
+		.withConverter(publicationConverter)
+}
+
+export function getPublicationDocRef(firestore: Firestore, id: string) {
+	return doc(firestore, "contents", id)
+		.withConverter(publicationConverter)
 }

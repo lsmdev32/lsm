@@ -273,7 +273,7 @@ const ppAlt = computed(() => {
 								<UiFormLabel :required="meta.required">
 									CV/Resume
 								</UiFormLabel>
-								<div class="flex items-center gap-x-2 justify-between">
+								<div class="flex items-center gap-x-2">
 									<div>
 										<UiFormControl>
 											<UiInput
