@@ -3,10 +3,10 @@ import { Check, Search, XIcon } from "lucide-vue-next"
 import { cn } from "@/lib/utils"
 
 type Emits = {
-	(ev: "select", value: string): void
+	(ev: "select", value?: string | null): void
 }
 
-defineEmits<Emits>()
+const emit = defineEmits<Emits>()
 
 type Props = {
 	items?: Array<{
@@ -26,6 +26,11 @@ const _props = withDefaults(defineProps<Props>(), {
 })
 
 const selectedItem = defineModel<string>()
+
+function onClear() {
+	selectedItem.value = ""
+	emit("select", null)
+}
 </script>
 
 <template>
@@ -51,7 +56,7 @@ const selectedItem = defineModel<string>()
 					class="absolute end-0 inset-y-0 flex items-center justify-center px-3 text-muted-foreground hover:text-foreground focus:outline-none"
 					tabindex="-1"
 					aria-label="Clear selection"
-					@click="selectedItem = ''"
+					@click="onClear"
 				>
 					<XIcon :size="16" />
 				</button>

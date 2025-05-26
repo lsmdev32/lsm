@@ -75,12 +75,12 @@ onMounted(async () => {
 	}
 })
 
-function handleChangeCategory(value: string) {
-	category.value = value
+function handleChangeCategory(value?: string | null) {
+	category.value = value ?? ""
 }
 
-function handleChangeAuthor(value: string) {
-	author.value = value
+function handleChangeAuthor(value?: string | null) {
+	author.value = value ?? ""
 }
 
 function refresh() {

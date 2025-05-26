@@ -107,7 +107,9 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
 		.regex(CREATE_STAFF_FORM_CONSTANTS.SLUG.REGEX)
 		.default(""),
 	[STAFF_FORM_SCHEMA_KEYS.cv]: z
-		.instanceof(File)
+		.instanceof(File, {
+			message: CREATE_STAFF_FORM_CONSTANTS.MSG.CV_FILE_TYPE_MSG,
+		})
 
 		.refine(
 			v => CREATE_STAFF_FORM_CONSTANTS.CV.FILE_TYPES
@@ -203,7 +205,8 @@ export const MUTATE_BLOGS_FORM_SCHEMA = z.object({
 	[CONTENT_FORM_SCHEMA_KEYS.author]: z
 		.string()
 		.trim()
-		.optional(),
+		.optional()
+		.nullable(),
 	[CONTENT_FORM_SCHEMA_KEYS.content]: z
 		.string()
 		.trim()
@@ -220,7 +223,9 @@ export const MUTATE_BLOGS_FORM_SCHEMA = z.object({
 			CREATE_CONTENT_FORM_CONSTANTS.MSG.CONTENT_MIN_LENGTH_MSG,
 		),
 	[CONTENT_FORM_SCHEMA_KEYS.cover_image]: z
-		.instanceof(File)
+		.instanceof(File, {
+			message: CREATE_CONTENT_FORM_CONSTANTS.MSG.COVER_IMAGE_REQUIRED_MSG,
+		})
 		.refine(
 			v => CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.IMAGE_TYPES
 				.includes(v.type),
@@ -275,6 +280,7 @@ export const EDIT_BLOGS_FORM_SCHEMA = MUTATE_BLOGS_FORM_SCHEMA
 export const PUBLICATIONS_FORM_SCHEMA_KEYS = {
 	...CONTENT_FORM_SCHEMA_KEYS,
 	publication: "publication",
+	image_url: "image_url",
 	publication_url: "publication_url",
 } as const
 
@@ -287,7 +293,9 @@ export const MUTATE_PUBLICATION_FORM_SCHEMA = MUTATE_BLOGS_FORM_SCHEMA
 			.literal(CONTENT_FORM_TYPE.publication)
 			.default(CONTENT_FORM_TYPE.publication),
 		[PUBLICATIONS_FORM_SCHEMA_KEYS.publication]: z
-			.instanceof(File)
+			.instanceof(File, {
+				message: CREATE_CONTENT_FORM_CONSTANTS.MSG.PUBLICATION_FILE_REQUIRED_MSG,
+			})
 			.refine(
 				v => CREATE_CONTENT_FORM_CONSTANTS.PUBLICATION.FILE_TYPES
 					.includes(v.type),
@@ -305,11 +313,11 @@ export const EDIT_PUBLICATION_FORM_SCHEMA = MUTATE_PUBLICATION_FORM_SCHEMA
 		publication: true,
 	})
 	.extend({
-		image_url: z
+		[PUBLICATIONS_FORM_SCHEMA_KEYS.image_url]: z
 			.string()
 			.url()
 			.default(""),
-		publication_url: z
+		[PUBLICATIONS_FORM_SCHEMA_KEYS.publication_url]: z
 			.string()
 			.url()
 			.default(""),
@@ -322,6 +330,8 @@ export const validationSchemas = {
 	createCategoryForm: toTypedSchema(CREATE_CATEGORY_FORM_SCHEMA),
 	createBlogsForm: toTypedSchema(MUTATE_BLOGS_FORM_SCHEMA),
 	editBlogsForm: toTypedSchema(EDIT_BLOGS_FORM_SCHEMA),
+	createPublicationForm: toTypedSchema(MUTATE_PUBLICATION_FORM_SCHEMA),
+	editPublicationForm: toTypedSchema(EDIT_PUBLICATION_FORM_SCHEMA),
 }
 
 export type StaffType = typeof STAFF_TYPES
