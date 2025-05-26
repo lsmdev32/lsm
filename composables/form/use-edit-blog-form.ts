@@ -43,7 +43,7 @@ export function useEditBlogForm(id: string) {
 			author: v.author_id ?? undefined,
 			status: v.status,
 			image_url: v.cover_image_url ?? undefined,
-			published_at: v.published_at ?? undefined,
+			published_at: v.published_at ? new Date(v.published_at.seconds * 1000) : undefined,
 			tags: v.tags,
 			type: "blog",
 		})
@@ -126,7 +126,11 @@ export function useEditBlogForm(id: string) {
 
 	async function saveAsPublished() {
 		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.status, CONTENT_FORM_STATUS.publish)
-		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.published_at, new Date())
+		if (!form.values.published_at) {
+			form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.published_at, new Date())
+		}
+		console.log(`Saving as published`, form.values)
+
 		await onSubmit()
 	}
 

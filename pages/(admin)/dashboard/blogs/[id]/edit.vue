@@ -250,12 +250,12 @@ function onChooseFile() {
 					Simpan dan publikasikan
 				</ui-button>
 				<ui-button
-					class="capitalize flex-1"
+					class="capitalize flex-1 border-2"
 					variant="secondary"
 					:disabled="isFormSubmitting"
 					@click="form.saveAsDraft()"
 				>
-					Simpan Draft
+					{{ form.form.values.published_at ? 'Simpan' : 'Simpan sebagai Draft' }}
 				</ui-button>
 			</div>
 			<ui-button
@@ -268,5 +268,6 @@ function onChooseFile() {
 				Reset Formulir
 			</ui-button>
 		</form>
+		{{ form.form.errors }}
 	</AdminPage>
 </template>

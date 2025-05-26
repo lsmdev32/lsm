@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Check, Search } from "lucide-vue-next"
+import { Check, Search, XIcon } from "lucide-vue-next"
 import { cn } from "@/lib/utils"
 
 type Emits = {
@@ -37,13 +37,24 @@ const selectedItem = defineModel<string>()
 			<div class="relative w-full max-w-sm items-center">
 				<UiComboboxInput
 					v-model:model-value="selectedItem"
-					class="pl-9"
+					class="pl-9 pr-9"
 					:display-value="(val) => val?.label ?? ''"
 					:placeholder="placeholder"
 				/>
 				<span class="absolute start-0 inset-y-0 flex items-center justify-center px-3">
 					<Search class="size-4 text-muted-foreground" />
 				</span>
+				<!-- Clear button -->
+				<button
+					v-if="selectedItem"
+					type="button"
+					class="absolute end-0 inset-y-0 flex items-center justify-center px-3 text-muted-foreground hover:text-foreground focus:outline-none"
+					tabindex="-1"
+					aria-label="Clear selection"
+					@click="selectedItem = ''"
+				>
+					<XIcon :size="16" />
+				</button>
 			</div>
 		</UiComboboxAnchor>
 
