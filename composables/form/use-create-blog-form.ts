@@ -21,6 +21,7 @@ export function useCreateBlogForm() {
 		initialValues: {
 			type: CONTENT_FORM_TYPE.blog,
 			status: CONTENT_FORM_STATUS.not_published,
+			published_at: new Date(),
 			tags: [],
 		},
 	})
@@ -114,7 +115,7 @@ export function useCreateBlogForm() {
 				author_id: v.author ?? null,
 				slug: v.slug,
 				status: v.status,
-				published_at: v.status === CONTENT_FORM_STATUS.publish ? new Date() : null,
+				published_at: v.published_at,
 				tags: v.tags,
 			})
 		}
@@ -138,7 +139,6 @@ export function useCreateBlogForm() {
 
 	async function saveAsPublished() {
 		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.status, CONTENT_FORM_STATUS.publish)
-		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.published_at, new Date())
 		await onSubmit()
 	}
 

@@ -255,8 +255,7 @@ export const MUTATE_BLOGS_FORM_SCHEMA = z.object({
 		])
 		.default(CONTENT_FORM_STATUS.not_published),
 	[CONTENT_FORM_SCHEMA_KEYS.published_at]: z
-		.date()
-		.optional(),
+		.date(),
 	[CONTENT_FORM_SCHEMA_KEYS.tags]: z
 		.array(z
 			.string()
