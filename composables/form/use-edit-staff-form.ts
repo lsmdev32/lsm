@@ -63,7 +63,6 @@ export function useEditStaffForm(id: Ref<string>) {
 	function resetForm() {
 		sessionStorage.removeItem(SESSION_STORAGE_KEYS.EDIT_STAFF_FORM)
 		form.resetForm()
-		location.reload()
 	}
 
 	function resetFields() {
@@ -90,14 +89,8 @@ export function useEditStaffForm(id: Ref<string>) {
 			return
 		}
 
-		const DELAY = 5000
-		await new Promise(() => {
-			setTimeout(() => {
-				toast.success("Profil sukses diperbarui")
-				resetForm()
-				Promise.resolve()
-			}, DELAY)
-		})
+		toast.success("Profil sukses diperbarui")
+		resetForm()
 
 		router.replace("/dashboard/profiles")
 	})

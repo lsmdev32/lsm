@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronUp, Inbox, Pencil, Notebook, User, UserPlus } from "lucide-vue-next"
+import { ChevronUp, Inbox, Pencil, Notebook, User, UserPlus, PlusSquareIcon } from "lucide-vue-next"
 import { signOut } from "firebase/auth"
 import { toast } from "vue-sonner"
 import type { FunctionalComponent } from "vue"
@@ -31,11 +31,25 @@ const items: SidebarItem[] = [
 		title: "Blogs",
 		path: "/dashboard/blogs",
 		icon: Pencil,
+		submenus: [
+			{
+				title: "Buat blog baru",
+				icon: PlusSquareIcon,
+				path: "/dashboard/blogs/create",
+			},
+		],
 	},
 	{
 		title: "Publikasi",
 		path: "/dashboard/publications",
 		icon: Notebook,
+		submenus: [
+			{
+				title: "Buat publikasi baru",
+				icon: PlusSquareIcon,
+				path: "/dashboard/publications/create",
+			},
+		],
 	},
 	{
 		title: "Kategori Konten",
