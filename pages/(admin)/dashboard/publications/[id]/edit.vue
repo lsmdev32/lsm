@@ -321,6 +321,24 @@ function handlePublicationChange(event: Event) {
 				</UiFormItem>
 			</UiFormField>
 
+			<UiFormField
+				v-slot="{ handleChange, meta, value }"
+				name="published_at"
+			>
+				<UiFormItem class="w-[400px] flex flex-col">
+					<UiFormLabel :required="meta.required">
+						Dipublikasikan pada
+					</UiFormLabel>
+					<UiFormControl>
+						<AdminDatePicker
+							:model-value="value"
+							@update:model-value="handleChange($event)"
+						/>
+					</UiFormControl>
+					<UiFormMessage />
+				</UiFormItem>
+			</UiFormField>
+
 			<div class="flex w-full items-center justify-center pt-10 gap-x-4">
 				<ui-button
 					class="capitalize flex-1 items-center"

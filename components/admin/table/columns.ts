@@ -219,7 +219,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 				"span",
 				{},
 				dayjs(new Date(ms))
-					.format("DD/MM/YYYY"),
+					.format("DD MMM YYYY HH:mm"),
 			)
 		},
 	}),
@@ -242,7 +242,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 				"span",
 				{},
 				dayjs(new Date(ms))
-					.format("DD/MM/YYYY"),
+					.format("DD MMM YYYY HH:mm"),
 			)
 		},
 	}),
@@ -389,7 +389,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 				"span",
 				{},
 				dayjs(new Date(ms))
-					.format("DD/MM/YYYY"),
+					.format("DD MMM YYYY HH:mm"),
 			)
 		},
 	}),
@@ -412,7 +412,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 				"span",
 				{},
 				dayjs(new Date(ms))
-					.format("DD/MM/YYYY"),
+					.format("DD MMM YYYY HH:mm"),
 			)
 		},
 	}),
