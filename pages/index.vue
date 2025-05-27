@@ -247,7 +247,7 @@ const setOption = (index: number) => {
 							</div>
 							<div class="ml-4 mt-4 flex items-center">
 								<NuxtLink
-									to="/Attorneys"
+									to="/attorneys"
 									class="text-sm text-white hover:cursor-pointer"
 								>
 									View All >>
@@ -325,7 +325,7 @@ const setOption = (index: number) => {
 						Partners
 					</h1>
 					<NuxtLink
-						to="/Attorneys"
+						to="/attorneys"
 						class="text-sm font-[Ubuntu] text-[#DAB38D] hover:cursor-pointer"
 					>
 						View All >
