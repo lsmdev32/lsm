@@ -17,13 +17,12 @@ export function useDeleteStaff() {
 		const docRef = getDocRef(firestore, "staff", payload.id)
 
 		toast.info(`Menghapus profil ${payload.fullname}...`)
-		const DELAY = 5000
 		await deleteDoc(docRef)
 			.catch(() => {
-				setTimeout(() => toast.error(`Profil ${payload.fullname} gagal dihapus`), DELAY)
+				toast.error(`Profil ${payload.fullname} gagal dihapus`)
 			})
 			.then(() => {
-				setTimeout(() => toast.success(`Profil ${payload.fullname} berhasil dihapus`), DELAY)
+				toast.success(`Profil ${payload.fullname} berhasil dihapus`)
 			})
 			.finally(() => {
 				setTimeout(() => window.location.reload(), 3000)

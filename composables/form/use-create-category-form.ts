@@ -42,8 +42,6 @@ export function useCreateCategory() {
 			return
 		}
 
-		await new Promise(resolve => setTimeout(resolve, 3000)) // simulate loading
-
 		await addDoc(colRef, {
 			name: tempCategory.value,
 		})
@@ -53,7 +51,7 @@ export function useCreateCategory() {
 			.catch(() => {
 				toast.error("Gagal menambahkan kategori")
 			})
-			.finally(()	=> {
+			.finally(() => {
 				isSubmitting.value = false
 			})
 	}
