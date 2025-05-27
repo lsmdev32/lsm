@@ -2,6 +2,16 @@
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
 
+type Props = {
+	clearable?: boolean
+	format?: string
+}
+
+withDefaults(defineProps<Props>(), {
+	clearable: true,
+	format: "dd MMMM yyyy HH:mm",
+})
+
 const model = defineModel<Date>()
 </script>
 
@@ -10,6 +20,8 @@ const model = defineModel<Date>()
 		<vue-date-picker
 			v-model="model"
 			vertical
+			:clearable="clearable"
+			:format="format"
 		/>
 	</client-only>
 </template>

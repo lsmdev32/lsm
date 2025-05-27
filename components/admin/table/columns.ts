@@ -384,7 +384,6 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 			const dayjs = useDayjs()
 			const value = getValue() as { _seconds: number, _nanoseconds: number }
 			const ms = value._seconds * 1000
-			console.log(`value`, value)
 
 			return h(
 				"span",
