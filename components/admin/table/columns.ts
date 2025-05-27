@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/vue-table"
 import type { ColumnDef } from "@tanstack/vue-table"
-import { ArrowDownIcon, ArrowUpIcon, DownloadIcon, PencilIcon, SaveIcon, TrashIcon } from "lucide-vue-next"
+import { ArrowDownIcon, ArrowUpIcon, DownloadIcon, PencilIcon, SaveIcon, Trash2Icon, TrashIcon } from "lucide-vue-next"
 import { deleteDoc, updateDoc } from "firebase/firestore"
 import { toast } from "vue-sonner"
 import { AdminTableAction, NuxtImg, NuxtLink, UiBadge, UiButton, UiInput } from "#components"
@@ -96,6 +96,19 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
 					})
 			}
 
+			async function handleDeleteCategory() {
+				const confirmed = window.confirm("Apakah Anda yakin ingin menghapus kategori ini?")
+				if (!confirmed) return
+
+				await deleteDoc(docRef)
+					.then(() => {
+						toast.success("Kategori berhasil dihapus")
+					})
+					.catch(() => {
+						toast.error(`Gagal menghapus kategori`)
+					})
+			}
+
 			function handleChange(value: string | number) {
 				inputRef.value = value as string
 			}
@@ -119,9 +132,18 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
 						UiButton,
 						{
 							variant: "ghost",
+							title: "Simpan perubahan nama kategori",
 							onClick: updateCategoryName,
 						},
 						h(SaveIcon)),
+					h(
+						UiButton,
+						{
+							variant: "ghost",
+							title: "Hapus kategori ini",
+							onClick: handleDeleteCategory,
+						},
+						h(Trash2Icon)),
 				],
 			)
 		},
@@ -192,13 +214,12 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 			const dayjs = useDayjs()
 			const value = getValue() as { _seconds: number, _nanoseconds: number }
 			const ms = value._seconds * 1000
-			console.log(`value`, value)
 
 			return h(
 				"span",
 				{},
 				dayjs(new Date(ms))
-					.format("DD/MM/YYYY"),
+					.format("DD MMM YYYY HH:mm"),
 			)
 		},
 	}),
@@ -221,7 +242,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 				"span",
 				{},
 				dayjs(new Date(ms))
-					.format("DD/MM/YYYY"),
+					.format("DD MMM YYYY HH:mm"),
 			)
 		},
 	}),
@@ -258,23 +279,18 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 
 			function handleUpdatePublish() {
 				const newStatus = isPublished ? "not_published" : "published"
-				const publishedAt = newStatus === "published" ? new Date() : undefined
 
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const newValue: Record<string, any> = {
 					status: newStatus,
 				}
 
-				if (newStatus === "published") {
-					newValue["published_at"] = publishedAt
-				}
-
 				updateDoc(docRef, newValue)
 					.then(() => {
 						toast.success(`Blog status updated to ${newStatus}`)
 					})
-					.catch((error) => {
-						toast.error(`Failed to update blog status: ${error.message}`)
+					.catch(() => {
+						toast.error(`Failed to update blog status`)
 					})
 					.finally(() => {
 						window.location.reload()
@@ -368,13 +384,12 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 			const dayjs = useDayjs()
 			const value = getValue() as { _seconds: number, _nanoseconds: number }
 			const ms = value._seconds * 1000
-			console.log(`value`, value)
 
 			return h(
 				"span",
 				{},
 				dayjs(new Date(ms))
-					.format("DD/MM/YYYY"),
+					.format("DD MMM YYYY HH:mm"),
 			)
 		},
 	}),
@@ -397,7 +412,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 				"span",
 				{},
 				dayjs(new Date(ms))
-					.format("DD/MM/YYYY"),
+					.format("DD MMM YYYY HH:mm"),
 			)
 		},
 	}),
@@ -455,23 +470,18 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 
 			function handleUpdatePublish() {
 				const newStatus = isPublished ? "not_published" : "published"
-				const publishedAt = newStatus === "published" ? new Date() : undefined
 
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const newValue: Record<string, any> = {
 					status: newStatus,
 				}
 
-				if (newStatus === "published") {
-					newValue["published_at"] = publishedAt
-				}
-
 				updateDoc(docRef, newValue)
 					.then(() => {
 						toast.success(`Blog status updated to ${newStatus}`)
 					})
-					.catch((error) => {
-						toast.error(`Failed to update blog status: ${error.message}`)
+					.catch(() => {
+						toast.error(`Failed to update blog status`)
 					})
 					.finally(() => {
 						window.location.reload()

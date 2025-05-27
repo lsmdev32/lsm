@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useRouteQuery } from "@vueuse/router"
+import { deleteDoc } from "firebase/firestore"
 import { RefreshCcw, UserPlus2 } from "lucide-vue-next"
+import { toast } from "vue-sonner"
 import EmptyListPlaceholder from "~/components/admin/EmptyListPlaceholder.vue"
-import { useDeleteStaff } from "~/composables/form/use-delete-staff"
+import { getStaffDocRef } from "~/lib/firestore-model"
 import type { StaffAppModel } from "~/lib/firestore-model"
 
 definePageMeta({
@@ -22,13 +24,19 @@ const { refresh, isLoading, result } = useSearch<StaffAppModel>("staffs", keywor
 	"id",
 ])
 
-const {
-	isDialogOpen,
-	onOpenDialog,
-	cancelDialog,
-	confirmDialog,
-	currentDialogData,
-} = useDeleteStaff()
+async function onOpenDialog(payload: { id: string, fullname: string }) {
+	const confirmed = window.confirm(`Are you sure you want to delete the profile of ${payload.fullname}?`)
+	if (!confirmed) return
+
+	deleteDoc(getStaffDocRef(useFirestore(), payload.id))
+		.then(() => {
+			toast.success(`Profil ${payload.fullname} berhasil dihapus.`)
+			refresh()
+		})
+		.catch(() => {
+			toast.error(`Gagal menghapus profil ${payload.fullname}`)
+		})
+}
 </script>
 
 <template>
@@ -93,28 +101,5 @@ const {
 				</template>
 			</div>
 		</div>
-
-		<UiAlertDialog :open="isDialogOpen">
-			<UiAlertDialogContent>
-				<UiAlertDialogHeader>
-					<UiAlertDialogTitle>Hapus Profile <span class="font-bold">{{ currentDialogData?.fullname }}</span> ?</UiAlertDialogTitle>
-					<UiAlertDialogDescription>
-						Ini akan menghapus profile {{ currentDialogData?.fullname }} dari sistem.
-						Apakah Anda yakin ingin melanjutkan?
-					</UiAlertDialogDescription>
-				</UiAlertDialogHeader>
-				<UiAlertDialogFooter>
-					<UiAlertDialogCancel @click="cancelDialog">
-						Batal
-					</UiAlertDialogCancel>
-					<UiAlertDialogAction
-						class="bg-red-500 text-white hover:bg-red-600"
-						@click="confirmDialog"
-					>
-						Hapus
-					</UiAlertDialogAction>
-				</UiAlertDialogFooter>
-			</UiAlertDialogContent>
-		</UiAlertDialog>
 	</AdminPage>
 </template>

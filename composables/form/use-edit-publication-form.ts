@@ -42,7 +42,7 @@ export function useEditPublicationForm(id: string) {
 			content: v.content,
 			slug: v.slug,
 			category: v.category_id,
-			author: v.author_id ?? undefined,
+			author: v.author_id ?? null,
 			status: v.status,
 			image_url: v.cover_image_url ?? undefined,
 			// @ts-expect-error - assuming v.published_at is a Firestore Timestamp
@@ -95,7 +95,7 @@ export function useEditPublicationForm(id: string) {
 	}
 
 	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Harap tunggu publikasi sedang dibuat...")
+		toast.info("Harap tunggu publikasi sedang diperbarui...")
 		try {
 			await updateDoc(publicationDocRef, {
 				type: v.type,
@@ -106,19 +106,17 @@ export function useEditPublicationForm(id: string) {
 				author_id: v.author ?? null,
 				slug: v.slug,
 				status: v.status,
-				published_at: v.status === CONTENT_FORM_STATUS.publish ? new Date() : null,
+				published_at: v.published_at,
 				tags: v.tags,
 			})
 		}
-
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		catch (e) {
-			console.log(e)
-
-			toast.error("Gagal membuat publikasi")
+			toast.error("Gagal memperbarui publikasi")
 			return
 		}
 
-		toast.success("Publikasi sukses dibuat")
+		toast.success("Publikasi sukses diperbarui")
 		resetForm()
 		router.replace("/dashboard/publications")
 	})

@@ -21,6 +21,7 @@ export function useCreatePublicationForm() {
 		initialValues: {
 			type: CONTENT_FORM_TYPE.publication,
 			status: CONTENT_FORM_STATUS.not_published,
+			published_at: new Date(),
 			tags: [],
 		},
 	})
@@ -37,6 +38,8 @@ export function useCreatePublicationForm() {
 		if (!saved) return
 
 		const parsed = JSON.parse(saved)
+		parsed[CONTENT_FORM_SCHEMA_KEYS.published_at] = new Date(parsed?.[CONTENT_FORM_SCHEMA_KEYS.published_at])
+
 		form.setValues(parsed)
 	})
 
@@ -120,7 +123,7 @@ export function useCreatePublicationForm() {
 				author_id: v.author ?? null,
 				slug: v.slug,
 				status: v.status,
-				published_at: v.status === CONTENT_FORM_STATUS.publish ? new Date() : null,
+				published_at: v.published_at,
 				tags: v.tags,
 				publication: publicationURL,
 			})
@@ -145,7 +148,6 @@ export function useCreatePublicationForm() {
 
 	async function saveAsPublished() {
 		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.status, CONTENT_FORM_STATUS.publish)
-		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.published_at, new Date())
 		await onSubmit()
 	}
 
