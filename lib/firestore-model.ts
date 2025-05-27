@@ -98,7 +98,7 @@ export type BlogAppModel = AppModelOfType<{
 	cover_image_url: string
 	content: string
 	status: "not_published" | "published"
-	published_at?: Date | null
+	published_at: Date
 	author_id?: string | null
 	category_id: string
 	tags: string[]
@@ -111,7 +111,7 @@ export type BlogDocumentModel = DocumentModelOfType<{
 	cover_image_url: string
 	content: string
 	status: "not_published" | "published"
-	published_at?: Date | null
+	published_at: Date
 	author_id?: string | null
 	category_id: string
 	tags: string[]
@@ -124,7 +124,7 @@ export type PublicationAppModel = AppModelOfType<{
 	cover_image_url: string
 	content: string
 	status: "not_published" | "published"
-	published_at?: Date | null
+	published_at: Date
 	author_id?: string | null
 	category_id: string
 	tags: string[]
@@ -138,7 +138,7 @@ export type PublicationDocumentModel = DocumentModelOfType<{
 	cover_image_url: string
 	content: string
 	status: "not_published" | "published"
-	published_at?: Date | null
+	published_at: Date
 	author_id?: string | null
 	category_id: string
 	tags: string[]

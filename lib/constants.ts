@@ -122,6 +122,7 @@ export const CREATE_CONTENT_FORM_CONSTANTS = {
 		PUBLICATION_FILE_TYPE_MSG: "File publikasi harus berupa PDF",
 		PUBLICATION_FILE_SIZE_MSG: "Ukuran file publikasi maksimal 20MB",
 		PUBLICATION_FILE_REQUIRED_MSG: "File publikasi harus diunggah",
+		PUBLISHED_AT_DATE_MSG: "Tanggal publikasi harus berupa tanggal yang valid",
 	},
 } as const
 

@@ -20,6 +20,7 @@ export function useEditBlogForm(id: string) {
 		validationSchema: validationSchemas.editBlogsForm,
 		initialValues: {
 			type: CONTENT_FORM_TYPE.blog,
+			published_at: new Date(),
 		},
 	})
 	const isSubmitting = form.isSubmitting
@@ -47,7 +48,7 @@ export function useEditBlogForm(id: string) {
 			// @ts-expect-error - assuming v.published_at is a Firestore Timestamp
 			published_at: v.published_at ? new Date(v.published_at.seconds * 1000) : undefined,
 			tags: v.tags,
-			type: "blog",
+			type: CONTENT_FORM_TYPE.blog,
 		})
 	})
 
@@ -76,7 +77,7 @@ export function useEditBlogForm(id: string) {
 	}
 
 	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Harap tunggu blogs sedang dibuat...")
+		toast.info("Harap tunggu blogs sedang diperbarui...")
 		try {
 			await updateDoc(blogDocRef, {
 				type: CONTENT_FORM_TYPE.blog,
@@ -84,22 +85,22 @@ export function useEditBlogForm(id: string) {
 				title: v.title,
 				content: v.content,
 				category_id: v.category,
-				author_id: v.author,
+				author_id: v.author ?? null,
 				slug: v.slug,
 				status: v.status,
-				published_at: v.status === CONTENT_FORM_STATUS.publish ? new Date() : null,
 				tags: v.tags,
+				published_at: v.published_at,
 			})
 		}
 
 		catch (e) {
 			console.log(e)
 
-			toast.error("Gagal membuat blog")
+			toast.error("Gagal memperbarui blog")
 			return
 		}
 
-		toast.success("Blog sukses dibuat")
+		toast.success("Blog sukses diperbarui")
 		resetForm()
 		router.replace("/dashboard/blogs")
 	})
@@ -111,11 +112,6 @@ export function useEditBlogForm(id: string) {
 
 	async function saveAsPublished() {
 		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.status, CONTENT_FORM_STATUS.publish)
-		if (!form.values.published_at) {
-			form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.published_at, new Date())
-		}
-		console.log(`Saving as published`, form.values)
-
 		await onSubmit()
 	}
 
