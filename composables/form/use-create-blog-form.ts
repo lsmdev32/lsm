@@ -37,6 +37,8 @@ export function useCreateBlogForm() {
 		if (!saved) return
 
 		const parsed = JSON.parse(saved)
+		parsed[CONTENT_FORM_SCHEMA_KEYS.published_at] = new Date(parsed?.[CONTENT_FORM_SCHEMA_KEYS.published_at])
+
 		form.setValues(parsed)
 	})
 
