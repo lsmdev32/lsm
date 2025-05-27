@@ -76,7 +76,7 @@ export function useEditBlogForm(id: string) {
 	}
 
 	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Harap tunggu blogs sedang dibuat...")
+		toast.info("Harap tunggu blogs sedang diperbarui...")
 		try {
 			await updateDoc(blogDocRef, {
 				type: CONTENT_FORM_TYPE.blog,
@@ -95,11 +95,11 @@ export function useEditBlogForm(id: string) {
 		catch (e) {
 			console.log(e)
 
-			toast.error("Gagal membuat blog")
+			toast.error("Gagal memperbarui blog")
 			return
 		}
 
-		toast.success("Blog sukses dibuat")
+		toast.success("Blog sukses diperbarui")
 		resetForm()
 		router.replace("/dashboard/blogs")
 	})

@@ -95,7 +95,7 @@ export function useEditPublicationForm(id: string) {
 	}
 
 	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Harap tunggu publikasi sedang dibuat...")
+		toast.info("Harap tunggu publikasi sedang diperbarui...")
 		try {
 			await updateDoc(publicationDocRef, {
 				type: v.type,
@@ -114,11 +114,11 @@ export function useEditPublicationForm(id: string) {
 		catch (e) {
 			console.log(e)
 
-			toast.error("Gagal membuat publikasi")
+			toast.error("Gagal memperbarui publikasi")
 			return
 		}
 
-		toast.success("Publikasi sukses dibuat")
+		toast.success("Publikasi sukses diperbarui")
 		resetForm()
 		router.replace("/dashboard/publications")
 	})
