@@ -214,7 +214,6 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 			const dayjs = useDayjs()
 			const value = getValue() as { _seconds: number, _nanoseconds: number }
 			const ms = value._seconds * 1000
-			console.log(`value`, value)
 
 			return h(
 				"span",
@@ -280,23 +279,18 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 
 			function handleUpdatePublish() {
 				const newStatus = isPublished ? "not_published" : "published"
-				const publishedAt = newStatus === "published" ? new Date() : undefined
 
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const newValue: Record<string, any> = {
 					status: newStatus,
 				}
 
-				if (newStatus === "published") {
-					newValue["published_at"] = publishedAt
-				}
-
 				updateDoc(docRef, newValue)
 					.then(() => {
 						toast.success(`Blog status updated to ${newStatus}`)
 					})
-					.catch((error) => {
-						toast.error(`Failed to update blog status: ${error.message}`)
+					.catch(() => {
+						toast.error(`Failed to update blog status`)
 					})
 					.finally(() => {
 						window.location.reload()
@@ -477,23 +471,18 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 
 			function handleUpdatePublish() {
 				const newStatus = isPublished ? "not_published" : "published"
-				const publishedAt = newStatus === "published" ? new Date() : undefined
 
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const newValue: Record<string, any> = {
 					status: newStatus,
 				}
 
-				if (newStatus === "published") {
-					newValue["published_at"] = publishedAt
-				}
-
 				updateDoc(docRef, newValue)
 					.then(() => {
 						toast.success(`Blog status updated to ${newStatus}`)
 					})
-					.catch((error) => {
-						toast.error(`Failed to update blog status: ${error.message}`)
+					.catch(() => {
+						toast.error(`Failed to update blog status`)
 					})
 					.finally(() => {
 						window.location.reload()
