@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/vue-table"
 import type { ColumnDef } from "@tanstack/vue-table"
-import { ArrowDownIcon, ArrowUpIcon, DownloadIcon, PencilIcon, SaveIcon, TrashIcon } from "lucide-vue-next"
+import { ArrowDownIcon, ArrowUpIcon, DownloadIcon, PencilIcon, SaveIcon, Trash2Icon, TrashIcon } from "lucide-vue-next"
 import { deleteDoc, updateDoc } from "firebase/firestore"
 import { toast } from "vue-sonner"
 import { AdminTableAction, NuxtImg, NuxtLink, UiBadge, UiButton, UiInput } from "#components"
@@ -96,6 +96,19 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
 					})
 			}
 
+			async function handleDeleteCategory() {
+				const confirmed = window.confirm("Apakah Anda yakin ingin menghapus kategori ini?")
+				if (!confirmed) return
+
+				await deleteDoc(docRef)
+					.then(() => {
+						toast.success("Kategori berhasil dihapus")
+					})
+					.catch(() => {
+						toast.error(`Gagal menghapus kategori`)
+					})
+			}
+
 			function handleChange(value: string | number) {
 				inputRef.value = value as string
 			}
@@ -119,9 +132,18 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
 						UiButton,
 						{
 							variant: "ghost",
+							title: "Simpan perubahan nama kategori",
 							onClick: updateCategoryName,
 						},
 						h(SaveIcon)),
+					h(
+						UiButton,
+						{
+							variant: "ghost",
+							title: "Hapus kategori ini",
+							onClick: handleDeleteCategory,
+						},
+						h(Trash2Icon)),
 				],
 			)
 		},
