@@ -24,7 +24,7 @@ console.log("response", response.data)
 					</h2>
 					<div class="max-w-7xl mx-auto md:mt-28 lg:mt-16 ">
 						<img
-							src="../assets/Arrow 1.png"
+							src="../../assets/Arrow 1.png"
 							height="60px"
 							alt=""
 							style=""
@@ -52,7 +52,7 @@ console.log("response", response.data)
 					<!-- Image section -->
 					<div class="w-full h-64 md:h-72 lg:h-72 overflow-hidden">
 						<img
-							src="../assets/attorneys-1.png"
+							src="../../assets/attorneys-1.png"
 							alt=""
 							class="w-full h-full object-cover transform "
 						>
@@ -97,7 +97,7 @@ console.log("response", response.data)
 				<!-- Gambar dengan ABOUT LSM -->
 				<div class="relative w-full">
 					<img
-						src="../assets/mobile_attorneys.png"
+						src="../../assets/mobile_attorneys.png"
 						alt=""
 						class="w-full h-[358px] object-cover"
 					>
@@ -109,7 +109,7 @@ console.log("response", response.data)
 					<!-- Panah -->
 					<div class="">
 						<img
-							src="../assets/Arrow 1.png"
+							src="../../assets/Arrow 1.png"
 							alt=""
 							style="height: 34px; width: 16px;"
 						>

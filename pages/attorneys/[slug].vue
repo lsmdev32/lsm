@@ -91,7 +91,7 @@ function closeAssociates() {
 					<!-- Circle Image -->
 					<div class="relative md:w-[287px] md:h-[287px] lg:w-[260px] lg:h-[260px] shrink-0 overflow-hidden rounded-full md:rounded-l-full  ">
 						<img
-							src="../assets/images/Dummy_DamianAgataYuvens.jpg"
+							src="../../assets/images/Dummy_DamianAgataYuvens.jpg"
 							alt=""
 							class="object-cover w-full h-full "
 						>
@@ -175,7 +175,9 @@ function closeAssociates() {
 						<NuxtLink
 							to="/publications"
 							class="text-sm text-[#DAB38D] hover:underline"
-						>See More &gt;</NuxtLink>
+						>
+							See More &gt;
+						</NuxtLink>
 					</div>
 					<div class="pb-8 flex-row">
 						<Publications />
@@ -324,7 +326,9 @@ function closeAssociates() {
 								<NuxtLink
 									to="/publications"
 									class="text-sm text-[#DAB38D] hover:underline"
-								>See More &gt;</NuxtLink>
+								>
+									See More &gt;
+								</NuxtLink>
 							</div>
 						</div>
 					</div>
