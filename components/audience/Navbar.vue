@@ -28,21 +28,21 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 							About LSM
 						</NuxtLink>
 						<NuxtLink
-							to="/practiceArea"
+							to="/practice-area"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
 							Practice Area
 						</NuxtLink>
 						<NuxtLink
-							to="/Attorneys"
+							to="/attorneys"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
 							Attorneys
 						</NuxtLink>
 						<NuxtLink
-							to="/publication"
+							to="/publications"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>

@@ -32,21 +32,21 @@
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="/practiceArea"
+					to="/practice-area"
 					@click="closeMenu"
 				>Practice Area</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="/Attorneys"
+					to="/attorneys"
 					@click="closeMenu"
 				>Attorneys</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="/publication"
+					to="/publications"
 					@click="closeMenu"
 				>Publication</NuxtLink>
 			</li>
@@ -60,7 +60,7 @@
 			<li>
 				<NuxtLink
 					style="font-size:medium;"
-					to="/ContactUs"
+					to="/contact-us"
 					@click="closeMenu"
 				>Contact Us</NuxtLink>
 			</li>
