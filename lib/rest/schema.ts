@@ -331,9 +331,8 @@ export const ContentDetailPageDataOutputSchema = z.object({
 					detail: z
 						.object({
 							id: z
-								.string()
-								.nanoid(),
-							type: ContentTypeFilter,
+								.string(),
+							type: ContentTypeFilter.exclude(["all"]),
 							slug: z
 								.string()
 								.regex(/^[a-z0-9-]+$/),
@@ -344,6 +343,8 @@ export const ContentDetailPageDataOutputSchema = z.object({
 								.string()
 								.url(),
 							title: z
+								.string(),
+							content: z
 								.string(),
 							category: z
 								.string(),
