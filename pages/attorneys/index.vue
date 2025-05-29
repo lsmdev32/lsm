@@ -3,8 +3,7 @@ import Partners from "~/components/audience/Partners.vue"
 import Associate from "~/components/audience/Associate.vue"
 
 const response = await useCustomFetch("/rest/page-data/staffs")
-
-console.log("response", response.data)
+const data = response.data.data
 </script>
 
 <template>
@@ -66,12 +65,13 @@ console.log("response", response.data)
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-4 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 ">
 				<Partners
-					v-for="(partner) in response.data?.data?.partners.data"
+					v-for="(partner) in data?.partners.data"
 					:key="partner.id"
 					:image="partner.image_url"
 					:name="partner.name"
 					:linkedin="partner.linkedin_url"
 					:email="partner.email"
+					:slug="partner.slug"
 				/>
 			</div>
 			<div class="container max-w-7xl mx-auto px-2  lg:px-8 mt-4 py-2">
@@ -81,12 +81,13 @@ console.log("response", response.data)
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-4 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mb-8">
 				<Associate
-					v-for="(associate) in response.data?.data?.associates.data"
+					v-for="(associate) in data?.associates.data"
 					:key="associate.id"
 					:image="associate.image_url"
 					:name="associate.name"
 					:linkedin="associate.linkedin_url"
 					:email="associate.email"
+					:slug="associate.slug"
 				/>
 			</div>
 		</section>
@@ -131,12 +132,13 @@ console.log("response", response.data)
 			</div>
 			<div class="grid grid-cols-1 gap-4 container max-w-7xl mx-auto px-20 sm:px-6 lg:px-8 py-4 ">
 				<Partners
-					v-for="(partner) in response.data?.data?.partners.data"
+					v-for="(partner) in data?.partners.data"
 					:key="partner.id"
 					:image="partner.image_url"
 					:name="partner.name"
 					:linkedin="partner.linkedin_url"
 					:email="partner.email"
+					:slug="partner.slug"
 				/>
 			</div>
 			<div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 py-2">
@@ -146,12 +148,13 @@ console.log("response", response.data)
 			</div>
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-10 mt-2 container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 mb-8">
 				<Associate
-					v-for="(associate) in response.data?.data?.associates.data"
+					v-for="(associate) in data?.associates.data"
 					:key="associate.id"
 					:image="associate.image_url"
 					:name="associate.name"
 					:linkedin="associate.linkedin_url"
 					:email="associate.email"
+					:slug="associate.slug"
 				/>
 			</div>
 		</section>
