@@ -1,7 +1,6 @@
 import { os } from "@orpc/server"
 import { getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore"
 import type { Firestore } from "firebase/firestore"
-import { faker } from "@faker-js/faker"
 import dayjs from "dayjs"
 import { z } from "zod"
 import type { algoliasearch } from "algoliasearch"
@@ -19,7 +18,7 @@ import {
 } from "~/lib/rest/schema"
 import type { ContentDetailPageDataOutputType } from "~/lib/rest/schema"
 
-import { getBlogCollectionRef, getPublicationCollectionRef, getStaffCollectionRef, getStaffDocRef } from "~/lib/firestore-model"
+import { getBlogCollectionRef, getCategoryDocRef, getPublicationCollectionRef, getStaffCollectionRef, getStaffDocRef } from "~/lib/firestore-model"
 
 type Middleware = {
 	firestore: Firestore
@@ -31,8 +30,25 @@ const base = os.errors({
 	NOT_FOUND: {
 		status: 404,
 		message: "Not found",
-		data: z.null()
+		data: z
+			.null()
 			.default(null),
+	},
+	INPUT_VALIDATION_FAILED: {
+		status: 442,
+		message: "Input validation failed",
+		data: z.object({
+			formErrors: z.array(
+				z.string(),
+			),
+			fieldErrors: z.record(
+				z.string(),
+				z.array(
+					z.string(),
+				)
+					.optional(),
+			),
+		}),
 	},
 })
 
@@ -208,18 +224,41 @@ const ourAttorneyDetailPageData = base
 		)
 
 		const publicationsSnapshot = await getDocs(publicationsQuery)
-		const publications = publicationsSnapshot.docs.map((doc) => {
-			const pubData = doc.data()
-			return {
-				id: doc.id,
-				title: pubData.title,
-				slug: pubData.slug,
-				image_url: pubData.cover_image_url,
-				published_at: dayjs(pubData.published_at)
-					.format("MMM D, YYYY"),
-				category: pubData.category_id,
-			}
-		})
+		const publications = publicationsSnapshot
+			.docs
+			.map((v) => {
+				const pubData = v.data()
+				return {
+					id: v.id,
+					title: pubData.title,
+					slug: pubData.slug,
+					image_url: pubData.cover_image_url,
+					published_at: dayjs(pubData.published_at.seconds * 1000)
+						.format("MMM D, YYYY"),
+					category: pubData.category_id,
+				}
+			})
+
+		const publicationCategoryIds = Array
+			.from(new Set(publications
+				.map(pub => pub.category)))
+			.filter(Boolean)
+
+		for (const categoryId of publicationCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+
+			if (!categoryDoc.exists()) return
+			const categoryData = categoryDoc.data()
+			if (!categoryData) return
+
+			publications.forEach((pub) => {
+				if (pub.category === categoryId) {
+					pub.category = categoryData.name
+				}
+			})
+		}
 
 		const otherAssociatesQuery = query(
 			getStaffCollectionRef(context.firestore),

@@ -5,11 +5,16 @@
 			<!-- Card -->
 			<div>
 				<div class="relative cursor-pointer group overflow-hidden">
-					<img
-						:src="image"
-						alt="Profile photo"
-						class="w-full h-[338px] object-cover object-center transition duration-300 group-hover:opacity-70"
+					<nuxt-link
+						:href="`/attorneys/${slug}`"
+						class="cursor-pointer"
 					>
+						<nuxt-img
+							:src="image"
+							alt="Profile photo"
+							class="w-full h-[338px] object-cover object-center transition duration-300 group-hover:opacity-70"
+						/>
+					</nuxt-link>
 
 					<!-- Nama & role -->
 					<div class="mt-4 inset-0 flex items-end justify-center">
@@ -25,22 +30,22 @@
 
 					<!-- Hover icons -->
 					<div class="absolute bottom-[120px] right-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition duration-300">
-						<a href="{{ linkedin }}">
+						<nuxt-link :href="linkedin">
 							<button class="w-10 h-10 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
 								<Icon
 									name="mdi:linkedin"
 									size="20"
 								/>
 							</button>
-						</a>
-						<a href="mailto:{{ email }}">
+						</nuxt-link>
+						<nuxt-link :href="`mailto:${email}`">
 							<button class="w-10 h-10 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
 								<Icon
 									name="mdi:email-outline"
 									size="20"
 								/>
 							</button>
-						</a>
+						</nuxt-link>
 					</div>
 				</div>
 			</div>
@@ -49,16 +54,16 @@
 		<!-- Mobile View -->
 		<div class="md:hidden flex flex-col space-y-3 ">
 			<div class="relative cursor-pointer group overflow-hidden">
-				<img
+				<nuxt-img
 					:src="image"
 					alt="Profile photo"
 					class="w-full h-[182px] object-cover object-[50%_30%] transition duration-300 group-hover:opacity-70"
-				>
+				/>
 
 				<!-- Nama & role -->
 				<div class="mt-4 inset-0 flex items-end justify-center">
 					<div class="text-center pb-6">
-						<h3 class="text-1x1 font-[Marcellus] text-[#4B3D2A]">
+						<h3 class="text-xl font-[Marcellus] text-[#4B3D2A]">
 							{{ name }}
 						</h3>
 						<p class="text-sm text-[#dab38d] tracking-widest mt-1">
@@ -69,7 +74,7 @@
 
 				<!-- Hover icons -->
 				<div class="absolute bottom-[120px] right-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition duration-300">
-					<a href="{{ linkedin }}">
+					<a :href="linkedin">
 						<button class="w-10 h-10 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
 							<Icon
 								name="mdi:linkedin"
@@ -77,7 +82,7 @@
 							/>
 						</button>
 					</a>
-					<a href="mailto:{{ email }}">
+					<a :href="`mailto:${email}`">
 						<button class="w-10 h-10 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
 							<Icon
 								name="mdi:email-outline"
@@ -92,10 +97,13 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-	image: String,
-	name: String,
-	linkedin: String,
-	email: String,
-})
+type Props = {
+	image: string
+	name: string
+	linkedin: string
+	email: string
+	slug: string
+}
+
+defineProps<Props>()
 </script>
