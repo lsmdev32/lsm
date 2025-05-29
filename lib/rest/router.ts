@@ -1,7 +1,6 @@
 import { os } from "@orpc/server"
 import { getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore"
 import type { Firestore } from "firebase/firestore"
-import { faker } from "@faker-js/faker"
 import dayjs from "dayjs"
 import { z } from "zod"
 import type { algoliasearch } from "algoliasearch"
