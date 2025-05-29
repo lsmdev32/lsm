@@ -36,7 +36,7 @@ export const HomepageDataOutputSchema = z.object({
 							email: z
 								.string()
 								.email(),
-							type: StaffTypeFilter,
+							type: StaffTypeFilter.exclude(["all"]),
 						})),
 					total: z
 						.number(),

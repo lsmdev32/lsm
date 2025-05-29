@@ -71,14 +71,14 @@ import Button from "~/components/audience/Button.vue"
 									height="20"
 									width="20"
 								>
-								<a
-									href=""
+								<nuxt-link
+									href="https://maps.app.goo.gl/ECWYNJ2iU98bC4mt9"
 									target="_blank"
 									rel="noopener"
 									class="map-link"
 								>
 									View on Google Map
-								</a>
+								</nuxt-link>
 							</div>
 						</div>
 					</div>
@@ -153,14 +153,14 @@ import Button from "~/components/audience/Button.vue"
 									height="20"
 									width="20"
 								>
-								<a
-									href=""
+								<nuxt-link
+									href="https://maps.app.goo.gl/ECWYNJ2iU98bC4mt9"
 									target="_blank"
 									rel="noopener"
 									class="map-link"
 								>
 									View on Google Map
-								</a>
+								</nuxt-link>
 							</div>
 						</div>
 					</div>

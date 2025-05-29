@@ -56,7 +56,7 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 							Blog
 						</NuxtLink>
 						<NuxtLink
-							to="/ContactUs"
+							to="/contact-us"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>

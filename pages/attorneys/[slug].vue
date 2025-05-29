@@ -2,6 +2,14 @@
 import { ref } from "vue"
 import Publications from "~/components/audience/Publications.vue"
 
+const slug = useRoute().params.slug as string
+
+const { data } = await useCustomFetch(`/rest/page-data/staffs/${slug}`)
+
+const result = data.data
+
+console.log(`result`, result)
+
 defineProps({
 	image: String,
 	name: String,
@@ -12,16 +20,6 @@ defineProps({
 // State
 const showPartners = ref(false)
 const showAssociates = ref(false)
-
-const partners = [
-	"Damian Agata Yuvens",
-	"Gilang M. Santosa",
-	"Hesti Setyowati",
-	"Lelyana Santosa",
-	"Leonard Arpan",
-	"Todung Mulya Lubis",
-	"Tondi Nikita Lubis",
-]
 
 const associates = [
 	"Bianca Janet",
@@ -65,23 +63,14 @@ function closeAssociates() {
 						Partners
 					</h2>
 					<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
-						<li class="cursor-pointer hover:underline">
-							Lorem ipsum sdasdasdads
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Dolor sit amet
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Consectetur adipiscing
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Blandit scelerisque
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Tristique sed
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Consectetur tristique
+						<li
+							v-for="partner in result.other_partners"
+							:key="partner.id"
+							class="cursor-pointer hover:underline"
+						>
+							<nuxt-link :href="`/attorneys/${partner.slug}`">
+								{{ partner.name }}
+							</nuxt-link>
 						</li>
 					</ul>
 				</aside>
@@ -90,42 +79,48 @@ function closeAssociates() {
 				<div class="w-full bg-[#dfb78d] md:rounded-bl-[152px] lg:rounded-bl-[128px] flex flex-col md:flex-row items-center border-bottom-left-radius  ">
 					<!-- Circle Image -->
 					<div class="relative md:w-[287px] md:h-[287px] lg:w-[260px] lg:h-[260px] shrink-0 overflow-hidden rounded-full md:rounded-l-full  ">
-						<img
-							src="../../assets/images/Dummy_DamianAgataYuvens.jpg"
+						<NuxtImg
+							:src="result.person.image_url"
 							alt=""
-							class="object-cover w-full h-full "
-						>
+							class="object-cover object-top w-full h-full "
+						/>
 					</div>
 
 					<!-- Text Content -->
 					<div class="md:ml-10 mt-6 text-center md:text-left ">
 						<h1 class="text-4xl font-[Marcellus] text-[#3a2b1c] leading-tight uppercase">
-							JOHN<br>DOE
+							{{ result.person.name }}
 						</h1>
 
 						<p class="text-white font-[Ubuntu] mt-4 leading-relaxed max-w-xl">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blandit scelerisque eu tristique sed.
+							{{ result.person.short_bio }}
 						</p>
 
 						<!-- Contact Info -->
 						<div class="flex flex-col sm:flex-row justify-center  lg:justify-start items-center gap-2 my-4 text-[#3a2b1c] text-sm pb-2">
-							<button class="w-10 h-10 bg-[#4B3D2A] text-[#DAB38D] hover:text-white flex items-center justify-center rounded-full">
+							<nuxt-link
+								:href="result.person.linkedin_url"
+								class="w-10 h-10 bg-[#4B3D2A] text-[#DAB38D] hover:text-white flex items-center justify-center rounded-full"
+							>
 								<Icon
 									name="mdi:linkedin"
 									size="20"
 								/>
-							</button>
+							</nuxt-link>
 							<div class="flex items-center gap-2 mr-2 text-white font-[Ubuntu]">
-								<span class="first-letter:uppercase">John Doe</span>
+								<span class="first-letter:uppercase">{{ result.person.name }}</span>
 							</div>
-							<button class="w-10 h-10 bg-[#4B3D2A] text-[#DAB38D] hover:text-white flex items-center justify-center rounded-full">
+							<nuxt-link
+								:href="`mailto:${result.person.email}`"
+								class="w-10 h-10 bg-[#4B3D2A] text-[#DAB38D] hover:text-white flex items-center justify-center rounded-full"
+							>
 								<Icon
 									name="mdi:email-outline"
 									size="20"
 								/>
-							</button>
+							</nuxt-link>
 							<div class="flex items-center gap-2 mr-2 text-white font-[Ubuntu]">
-								<span class="first-letter:uppercase">johondoe@gmail.com</span>
+								<span class="first-letter:uppercase">{{ result.person.email }}</span>
 							</div>
 						</div>
 					</div>
@@ -138,36 +133,24 @@ function closeAssociates() {
 						Associate
 					</h2>
 					<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
-						<li class="cursor-pointer hover:underline">
-							Lorem ipsum sdasdasdads
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Dolor sit amet
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Consectetur adipiscing
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Blandit scelerisque
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Tristique sed
-						</li>
-						<li class="cursor-pointer hover:underline">
-							Consectetur tristique
+						<li
+							v-for="associate in result.other_associates"
+							:key="associate.id"
+							class="cursor-pointer hover:underline"
+						>
+							<nuxt-link :href="`/attorneys/${associate.slug}`">
+								{{ associate.name }}
+							</nuxt-link>
 						</li>
 					</ul>
 				</aside>
 
 				<!-- Main Profile Section -->
 				<div class="w-full flex flex-col font-[Ubuntu] text-[#949494] space-y-4">
-					<!-- Text Content -->
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum dui consectetur morbi ultricies sed ipsum. Porttitor ultricies turpis dictum scelerisque phasellus. Etiam est sed quam mauris id sit lacus, ut. Aliquam duis id ipsum a facilisi in vestibulum hac ullamcorper. Ullamcorper ultrices tristique id auctor. Hendrerit sit tortor mi nunc risus ut ornare mattis sed. Nunc vitae elit id faucibus. Ultrices pretium cursus in sit ac, ultricies id non. Tincidunt egestas ultricies morbi enim, vel amet, elementum congue tincidunt. Ac nibh pulvinar metus vitae ornare. Facilisis cras eu, sit varius purus nunc. Sed facilisi nunc sit vitae risus volutpat scelerisque massa sapien. Dolor cum nunc, scelerisque ullamcorper. Volutpat egestas non diam ullamcorper tellus eu. Turpis ornare ut in fusce quam. Aliquet fusce quis at aliquet congue integer curabitur donec integer. Id nibh id dui sapien erat sem. Fermentum, laoreet tellus, varius nunc id purus pulvinar. Viverra ornare mattis egestas commodo magna condimentum sit.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum dui consectetur morbi ultricies sed ipsum. Porttitor ultricies turpis dictum scelerisque phasellus. Etiam est sed quam mauris id sit lacus, ut. Aliquam duis id ipsum a facilisi in vestibulum hac ullamcorper. Ullamcorper ultrices tristique id auctor. Hendrerit sit tortor mi nunc risus ut ornare mattis sed. Nunc vitae elit id faucibus. Ultrices pretium cursus in sit ac, ultricies id non. Tincidunt egestas ultricies morbi enim, vel amet, elementum congue tincidunt. Ac nibh pulvinar metus vitae ornare. Facilisis cras eu, sit varius purus nunc. Sed facilisi nunc sit vitae risus volutpat scelerisque massa sapien. Dolor cum nunc, scelerisque ullamcorper. Volutpat egestas non diam ullamcorper tellus eu. Turpis ornare ut in fusce quam. Aliquet fusce quis at aliquet congue integer curabitur donec integer. Id nibh id dui sapien erat sem. Fermentum, laoreet tellus, varius nunc id purus pulvinar. Viverra ornare mattis egestas commodo magna condimentum sit.
-					</p>
+					<div
+						class="[&_*]:tracking-wide text-justify"
+						v-html="result.person.bio"
+					/>
 					<div class="flex justify-between items-center pt-4">
 						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
 							Publication
@@ -180,7 +163,11 @@ function closeAssociates() {
 						</NuxtLink>
 					</div>
 					<div class="pb-8 flex-row">
-						<Publications />
+						<Publications
+							:default-author-name="result.person.name"
+							:default-author-image="result.person.image_url"
+							:publications="result.publications"
+						/>
 					</div>
 				</div>
 			</div>
@@ -230,11 +217,13 @@ function closeAssociates() {
 							</div>
 							<ul>
 								<li
-									v-for="partner in partners"
-									:key="partner"
+									v-for="partner in result.other_partners"
+									:key="partner.id"
 									class="py-2 text-lg font-[Ubuntu] text-[#DAB38D] last:border-b-0"
 								>
-									{{ partner }}
+									<nuxt-link :href="`/attorneys/${partner.slug}`">
+										{{ partner.name }}
+									</nuxt-link>
 								</li>
 							</ul>
 						</div>
@@ -254,11 +243,11 @@ function closeAssociates() {
 							</div>
 							<ul>
 								<li
-									v-for="associate in associates"
-									:key="associate"
+									v-for="associate in result.other_associates"
+									:key="associate.id"
 									class="py-2 text-lg font-[Ubuntu] text-[#DAB38D] last:border-b-0"
 								>
-									{{ associate }}
+									{{ associate.name }}
 								</li>
 							</ul>
 						</div>
@@ -321,7 +310,11 @@ function closeAssociates() {
 							</h2>
 						</div>
 						<div class="mt-4 flex-row">
-							<Publications />
+							<Publications
+								:publications="result.publications"
+								:default-author-name="result.person.name"
+								:default-author-image="result.person.image_url"
+							/>
 							<div class="flex justify-end mb-8 mt-[-24px]">
 								<NuxtLink
 									to="/publications"
