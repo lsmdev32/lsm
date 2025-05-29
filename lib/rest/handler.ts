@@ -42,6 +42,7 @@ export const handler = new OpenAPIHandler(router, {
 				})
 			}
 		}),
+
 	],
 })
 

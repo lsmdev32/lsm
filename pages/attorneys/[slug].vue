@@ -8,6 +8,8 @@ const { data } = await useCustomFetch(`/rest/page-data/staffs/${slug}`)
 
 const result = data.data
 
+console.log(`result`, result)
+
 defineProps({
 	image: String,
 	name: String,
@@ -161,7 +163,11 @@ function closeAssociates() {
 						</NuxtLink>
 					</div>
 					<div class="pb-8 flex-row">
-						<Publications />
+						<Publications
+							:default-author-name="result.person.name"
+							:default-author-image="result.person.image_url"
+							:publications="result.publications"
+						/>
 					</div>
 				</div>
 			</div>
@@ -237,11 +243,11 @@ function closeAssociates() {
 							</div>
 							<ul>
 								<li
-									v-for="associate in associates"
-									:key="associate"
+									v-for="associate in result.other_associates"
+									:key="associate.id"
 									class="py-2 text-lg font-[Ubuntu] text-[#DAB38D] last:border-b-0"
 								>
-									{{ associate }}
+									{{ associate.name }}
 								</li>
 							</ul>
 						</div>
@@ -304,7 +310,11 @@ function closeAssociates() {
 							</h2>
 						</div>
 						<div class="mt-4 flex-row">
-							<Publications />
+							<Publications
+								:publications="result.publications"
+								:default-author-name="result.person.name"
+								:default-author-image="result.person.image_url"
+							/>
 							<div class="flex justify-end mb-8 mt-[-24px]">
 								<NuxtLink
 									to="/publications"
