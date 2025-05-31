@@ -265,6 +265,10 @@ export const BlogAndPublicationsPageDataInputSchema = z.object({
 				.string()
 				.nonempty()
 				.optional(),
+			year: z
+				.string()
+				.regex(/^\d{4}$/)
+				.nullish(),
 		}),
 })
 

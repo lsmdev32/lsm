@@ -1,47 +1,105 @@
 <script setup lang="ts">
 import { useRouteQuery } from "@vueuse/router"
-import PublicationThumbnail from "../../assets/PublicationThumbnail.png"
+import { useDebounce } from "@vueuse/core"
 import PublicationQuery from "~/components/audience/PublicationQuery.vue"
 import Publications from "~/components/audience/Publications.vue"
 import dayjs from "#build/dayjs.imports.mjs"
-
-const posts = [
-	{
-		image: PublicationThumbnail,
-		description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum dui consectetur morbi ultricies sed ipsum. Porttitor ultricies turpis dictum scelerisque phasellus. Etiam est sed quam mauris id sit lacus, ut. Aliquam duis id ipsum a facilisi in vestibulum hac ullamcorper. Sed at urna velit. Suspendisse fermentum nisi nulla, nec porta felis porta non. Curabitur volutpat est nec laoreet efficitur. Integer luctus gravida massa in pulvinar. Sed hendrerit, justo nec egestas porta, lorem orci rhoncus massa, nec bibendum risus turpis in nunc. Mauris vitae urna nec ligula.",
-	},
-	{
-		image: PublicationThumbnail,
-		description: "Another example description here with more than 150 words. ...",
-	},
-	{
-		image: PublicationThumbnail,
-		description: "Short description only.",
-	},
-]
+import { cn } from "~/lib/utils"
+import { DEBOUNCE_DEFAULT_TIME } from "~/lib/constants"
 
 const categories = await useCustomFetch("/rest/page-data/categories")
 
-const keywordFilter = useRouteQuery("keyword", "")
-const categoryFilter = useRouteQuery("category", "")
-const pageFilter = useRouteQuery<number>("page", 1)
-const yearFilter = useRouteQuery<number>("year", dayjs()
-	.year())
+const keywordFilter = useRouteQuery<string>("keyword", undefined)
+const categoryFilter = useRouteQuery<string>("category", undefined)
+const pageFilter = ref(1)
+const yearFilter = useRouteQuery<number>("year", undefined)
+
+const debouncedKeyword = useDebounce(keywordFilter, DEBOUNCE_DEFAULT_TIME)
+
+const contents = ref<Record<string, any>[]>([])
+const firstContent = computed(() => contents.value.at(0))
+const isLoading = ref(false)
+
+onMounted(() => {
+	isLoading.value = true
+	$fetch("/rest/page-data/content-list", {
+		params: {
+			type: "publication",
+			keyword: keywordFilter.value ?? undefined,
+			category: categoryFilter.value?.length ? categoryFilter.value : undefined,
+			page: pageFilter.value,
+			year: yearFilter.value ?? undefined,
+		},
+	})
+		.then((res) => {
+			contents.value = res.data.contents
+		})
+		.finally(() => {
+			isLoading.value = false
+		})
+})
+
+function handleFetchNextPage() {
+	$fetch("/rest/page-data/content-list", {
+		params: {
+			type: "publication",
+			keyword: keywordFilter.value,
+			category: categoryFilter.value,
+			page: (pageFilter.value || 1) + 1,
+			year: yearFilter.value,
+		},
+	})
+		.then((res) => {
+			contents.value.push(...res.data.contents)
+		})
+}
 
 const archives = computed(() => {
 	const currentYear = dayjs()
 		.year()
-	return Array.from({ length: 20 }, (_, i) => currentYear - i)
+	return Array.from({ length: 10 }, (_, i) => currentYear - i)
 })
 
 watch([
-	keywordFilter,
+	debouncedKeyword,
 	categoryFilter,
 	yearFilter,
-], () => {
+], ([
+	keyword,
+	category,
+	year,
+]) => {
 	pageFilter.value = 1
+
+	isLoading.value = true
+	$fetch("/rest/page-data/content-list", {
+		params: {
+			type: "publication",
+			keyword: keyword,
+			category: category,
+			page: 1,
+			year: year,
+		},
+	})
+		.then((res) => {
+			contents.value = res.data.contents
+		})
+		.finally(() => {
+			isLoading.value = false
+		})
 })
+
+function loadMore() {
+	if (isLoading.value) return
+
+	isLoading.value = true
+	handleFetchNextPage()
+	isLoading.value = false
+}
+
+function resetFilters() {
+	window.location.href = "/publications"
+}
 </script>
 
 <template>
@@ -66,12 +124,21 @@ watch([
 								Search
 							</h2>
 						</div>
-						<UiInput
-							v-model="keywordFilter"
-							type="text"
-							placeholder="Search..."
-							class="w-full p-2 border bg-[#F5F5F5] border-gray-300 rounded-md"
-						/>
+						<div class="w-full flex flex-col gap-y-4">
+							<UiInput
+								v-model="keywordFilter"
+								type="text"
+								placeholder="Search..."
+								class="w-full p-2 border bg-[#F5F5F5] border-gray-300 rounded-md"
+							/>
+
+							<UiButton
+								variant="ghost"
+								@click="resetFilters"
+							>
+								Reset Filters
+							</UiButton>
+						</div>
 					</div>
 					<div class="flex flex-col mb-8">
 						<div class="flex mb-8">
@@ -84,7 +151,7 @@ watch([
 							:key="category.id"
 							to="#"
 							class="text-[#DAB38D] font-[Ubuntu] text-lg mb-2 hover:underline text-left max-w-[300px] truncate"
-							@click="categoryFilter = category.name"
+							@click="categoryFilter = category.id"
 						>
 							{{ category.name }}
 						</button>
@@ -99,7 +166,10 @@ watch([
 							v-for="archive in archives"
 							:key="archive"
 							to="#"
-							class="text-[#DAB38D] font-[Ubuntu] text-lg mb-2 text-left"
+							:class="cn(`text-[#DAB38D] font-[Ubuntu] text-lg mb-2 text-left`, {
+								'hover:underline': yearFilter !== archive,
+								'underline font-bold': yearFilter === archive,
+							})"
 							@click="yearFilter = archive"
 						>
 							{{ archive }}
@@ -110,24 +180,29 @@ watch([
 				<!-- Main Content -->
 				<div class="w-3/4">
 					<!-- Featured Post -->
-					<div class="mb-8">
+					<nuxt-link
+						v-if="firstContent"
+						class="mb-10"
+						:to="`/publications/${firstContent?.slug}`"
+					>
 						<img
-							:src="posts[0]?.image"
+							:src="firstContent?.image_url"
 							alt="Thumbnail"
-							class="w-full h-64 object-cover mb-4"
+							class="w-full h-64 object-cover object-center mb-4"
 						>
-						<span class="text-sm text-[#DAB38D] font-[Ubuntu]">Lorem ipsum dolor</span>
+						<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ firstContent?.category }}</span>
 						<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
-							Lorem ipsum dolor sit amet, consectetur
+							{{ firstContent?.title }}
 						</h3>
 						<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">
 							<div class="flex items-center space-x-1 ">
 								<img
-									src="~/assets/images/Dummy_DamianAgataYuvens.jpg"
+									v-if="firstContent?.author?.photo_url"
+									:src="firstContent.author?.photo_url"
 									alt="Author"
 									class="w-8 h-8 rounded-full mr-1"
 								>
-								<span class="uppercase tracking-wider text-[#DAB38D]">John Doe</span>
+								<span class="uppercase tracking-wider text-[#DAB38D]">{{ firstContent?.author?.name || 'LSM Content Team' }}</span>
 							</div>
 							<div class="flex items-center space-x-1">
 								<Icon
@@ -135,41 +210,43 @@ watch([
 									size="20"
 									class="text-[#DAB38D]"
 								/>
-								<span class="uppercase text-[#DAB38D]">Jan 18, 2019</span>
+								<span class="uppercase text-[#DAB38D]">{{ firstContent?.published_at }}</span>
 							</div>
 						</div>
 						<p class="mt-4 text-gray-700 line-clamp-2">
-							{{ posts[0]?.description }}
+							{{ firstContent?.description }}
 						</p>
 						<button class="mt-4 px-4 py-2 bg-[#91AEAC] text-white hover:bg-[#9aaea1] rounded w-fit text-sm">
 							Read More
 						</button>
-					</div>
+					</nuxt-link>
 
 					<!-- Grid of Posts -->
-					<div class="grid grid-cols-3 gap-4">
-						<div
-							v-for="(post, index) in posts.slice(0)"
+					<div class="grid grid-cols-3 gap-4 mt-10">
+						<nuxt-link
+							v-for="(post, index) in contents.slice(1)"
 							:key="index"
 							class="mb-6"
+							:to="`/publications/${post.slug}`"
 						>
 							<img
-								:src="post.image"
+								:src="post.image_url"
 								alt="Thumbnail"
 								class="w-full h-40 object-cover mb-4"
 							>
-							<span class="text-sm text-[#DAB38D] font-[Ubuntu]">Lorem ipsum dolor</span>
-							<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
-								Lorem ipsum dolor sit amet, consectetur
+							<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ post.category }}</span>
+							<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug truncate">
+								{{ post.title }}
 							</h3>
 							<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">
 								<div class="flex items-center space-x-1 ">
 									<img
-										src="~/assets/images/Dummy_DamianAgataYuvens.jpg"
+										v-if="post?.author?.photo_url"
+										:src="post?.author?.photo_url"
 										alt="Author"
 										class="w-8 h-8 rounded-full mr-1"
 									>
-									<span class="uppercase tracking-wider text-[#DAB38D]">John Doe</span>
+									<span class="uppercase tracking-wider text-[#DAB38D]">{{ post.author?.name || 'LSM Content Team' }}</span>
 								</div>
 								<div class="flex items-center space-x-1">
 									<Icon
@@ -177,12 +254,33 @@ watch([
 										size="20"
 										class="text-[#DAB38D]"
 									/>
-									<span class="uppercase text-[#DAB38D]">Jan 18, 2019</span>
+									<span class="uppercase text-[#DAB38D]">{{ post.published_at }}</span>
 								</div>
 							</div>
 							<button class="mt-4 px-4 py-2 bg-[#91AEAC] text-white hover:bg-[#9aaea1] rounded w-fit text-sm">
 								Read More
 							</button>
+						</nuxt-link>
+					</div>
+					<div class="flex w-full justify-center mt-10">
+						<ui-button
+							v-if="!isLoading && firstContent"
+							@click="loadMore"
+						>
+							Load More
+						</ui-button>
+						<div v-if="!firstContent && !isLoading">
+							<span class="text-gray-400 text-lg font-[Ubuntu]">
+								No publications found.
+							</span>
+						</div>
+						<div
+							v-if="isLoading"
+							class="w-full"
+						>
+							<UiSkeleton
+								class="w-full h-[315px]"
+							/>
 						</div>
 					</div>
 				</div>

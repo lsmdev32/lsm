@@ -529,9 +529,20 @@ export const contentListPageData = base.$context<Middleware>()
 	.handler(async function ({ context, input }) {
 		const facetFilters = [
 			`type:${input.query.type}`,
-			input.query.category ? `category:${input.query.category}` : "",
+			input.query.category ? `category_id:${input.query.category}` : "",
 		]
 			.filter(Boolean)
+
+		const numericFilters: string[] = []
+		if (input.query.year) {
+			const startOfYear = dayjs(`${input.query.year}-01-01`)
+				.startOf("year")
+				.unix()
+			const endOfYear = dayjs(`${input.query.year}-12-31`)
+				.endOf("year")
+				.unix()
+			numericFilters.push(`published_at._seconds >= ${startOfYear}`, `published_at._seconds <= ${endOfYear}`)
+		}
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const contentSnapshot = await context.algoliaClient.searchSingleIndex<Record<string, any>>({
@@ -541,6 +552,8 @@ export const contentListPageData = base.$context<Middleware>()
 				facetFilters,
 				hitsPerPage: 10,
 				page: input.query.page - 1,
+				numericFilters,
+				// ranking: ["desc(published_at._seconds)"],
 			},
 		})
 
