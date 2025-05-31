@@ -464,7 +464,7 @@ const publicationDetailPageData = base
 		}
 	})
 
-export const listCategory = base
+export const listCategoryPageData = base
 	.$context<Middleware>()
 	.route({
 		method: "GET",
@@ -517,7 +517,7 @@ const router = {
 	ourAttorneyDetailPageData,
 	blogDetailPageData,
 	publicationDetailPageData,
-	listCategory,
+	listCategoryPageData,
 }
 
 export default router
