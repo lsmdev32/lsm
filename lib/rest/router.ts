@@ -7,6 +7,8 @@ import type { algoliasearch } from "algoliasearch"
 import type { Database } from "firebase/database"
 import { API_PATH_PREFIXES } from "~/lib/rest/config/constants"
 import {
+	CategoriesSchemaPageDataInputSchema,
+	CategoriesSchemaPageDataOutputSchema,
 	ContentDetailPageDataInputSchema,
 	ContentDetailPageDataOutputSchema,
 	HomepageDataOutputSchema,
@@ -18,7 +20,7 @@ import {
 } from "~/lib/rest/schema"
 import type { ContentDetailPageDataOutputType } from "~/lib/rest/schema"
 
-import { getBlogCollectionRef, getCategoryDocRef, getPublicationCollectionRef, getStaffCollectionRef, getStaffDocRef } from "~/lib/firestore-model"
+import { getBlogCollectionRef, getCategoryCollectionRef, getCategoryDocRef, getPublicationCollectionRef, getStaffCollectionRef, getStaffDocRef } from "~/lib/firestore-model"
 
 type Middleware = {
 	firestore: Firestore
@@ -462,6 +464,52 @@ const publicationDetailPageData = base
 		}
 	})
 
+export const ListCategory = base
+	.$context<Middleware>()
+	.route({
+		method: "GET",
+		path: API_PATH_PREFIXES.PAGE_DATA_CATEGORIES,
+		inputStructure: "detailed",
+		outputStructure: "detailed",
+	})
+	.input(CategoriesSchemaPageDataInputSchema)
+	.output(CategoriesSchemaPageDataOutputSchema)
+	.handler(async function ({ context }) {
+		const q = query(
+			getCategoryCollectionRef(context.firestore),
+			limit(30),
+			orderBy("name", "asc"),
+		)
+
+		const categorySnapshot = await getDocs(q)
+		if (categorySnapshot.empty) {
+			return {
+				body: {
+					message: "ok",
+					status: 200,
+					data: {
+						categories: [],
+						total: 0,
+					},
+				},
+			}
+		}
+
+		return {
+			body: {
+				message: "ok",
+				status: 200,
+				data: {
+					categories: categorySnapshot.docs.map(doc => ({
+						id: doc.id,
+						...doc.data(),
+					})),
+					total: categorySnapshot.size,
+				},
+			},
+		}
+	})
+
 const router = {
 	homePageData,
 	practiceAreasPageData,
@@ -469,6 +517,7 @@ const router = {
 	ourAttorneyDetailPageData,
 	blogDetailPageData,
 	publicationDetailPageData,
+	ListCategory,
 }
 
 export default router

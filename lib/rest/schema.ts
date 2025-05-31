@@ -244,7 +244,8 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 								slug: z
 									.string(),
 							})),
-				}),
+				})
+				.nullish(),
 		}),
 })
 
@@ -268,40 +269,34 @@ export const BlogAndPublicationsPageDataOutputSchema = z.object({
 		data: z
 			.object({
 				highlighted_content: z
-					.array(z
-						.object({
-							id: z
-								.string()
-								.nanoid(),
-							type: ContentTypeFilter,
-							slug: z
-								.string()
-								.regex(/^[a-z0-9-]+$/),
-							tags: z
-								.array(z.string()),
-							image_url: z
-								.string()
-								.url(),
-							title: z
-								.string(),
-							category: z
-								.string(),
-							published_at: z
-								.string(),
-						})),
+					.object({
+						id: z
+							.string(),
+						type: ContentTypeFilter,
+						slug: z
+							.string(),
+						tags: z
+							.array(z.string()),
+						image_url: z
+							.string()
+							.url(),
+						title: z
+							.string(),
+						category: z
+							.string(),
+						published_at: z
+							.string(),
+					}),
 				contents: z
 					.array(z
 						.object({
 							id: z
-								.string()
-								.nanoid(),
+								.string(),
 							type: ContentTypeFilter,
 							slug: z
-								.string()
-								.regex(/^[a-z0-9-]+$/),
+								.string(),
 							image_url: z
-								.string()
-								.url(),
+								.string(),
 							title: z
 								.string(),
 							category: z
@@ -370,9 +365,36 @@ export const ContentDetailPageDataOutputSchema = z.object({
 								.url()
 								.optional(),
 						})
-						.optional(),
+						.nullish(),
 				}),
 		}),
+})
+
+export const CategoriesSchemaPageDataInputSchema = z.object({
+	query: z
+		.object({
+			page: z.number()
+				.min(1)
+				.default(1),
+			limit: z
+				.number()
+				.min(1)
+				.default(10),
+		}),
+})
+
+export const CategoriesSchemaPageDataOutputSchema = z.object({
+	body: z.object({
+		message: z.string(),
+		status: z.number(),
+		data: z.object({
+			categories: z.array(z.object({
+				id: z.string(),
+				name: z.string(),
+			})),
+			total: z.number(),
+		}),
+	}),
 })
 
 export type StaffTypeFilterType = z.infer<typeof StaffTypeFilter>
