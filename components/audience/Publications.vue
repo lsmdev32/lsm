@@ -20,7 +20,7 @@
 						<nuxt-img
 							:src="defaultAuthorImage"
 							alt="Author"
-							class="w-8 h-8 rounded-full mr-1"
+							class="w-8 h-8 rounded-full mr-1 object-cover object-top"
 						/>
 						<span class="uppercase tracking-wider text-[#DAB38D]">{{ defaultAuthorName }}</span>
 					</div>
