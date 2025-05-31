@@ -21,17 +21,6 @@ defineProps({
 const showPartners = ref(false)
 const showAssociates = ref(false)
 
-const associates = [
-	"Bianca Janet",
-	"Deni Daniel",
-	"Dinda Raihan",
-	"Doly James",
-	"Fransiskus Xaverius",
-	"Olivia Nabila Sambas",
-	"Rangga Sujud Widigda",
-	"Yosef Tatang Widjaja",
-]
-
 // Methods
 function togglePartners() {
 	showPartners.value = !showPartners.value

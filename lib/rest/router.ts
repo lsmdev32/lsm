@@ -217,6 +217,7 @@ const ourAttorneyDetailPageData = base
 
 		const publicationsQuery = query(
 			getPublicationCollectionRef(context.firestore),
+			where("type", "==", "publication"),
 			where("author_id", "==", staffData.id),
 			where("status", "==", "published"),
 			orderBy("published_at", "desc"),

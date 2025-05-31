@@ -100,7 +100,7 @@ const archives = [
 					<div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
-								Archaives
+								Archives
 							</h2>
 						</div>
 						<NuxtLink
