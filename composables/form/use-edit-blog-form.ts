@@ -93,9 +93,8 @@ export function useEditBlogForm(id: string) {
 			})
 		}
 
-		catch (e) {
-			console.log(e)
-
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		catch (_e) {
 			toast.error("Gagal memperbarui blog")
 			return
 		}

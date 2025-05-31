@@ -18,8 +18,6 @@ export const handler = new OpenAPIHandler(router, {
 	],
 	clientInterceptors: [
 		onError((error) => {
-			console.log(error)
-
 			if (error instanceof ORPCError
 				&& error.code === "BAD_REQUEST"
 				&& error.data instanceof ValidationError

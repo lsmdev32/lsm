@@ -350,8 +350,6 @@ const blogDetailPageData = base
 			throw errors.NOT_FOUND()
 		}
 
-		console.log(typeof blogData.published_at, blogData.published_at)
-
 		const detail: Partial<ContentDetailPageDataOutputType["body"]["data"]["detail"]> = {
 			id: blogData.id!,
 			title: blogData.title,

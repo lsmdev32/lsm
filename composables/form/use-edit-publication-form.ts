@@ -131,7 +131,6 @@ export function useEditPublicationForm(id: string) {
 		if (!form.values.published_at) {
 			form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.published_at, new Date())
 		}
-		console.log(`Saving as published`, form.values)
 
 		await onSubmit()
 	}

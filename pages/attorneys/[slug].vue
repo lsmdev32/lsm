@@ -8,8 +8,6 @@ const { data } = await useCustomFetch(`/rest/page-data/staffs/${slug}`)
 
 const result = data.data
 
-console.log(`result`, result)
-
 defineProps({
 	image: String,
 	name: String,

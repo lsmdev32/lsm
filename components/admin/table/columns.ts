@@ -63,7 +63,6 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
 
 			async function updateCategoryName() {
 				const inputValue = inputRef.value.trim()
-				console.log(inputValue)
 
 				if (inputValue === getValue()) {
 					toast.info("Tidak ada perubahan pada nama kategori")
