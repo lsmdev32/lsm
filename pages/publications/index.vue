@@ -25,7 +25,7 @@ onMounted(() => {
 	$fetch("/rest/page-data/content-list", {
 		params: {
 			type: "publication",
-			keyword: keywordFilter.value ?? undefined,
+			search: keywordFilter.value ?? undefined,
 			category: categoryFilter.value?.length ? categoryFilter.value : undefined,
 			page: pageFilter.value,
 			year: yearFilter.value ?? undefined,
@@ -43,7 +43,7 @@ function handleFetchNextPage() {
 	$fetch("/rest/page-data/content-list", {
 		params: {
 			type: "publication",
-			keyword: keywordFilter.value,
+			search: keywordFilter.value,
 			category: categoryFilter.value,
 			page: (pageFilter.value || 1) + 1,
 			year: yearFilter.value,
@@ -75,7 +75,7 @@ watch([
 	$fetch("/rest/page-data/content-list", {
 		params: {
 			type: "publication",
-			keyword: keyword,
+			search: keyword,
 			category: category,
 			page: 1,
 			year: year,
@@ -83,6 +83,7 @@ watch([
 	})
 		.then((res) => {
 			contents.value = res.data.contents
+			console.log(`Should be changed`, contents.value)
 		})
 		.finally(() => {
 			isLoading.value = false
@@ -121,14 +122,14 @@ function resetFilters() {
 					<div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
-								Search
+								Cari
 							</h2>
 						</div>
 						<div class="w-full flex flex-col gap-y-4">
 							<UiInput
 								v-model="keywordFilter"
 								type="text"
-								placeholder="Search..."
+								placeholder="Cari..."
 								class="w-full p-2 border bg-[#F5F5F5] border-gray-300 rounded-md"
 							/>
 
@@ -143,7 +144,7 @@ function resetFilters() {
 					<div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
-								Categories
+								Kategori
 							</h2>
 						</div>
 						<button
@@ -159,7 +160,7 @@ function resetFilters() {
 					<div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
-								Archives
+								Arsip
 							</h2>
 						</div>
 						<button

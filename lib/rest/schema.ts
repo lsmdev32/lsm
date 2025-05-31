@@ -255,15 +255,12 @@ export const BlogAndPublicationsPageDataInputSchema = z.object({
 				.exclude(["all"]),
 			page: z
 				.number()
-				.min(1)
 				.default(1),
 			search: z
 				.string()
-				.nonempty()
 				.optional(),
 			category: z
 				.string()
-				.nonempty()
 				.optional(),
 			year: z
 				.string()

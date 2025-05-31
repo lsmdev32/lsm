@@ -543,6 +543,7 @@ export const contentListPageData = base.$context<Middleware>()
 				.unix()
 			numericFilters.push(`published_at._seconds >= ${startOfYear}`, `published_at._seconds <= ${endOfYear}`)
 		}
+		console.log(`query search `, input.query.search)
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const contentSnapshot = await context.algoliaClient.searchSingleIndex<Record<string, any>>({
@@ -606,11 +607,7 @@ export const contentListPageData = base.$context<Middleware>()
 			.from(new Set(mappedContents.map(content => content.author)))
 			.filter(Boolean)
 
-		console.log(mappedContentAuthorIds)
-
 		for (const authorId of mappedContentAuthorIds) {
-			console.log(`Searching for author ${authorId} in Firestore`)
-
 			const authorDoc = await getDoc(
 				getStaffDocRef(context.firestore, authorId),
 			)
@@ -623,11 +620,8 @@ export const contentListPageData = base.$context<Middleware>()
 				})
 				continue
 			}
-			console.log(`Found author ${authorId} in Firestore`)
 
 			const authorData = authorDoc.data()
-
-			console.log(`Mapping author ${authorId} to`, authorData)
 
 			mappedContents.forEach((content, idx) => {
 				if (content.author === authorId) {
@@ -639,8 +633,6 @@ export const contentListPageData = base.$context<Middleware>()
 				}
 			})
 		}
-
-		console.log("Mapped contents:", JSON.stringify(mappedContents, null, 2))
 
 		return {
 			body: {
