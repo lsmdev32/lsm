@@ -7,6 +7,8 @@ import type { algoliasearch } from "algoliasearch"
 import type { Database } from "firebase/database"
 import { API_PATH_PREFIXES } from "~/lib/rest/config/constants"
 import {
+	BlogAndPublicationsPageDataInputSchema,
+	BlogAndPublicationsPageDataOutputSchema,
 	CategoriesSchemaPageDataInputSchema,
 	CategoriesSchemaPageDataOutputSchema,
 	ContentDetailPageDataInputSchema,
@@ -510,6 +512,131 @@ export const listCategoryPageData = base
 		}
 	})
 
+export const contentListPageData = base.$context<Middleware>()
+	.route({
+		method: "GET",
+		path: API_PATH_PREFIXES.PAGE_DATA_CONTENT_LIST,
+		inputStructure: "detailed",
+		outputStructure: "detailed",
+	})
+	.input(BlogAndPublicationsPageDataInputSchema)
+	.output(BlogAndPublicationsPageDataOutputSchema)
+	.handler(async function ({ context, input }) {
+		const facetFilters = [
+			`type:${input.query.type}`,
+			input.query.category ? `category:${input.query.category}` : "",
+		]
+			.filter(Boolean)
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const contentSnapshot = await context.algoliaClient.searchSingleIndex<Record<string, any>>({
+			indexName: "contents",
+			searchParams: {
+				query: input.query.search,
+				facetFilters,
+				hitsPerPage: 10,
+				page: input.query.page - 1,
+			},
+		})
+
+		if (contentSnapshot.hits.length === 0) {
+			return {
+				body: {
+					message: "ok",
+					status: 200,
+					data: {
+						contents: [],
+						page: 1,
+						total: 0,
+					},
+				},
+			}
+		}
+
+		const mappedContents = contentSnapshot.hits.map(hit => ({
+			id: hit.objectID,
+			type: hit.type,
+			slug: hit.slug,
+			image_url: hit.cover_image_url,
+			title: hit.title,
+			category: hit.category_id,
+			published_at: dayjs(hit.published_at._seconds * 1000)
+				.format("MMM D, YYYY HH:mm"),
+			author: hit.author_id || null,
+		}))
+
+		const mappedContentCategoryIds = Array
+			.from(new Set(mappedContents.map(content => content.category)))
+			.filter(Boolean)
+
+		for (const categoryId of mappedContentCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+			if (!categoryDoc.exists()) continue
+			const categoryData = categoryDoc.data()
+			if (!categoryData) continue
+
+			mappedContents.forEach((content) => {
+				if (content.category === categoryId) {
+					content.category = categoryData.name
+				}
+			})
+		}
+
+		const mappedContentAuthorIds = Array
+			.from(new Set(mappedContents.map(content => content.author)))
+			.filter(Boolean)
+
+		console.log(mappedContentAuthorIds)
+
+		for (const authorId of mappedContentAuthorIds) {
+			console.log(`Searching for author ${authorId} in Firestore`)
+
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, authorId),
+			)
+
+			if (!authorDoc.exists()) {
+				mappedContents.forEach((content, idx) => {
+					if (content.author === authorId) {
+						mappedContents[idx]!.author = null
+					}
+				})
+				continue
+			}
+			console.log(`Found author ${authorId} in Firestore`)
+
+			const authorData = authorDoc.data()
+
+			console.log(`Mapping author ${authorId} to`, authorData)
+
+			mappedContents.forEach((content, idx) => {
+				if (content.author === authorId) {
+					mappedContents[idx]!.author = {
+						id: authorData.id!,
+						name: authorData.fullname,
+						photo_url: authorData.profile_picture_url,
+					}
+				}
+			})
+		}
+
+		console.log("Mapped contents:", JSON.stringify(mappedContents, null, 2))
+
+		return {
+			body: {
+				message: "ok",
+				status: 200,
+				data: {
+					contents: mappedContents,
+					page: input.query.page,
+					total: contentSnapshot.nbHits,
+				},
+			},
+		}
+	})
+
 const router = {
 	homePageData,
 	practiceAreasPageData,
@@ -518,6 +645,7 @@ const router = {
 	blogDetailPageData,
 	publicationDetailPageData,
 	listCategoryPageData,
+	contentListPageData,
 }
 
 export default router

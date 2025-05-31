@@ -57,8 +57,7 @@ export const PracticeAreaPageDataOutputSchema = z.object({
 							.array(z
 								.object({
 									id: z
-										.string()
-										.nanoid(),
+										.string(),
 									title: z
 										.string(),
 									slug: z
@@ -252,12 +251,19 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 export const BlogAndPublicationsPageDataInputSchema = z.object({
 	query: z
 		.object({
-			type: ContentTypeFilter.default("all"),
+			type: ContentTypeFilter
+				.exclude(["all"]),
+			page: z
+				.number()
+				.min(1)
+				.default(1),
 			search: z
 				.string()
+				.nonempty()
 				.optional(),
 			category: z
 				.string()
+				.nonempty()
 				.optional(),
 		}),
 })
@@ -268,25 +274,6 @@ export const BlogAndPublicationsPageDataOutputSchema = z.object({
 		status: z.number(),
 		data: z
 			.object({
-				highlighted_content: z
-					.object({
-						id: z
-							.string(),
-						type: ContentTypeFilter,
-						slug: z
-							.string(),
-						tags: z
-							.array(z.string()),
-						image_url: z
-							.string()
-							.url(),
-						title: z
-							.string(),
-						category: z
-							.string(),
-						published_at: z
-							.string(),
-					}),
 				contents: z
 					.array(z
 						.object({
@@ -301,9 +288,21 @@ export const BlogAndPublicationsPageDataOutputSchema = z.object({
 								.string(),
 							category: z
 								.string(),
+							author: z
+								.object({
+									id: z
+										.string(),
+									name: z
+										.string(),
+									photo_url: z
+										.string(),
+								})
+								.nullish(),
 							published_at: z
 								.string(),
 						})),
+				total: z.number(),
+				page: z.number(),
 			}),
 	}),
 })
