@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Download } from "lucide-vue-next"
 import Publications from "~/components/audience/Publications.vue"
 
 const slug = useRoute().params.slug
@@ -57,7 +56,7 @@ const relatedContents = data?.data?.related_contents ?? []
 				/>
 
 				<div class="flex justify-between px-4">
-					<div class="w-[400px] flex gap-x-4 items-center">
+					<div class="w-[400px] flex gap-x-4 items-center flex-wrap">
 						<span
 							v-for="tag in detail.tags"
 							:key="tag"
@@ -65,15 +64,6 @@ const relatedContents = data?.data?.related_contents ?? []
 						>
 							#{{ tag }}
 						</span>
-					</div>
-					<div class="w-full">
-						<nuxt-link
-							:to="detail?.publication_file_url"
-							target="_blank"
-							class="flex items-center justify-center p-6 bg-[#4B3D2A] rounded-lg text-[#DAB38D]"
-						>
-							Download Publication
-						</nuxt-link>
 					</div>
 				</div>
 			</div>
@@ -128,7 +118,7 @@ const relatedContents = data?.data?.related_contents ?? []
 						/>
 
 						<div class="flex justify-between px-4">
-							<div class="w-[400px] flex gap-x-4 items-center">
+							<div class="w-[400px] flex gap-x-4 items-center flex-wrap">
 								<span
 									v-for="tag in detail.tags"
 									:key="tag"
@@ -136,15 +126,6 @@ const relatedContents = data?.data?.related_contents ?? []
 								>
 									#{{ tag }}
 								</span>
-							</div>
-							<div class="">
-								<nuxt-link
-									:to="detail?.publication_file_url"
-									target="_blank"
-									class="flex items-center justify-center p-3 bg-[#4B3D2A] rounded-lg text-[#DAB38D] gap-x-4"
-								>
-									<Download /> Download Publication
-								</nuxt-link>
 							</div>
 						</div>
 					</div>
