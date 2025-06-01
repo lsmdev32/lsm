@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/vue-table"
 import type { ColumnDef } from "@tanstack/vue-table"
-import { ArrowDownIcon, ArrowUpIcon, DownloadIcon, PencilIcon, SaveIcon, Trash2Icon, TrashIcon } from "lucide-vue-next"
+import { ArrowDownIcon, ArrowUpIcon, CopyIcon, DownloadIcon, PencilIcon, SaveIcon, Trash2Icon, TrashIcon } from "lucide-vue-next"
 import { deleteDoc, updateDoc } from "firebase/firestore"
 import { toast } from "vue-sonner"
 import { AdminTableAction, NuxtImg, NuxtLink, UiBadge, UiButton, UiInput } from "#components"
@@ -21,6 +21,7 @@ export type Blog = {
 	tags: string[]
 	created_at: { _seconds: number, _nanoseconds: number }
 	published_at: { _seconds: number, _nanoseconds: number } | null
+	slug: string
 }
 
 export type Publication = {
@@ -32,6 +33,7 @@ export type Publication = {
 	created_at: { _seconds: number, _nanoseconds: number }
 	published_at: { _seconds: number, _nanoseconds: number } | null
 	publication: string
+	slug: string
 }
 
 const categoryHelper = createColumnHelper<Category>()
@@ -176,21 +178,45 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 		),
 		cell: ({ row }) => {
 			const isPublished = row.original.status === "published"
-			return isPublished
-				? h(
-						NuxtLink,
-						{
-							href: `/blogs/${row.original.objectID}`,
-							target: "_blank",
-							class: cn("underline"),
-						},
-						row.original.title,
-					)
-				: h(
-						"span",
-						{},
-						row.original.title,
-					)
+			const title = row.original.title
+			const slug = row.original.slug
+
+			function copy() {
+				navigator.clipboard.writeText(slug)
+					.then(() => {
+						toast.success("Judul tersalin ke clipboard")
+					})
+					.catch(() => {
+						toast.error("Gagal menyalin judul")
+					})
+			}
+
+			return h("div", {
+				class: cn("flex items-center gap-x-2"),
+			}, [
+				isPublished
+					? h(
+							NuxtLink,
+							{
+								href: `/blogs/${row.original.objectID}`,
+								target: "_blank",
+								class: cn("underline line-clamp-2"),
+							},
+							title,
+						)
+					: h(
+							"span",
+							{},
+							title,
+						),
+				h(
+					CopyIcon,
+					{
+						class: cn("text-xs text-gray-500"),
+						size: 20,
+						onClick: copy,
+					}),
+			])
 		},
 	}),
 	blogHelper.accessor("status", {
@@ -359,21 +385,45 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 		),
 		cell: ({ row }) => {
 			const isPublished = row.original.status === "published"
-			return isPublished
-				? h(
-						NuxtLink,
-						{
-							href: `/blogs/${row.original.objectID}`,
-							target: "_blank",
-							class: cn("underline"),
-						},
-						row.original.title,
-					)
-				: h(
-						"span",
-						{},
-						row.original.title,
-					)
+			const title = row.original.title
+			const slug = row.original.slug
+
+			function copy() {
+				navigator.clipboard.writeText(slug)
+					.then(() => {
+						toast.success("Judul tersalin ke clipboard")
+					})
+					.catch(() => {
+						toast.error("Gagal menyalin judul")
+					})
+			}
+
+			return h("div", {
+				class: cn("flex items-center gap-x-2"),
+			}, [
+				isPublished
+					? h(
+							NuxtLink,
+							{
+								href: `/blogs/${row.original.objectID}`,
+								target: "_blank",
+								class: cn("underline line-clamp-2"),
+							},
+							title,
+						)
+					: h(
+							"span",
+							{},
+							title,
+						),
+				h(
+					CopyIcon,
+					{
+						class: cn("text-xs text-gray-500"),
+						size: 20,
+						onClick: copy,
+					}),
+			])
 		},
 	}),
 	publicationHelper.accessor("status", {
