@@ -7,22 +7,22 @@
 				class="flex flex-col"
 			>
 				<nuxt-img
-					:src="publication.image_url"
+					:src="publication.image_url as string"
 					alt="Thumbnail"
 					class="w-full h-[270px] object-cover mb-4"
 				/>
-				<span class="text-sm text-[#DAB38D] font-[Ubuntu]">Lorem ipsum dolor</span>
+				<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ publication.category }}</span>
 				<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
 					{{ publication.title }}
 				</h3>
 				<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">
 					<div class="flex items-center space-x-1 ">
 						<nuxt-img
-							:src="defaultAuthorImage"
+							:src="publication?.author?.photo_url || defaultAuthorImage"
 							alt="Author"
 							class="w-8 h-8 rounded-full mr-1 object-cover object-top"
 						/>
-						<span class="uppercase tracking-wider text-[#DAB38D]">{{ defaultAuthorName }}</span>
+						<span class="uppercase tracking-wider text-[#DAB38D]">{{ publication?.author?.name || defaultAuthorName || 'LSM Content Team' }}</span>
 					</div>
 					<div class="flex items-center space-x-1">
 						<Icon
@@ -53,9 +53,11 @@ type Props = {
 	defaultAuthorImage?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
 	publications: () => [],
 	defaultAuthorName: "John Doe",
 	defaultAuthorImage: "",
 })
+
+console.log(props.publications)
 </script>

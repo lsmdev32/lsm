@@ -198,7 +198,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 					? h(
 							NuxtLink,
 							{
-								href: `/blogs/${row.original.objectID}`,
+								href: `/blogs/${row.original.slug}`,
 								target: "_blank",
 								class: cn("underline line-clamp-2"),
 							},
@@ -405,7 +405,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 					? h(
 							NuxtLink,
 							{
-								href: `/blogs/${row.original.objectID}`,
+								href: `/publications/${row.original.slug}`,
 								target: "_blank",
 								class: cn("underline line-clamp-2"),
 							},
