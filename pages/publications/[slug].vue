@@ -1,22 +1,5 @@
 <script setup lang="ts">
-import PublicationThumbnail from "../../assets/PublicationThumbnail.png"
 import Publications from "~/components/audience/Publications.vue"
-
-const posts = [
-	{
-		image: PublicationThumbnail,
-		description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum dui consectetur morbi ultricies sed ipsum. Porttitor ultricies turpis dictum scelerisque phasellus. Etiam est sed quam mauris id sit lacus, ut. Aliquam duis id ipsum a facilisi in vestibulum hac ullamcorper. Sed at urna velit. Suspendisse fermentum nisi nulla, nec porta felis porta non. Curabitur volutpat est nec laoreet efficitur. Integer luctus gravida massa in pulvinar. Sed hendrerit, justo nec egestas porta, lorem orci rhoncus massa, nec bibendum risus turpis in nunc. Mauris vitae urna nec ligula.",
-	},
-	{
-		image: PublicationThumbnail,
-		description: "Another example description here with more than 150 words. ...",
-	},
-	{
-		image: PublicationThumbnail,
-		description: "Short description only.",
-	},
-]
 
 const slug = useRoute().params.slug
 
