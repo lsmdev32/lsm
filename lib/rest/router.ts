@@ -378,10 +378,10 @@ const blogDetailPageData = base
 
 			const authorData = authorDoc.data()
 			if (authorData) {
-				detail.publication_author = {
+				detail.author = {
 					id: authorData.id!,
 					name: authorData.fullname,
-					photo_url: authorData.profile_picture_url,
+					image_url: authorData.profile_picture_url,
 					slug: authorData.slug,
 				}
 			}
@@ -427,7 +427,8 @@ const publicationDetailPageData = base
 		const q = query(
 			getPublicationCollectionRef(context.firestore),
 			where("type", "==", "publication"),
-			where("slug", "==", `${input.params.slug}`),
+			where("status", "==", "published"),
+			where("slug", "==", input.params.slug),
 			limit(1),
 		)
 
@@ -435,7 +436,6 @@ const publicationDetailPageData = base
 		if (publicationSnapshot.empty) {
 			throw errors.NOT_FOUND()
 		}
-		console.log(`not found here`)
 
 		const publicationData = publicationSnapshot.docs.at(0)
 			?.data()
@@ -443,13 +443,9 @@ const publicationDetailPageData = base
 			throw errors.NOT_FOUND()
 		}
 
-		console.log(`not found here 2`)
-
 		if (publicationData.status !== "published") {
 			throw errors.NOT_FOUND()
 		}
-
-		console.log(`not found here 3`)
 
 		const detail: Partial<ContentDetailPageDataOutputType["body"]["data"]["detail"]> = {
 			id: publicationData.id!,
@@ -473,10 +469,10 @@ const publicationDetailPageData = base
 
 			const authorData = authorDoc.data()
 			if (authorData) {
-				detail.publication_author = {
+				detail.author = {
 					id: authorData.id!,
 					name: authorData.fullname,
-					photo_url: authorData.profile_picture_url,
+					image_url: authorData.profile_picture_url,
 					slug: authorData.slug,
 				}
 			}
@@ -494,6 +490,8 @@ const publicationDetailPageData = base
 				}
 			}
 		}
+
+		console.log(detail)
 
 		return {
 			body: {

@@ -345,25 +345,24 @@ export const ContentDetailPageDataOutputSchema = z.object({
 								.string(),
 							published_at: z
 								.string(),
-							publication_author: z
-								.object({
-									id: z
-										.string()
-										.nanoid(),
-									name: z
-										.string(),
-									photo_url: z
-										.string()
-										.url(),
-									slug: z
-										.string()
-										.regex(/^[a-z0-9-]+$/),
-								})
-								.optional(),
 							publication_file_url: z
 								.string()
 								.url()
 								.optional(),
+							author: z
+								.object({
+									id: z
+										.string(),
+									name: z
+										.string(),
+									slug: z
+										.string()
+										.regex(/^[a-z0-9-]+$/),
+									image_url: z
+										.string()
+										.url(),
+								})
+								.nullish(),
 						})
 						.nullish(),
 				}),
