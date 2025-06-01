@@ -419,55 +419,55 @@ const blogDetailPageData = base
 				category: data.category_id,
 				published_at: dayjs(data.published_at.seconds * 1000)
 					.format("MMM D, YYYY HH:mm"),
-
+				author_id: data.author_id,
+				author: null,
 			}
 		})
 
-		// const relatedContentCategoryIds = Array
-		// 	.from(new Set(relatedContents
-		// 		.map(content => content.category)))
-		// 	.filter(Boolean)
+		const relatedContentCategoryIds = Array
+			.from(new Set(relatedContents
+				.map(content => content.category)))
+			.filter(Boolean)
 
-		// for (const categoryId of relatedContentCategoryIds) {
-		// 	const categoryDoc = await getDoc(
-		// 		getCategoryDocRef(context.firestore, categoryId),
-		// 	)
-		// 	if (!categoryDoc.exists()) continue
-		// 	const categoryData = categoryDoc.data()
-		// 	relatedContents.forEach((content) => {
-		// 		if (content.category === categoryId) {
-		// 			content.category = categoryData.name
-		// 		}
-		// 	})
-		// }
+		for (const categoryId of relatedContentCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+			if (!categoryDoc.exists()) continue
+			const categoryData = categoryDoc.data()
+			relatedContents.forEach((content) => {
+				if (content.category === categoryId) {
+					content.category = categoryData.name
+				}
+			})
+		}
 
-		// const relatedContentAuthorIds = Array
-		// 	.from(new Set(relatedContents
-		// 		.map(content => content.author_id)))
-		// 	.filter(Boolean)
+		const relatedContentAuthorIds = Array
+			.from(new Set(relatedContents
+				.map(content => content.author_id)))
+			.filter(Boolean)
 
-		// for (const authorId of relatedContentAuthorIds) {
-		// 	if (!authorId) continue
+		for (const authorId of relatedContentAuthorIds) {
+			if (!authorId) continue
 
-		// 	const authorDoc = await getDoc(
-		// 		getStaffDocRef(context.firestore, authorId),
-		// 	)
-		// 	if (!authorDoc.exists()) continue
-		// 	const authorData = authorDoc.data()
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, authorId),
+			)
+			if (!authorDoc.exists()) continue
+			const authorData = authorDoc.data()
 
-		// 	relatedContents.forEach((content) => {
-		// 		if (content.author_id === authorId) {
-		// 			content.author = {
-		// 				id: authorData.id!,
-		// 				name: authorData.fullname,
-		// 				image_url: authorData.profile_picture_url,
-		// 				slug: authorData.slug,
-		// 			}
-		// 		}
-		// 	})
-		// }
-
-		console.log(`relatedContents`, relatedContents)
+			relatedContents.forEach((content) => {
+				if (content.author_id === authorId) {
+					content.author = {
+						id: authorData.id!,
+						name: authorData.fullname,
+						image_url: authorData.profile_picture_url,
+						slug: authorData.slug,
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					} as any
+				}
+			})
+		}
 
 		return {
 			body: {
@@ -569,7 +569,6 @@ const publicationDetailPageData = base
 		)
 
 		const relatedContentsSnapshot = await getDocs(relatedContentsQuery)
-		console.log(`ERROR DISINI 01`)
 		const relatedContents = relatedContentsSnapshot.docs.map((doc) => {
 			const data = doc.data()
 			return {
@@ -582,7 +581,6 @@ const publicationDetailPageData = base
 				author: null,
 			}
 		})
-		console.log(`ERROR DISINI 1`)
 
 		const relatedContentCategoryIds = Array
 			.from(new Set(relatedContents
@@ -602,8 +600,6 @@ const publicationDetailPageData = base
 				}
 			})
 		}
-
-		console.log(`ERROR DISINI 2`)
 
 		const relatedContentAuthorIds = Array
 			.from(new Set(relatedContents
@@ -631,8 +627,6 @@ const publicationDetailPageData = base
 				}
 			})
 		}
-
-		console.log(`ERROR DISINI 3`)
 
 		return {
 			body: {
