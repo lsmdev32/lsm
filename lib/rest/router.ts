@@ -108,22 +108,122 @@ const practiceAreasPageData = base
 		outputStructure: "detailed",
 	})
 	.output(PracticeAreaPageDataOutputSchema)
-	.handler(async function () {
-		return {
-			body: {
-				message: "ok",
-				status: 200,
-				data: {
-					news_and_publications: {
-						data: [],
-						total: 0,
-					},
-					our_attorneys: {
-						data: [],
-						total: 0,
+	.handler(async function ({ context }) {
+		console.log(`Fetching practice areas data...`)
+
+		/**
+		 * get contents for practice areas
+		 */
+		const contentsQuery = query(
+			getPublicationCollectionRef(context.firestore),
+			where("status", "==", "published"),
+			orderBy("published_at", "desc"),
+			limit(4),
+		)
+
+		const contentsSnapshot = await getDocs(contentsQuery)
+			.catch((e) => {
+				console.log(e)
+			})
+		const contents = contentsSnapshot.docs.map((doc) => {
+			const data = doc.data()
+			return {
+				id: doc.id,
+				title: data.title,
+				slug: data.slug,
+				image_url: data.cover_image_url,
+				// @ts-expect-error - just ignore
+				published_at: dayjs(data.published_at.seconds * 1000)
+					.format("MMM D, YYYY"),
+				category_id: data.category_id,
+				author_id: data.author_id,
+				author: null as Record<string, unknown> | null,
+				category: null as string | null,
+
+			}
+		})
+
+		// console.log(`Fetched contents:`, contents)
+
+		const contentCategoryIds = Array
+			.from(new Set(contents.map(content => content.category_id)))
+			.filter(Boolean)
+		for (const categoryId of contentCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+
+			if (!categoryDoc.exists()) continue
+			const categoryData = categoryDoc.data()
+			if (!categoryData) continue
+
+			contents.forEach((content) => {
+				if (content.category_id === categoryId) {
+					content.category = categoryData.name
+				}
+			})
+		}
+
+		const contentAuthorIds = Array
+			.from(new Set(contents.map(content => content.author_id)))
+			.filter(Boolean)
+
+		for (const authorId of contentAuthorIds) {
+			if (!authorId) continue
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, authorId),
+			)
+			if (!authorDoc.exists()) continue
+			const authorData = authorDoc.data()
+			contents.forEach((content) => {
+				if (content.author_id === authorId) {
+					content.author = {
+						name: authorData.fullname,
+						photo_url: authorData.profile_picture_url,
+					}
+				}
+			})
+
+			/**
+		 * get attorneys for practice areas
+		 */
+			const attorneysQuery = query(
+				getStaffCollectionRef(context.firestore),
+				orderBy("created_at", "desc"),
+				where("type", "==", "partner"),
+				limit(4),
+			)
+
+			const attorneysSnapshot = await getDocs(attorneysQuery)
+			const attorneys = attorneysSnapshot.docs.map((doc) => {
+				const data = doc.data()
+				return {
+					id: data.id!,
+					name: data.fullname,
+					slug: data.slug,
+					image_url: data.profile_picture_url,
+					type: data.type,
+					email: data.email,
+					linkedin_url: data.linkedin_url,
+				}
+			})
+
+			return {
+				body: {
+					message: "ok",
+					status: 200,
+					data: {
+						news_and_publications: {
+							data: contents,
+							total: contents.length,
+						},
+						our_attorneys: {
+							data: attorneys,
+							total: attorneys.length,
+						},
 					},
 				},
-			},
+			}
 		}
 	})
 
@@ -640,7 +740,7 @@ const publicationDetailPageData = base
 		}
 	})
 
-export const listCategoryPageData = base
+const listCategoryPageData = base
 	.$context<Middleware>()
 	.route({
 		method: "GET",

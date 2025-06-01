@@ -75,7 +75,8 @@ export const PracticeAreaPageDataOutputSchema = z.object({
 											photo_url: z
 												.string()
 												.url(),
-										}),
+										})
+										.nullish(),
 									published_at: z
 										.string(),
 								})),
@@ -88,8 +89,7 @@ export const PracticeAreaPageDataOutputSchema = z.object({
 							.array(z
 								.object({
 									id: z
-										.string()
-										.nanoid(),
+										.string(),
 									name: z
 										.string(),
 									slug: z

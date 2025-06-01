@@ -18,6 +18,7 @@
 				<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">
 					<div class="flex items-center space-x-1 ">
 						<nuxt-img
+							v-if="publication?.author?.photo_url || defaultAuthorImage"
 							:src="publication?.author?.photo_url || defaultAuthorImage"
 							alt="Author"
 							class="w-8 h-8 rounded-full mr-1 object-cover object-top"
@@ -55,8 +56,6 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
 	publications: () => [],
-	defaultAuthorName: "John Doe",
-	defaultAuthorImage: "",
 })
 
 console.log(props.publications)
