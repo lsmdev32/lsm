@@ -31,6 +31,8 @@ export const handler = new OpenAPIHandler(router, {
 				})
 			}
 
+			console.log(`error output : `, new ZodError((error.cause as Record<string, unknown>).issues as ZodIssue[]))
+
 			if (error instanceof ORPCError
 				&& error.code === "INTERNAL_SERVER_ERROR"
 				&& error.data instanceof ValidationError

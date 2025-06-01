@@ -365,6 +365,40 @@ export const ContentDetailPageDataOutputSchema = z.object({
 								.nullish(),
 						})
 						.nullish(),
+					related_contents: z
+						.array(z
+							.object({
+								id: z
+									.string(),
+								title: z
+									.string(),
+								slug: z
+									.string(),
+								image_url: z
+									.string()
+									.url(),
+								category: z
+									.string(),
+								published_at: z
+									.string(),
+								author_id: z
+									.string()
+									.nullish(),
+								author: z
+									.object({
+										id: z
+											.string(),
+										name: z
+											.string(),
+										slug: z
+											.string()
+											.regex(/^[a-z0-9-]+$/),
+										image_url: z
+											.string()
+											.url(),
+									})
+									.nullish(),
+							})),
 				}),
 		}),
 })

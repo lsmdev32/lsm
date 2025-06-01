@@ -400,12 +400,82 @@ const blogDetailPageData = base
 			}
 		}
 
+		const relatedContentsQuery = query(
+			getBlogCollectionRef(context.firestore),
+			where("category_id", "==", blogData.category_id),
+			where("status", "==", "published"),
+			where("slug", "!=", blogData.slug),
+			limit(3),
+		)
+
+		const relatedContentsSnapshot = await getDocs(relatedContentsQuery)
+		const relatedContents = relatedContentsSnapshot.docs.map((doc) => {
+			const data = doc.data()
+			return {
+				id: doc.id,
+				title: data.title,
+				slug: data.slug,
+				image_url: data.cover_image_url,
+				category: data.category_id,
+				published_at: dayjs(data.published_at.seconds * 1000)
+					.format("MMM D, YYYY HH:mm"),
+
+			}
+		})
+
+		// const relatedContentCategoryIds = Array
+		// 	.from(new Set(relatedContents
+		// 		.map(content => content.category)))
+		// 	.filter(Boolean)
+
+		// for (const categoryId of relatedContentCategoryIds) {
+		// 	const categoryDoc = await getDoc(
+		// 		getCategoryDocRef(context.firestore, categoryId),
+		// 	)
+		// 	if (!categoryDoc.exists()) continue
+		// 	const categoryData = categoryDoc.data()
+		// 	relatedContents.forEach((content) => {
+		// 		if (content.category === categoryId) {
+		// 			content.category = categoryData.name
+		// 		}
+		// 	})
+		// }
+
+		// const relatedContentAuthorIds = Array
+		// 	.from(new Set(relatedContents
+		// 		.map(content => content.author_id)))
+		// 	.filter(Boolean)
+
+		// for (const authorId of relatedContentAuthorIds) {
+		// 	if (!authorId) continue
+
+		// 	const authorDoc = await getDoc(
+		// 		getStaffDocRef(context.firestore, authorId),
+		// 	)
+		// 	if (!authorDoc.exists()) continue
+		// 	const authorData = authorDoc.data()
+
+		// 	relatedContents.forEach((content) => {
+		// 		if (content.author_id === authorId) {
+		// 			content.author = {
+		// 				id: authorData.id!,
+		// 				name: authorData.fullname,
+		// 				image_url: authorData.profile_picture_url,
+		// 				slug: authorData.slug,
+		// 			}
+		// 		}
+		// 	})
+		// }
+
+		console.log(`relatedContents`, relatedContents)
+
 		return {
 			body: {
 				message: "ok",
 				status: 200,
 				data: {
 					detail: detail as ContentDetailPageDataOutputType["body"]["data"]["detail"],
+					related_contents: relatedContents,
 				},
 			},
 		}
@@ -422,8 +492,6 @@ const publicationDetailPageData = base
 	.input(ContentDetailPageDataInputSchema)
 	.output(ContentDetailPageDataOutputSchema)
 	.handler(async function ({ context, input, errors }) {
-		console.log(`input`, input.params)
-
 		const q = query(
 			getPublicationCollectionRef(context.firestore),
 			where("type", "==", "publication"),
@@ -460,6 +528,7 @@ const publicationDetailPageData = base
 			tags: publicationData.tags || [],
 			type: publicationData.type,
 			publication_file_url: publicationData.publication,
+			author: null,
 		}
 
 		if (publicationData.author_id) {
@@ -491,7 +560,79 @@ const publicationDetailPageData = base
 			}
 		}
 
-		console.log(detail)
+		const relatedContentsQuery = query(
+			getPublicationCollectionRef(context.firestore),
+			where("category_id", "==", publicationData.category_id),
+			where("status", "==", "published"),
+			where("slug", "!=", publicationData.slug),
+			limit(3),
+		)
+
+		const relatedContentsSnapshot = await getDocs(relatedContentsQuery)
+		console.log(`ERROR DISINI 01`)
+		const relatedContents = relatedContentsSnapshot.docs.map((doc) => {
+			const data = doc.data()
+			return {
+				id: doc.id,
+				...data,
+				image_url: data.cover_image_url,
+				published_at: dayjs(data.published_at.seconds * 1000)
+					.format("MMM D, YYYY HH:mm"),
+				category: null,
+				author: null,
+			}
+		})
+		console.log(`ERROR DISINI 1`)
+
+		const relatedContentCategoryIds = Array
+			.from(new Set(relatedContents
+				.map(content => content.category_id)))
+			.filter(Boolean)
+
+		for (const categoryId of relatedContentCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+			if (!categoryDoc.exists()) continue
+			const categoryData = categoryDoc.data()
+			relatedContents.forEach((content) => {
+				if (content.category_id === categoryId) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					content.category = categoryData.name as any
+				}
+			})
+		}
+
+		console.log(`ERROR DISINI 2`)
+
+		const relatedContentAuthorIds = Array
+			.from(new Set(relatedContents
+				.map(content => content.author_id)))
+			.filter(Boolean)
+
+		for (const authorId of relatedContentAuthorIds) {
+			if (!authorId) continue
+
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, authorId),
+			)
+			if (!authorDoc.exists()) continue
+			const authorData = authorDoc.data()
+
+			relatedContents.forEach((content) => {
+				if (content.author_id === authorId) {
+					content.author = {
+						id: authorData.id!,
+						name: authorData.fullname,
+						image_url: authorData.profile_picture_url,
+						slug: authorData.slug,
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					} as any
+				}
+			})
+		}
+
+		console.log(`ERROR DISINI 3`)
 
 		return {
 			body: {
@@ -499,6 +640,7 @@ const publicationDetailPageData = base
 				status: 200,
 				data: {
 					detail: detail as ContentDetailPageDataOutputType["body"]["data"]["detail"],
+					related_contents: relatedContents,
 				},
 			},
 		}
@@ -578,7 +720,6 @@ export const contentListPageData = base.$context<Middleware>()
 				.unix()
 			numericFilters.push(`published_at._seconds >= ${startOfYear}`, `published_at._seconds <= ${endOfYear}`)
 		}
-		console.log(`query search `, input.query.search)
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const contentSnapshot = await context.algoliaClient.searchSingleIndex<Record<string, any>>({
