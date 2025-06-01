@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Download } from "lucide-vue-next"
-import Associate from "~/components/audience/Associate.vue"
 import Publications from "~/components/audience/Publications.vue"
 
 const slug = useRoute().params.slug
