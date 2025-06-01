@@ -405,7 +405,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 					? h(
 							NuxtLink,
 							{
-								href: `/blogs/${row.original.objectID}`,
+								href: `/publications/${row.original.slug}`,
 								target: "_blank",
 								class: cn("underline line-clamp-2"),
 							},
