@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Download } from "lucide-vue-next"
+import Associate from "~/components/audience/Associate.vue"
 import Publications from "~/components/audience/Publications.vue"
 
 const slug = useRoute().params.slug
@@ -54,6 +56,27 @@ const relatedContents = data?.data?.related_contents ?? []
 					class="mt-4 p-4 text-gray-700 text-justify"
 					v-html="detail?.content"
 				/>
+
+				<div class="flex justify-between px-4">
+					<div class="w-[400px] flex gap-x-4 items-center">
+						<span
+							v-for="tag in detail.tags"
+							:key="tag"
+							class="text-[#DAB38D] font-[Ubuntu] text-sm"
+						>
+							#{{ tag }}
+						</span>
+					</div>
+					<div class="w-full">
+						<nuxt-link
+							:to="detail?.publication_file_url"
+							target="_blank"
+							class="flex items-center justify-center p-6 bg-[#4B3D2A] rounded-lg text-[#DAB38D]"
+						>
+							Download Publication
+						</nuxt-link>
+					</div>
+				</div>
 			</div>
 		</section>
 		<section class="md:hidden">
@@ -104,9 +127,33 @@ const relatedContents = data?.data?.related_contents ?? []
 							class="mt-4 text-gray-700"
 							v-html="detail?.content"
 						/>
+
+						<div class="flex justify-between px-4">
+							<div class="w-[400px] flex gap-x-4 items-center">
+								<span
+									v-for="tag in detail.tags"
+									:key="tag"
+									class="text-[#DAB38D] font-[Ubuntu] text-sm"
+								>
+									#{{ tag }}
+								</span>
+							</div>
+							<div class="">
+								<nuxt-link
+									:to="detail?.publication_file_url"
+									target="_blank"
+									class="flex items-center justify-center p-3 bg-[#4B3D2A] rounded-lg text-[#DAB38D] gap-x-4"
+								>
+									<Download /> Download Publication
+								</nuxt-link>
+							</div>
+						</div>
 					</div>
 
 					<!-- Grid of Posts -->
+					<div class="flex font-[Marcellus] text-[#4B3D2A] text-2xl mb-6">
+						Related Articles
+					</div>
 					<div class="grid grid-cols-3 gap-4">
 						<nuxt-link
 							v-for="(content, index) in relatedContents"
