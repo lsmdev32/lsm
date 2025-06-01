@@ -6,9 +6,14 @@ const slug = useRoute().params.slug as string
 
 const { data } = await useCustomFetch(`/rest/page-data/staffs/${slug}`)
 
-const result = data.data
+const result = data?.data
 
-console.log(`result`, result)
+if (!result) {
+	throw createError({
+		statusCode: 404,
+		statusMessage: "Attorney profile not found",
+	})
+}
 
 defineProps({
 	image: String,

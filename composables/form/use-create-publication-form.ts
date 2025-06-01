@@ -129,9 +129,8 @@ export function useCreatePublicationForm() {
 			})
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		catch (e) {
-			console.log(e)
-
 			toast.error("Gagal membuat publikasi")
 			return
 		}

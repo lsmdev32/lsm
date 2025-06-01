@@ -20,8 +20,6 @@ export default defineEventHandler(async (event) => {
 	const firestore = getFirestore()
 	const rtdb = getDatabase()
 
-	console.log(`REST API request: ${event.path}`)
-
 	const request = toWebRequest(event)
 
 	if (!request) {

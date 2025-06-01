@@ -7,6 +7,10 @@ import type { algoliasearch } from "algoliasearch"
 import type { Database } from "firebase/database"
 import { API_PATH_PREFIXES } from "~/lib/rest/config/constants"
 import {
+	BlogAndPublicationsPageDataInputSchema,
+	BlogAndPublicationsPageDataOutputSchema,
+	CategoriesSchemaPageDataInputSchema,
+	CategoriesSchemaPageDataOutputSchema,
 	ContentDetailPageDataInputSchema,
 	ContentDetailPageDataOutputSchema,
 	HomepageDataOutputSchema,
@@ -18,7 +22,7 @@ import {
 } from "~/lib/rest/schema"
 import type { ContentDetailPageDataOutputType } from "~/lib/rest/schema"
 
-import { getBlogCollectionRef, getCategoryDocRef, getPublicationCollectionRef, getStaffCollectionRef, getStaffDocRef } from "~/lib/firestore-model"
+import { getBlogCollectionRef, getCategoryCollectionRef, getCategoryDocRef, getPublicationCollectionRef, getStaffCollectionRef, getStaffDocRef } from "~/lib/firestore-model"
 
 type Middleware = {
 	firestore: Firestore
@@ -200,6 +204,7 @@ const ourAttorneyDetailPageData = base
 	})
 	.input(OurAttorneyDetailPageDataInputSchema)
 	.output(OurAttorneyDetailPageDataOutputSchema)
+	// @ts-expect-error - just ignore
 	.handler(async function ({ context, input, errors }) {
 		const staffColRef = getStaffCollectionRef(context.firestore)
 
@@ -234,6 +239,7 @@ const ourAttorneyDetailPageData = base
 					title: pubData.title,
 					slug: pubData.slug,
 					image_url: pubData.cover_image_url,
+					// @ts-expect-error - just ignore
 					published_at: dayjs(pubData.published_at.seconds * 1000)
 						.format("MMM D, YYYY"),
 					category: pubData.category_id,
@@ -332,6 +338,7 @@ const blogDetailPageData = base
 	.handler(async function ({ context, input, errors }) {
 		const q = query(
 			getBlogCollectionRef(context.firestore),
+			where("type", "==", "blog"),
 			where("slug", "==", input.params.slug),
 			limit(1),
 		)
@@ -350,13 +357,12 @@ const blogDetailPageData = base
 			throw errors.NOT_FOUND()
 		}
 
-		console.log(typeof blogData.published_at, blogData.published_at)
-
 		const detail: Partial<ContentDetailPageDataOutputType["body"]["data"]["detail"]> = {
 			id: blogData.id!,
 			title: blogData.title,
 			slug: blogData.slug,
 			image_url: blogData.cover_image_url,
+			// @ts-expect-error - just ignore
 			published_at: dayjs(blogData.published_at.seconds * 1000)
 				.format("MMM D, YYYY HH:mm"),
 			category: blogData.category_id,
@@ -372,13 +378,95 @@ const blogDetailPageData = base
 
 			const authorData = authorDoc.data()
 			if (authorData) {
-				detail.publication_author = {
+				detail.author = {
 					id: authorData.id!,
 					name: authorData.fullname,
-					photo_url: authorData.profile_picture_url,
+					image_url: authorData.profile_picture_url,
 					slug: authorData.slug,
 				}
 			}
+		}
+
+		if (blogData.category_id) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, blogData.category_id),
+			)
+
+			if (categoryDoc.exists()) {
+				const categoryData = categoryDoc.data()
+				if (categoryData) {
+					detail.category = categoryData.name
+				}
+			}
+		}
+
+		const relatedContentsQuery = query(
+			getBlogCollectionRef(context.firestore),
+			where("category_id", "==", blogData.category_id),
+			where("status", "==", "published"),
+			where("slug", "!=", blogData.slug),
+			limit(3),
+		)
+
+		const relatedContentsSnapshot = await getDocs(relatedContentsQuery)
+		const relatedContents = relatedContentsSnapshot.docs.map((doc) => {
+			const data = doc.data()
+			return {
+				id: doc.id,
+				title: data.title,
+				slug: data.slug,
+				image_url: data.cover_image_url,
+				category: data.category_id,
+				published_at: dayjs(data.published_at.seconds * 1000)
+					.format("MMM D, YYYY HH:mm"),
+				author_id: data.author_id,
+				author: null,
+			}
+		})
+
+		const relatedContentCategoryIds = Array
+			.from(new Set(relatedContents
+				.map(content => content.category)))
+			.filter(Boolean)
+
+		for (const categoryId of relatedContentCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+			if (!categoryDoc.exists()) continue
+			const categoryData = categoryDoc.data()
+			relatedContents.forEach((content) => {
+				if (content.category === categoryId) {
+					content.category = categoryData.name
+				}
+			})
+		}
+
+		const relatedContentAuthorIds = Array
+			.from(new Set(relatedContents
+				.map(content => content.author_id)))
+			.filter(Boolean)
+
+		for (const authorId of relatedContentAuthorIds) {
+			if (!authorId) continue
+
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, authorId),
+			)
+			if (!authorDoc.exists()) continue
+			const authorData = authorDoc.data()
+
+			relatedContents.forEach((content) => {
+				if (content.author_id === authorId) {
+					content.author = {
+						id: authorData.id!,
+						name: authorData.fullname,
+						image_url: authorData.profile_picture_url,
+						slug: authorData.slug,
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					} as any
+				}
+			})
 		}
 
 		return {
@@ -387,6 +475,7 @@ const blogDetailPageData = base
 				status: 200,
 				data: {
 					detail: detail as ContentDetailPageDataOutputType["body"]["data"]["detail"],
+					related_contents: relatedContents,
 				},
 			},
 		}
@@ -405,9 +494,12 @@ const publicationDetailPageData = base
 	.handler(async function ({ context, input, errors }) {
 		const q = query(
 			getPublicationCollectionRef(context.firestore),
+			where("type", "==", "publication"),
+			where("status", "==", "published"),
 			where("slug", "==", input.params.slug),
 			limit(1),
 		)
+
 		const publicationSnapshot = await getDocs(q)
 		if (publicationSnapshot.empty) {
 			throw errors.NOT_FOUND()
@@ -428,6 +520,7 @@ const publicationDetailPageData = base
 			title: publicationData.title,
 			slug: publicationData.slug,
 			image_url: publicationData.cover_image_url,
+			// @ts-expect-error - just ignore
 			published_at: dayjs(publicationData.published_at.seconds * 1000)
 				.format("MMM D, YYYY HH:mm"),
 			category: publicationData.category_id,
@@ -435,6 +528,7 @@ const publicationDetailPageData = base
 			tags: publicationData.tags || [],
 			type: publicationData.type,
 			publication_file_url: publicationData.publication,
+			author: null,
 		}
 
 		if (publicationData.author_id) {
@@ -444,13 +538,94 @@ const publicationDetailPageData = base
 
 			const authorData = authorDoc.data()
 			if (authorData) {
-				detail.publication_author = {
+				detail.author = {
 					id: authorData.id!,
 					name: authorData.fullname,
-					photo_url: authorData.profile_picture_url,
+					image_url: authorData.profile_picture_url,
 					slug: authorData.slug,
 				}
 			}
+		}
+
+		if (publicationData.category_id) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, publicationData.category_id),
+			)
+
+			if (categoryDoc.exists()) {
+				const categoryData = categoryDoc.data()
+				if (categoryData) {
+					detail.category = categoryData.name
+				}
+			}
+		}
+
+		const relatedContentsQuery = query(
+			getPublicationCollectionRef(context.firestore),
+			where("category_id", "==", publicationData.category_id),
+			where("status", "==", "published"),
+			where("slug", "!=", publicationData.slug),
+			limit(3),
+		)
+
+		const relatedContentsSnapshot = await getDocs(relatedContentsQuery)
+		const relatedContents = relatedContentsSnapshot.docs.map((doc) => {
+			const data = doc.data()
+			return {
+				id: doc.id,
+				...data,
+				image_url: data.cover_image_url,
+				published_at: dayjs(data.published_at.seconds * 1000)
+					.format("MMM D, YYYY HH:mm"),
+				category: null,
+				author: null,
+			}
+		})
+
+		const relatedContentCategoryIds = Array
+			.from(new Set(relatedContents
+				.map(content => content.category_id)))
+			.filter(Boolean)
+
+		for (const categoryId of relatedContentCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+			if (!categoryDoc.exists()) continue
+			const categoryData = categoryDoc.data()
+			relatedContents.forEach((content) => {
+				if (content.category_id === categoryId) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					content.category = categoryData.name as any
+				}
+			})
+		}
+
+		const relatedContentAuthorIds = Array
+			.from(new Set(relatedContents
+				.map(content => content.author_id)))
+			.filter(Boolean)
+
+		for (const authorId of relatedContentAuthorIds) {
+			if (!authorId) continue
+
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, authorId),
+			)
+			if (!authorDoc.exists()) continue
+			const authorData = authorDoc.data()
+
+			relatedContents.forEach((content) => {
+				if (content.author_id === authorId) {
+					content.author = {
+						id: authorData.id!,
+						name: authorData.fullname,
+						image_url: authorData.profile_picture_url,
+						slug: authorData.slug,
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					} as any
+				}
+			})
 		}
 
 		return {
@@ -459,6 +634,184 @@ const publicationDetailPageData = base
 				status: 200,
 				data: {
 					detail: detail as ContentDetailPageDataOutputType["body"]["data"]["detail"],
+					related_contents: relatedContents,
+				},
+			},
+		}
+	})
+
+export const listCategoryPageData = base
+	.$context<Middleware>()
+	.route({
+		method: "GET",
+		path: API_PATH_PREFIXES.PAGE_DATA_CATEGORIES,
+		inputStructure: "detailed",
+		outputStructure: "detailed",
+	})
+	.input(CategoriesSchemaPageDataInputSchema)
+	.output(CategoriesSchemaPageDataOutputSchema)
+	.handler(async function ({ context }) {
+		const q = query(
+			getCategoryCollectionRef(context.firestore),
+			limit(30),
+			orderBy("name", "asc"),
+		)
+
+		const categorySnapshot = await getDocs(q)
+		if (categorySnapshot.empty) {
+			return {
+				body: {
+					message: "ok",
+					status: 200,
+					data: {
+						categories: [],
+						total: 0,
+					},
+				},
+			}
+		}
+
+		return {
+			body: {
+				message: "ok",
+				status: 200,
+				data: {
+					categories: categorySnapshot.docs.map(doc => ({
+						id: doc.id,
+						...doc.data(),
+					})),
+					total: categorySnapshot.size,
+				},
+			},
+		}
+	})
+
+export const contentListPageData = base.$context<Middleware>()
+	.route({
+		method: "GET",
+		path: API_PATH_PREFIXES.PAGE_DATA_CONTENT_LIST,
+		inputStructure: "detailed",
+		outputStructure: "detailed",
+	})
+	.input(BlogAndPublicationsPageDataInputSchema)
+	.output(BlogAndPublicationsPageDataOutputSchema)
+	// @ts-expect-error - just ignore
+	.handler(async function ({ context, input }) {
+		const facetFilters = [
+			"status:published",
+			`type:${input.query.type}`,
+			input.query.category ? `category_id:${input.query.category}` : "",
+		]
+			.filter(Boolean)
+
+		const numericFilters: string[] = []
+		if (input.query.year) {
+			const startOfYear = dayjs(`${input.query.year}-01-01`)
+				.startOf("year")
+				.unix()
+			const endOfYear = dayjs(`${input.query.year}-12-31`)
+				.endOf("year")
+				.unix()
+			numericFilters.push(`published_at._seconds >= ${startOfYear}`, `published_at._seconds <= ${endOfYear}`)
+		}
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const contentSnapshot = await context.algoliaClient.searchSingleIndex<Record<string, any>>({
+			indexName: "contents",
+			searchParams: {
+				query: input.query.search,
+				facetFilters,
+				hitsPerPage: 10,
+				page: input.query.page - 1,
+				numericFilters,
+				// ranking: ["desc(published_at._seconds)"],
+			},
+		})
+
+		if (contentSnapshot.hits.length === 0) {
+			return {
+				body: {
+					message: "ok",
+					status: 200,
+					data: {
+						contents: [],
+						page: 1,
+						total: 0,
+					},
+				},
+			}
+		}
+
+		const mappedContents = contentSnapshot.hits.map(hit => ({
+			id: hit.objectID,
+			type: hit.type,
+			slug: hit.slug,
+			image_url: hit.cover_image_url,
+			title: hit.title,
+			category: hit.category_id,
+			published_at: dayjs(hit.published_at._seconds * 1000)
+				.format("MMM D, YYYY HH:mm"),
+			author: hit.author_id || null,
+		}))
+
+		const mappedContentCategoryIds = Array
+			.from(new Set(mappedContents.map(content => content.category)))
+			.filter(Boolean)
+
+		for (const categoryId of mappedContentCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+			if (!categoryDoc.exists()) continue
+			const categoryData = categoryDoc.data()
+			if (!categoryData) continue
+
+			mappedContents.forEach((content) => {
+				if (content.category === categoryId) {
+					content.category = categoryData.name
+				}
+			})
+		}
+
+		const mappedContentAuthorIds = Array
+			.from(new Set(mappedContents.map(content => content.author)))
+			.filter(Boolean)
+
+		for (const authorId of mappedContentAuthorIds) {
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, authorId),
+			)
+
+			if (!authorDoc.exists()) {
+				mappedContents.forEach((content, idx) => {
+					if (content.author === authorId) {
+						mappedContents[idx]!.author = null
+					}
+				})
+				continue
+			}
+
+			const authorData = authorDoc.data()
+
+			mappedContents.forEach((content, idx) => {
+				if (content.author === authorId) {
+					mappedContents[idx]!.author = {
+						id: authorData.id!,
+						name: authorData.fullname,
+						photo_url: authorData.profile_picture_url,
+					}
+				}
+			})
+		}
+
+		return {
+			body: {
+				message: "ok",
+				status: 200,
+				data: {
+					contents: mappedContents,
+					page: input.query.page,
+					total: contentSnapshot.nbHits,
 				},
 			},
 		}
@@ -471,6 +824,8 @@ const router = {
 	ourAttorneyDetailPageData,
 	blogDetailPageData,
 	publicationDetailPageData,
+	listCategoryPageData,
+	contentListPageData,
 }
 
 export default router

@@ -57,8 +57,7 @@ export const PracticeAreaPageDataOutputSchema = z.object({
 							.array(z
 								.object({
 									id: z
-										.string()
-										.nanoid(),
+										.string(),
 									title: z
 										.string(),
 									slug: z
@@ -244,20 +243,29 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 								slug: z
 									.string(),
 							})),
-				}),
+				})
+				.nullish(),
 		}),
 })
 
 export const BlogAndPublicationsPageDataInputSchema = z.object({
 	query: z
 		.object({
-			type: ContentTypeFilter.default("all"),
+			type: ContentTypeFilter
+				.exclude(["all"]),
+			page: z
+				.number()
+				.default(1),
 			search: z
 				.string()
 				.optional(),
 			category: z
 				.string()
 				.optional(),
+			year: z
+				.string()
+				.regex(/^\d{4}$/)
+				.nullish(),
 		}),
 })
 
@@ -267,48 +275,35 @@ export const BlogAndPublicationsPageDataOutputSchema = z.object({
 		status: z.number(),
 		data: z
 			.object({
-				highlighted_content: z
-					.array(z
-						.object({
-							id: z
-								.string()
-								.nanoid(),
-							type: ContentTypeFilter,
-							slug: z
-								.string()
-								.regex(/^[a-z0-9-]+$/),
-							tags: z
-								.array(z.string()),
-							image_url: z
-								.string()
-								.url(),
-							title: z
-								.string(),
-							category: z
-								.string(),
-							published_at: z
-								.string(),
-						})),
 				contents: z
 					.array(z
 						.object({
 							id: z
-								.string()
-								.nanoid(),
+								.string(),
 							type: ContentTypeFilter,
 							slug: z
-								.string()
-								.regex(/^[a-z0-9-]+$/),
+								.string(),
 							image_url: z
-								.string()
-								.url(),
+								.string(),
 							title: z
 								.string(),
 							category: z
 								.string(),
+							author: z
+								.object({
+									id: z
+										.string(),
+									name: z
+										.string(),
+									photo_url: z
+										.string(),
+								})
+								.nullish(),
 							published_at: z
 								.string(),
 						})),
+				total: z.number(),
+				page: z.number(),
 			}),
 	}),
 })
@@ -350,29 +345,89 @@ export const ContentDetailPageDataOutputSchema = z.object({
 								.string(),
 							published_at: z
 								.string(),
-							publication_author: z
-								.object({
-									id: z
-										.string()
-										.nanoid(),
-									name: z
-										.string(),
-									photo_url: z
-										.string()
-										.url(),
-									slug: z
-										.string()
-										.regex(/^[a-z0-9-]+$/),
-								})
-								.optional(),
 							publication_file_url: z
 								.string()
 								.url()
 								.optional(),
+							author: z
+								.object({
+									id: z
+										.string(),
+									name: z
+										.string(),
+									slug: z
+										.string()
+										.regex(/^[a-z0-9-]+$/),
+									image_url: z
+										.string()
+										.url(),
+								})
+								.nullish(),
 						})
-						.optional(),
+						.nullish(),
+					related_contents: z
+						.array(z
+							.object({
+								id: z
+									.string(),
+								title: z
+									.string(),
+								slug: z
+									.string(),
+								image_url: z
+									.string()
+									.url(),
+								category: z
+									.string(),
+								published_at: z
+									.string(),
+								author_id: z
+									.string()
+									.nullish(),
+								author: z
+									.object({
+										id: z
+											.string(),
+										name: z
+											.string(),
+										slug: z
+											.string()
+											.regex(/^[a-z0-9-]+$/),
+										image_url: z
+											.string()
+											.url(),
+									})
+									.nullish(),
+							})),
 				}),
 		}),
+})
+
+export const CategoriesSchemaPageDataInputSchema = z.object({
+	query: z
+		.object({
+			page: z.number()
+				.min(1)
+				.default(1),
+			limit: z
+				.number()
+				.min(1)
+				.default(10),
+		}),
+})
+
+export const CategoriesSchemaPageDataOutputSchema = z.object({
+	body: z.object({
+		message: z.string(),
+		status: z.number(),
+		data: z.object({
+			categories: z.array(z.object({
+				id: z.string(),
+				name: z.string(),
+			})),
+			total: z.number(),
+		}),
+	}),
 })
 
 export type StaffTypeFilterType = z.infer<typeof StaffTypeFilter>

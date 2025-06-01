@@ -52,6 +52,7 @@ export function usePublicationList() {
 				"created_at",
 				"published_at",
 				"publication",
+				"slug",
 			],
 
 		}
