@@ -338,6 +338,7 @@ const blogDetailPageData = base
 	.handler(async function ({ context, input, errors }) {
 		const q = query(
 			getBlogCollectionRef(context.firestore),
+			where("type", "==", "blog"),
 			where("slug", "==", input.params.slug),
 			limit(1),
 		)
@@ -386,6 +387,19 @@ const blogDetailPageData = base
 			}
 		}
 
+		if (blogData.category_id) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, blogData.category_id),
+			)
+
+			if (categoryDoc.exists()) {
+				const categoryData = categoryDoc.data()
+				if (categoryData) {
+					detail.category = categoryData.name
+				}
+			}
+		}
+
 		return {
 			body: {
 				message: "ok",
@@ -408,15 +422,20 @@ const publicationDetailPageData = base
 	.input(ContentDetailPageDataInputSchema)
 	.output(ContentDetailPageDataOutputSchema)
 	.handler(async function ({ context, input, errors }) {
+		console.log(`input`, input.params)
+
 		const q = query(
 			getPublicationCollectionRef(context.firestore),
-			where("slug", "==", input.params.slug),
+			where("type", "==", "publication"),
+			where("slug", "==", `${input.params.slug}`),
 			limit(1),
 		)
+
 		const publicationSnapshot = await getDocs(q)
 		if (publicationSnapshot.empty) {
 			throw errors.NOT_FOUND()
 		}
+		console.log(`not found here`)
 
 		const publicationData = publicationSnapshot.docs.at(0)
 			?.data()
@@ -424,9 +443,13 @@ const publicationDetailPageData = base
 			throw errors.NOT_FOUND()
 		}
 
+		console.log(`not found here 2`)
+
 		if (publicationData.status !== "published") {
 			throw errors.NOT_FOUND()
 		}
+
+		console.log(`not found here 3`)
 
 		const detail: Partial<ContentDetailPageDataOutputType["body"]["data"]["detail"]> = {
 			id: publicationData.id!,
@@ -455,6 +478,19 @@ const publicationDetailPageData = base
 					name: authorData.fullname,
 					photo_url: authorData.profile_picture_url,
 					slug: authorData.slug,
+				}
+			}
+		}
+
+		if (publicationData.category_id) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, publicationData.category_id),
+			)
+
+			if (categoryDoc.exists()) {
+				const categoryData = categoryDoc.data()
+				if (categoryData) {
+					detail.category = categoryData.name
 				}
 			}
 		}
@@ -528,6 +564,7 @@ export const contentListPageData = base.$context<Middleware>()
 	// @ts-expect-error - just ignore
 	.handler(async function ({ context, input }) {
 		const facetFilters = [
+			"status:published",
 			`type:${input.query.type}`,
 			input.query.category ? `category_id:${input.query.category}` : "",
 		]

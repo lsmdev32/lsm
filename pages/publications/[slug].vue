@@ -19,13 +19,6 @@ const posts = [
 	},
 ]
 
-function truncateWords(text: string, maxWords: number): string {
-	const words = text.split(" ")
-	return words.length > maxWords
-		? words.slice(0, maxWords)
-			.join(" ") + "..."
-		: text
-}
 const searchQuery = ref("")
 const categories = [
 	"Category 1",
@@ -63,7 +56,7 @@ const archives = [
 		<section class="md:hidden">
 			<div class="mb-4">
 				<img
-					:src="posts[0].image"
+					:src="posts[0]?.image"
 					alt="Thumbnail"
 					class="w-full h-72 object-cover mb-4"
 				>
@@ -92,7 +85,7 @@ const archives = [
 					</div>
 				</div>
 				<p class="mt-4 p-4 text-gray-700">
-					{{ posts[0].description }}
+					{{ posts[0]?.description }}
 				</p>
 			</div>
 		</section>
@@ -139,7 +132,7 @@ const archives = [
 					<!-- Featured Post -->
 					<div class="mb-8">
 						<img
-							:src="posts[0].image"
+							:src="posts[0]?.image"
 							alt="Thumbnail"
 							class="w-full h-80 object-cover mb-4"
 						>
@@ -166,7 +159,7 @@ const archives = [
 							</div>
 						</div>
 						<p class="mt-4 text-gray-700">
-							{{ posts[0].description }}
+							{{ posts[0]?.description }}
 						</p>
 					</div>
 
