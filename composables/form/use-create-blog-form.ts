@@ -122,9 +122,8 @@ export function useCreateBlogForm() {
 			})
 		}
 
-		catch (e) {
-			console.log(e)
-
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		catch (_e) {
 			toast.error("Gagal membuat blog")
 			return
 		}

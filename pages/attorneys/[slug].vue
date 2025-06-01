@@ -6,9 +6,14 @@ const slug = useRoute().params.slug as string
 
 const { data } = await useCustomFetch(`/rest/page-data/staffs/${slug}`)
 
-const result = data.data
+const result = data?.data
 
-console.log(`result`, result)
+if (!result) {
+	throw createError({
+		statusCode: 404,
+		statusMessage: "Attorney profile not found",
+	})
+}
 
 defineProps({
 	image: String,
@@ -161,6 +166,7 @@ function closeAssociates() {
 				</div>
 			</div>
 		</section>
+
 		<!-- Mobile -->
 		<section class="md:hidden">
 			<div class="max-w-7xl mx-auto flex flex-col md:flex-row ">
@@ -236,7 +242,9 @@ function closeAssociates() {
 									:key="associate.id"
 									class="py-2 text-lg font-[Ubuntu] text-[#DAB38D] last:border-b-0"
 								>
-									{{ associate.name }}
+									<nuxt-link :href="`/attorneys/${associate.slug}`">
+										{{ associate.name }}
+									</nuxt-link>
 								</li>
 							</ul>
 						</div>
@@ -247,52 +255,57 @@ function closeAssociates() {
 				<div class="flex flex-col items-center px-4 py-6 space-y-4">
 					<!-- Gambar dengan ABOUT LSM -->
 					<div class="relative w-full">
-						<img
-							src="../assets/images/Dummy_DamianAgataYuvens.jpg"
+						<NuxtImg
+							:src="result.person.image_url"
 							alt=""
 							class="w-full h-[450px] object-cover"
-						>
+						/>
 						<h2 class="absolute bottom-6 left-6 text-white text-2xl font-[Marcellus] font-light">
-							Damian Agata Yuvens
-							<div class="flex flex-row sm:flex-row gap-2 mt-1 text-[#3a2b1c] text-sm pb-2">
-								<button class="w-8 h-8 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
+							{{ result.person.name }}
+							<div class="flex flex-row sm:flex-row  mt-1 text-[#3a2b1c] text-sm pb-2">
+								<nuxt-link
+									:href="result.person.linkedin_url"
+									class="w-8 h-8 mr-2 bg-[#4B3D2A] text-white hover:text-[#DAB38D] flex items-center justify-center rounded-full"
+								>
 									<Icon
 										name="mdi:linkedin"
 										size="18"
 									/>
-								</button>
-								<button class="w-8 h-8 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
+								</nuxt-link>
+
+								<nuxt-link
+									:href="`mailto:${result.person.email}`"
+									class="w-8 h-8 mr-2 bg-[#4B3D2A] text-white hover:text-[#DAB38D] flex items-center justify-center rounded-full"
+								>
 									<Icon
 										name="mdi:email-outline"
 										size="18"
 									/>
-								</button>
+								</nuxt-link>
 							</div>
 						</h2>
 					</div>
-					<div class="grid grid-cols-2 md:grid-cols-2 gap-6">
+					<div class="grid grid-cols-2 gap-6 ">
 						<!-- Panah -->
-						<div class="">
+						<div class="w-[30px]">
 							<img
-								src="../assets/Arrow 1.png"
+								src="../../assets/Arrow 1.png"
 								alt=""
 								style="height: 34px; width: 16px;"
 							>
 						</div>
 
 						<!-- Deskripsi -->
-						<p class="text-[#D9B28C] text-1xl font-[Marcellus] ml-[-100px] eading-relaxed">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blandit scelerisque eu tristique sed. Id consectetur tristique proin faucibus purus sit amet aliquet sit. Libero arcu donec etiam consectetur. Elit massa ligula id ornare eget vitae, volutpat sit.
+						<p class="text-[#D9B28C] text-1xl font-[Marcellus] -ml-8 eading-relaxed">
+							{{ result.person.short_bio }}
 						</p>
 					</div>
 					<div class="w-full flex flex-col font-[Ubuntu] text-[#949494] space-y-4">
 						<!-- Text Content -->
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum dui consectetur morbi ultricies sed ipsum. Porttitor ultricies turpis dictum scelerisque phasellus. Etiam est sed quam mauris id sit lacus, ut. Aliquam duis id ipsum a facilisi in vestibulum hac ullamcorper. Ullamcorper ultrices tristique id auctor. Hendrerit sit tortor mi nunc risus ut ornare mattis sed. Nunc vitae elit id faucibus. Ultrices pretium cursus in sit ac, ultricies id non. Tincidunt egestas ultricies morbi enim, vel amet, elementum congue tincidunt. Ac nibh pulvinar metus vitae ornare. Facilisis cras eu, sit varius purus nunc. Sed facilisi nunc sit vitae risus volutpat scelerisque massa sapien. Dolor cum nunc, scelerisque ullamcorper. Volutpat egestas non diam ullamcorper tellus eu. Turpis ornare ut in fusce quam. Aliquet fusce quis at aliquet congue integer curabitur donec integer. Id nibh id dui sapien erat sem. Fermentum, laoreet tellus, varius nunc id purus pulvinar. Viverra ornare mattis egestas commodo magna condimentum sit.
-						</p>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum dui consectetur morbi ultricies sed ipsum. Porttitor ultricies turpis dictum scelerisque phasellus. Etiam est sed quam mauris id sit lacus, ut. Aliquam duis id ipsum a facilisi in vestibulum hac ullamcorper. Ullamcorper ultrices tristique id auctor. Hendrerit sit tortor mi nunc risus ut ornare mattis sed. Nunc vitae elit id faucibus. Ultrices pretium cursus in sit ac, ultricies id non. Tincidunt egestas ultricies morbi enim, vel amet, elementum congue tincidunt. Ac nibh pulvinar metus vitae ornare. Facilisis cras eu, sit varius purus nunc. Sed facilisi nunc sit vitae risus volutpat scelerisque massa sapien. Dolor cum nunc, scelerisque ullamcorper. Volutpat egestas non diam ullamcorper tellus eu. Turpis ornare ut in fusce quam. Aliquet fusce quis at aliquet congue integer curabitur donec integer. Id nibh id dui sapien erat sem. Fermentum, laoreet tellus, varius nunc id purus pulvinar. Viverra ornare mattis egestas commodo magna condimentum sit.
-						</p>
+						<div
+							class="[&_*]:tracking-wide text-justify"
+							v-html="result.person.bio"
+						/>
 						<div class="flex justify-center items-center pt-2">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
 								Publication
@@ -300,9 +313,9 @@ function closeAssociates() {
 						</div>
 						<div class="mt-4 flex-row">
 							<Publications
-								:publications="result.publications"
 								:default-author-name="result.person.name"
 								:default-author-image="result.person.image_url"
+								:publications="result.publications"
 							/>
 							<div class="flex justify-end mb-8 mt-[-24px]">
 								<NuxtLink

@@ -22,7 +22,6 @@ const isFormSubmitting = form.isSubmitting
 const imageURL = computed(() => {
 	const value = form.form.values.image_url
 	if (!value) return undefined
-	console.log(value)
 
 	return value
 })
@@ -69,8 +68,6 @@ watch(form.form.values, async (v) => {
 	}
 
 	if (v.status) {
-		console.log(v.status)
-
 		status.value = v.status
 	}
 }, { deep: true })

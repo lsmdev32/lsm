@@ -23,7 +23,6 @@ const status = ref("")
 const imageURL = computed(() => {
 	const value = form.form.values.image_url
 	if (!value) return undefined
-	console.log(value)
 
 	return value
 })

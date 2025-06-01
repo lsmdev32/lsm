@@ -22,8 +22,8 @@ export function useUploader<P extends Paths>(path: P) {
 
 			return await getDownloadURL(fileRef)
 		}
-		catch (error) {
-			console.log(error)
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		catch (_e) {
 			return ""
 		}
 	}

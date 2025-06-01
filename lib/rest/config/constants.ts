@@ -15,6 +15,8 @@ export const API_PATH_PREFIXES = {
 	PAGE_DATA_PUBLICATION_DETAIL: "/page-data/publications/{slug}",
 	PAGE_DATA_STAFF_DETAIL: "/page-data/staffs/{slug}",
 	PAGE_DATA_STAFFS: "/page-data/staffs",
+	PAGE_DATA_CATEGORIES: "/page-data/categories",
+	PAGE_DATA_CONTENT_LIST: "/page-data/content-list",
 } satisfies Record<string, `/${string}`>
 
 export const APP_OPENAPI_INFO = {

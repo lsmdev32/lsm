@@ -18,8 +18,6 @@ export const handler = new OpenAPIHandler(router, {
 	],
 	clientInterceptors: [
 		onError((error) => {
-			console.log(error)
-
 			if (error instanceof ORPCError
 				&& error.code === "BAD_REQUEST"
 				&& error.data instanceof ValidationError
@@ -32,6 +30,8 @@ export const handler = new OpenAPIHandler(router, {
 					cause: error.cause,
 				})
 			}
+
+			console.log(`error output : `, new ZodError((error.cause as Record<string, unknown>).issues as ZodIssue[]))
 
 			if (error instanceof ORPCError
 				&& error.code === "INTERNAL_SERVER_ERROR"

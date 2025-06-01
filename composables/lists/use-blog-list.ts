@@ -51,6 +51,7 @@ export function useBlogList() {
 				"tags",
 				"created_at",
 				"published_at",
+				"slug",
 			],
 
 		}
