@@ -3,8 +3,14 @@ import { NuxtImg } from "#components"
 import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
 import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 import Publications from "~/components/audience/Publications.vue"
+import Partners from "~/components/audience/Partners.vue"
 
-const { data } = await useCustomFetch("/rest/page-data/home")
+const { data } = await useCustomFetch("/rest/page-data/practice-areas")
+const contents = data?.data?.news_and_publications?.data ?? []
+const attorneys = data?.data?.our_attorneys?.data ?? []
+
+console.log(contents)
+console.log(attorneys)
 </script>
 
 <template>
@@ -52,7 +58,7 @@ const { data } = await useCustomFetch("/rest/page-data/home")
 				</h1>
 			</div>
 			<div class="items-center justify-center px-6 py-6 z-0">
-				<Publications />
+				<Publications :publications="contents" />
 			</div>
 		</section>
 		<section class="md:hidden items-center justify-center w-full">
@@ -117,7 +123,7 @@ const { data } = await useCustomFetch("/rest/page-data/home")
 			</h1>
 		</div>
 		<section class="hidden md:flex w-full justify-center items-start h-120 z-0 mt-4">
-			<Publications />
+			<Publications :publications="contents" />
 		</section>
 		<div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mt-4">
 			<h1 class="text-3xl font-[Marcellus] text-left py-4">
@@ -127,11 +133,14 @@ const { data } = await useCustomFetch("/rest/page-data/home")
 		<section class="hidden md:flex w-full h-120 z-0 mt-4">
 			<div class="flex items-center justify-center gap-8">
 				<Partners
-					v-for="(partner, index) in data?.data?.partners.data.slice(0, 4)"
+					v-for="(partner, index) in attorneys"
 					:key="index"
 					class="capitalize"
 					:image="partner.image_url"
 					:name="partner.name"
+					:linkedin="partner.linkedin_url"
+					:email="partner.email"
+					:slug="partner.slug"
 				/>
 			</div>
 		</section>
