@@ -107,11 +107,17 @@ function resetFilters() {
 	<div>
 		<!-- Mobile -->
 		<section class="md:hidden">
-			<PublicationQuery />
+			<PublicationQuery
+				v-model:keyword="keywordFilter"
+				v-model:category="categoryFilter"
+				v-model:year="yearFilter"
+				:archives="archives"
+				:categories="categories.data.data.categories as any"
+			/>
 		</section>
 		<section class="md:hidden">
 			<div class="p-4">
-				<Publications />
+				<Publications :publications="contents" />
 			</div>
 		</section>
 		<!-- Desktop -->
