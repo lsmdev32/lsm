@@ -174,11 +174,24 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 				class: cn("text-center w-[20px]") },
 			"Judul",
 		),
-		cell: ({ row }) => h(
-			"span",
-			{},
-			row.original.title,
-		),
+		cell: ({ row }) => {
+			const isPublished = row.original.status === "published"
+			return isPublished
+				? h(
+						NuxtLink,
+						{
+							href: `/blogs/${row.original.objectID}`,
+							target: "_blank",
+							class: cn("underline"),
+						},
+						row.original.title,
+					)
+				: h(
+						"span",
+						{},
+						row.original.title,
+					)
+		},
 	}),
 	blogHelper.accessor("status", {
 		id: "Status",
@@ -344,11 +357,24 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 				class: cn("text-center w-[20px]") },
 			"Judul",
 		),
-		cell: ({ row }) => h(
-			"span",
-			{},
-			row.original.title,
-		),
+		cell: ({ row }) => {
+			const isPublished = row.original.status === "published"
+			return isPublished
+				? h(
+						NuxtLink,
+						{
+							href: `/blogs/${row.original.objectID}`,
+							target: "_blank",
+							class: cn("underline"),
+						},
+						row.original.title,
+					)
+				: h(
+						"span",
+						{},
+						row.original.title,
+					)
+		},
 	}),
 	publicationHelper.accessor("status", {
 		id: "Status",
