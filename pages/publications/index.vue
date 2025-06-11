@@ -139,12 +139,16 @@ function resetFilters() {
 								class="w-full p-2 border bg-[#F5F5F5] border-gray-300 rounded-md"
 							/>
 
-							<UiButton
-								variant="ghost"
+							<button
+								class="mx-1 p-2 font-[Ubuntu] rounded-md"
+								:class="{
+									'text-gray-300': !blink,
+									'text-[#4B3D2A] border border-[#4B3D2A] bg-[#DAB38D]': blink,
+								}"
 								@click="resetFilters"
 							>
 								Reset Filters
-							</UiButton>
+							</button>
 						</div>
 					</div>
 					<div class="flex flex-col mb-8">
@@ -270,12 +274,13 @@ function resetFilters() {
 						</nuxt-link>
 					</div>
 					<div class="flex w-full justify-center mt-10">
-						<ui-button
+						<button
 							v-if="!isLoading && firstContent"
+							class="bg-[#4B3D2A] text-[#DAB38D] rounded-md py-2 px-4 font-[Ubuntu] hover:cursor-pointer"
 							@click="loadMore"
 						>
 							Load More
-						</ui-button>
+						</button>
 						<div v-if="!firstContent && !isLoading">
 							<span class="text-gray-400 text-lg font-[Ubuntu]">
 								No publications found.

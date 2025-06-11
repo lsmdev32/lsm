@@ -11,9 +11,11 @@ defineProps<Props>()
 const keywordFilter = defineModel<string>("keyword")
 const categoryFilter = defineModel<string>("category")
 const yearFilter = defineModel<number>("year")
+const route = useRoute()
 
 const showCategories = ref(false)
 const showArchives = ref(false)
+const blink = ref(false)
 
 function toggleCategories() {
 	showCategories.value = !showCategories.value
@@ -29,6 +31,17 @@ function closeCategories() {
 function closeArchives() {
 	showArchives.value = false
 }
+function resetFilters() {
+	if (route.path.startsWith("/blogs")) {
+		location.href = "/blogs"
+
+		return
+	}
+
+	if (route.path.startsWith("/publications")) {
+		location.href = "/publications"
+	}
+}
 </script>
 
 <template>
@@ -43,24 +56,35 @@ function closeArchives() {
 					class="w-full p-2 border bg-[#F5F5F5] text-[#C5C5C5] border-gray-300 rounded-md"
 				/>
 			</div>
-
+			<div class="flex justify-center items-center mb-4">
+				<button
+					class="mx-1 p-2 font-[Ubuntu] rounded-md"
+					:class="{
+						'text-gray-300': !blink,
+						'text-[#4B3D2A] border border-[#4B3D2A] bg-[#DAB38D]': blink,
+					}"
+					@click="resetFilters"
+				>
+					Reset Filters
+				</button>
+			</div>
 			<!-- Buttons -->
 			<div class="flex justify-between mb-4">
 				<button
-					class="flex-1 mx-1 p-2 bg-white font-[Ubuntu] rounded-md"
+					class="flex-1 mx-1 p-2 font-[Ubuntu] rounded-md"
 					:class="{
 						'text-[#DAB38D]': !showCategories,
-						'text-[#8B5E34] border border-black': showCategories,
+						'text-[#4B3D2A] border border-[#4B3D2A] bg-[#DAB38D]': showCategories,
 					}"
 					@click="toggleCategories"
 				>
 					Categories
 				</button>
 				<button
-					class="flex-1 mx-1 p-2 bg-white font-[Ubuntu] rounded-md"
+					class="flex-1 mx-1 p-2 font-[Ubuntu] rounded-md"
 					:class="{
 						'text-[#DAB38D]': !showArchives,
-						'text-[#8B5E34] border border-black': showArchives,
+						'text-[#4B3D2A] border border-[#4B3D2A] bg-[#DAB38D]': showArchives,
 					}"
 					@click="toggleArchives"
 				>
