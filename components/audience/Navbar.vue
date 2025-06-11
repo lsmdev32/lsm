@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LogLSM from "~/assets/images/logo-lsm-main.svg"
 import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 </script>
 
@@ -15,7 +16,7 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 							<NuxtImg
 								class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
 								to="/"
-								src="https://ik.imagekit.io/in10rksrb/Group_U0FdwZWJX.png?ik-sdk-version=javascript-1.4.3&updatedAt=1663914596318"
+								:src="LogLSM"
 							/>
 						</NuxtLink>
 					</div>

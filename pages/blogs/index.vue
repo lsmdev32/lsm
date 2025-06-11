@@ -19,6 +19,7 @@ const debouncedKeyword = useDebounce(keywordFilter, DEBOUNCE_DEFAULT_TIME)
 const contents = ref<Record<string, any>[]>([])
 const firstContent = computed(() => contents.value.at(0))
 const isLoading = ref(false)
+const blink = ref(false)
 
 onMounted(() => {
 	isLoading.value = true

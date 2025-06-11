@@ -348,11 +348,11 @@ const setOption = (index: number) => {
 		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
 			<Reviews />
 		</section>
-		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
+		<!-- <section class="hidden md:block sm:max-[hidden] md:min-w-full">
 			<div class="flex h-[265px] w-full items-center justify-center">
 				Clients here!
 			</div>
-		</section>
+		</section> -->
 	</div>
 </template>
 
