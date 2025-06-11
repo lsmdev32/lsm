@@ -11,6 +11,8 @@ import Publications from "~/components/audience/Publications.vue"
 import Reviews from "~/components/audience/Reviews.vue"
 
 const { data } = await useCustomFetch("/rest/page-data/home")
+const contents = data?.data?.news_and_publications?.data ?? []
+const attorneys = data?.data?.our_attorneys?.data ?? []
 
 const images = [
 	"/images/bedge1.png",
@@ -75,22 +77,32 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 		<section class="md:min-w-full md:hidden font-[philosopher] ">
-			<div class="flex items-center justify-start bg-[url('~/assets/images/dr-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
-				<div>
-					<h2 class="text-2xl text-white">
-						Dispute Resolution
-					</h2>
+			<a
+				href="/practice-area?category[0]"
+				class="block"
+			>
+				<div class="flex items-center justify-start bg-[url('~/assets/images/dr-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
+					<div>
+						<h2 class="text-2xl text-white">
+							Dispute Resolution
+						</h2>
+					</div>
 				</div>
-			</div>
+			</a>
 		</section>
 		<section class="md:min-w-full md:hidden font-[philosopher] ">
-			<div class="flex items-center justify-start bg-[url('~/assets/images/cc-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
-				<div>
-					<h2 class="text-2xl text-white">
-						Corporate Commercial
-					</h2>
+			<a
+				:href="`/practice-area?activeCategory=${1}`"
+				class="block"
+			>
+				<div class="flex items-center justify-start bg-[url('~/assets/images/cc-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
+					<div>
+						<h2 class="text-2xl text-white">
+							Corporate Commercial
+						</h2>
+					</div>
 				</div>
-			</div>
+			</a>
 		</section>
 		<section class="md:min-w-full md:hidden font-[philosopher] ">
 			<div class="flex items-center justify-start bg-[url('~/assets/images/ip-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[24px]  z-0">
@@ -110,7 +122,7 @@ const setOption = (index: number) => {
 				</h1>
 			</div>
 			<div class="items-center justify-center px-6 py-6 z-0">
-				<Publications />
+				<Publications :publications="contents" />
 			</div>
 		</section>
 
@@ -120,6 +132,18 @@ const setOption = (index: number) => {
 				<h1 class="text-3xl font-[Marcellus] text-center py-4">
 					Our Attorneys
 				</h1>
+			</div>
+			<div class="items-center justify-center px-6 py-6 z-0">
+				<Partners
+					v-for="(partner, index) in attorneys"
+					:key="index"
+					class="capitalize"
+					:image="partner.image_url"
+					:name="partner.name"
+					:linkedin="partner.linkedin_url"
+					:email="partner.email"
+					:slug="partner.slug"
+				/>
 			</div>
 		</section>
 
