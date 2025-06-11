@@ -116,6 +116,7 @@ const practiceAreasPageData = base
 		 */
 		const contentsQuery = query(
 			getPublicationCollectionRef(context.firestore),
+			where("type", "==", "publication"),
 			where("status", "==", "published"),
 			orderBy("published_at", "desc"),
 			limit(4),
