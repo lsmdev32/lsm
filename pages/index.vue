@@ -11,8 +11,8 @@ import Publications from "~/components/audience/Publications.vue"
 import Reviews from "~/components/audience/Reviews.vue"
 
 const { data } = await useCustomFetch("/rest/page-data/home")
-const contents = data?.data?.news_and_publications?.data ?? []
-const attorneys = data?.data?.our_attorneys?.data ?? []
+const contents = data?.data?.contents?.data ?? []
+const attorneys = data?.data?.partners?.data ?? []
 
 const images = [
 	"/images/bedge1.png",
@@ -78,7 +78,7 @@ const setOption = (index: number) => {
 		</section>
 		<section class="md:min-w-full md:hidden font-[philosopher] ">
 			<a
-				href="/practice-area?category[0]"
+				:href="`/practice-area?category=${0}`"
 				class="block"
 			>
 				<div class="flex items-center justify-start bg-[url('~/assets/images/dr-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
@@ -92,7 +92,7 @@ const setOption = (index: number) => {
 		</section>
 		<section class="md:min-w-full md:hidden font-[philosopher] ">
 			<a
-				:href="`/practice-area?activeCategory=${1}`"
+				:href="`/practice-area?category=${1}`"
 				class="block"
 			>
 				<div class="flex items-center justify-start bg-[url('~/assets/images/cc-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
@@ -105,13 +105,18 @@ const setOption = (index: number) => {
 			</a>
 		</section>
 		<section class="md:min-w-full md:hidden font-[philosopher] ">
-			<div class="flex items-center justify-start bg-[url('~/assets/images/ip-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[24px]  z-0">
-				<div>
-					<h2 class="text-2xl text-white">
-						Intelectual Property
-					</h2>
+			<a
+				:href="`/practice-area?category=${2}`"
+				class="block"
+			>
+				<div class="flex items-center justify-start bg-[url('~/assets/images/ip-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[24px]  z-0">
+					<div>
+						<h2 class="text-2xl text-white">
+							Intelectual Property
+						</h2>
+					</div>
 				</div>
-			</div>
+			</a>
 		</section>
 
 		<!-- Blog and Publication Section here! -->
@@ -180,74 +185,80 @@ const setOption = (index: number) => {
 			<div class="flex h-[480px] w-full">
 				<!-- Panel 1 -->
 				<div class="relative bg-[url('~/assets/images/bg-whoarewe.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
-					<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-					<!-- Heading -->
-					<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
-						<h2 class="text-5xl text-white ">
-							Who <br> Are We
-						</h2>
-					</div>
-					<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
-						<NuxtImg
-							class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
-							:src="ArrowIcon"
-						/>
-					</div>
-					<!-- Animated on hover (pops from the bottom) -->
-					<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 pl-8 pr-8 pb-8">
-						<p class="text-xl text-justify text-white">
-							<!-- cahnge the text -->
-							Lubis Santosa & Partners (formerly Lubis Santosa & Maramis), is one of the leading law firms in Indonesia. It was established in 1986 and has grown to become one of Indonesia's law firms with comprehensive range of practice.
-						</p>
-					</div>
+					<a href="/about">
+						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+						<!-- Heading -->
+						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
+							<h2 class="text-5xl text-white ">
+								Who <br> Are We
+							</h2>
+						</div>
+						<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
+							<NuxtImg
+								class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
+								:src="ArrowIcon"
+							/>
+						</div>
+						<!-- Animated on hover (pops from the bottom) -->
+						<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 pl-8 pr-8 pb-8">
+							<p class="text-xl text-justify text-white">
+								<!-- cahnge the text -->
+								Lubis Santosa & Partners (formerly Lubis Santosa & Maramis), is one of the leading law firms in Indonesia. It was established in 1986 and has grown to become one of Indonesia's law firms with comprehensive range of practice.
+							</p>
+						</div>
+					</a>
 				</div>
 
 				<!-- Panel 2 -->
 				<div class="relative bg-[url('~/assets/images/bg-practicearea.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
-					<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-					<!-- Heading -->
-					<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
-						<h2 class="text-5xl text-white ">
-							Practice <br> Area
-						</h2>
-					</div>
-					<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
-						<NuxtImg
-							class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
-							:src="ArrowIcon"
-						/>
-					</div>
-					<!-- Animated on hover (pops from the bottom) -->
-					<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100 pl-8 pr-8 pb-8">
-						<p class="text-xl text-justify text-white">
-							<!-- cahnge the text -->
-							Lawyers at LSM are experts in their fields and are dedicated to providing the best legal services to our clients. We have a wide range of practice areas, and we work closely with our clients to understand their needs and provide tailored solutions.
-						</p>
-					</div>
+					<a href="/practice-area">
+						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+						<!-- Heading -->
+						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
+							<h2 class="text-5xl text-white ">
+								Practice <br> Area
+							</h2>
+						</div>
+						<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
+							<NuxtImg
+								class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
+								:src="ArrowIcon"
+							/>
+						</div>
+						<!-- Animated on hover (pops from the bottom) -->
+						<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100 pl-8 pr-8 pb-8">
+							<p class="text-xl text-justify text-white">
+								<!-- cahnge the text -->
+								Lawyers at LSM are experts in their fields and are dedicated to providing the best legal services to our clients. We have a wide range of practice areas, and we work closely with our clients to understand their needs and provide tailored solutions.
+							</p>
+						</div>
+					</a>
 				</div>
 
 				<!-- Panel 3 -->
 				<div class="relative bg-[url('~/assets/images/bg-ourattorneys.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
-					<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-					<!-- Heading -->
-					<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
-						<h2 class="text-5xl text-white ">
-							Our <br> Attorneys
-						</h2>
-					</div>
-					<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
-						<NuxtImg
-							class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
-							:src="ArrowIcon"
-						/>
-					</div>
-					<!-- Animated on hover (pops from the bottom) -->
-					<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100 pl-8 pr-8 pb-8">
-						<p class="text-xl text-justify text-white">
-							<!-- cahnge the text -->
-							We are dedicated to providing top-quality legal representation for our clients. Our attorneys are highly skilled and experienced in their respective areas of practice, and are committed to achieving the best possible outcomes for our clients.
-						</p>
-					</div>
+					<a href="/attorneys">
+						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+						<!-- Heading -->
+						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
+							<h2 class="text-5xl text-white ">
+								Our <br> Attorneys
+							</h2>
+						</div>
+						<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
+							<NuxtImg
+								class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
+								:src="ArrowIcon"
+							/>
+						</div>
+						<!-- Animated on hover (pops from the bottom) -->
+						<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100 pl-8 pr-8 pb-8">
+							<p class="text-xl text-justify text-white">
+								<!-- cahnge the text -->
+								We are dedicated to providing top-quality legal representation for our clients. Our attorneys are highly skilled and experienced in their respective areas of practice, and are committed to achieving the best possible outcomes for our clients.
+							</p>
+						</div>
+					</a>
 				</div>
 			</div>
 		</section>
