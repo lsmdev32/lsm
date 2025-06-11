@@ -1,11 +1,11 @@
 import { createColumnHelper } from "@tanstack/vue-table"
 import type { ColumnDef } from "@tanstack/vue-table"
 import { ArrowDownIcon, ArrowUpIcon, CopyIcon, DownloadIcon, PencilIcon, SaveIcon, Trash2Icon, TrashIcon } from "lucide-vue-next"
-import { deleteDoc, updateDoc } from "firebase/firestore"
+import { deleteDoc, getDocs, query, updateDoc, where, writeBatch } from "firebase/firestore"
 import { toast } from "vue-sonner"
 import { AdminTableAction, NuxtImg, NuxtLink, UiBadge, UiButton, UiInput } from "#components"
 import { cn } from "~/lib/utils"
-import { getBlogDocRef, getCategoryDocRef } from "~/lib/firestore-model"
+import { getBlogDocRef, getCategoryDocRef, getPublicationCollectionRef } from "~/lib/firestore-model"
 
 export type Category = {
 	objectID: string
@@ -100,6 +100,20 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
 			async function handleDeleteCategory() {
 				const confirmed = window.confirm("Apakah Anda yakin ingin menghapus kategori ini?")
 				if (!confirmed) return
+
+				// Cascade delete publications that use this category
+				const publicationsQuery = query(
+					getPublicationCollectionRef(firestore),
+					where("category_id", "==", id),
+				)
+				const publicationsSnapshot = await getDocs(publicationsQuery)
+
+				const batch = writeBatch(firestore)
+				publicationsSnapshot.forEach((doc) => {
+					batch.delete(doc.ref)
+				})
+
+				await batch.commit()
 
 				await deleteDoc(docRef)
 					.then(() => {
