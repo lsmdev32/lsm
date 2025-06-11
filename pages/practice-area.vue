@@ -9,6 +9,8 @@ const { data } = await useCustomFetch("/rest/page-data/practice-areas")
 const contents = data?.data?.news_and_publications?.data ?? []
 const attorneys = data?.data?.our_attorneys?.data ?? []
 
+const limitedPublications = contents.slice(0, 3)
+
 console.log(contents)
 console.log(attorneys)
 </script>
@@ -67,6 +69,18 @@ console.log(attorneys)
 					Our Attorneys
 				</h1>
 			</div>
+			<div class="items-center justify-center px-6 py-6 z-0">
+				<Partners
+					v-for="(partner, index) in attorneys"
+					:key="index"
+					class="capitalize"
+					:image="partner.image_url"
+					:name="partner.name"
+					:linkedin="partner.linkedin_url"
+					:email="partner.email"
+					:slug="partner.slug"
+				/>
+			</div>
 		</section>
 		<!-- Desktop -->
 		<section class="hidden md:block">
@@ -122,16 +136,18 @@ console.log(attorneys)
 				Publications
 			</h1>
 		</div>
-		<section class="hidden md:flex w-full justify-center items-start h-120 z-0 mt-4">
-			<Publications :publications="contents" />
+		<section class="hidden md:flex w-full justify-center items-center h-120 z-0 mt-4">
+			<div class="flex max-w-7xl items-center justify-center gap-8 mx-auto">
+				<Publications :publications="limitedPublications" />
+			</div>
 		</section>
 		<div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mt-4">
 			<h1 class="text-3xl font-[Marcellus] text-left py-4">
 				Our Attorneys
 			</h1>
 		</div>
-		<section class="hidden md:flex w-full h-120 z-0 mt-4">
-			<div class="flex items-center justify-center gap-8">
+		<section class="hidden md:flex items-center justify-center w-full h-120 z-0 mt-4">
+			<div class="flex max-w-7xl items-center justify-center gap-8 mx-auto">
 				<Partners
 					v-for="(partner, index) in attorneys"
 					:key="index"

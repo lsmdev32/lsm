@@ -371,7 +371,7 @@ const ourAttorneyDetailPageData = base
 			getStaffCollectionRef(context.firestore),
 			where("type", "==", "associate"),
 			where("slug", "!=", staffData.slug),
-			limit(3),
+			limit(10),
 		)
 
 		const otherAssociatesSnapshot = await getDocs(otherAssociatesQuery)
@@ -388,7 +388,7 @@ const ourAttorneyDetailPageData = base
 			getStaffCollectionRef(context.firestore),
 			where("type", "==", "partner"),
 			where("slug", "!=", staffData.slug),
-			limit(3),
+			limit(10),
 		)
 
 		const otherPartnersSnapshot = await getDocs(otherPartnersQuery)
