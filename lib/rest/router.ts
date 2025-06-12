@@ -152,6 +152,7 @@ const homePageData = base
 
 		const latestContentQuery = query(
 			getBlogCollectionRef(context.firestore),
+			where("type", "==", "blog"),
 			where("status", "==", "published"),
 			orderBy("published_at", "desc"),
 			limit(1),
