@@ -12,10 +12,10 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 							to="/"
 							class="flex items-center hover:cursor-pointer"
 						>
-							<NuxtImg
+							<Img
+								src="/images/logo-lsm-main.svg"
 								class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
 								to="/"
-								src="https://ik.imagekit.io/in10rksrb/Group_U0FdwZWJX.png?ik-sdk-version=javascript-1.4.3&updatedAt=1663914596318"
 							/>
 						</NuxtLink>
 					</div>

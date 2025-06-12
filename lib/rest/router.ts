@@ -85,14 +85,137 @@ const homePageData = base
 				email: v.email,
 			}))
 
+		const contentQuery = query(
+			getPublicationCollectionRef(context.firestore),
+			where("type", "==", "publication"),
+			where("status", "==", "published"),
+			orderBy("published_at", "desc"),
+			limit(4),
+		)
+
+		const contentSnapshot = await getDocs(contentQuery)
+
+		const contents = contentSnapshot.docs.map((doc) => {
+			const data = doc.data()
+			return {
+				id: doc.id,
+				title: data.title,
+				slug: data.slug,
+				image_url: data.cover_image_url,
+				// @ts-expect-error - just ignore
+				published_at: dayjs(data.published_at.seconds * 1000)
+					.format("MMM D, YYYY"),
+				category_id: data.category_id,
+				author_id: data.author_id,
+				author: null as Record<string, unknown> | null,
+				category: null as string | null,
+			}
+		})
+
+		const contentCategoryIds = Array
+			.from(new Set(contents.map(content => content.category_id)))
+			.filter(Boolean)
+
+		for (const categoryId of contentCategoryIds) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, categoryId),
+			)
+			if (!categoryDoc.exists()) continue
+			const categoryData = categoryDoc.data()
+			if (!categoryData) continue
+			contents.forEach((content) => {
+				if (content.category_id === categoryId) {
+					content.category = categoryData.name
+				}
+			})
+		}
+		const contentAuthorIds = Array
+			.from(new Set(contents.map(content => content.author_id)))
+			.filter(Boolean)
+
+		for (const authorId of contentAuthorIds) {
+			if (!authorId) continue
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, authorId),
+			)
+			if (!authorDoc.exists()) continue
+			const authorData = authorDoc.data()
+			contents.forEach((content) => {
+				if (content.author_id === authorId) {
+					content.author = {
+						name: authorData.fullname,
+						photo_url: authorData.profile_picture_url,
+					}
+				}
+			})
+		}
+
+		const latestContentQuery = query(
+			getBlogCollectionRef(context.firestore),
+			where("status", "==", "published"),
+			orderBy("published_at", "desc"),
+			limit(1),
+		)
+
+		const latestContentSnapshot = await getDocs(latestContentQuery)
+		const latestContent = latestContentSnapshot.docs.map((doc) => {
+			const data = doc.data()
+			return {
+				id: doc.id,
+				title: data.title,
+				slug: data.slug,
+				image_url: data.cover_image_url,
+				// @ts-expect-error - just ignore
+				published_at: dayjs(data.published_at.seconds * 1000)
+					.format("MMM D, YYYY"),
+				category_id: data.category_id,
+				author_id: data.author_id,
+				author: null as Record<string, unknown> | null,
+				category: null as string | null,
+			}
+		})
+			.at(0)
+
+		if (latestContent) {
+			const latestContentCategoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, latestContent.category_id),
+			)
+			if (latestContentCategoryDoc.exists()) {
+				const latestContentCategoryData = latestContentCategoryDoc.data()
+				if (latestContentCategoryData) {
+					latestContent.category = latestContentCategoryData.name
+				}
+			}
+
+			if (latestContent.author_id) {
+				const latestContentAuthorDoc = await getDoc(
+					getStaffDocRef(context.firestore, latestContent.author_id),
+				)
+				if (latestContentAuthorDoc.exists()) {
+					const latestContentAuthorData = latestContentAuthorDoc.data()
+					if (latestContentAuthorData) {
+						latestContent.author = {
+							name: latestContentAuthorData.fullname,
+							photo_url: latestContentAuthorData.profile_picture_url,
+						}
+					}
+				}
+			}
+		}
+
 		return {
 			body: {
 				status: 200,
 				message: "ok",
 				data: {
+					latest_content: latestContent,
 					partners: {
 						data: partners,
 						total: partners.length,
+					},
+					contents: {
+						data: contents,
+						total: contents.length,
 					},
 				},
 			},
@@ -116,6 +239,7 @@ const practiceAreasPageData = base
 		 */
 		const contentsQuery = query(
 			getPublicationCollectionRef(context.firestore),
+			where("type", "==", "publication"),
 			where("status", "==", "published"),
 			orderBy("published_at", "desc"),
 			limit(4),

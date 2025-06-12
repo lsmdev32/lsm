@@ -3,6 +3,8 @@
 import { ref, computed } from "vue"
 import { NuxtLink } from "#components"
 
+const category = useRoute().query.category
+
 const categories = [
 	{
 		title: "Dispute Resolution",
@@ -85,7 +87,7 @@ const categories = [
 	},
 ]
 
-const activeCategory = ref(0)
+const activeCategory = ref(category || 0)
 const activeSubItem = ref(null)
 
 const getSubItems = (columnIndex: number) => {

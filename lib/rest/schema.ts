@@ -17,6 +17,32 @@ export const HomepageDataOutputSchema = z.object({
 		message: z.string(),
 		status: z.number(),
 		data: z.object({
+			latest_content: z
+				.object({
+					id: z
+						.string(),
+					title: z
+						.string(),
+					slug: z
+						.string()
+						.regex(/^[a-z0-9-]+$/),
+					image_url: z
+						.string()
+						.url(),
+					category: z
+						.string(),
+					author: z
+						.object({
+							name: z
+								.string(),
+							photo_url: z
+								.string()
+								.url(),
+						})
+						.nullish(),
+					published_at: z
+						.string(),
+				}),
 			partners: z
 				.object({
 					data: z
@@ -38,6 +64,38 @@ export const HomepageDataOutputSchema = z.object({
 								.email(),
 							type: StaffTypeFilter.exclude(["all"]),
 						})),
+					total: z
+						.number(),
+				}),
+			contents: z
+				.object({
+					data: z
+						.array(z
+							.object({
+								id: z
+									.string(),
+								title: z
+									.string(),
+								slug: z
+									.string()
+									.regex(/^[a-z0-9-]+$/),
+								image_url: z
+									.string()
+									.url(),
+								category: z
+									.string(),
+								author: z
+									.object({
+										name: z
+											.string(),
+										photo_url: z
+											.string()
+											.url(),
+									})
+									.nullish(),
+								published_at: z
+									.string(),
+							})),
 					total: z
 						.number(),
 				}),
