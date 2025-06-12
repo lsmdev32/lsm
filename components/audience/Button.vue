@@ -1,15 +1,21 @@
 <script setup lang="ts">
 type Props = {
 	textButton: string
+	type?: "button" | "submit" | "reset"
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+const emit = defineEmits(["click"])
 </script>
 
 <template>
-	<div class="custom-button font-ubuntu color-soft-orange">
+	<button
+		:type="type || 'button'"
+		class="custom-button font-ubuntu color-soft-orange"
+		@click="$emit('click')"
+	>
 		<span>{{ textButton }}</span>
-	</div>
+	</button>
 </template>
 
 <style scoped>
@@ -23,6 +29,7 @@ defineProps<Props>()
   font-weight: 500;
   justify-content: center;
   text-align: center;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
