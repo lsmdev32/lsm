@@ -13,6 +13,9 @@ import Reviews from "~/components/audience/Reviews.vue"
 const { data } = await useCustomFetch("/rest/page-data/home")
 const contents = data?.data?.contents?.data ?? []
 const attorneys = data?.data?.partners?.data ?? []
+const latestContent = data?.data?.latest_content ?? []
+
+console.log("Latest Content:", latestContent)
 
 const images = [
 	"/images/bedge1.png",
@@ -263,22 +266,31 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 
+		<!-- Latest Content Section -->
 		<section class="hidden md:block md:min-w-full">
-			<div class="flex flex-nowrap h-[480px] w-full relative bg-[url('~/assets/images/bg-publication.svg')] bg-no-repeat bg-center bg-cover items-center justify-center hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
+			<div
+				class="flex flex-nowrap h-[480px] w-full relative bg-no-repeat bg-center bg-cover items-center justify-center transition-all duration-300 group overflow-hidden"
+				:style="{
+					backgroundImage: latestContent?.image_url
+						? `url(${latestContent.image_url})`
+						: `url('~/assets/images/bg-publication.svg')`,
+				}"
+			>
 				<div class="flex items-center justify-start w-full h-full bg-[rgba(145,174,172,0.4)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 py-16 px-12">
 					<!-- Heading -->
 					<div class="flex flex-col items-center justify-center px-8 font-[Marcellus] transition-all duration-300 max-w-full">
 						<h2 class="text-5xl text-white text-left">
-							Blog Title: Lorem ipsum dolor sit amet,<br> consectetur adipiscing elit.
+							{{ latestContent?.title }}
 						</h2>
 						<div class="mt-4 flex flex-row items-center justify-start w-full translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100">
 							<div class="flex justify-center text-center text-sm text-[#DAB38D]">
-								<button
+								<NuxtLink
 									type="button"
 									class="mt-4 bg-white rounded-md px-10 py-4 hover:cursor-pointer"
+									:href="`/blogs/${latestContent?.slug}`"
 								>
 									Read
-								</button>
+								</NuxtLink>
 							</div>
 							<div class="ml-4 mt-4 flex items-center">
 								<NuxtLink
