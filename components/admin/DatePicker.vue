@@ -22,6 +22,7 @@ const model = defineModel<Date>()
 			vertical
 			:clearable="clearable"
 			:format="format"
+			:disabled-dates="(date) => date > new Date()"
 		/>
 	</client-only>
 </template>
