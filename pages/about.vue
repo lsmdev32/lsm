@@ -83,7 +83,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 				>
 					<img
 						class="image-bottom"
-						src="../assets/about-2.png"
+						src="../assets/images/bg-ourattorneys.svg"
 					>
 				</div>
 
@@ -178,7 +178,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 					>
 						<img
 							class="w-full h-auto object-cover"
-							src="../assets/about-2.png"
+							src="../assets/images/bg-ourattorneys.svg"
 						>
 					</div>
 
@@ -211,7 +211,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 						</div>
 					</div>
 					<!-- Right column with content -->
-					<div class="space-y-8">
+					<div class="space-y-8 mt-10">
 						<!-- Button -->
 						<NuxtLink
 							type="button"
