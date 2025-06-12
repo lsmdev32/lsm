@@ -1,5 +1,54 @@
 <script setup lang="ts">
+import { ref } from "vue"
 import Button from "../../components/audience/Button.vue"
+
+const name = ref("")
+const email = ref("")
+const message = ref("")
+const loading = ref(false)
+
+const subscribe = async () => {
+	loading.value = true
+	message.value = ""
+
+	// Validasi input
+	if (!name.value.trim() || !email.value.trim()) {
+		message.value = "Please enter both name and email before subscribing."
+		loading.value = false
+		return
+	}
+
+	// (Optional) Validasi format email
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+	if (!emailRegex.test(email.value)) {
+		message.value = "Please enter a valid email address."
+		loading.value = false
+		return
+	}
+
+	const formData = new FormData()
+	formData.append("FNAME", name.value)
+	formData.append("EMAIL", email.value)
+
+	try {
+		await fetch("https://gmail.us19.list-manage.com/subscribe/post?u=41252f0ab7eee46d5b418a0c2&id=6f56c0cb2c&f_id=004179e7f0", {
+			method: "POST",
+			mode: "no-cors",
+			body: formData,
+		})
+
+		message.value = `Success! ${email.value} was successfully subscribed to our newsletter!`
+
+		// Kosongkan input setelah berhasil
+		name.value = ""
+		email.value = ""
+	}
+	catch (error) {
+		message.value = `Oops! There was a problem subscribing ${email.value} to our newsletter!`
+	}
+
+	loading.value = false
+}
 </script>
 
 <template>
@@ -32,29 +81,45 @@ import Button from "../../components/audience/Button.vue"
 			</div>
 		</div>
 		<div>
-			<div
-				class="font-marcellus"
-				style="font-size: 32px; color: black; margin-bottom: 40px"
-			>
-				Subscribe to our newsletter
-			</div>
-			<input
-				class="text-black"
-				type="text"
-				placeholder="Name*"
-			>
-			<br>
-			<input
-				class="text-black"
-				type="email"
-				placeholder="Email*"
-			>
+			<div>
+				<div
+					class="font-marcellus"
+					style="font-size: 32px; color: black; margin-bottom: 40px"
+				>
+					Subscribe to our newsletter
+				</div>
 
-			<div class="button-wrapper ">
-				<Button
-					class="cursor-pointer"
-					text-button="Subscribe"
-				/>
+				<input
+					v-model="name"
+					type="text"
+					placeholder="Name"
+					class="text-black"
+					required
+				>
+				<br>
+				<input
+					v-model="email"
+					type="email"
+					placeholder="Email"
+					class="text-black"
+					required
+				>
+
+				<!-- Pesan sukses / gagal -->
+				<div
+					v-if="message"
+					class="mb-6 mt-[-10px] text-sm text-black font-bold message-box"
+				>
+					{{ message }}
+				</div>
+
+				<div class="button-wrapper">
+					<Button
+						:text-button="loading ? 'Loading...' : 'Subscribe'"
+						:type="'button'"
+						@click="subscribe"
+					/>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -68,6 +133,16 @@ import Button from "../../components/audience/Button.vue"
   color: white;
   justify-content: space-between;
   align-items: center;
+}
+
+.message-box {
+  color: #4b3d2a;
+  font-size: 14px;
+  font-weight: 500;
+  max-width: 20rem;
+
+  text-align: center;
+  word-wrap: break-word;
 }
 
 .font-philosopher {
