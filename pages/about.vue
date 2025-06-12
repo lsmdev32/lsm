@@ -117,12 +117,13 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 				<!-- Right column with content -->
 				<div class="space-y-8">
 					<!-- Button -->
-					<button
+					<NuxtLink
 						type="button"
 						class="custom-button-about d-flex font-[Ubuntu]"
+						to="https://drive.google.com/file/d/1wIZrFZuHFtm-MrMn1mSJ27qlUNofsh0R/view?usp=drive_link"
 					>
 						<span>Download Company Profile</span>
-					</button>
+					</NuxtLink>
 				</div>
 			</div>
 		</section>
@@ -212,12 +213,13 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 					<!-- Right column with content -->
 					<div class="space-y-8">
 						<!-- Button -->
-						<button
+						<NuxtLink
 							type="button"
 							class="custom-button-about d-flex font-[Ubuntu]"
+							to="https://drive.google.com/file/d/1wIZrFZuHFtm-MrMn1mSJ27qlUNofsh0R/view?usp=drive_link"
 						>
 							<span>Download Company Profile</span>
-						</button>
+						</NuxtLink>
 					</div>
 				</div>
 			</div>
