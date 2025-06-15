@@ -83,7 +83,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 				>
 					<img
 						class="image-bottom"
-						src="../assets/images/bg-ourattorneys.svg"
+						src="../assets/images/about-attorney.jpg"
 					>
 				</div>
 
@@ -178,7 +178,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 					>
 						<img
 							class="w-full h-auto object-cover"
-							src="../assets/images/bg-ourattorneys.svg"
+							src="../assets/images/about-attorney.jpg"
 						>
 					</div>
 
