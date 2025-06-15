@@ -365,7 +365,6 @@ const ourAttorneysPageData = base
 		const partnersQuery = query(
 			getStaffCollectionRef(context.firestore),
 			where("type", "==", "partner"),
-			limit(6),
 		)
 		const partnersSnapshot = await getDocs(partnersQuery)
 		const partners = partnersSnapshot.docs.map((doc) => {
@@ -384,7 +383,6 @@ const ourAttorneysPageData = base
 		const associatesQuery = query(
 			getStaffCollectionRef(context.firestore),
 			where("type", "==", "associate"),
-			limit(6),
 		)
 
 		const associatesSnapshot = await getDocs(associatesQuery)
