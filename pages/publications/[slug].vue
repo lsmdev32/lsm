@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import "@vueup/vue-quill/dist/vue-quill.snow.css"
+
 import { Download } from "lucide-vue-next"
 import Publications from "~/components/audience/Publications.vue"
 
@@ -52,7 +54,7 @@ const relatedContents = data?.data?.related_contents ?? []
 					</div>
 				</div>
 				<div
-					class="mt-4 p-4 text-gray-700 text-justify"
+					class="mt-4 p-4 text-gray-700 text-justify ql-editor"
 					v-html="detail?.content"
 				/>
 
@@ -123,7 +125,7 @@ const relatedContents = data?.data?.related_contents ?? []
 							</div>
 						</div>
 						<div
-							class="mt-4 text-gray-700"
+							class="mt-4 text-gray-700 ql-editor"
 							v-html="detail?.content"
 						/>
 

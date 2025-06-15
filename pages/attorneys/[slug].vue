@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import "@vueup/vue-quill/dist/vue-quill.snow.css"
+
 import { ref } from "vue"
 import Publications from "~/components/audience/Publications.vue"
 
@@ -145,7 +147,7 @@ function closeAssociates() {
 				<!-- Main Profile Section -->
 				<div class="w-full flex flex-col font-[Ubuntu] text-[#949494] space-y-4">
 					<div
-						class="[&_*]:tracking-wide text-justify"
+						class="[&_*]:tracking-wide text-justify ql-editor"
 						v-html="result.person.bio"
 					/>
 					<div class="flex justify-between items-center pt-4">
@@ -306,7 +308,7 @@ function closeAssociates() {
 					<div class="w-full flex flex-col font-[Ubuntu] text-[#949494] space-y-4">
 						<!-- Text Content -->
 						<div
-							class="[&_*]:tracking-wide text-justify"
+							class="[&_*]:tracking-wide text-justify ql-editor"
 							v-html="result.person.bio"
 						/>
 						<div class="flex justify-center items-center pt-2">
