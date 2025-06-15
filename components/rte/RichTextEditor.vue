@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { QuillEditor } from "@vueup/vue-quill"
+
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 
 type Props = {
@@ -21,12 +22,20 @@ defineEmits<Emits>()
 </script>
 
 <template>
-	<ClientOnly>
+	<ClientOnly fallback="Loading...">
 		<quill-editor
 			:content="initialValue"
 			:class="['min-h-[50px] mb-40', props.class, props.disabled ? 'opacity-40' : '']"
 			:enable="!props.disabled"
-			toolbar="minimal"
+			:toolbar="[
+				['bold', 'italic', 'underline', 'strike'],
+				['blockquote', 'code-block'],
+				[{ header: 1 }, { header: 2 }],
+				[{ list: 'ordered' }, { list: 'bullet' }],
+				[{ align: [] }],
+				['link', 'image'],
+				['clean'],
+			]"
 			:read-only="props.disabled"
 			content-type="html"
 			@update:content="$emit('handleChange', $event)"
