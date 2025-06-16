@@ -1,5 +1,42 @@
 <script setup lang="ts">
 import Button from "~/components/audience/Button.vue"
+
+const name = ref("")
+const email = ref("")
+const message = ref("")
+const description = ref("")
+const info = ref("")
+const loading = ref(false)
+
+const submit = async () => {
+	if (!name.value || !email.value || !message.value || !description.value) {
+		info.value = "Semua field wajib diisi."
+		return
+	}
+
+	loading.value = true
+	const { data } = await useFetch("/api/send-email", {
+		method: "POST",
+		body: {
+			name: name.value,
+			email: email.value,
+			message: message.value,
+			description: description.value,
+		},
+	})
+	loading.value = false
+
+	if (data.value?.success) {
+		info.value = "Pesan berhasil dikirim!"
+		name.value = ""
+		email.value = ""
+		message.value = ""
+		description.value = ""
+	}
+	else {
+		info.value = "Gagal mengirim pesan."
+	}
+}
 </script>
 
 <template>
@@ -16,15 +53,17 @@ import Button from "~/components/audience/Button.vue"
 						<div class="sub mb-5 mt-2">
 							Contact us for legal support or questions.
 						</div>
-						<form @submit.prevent>
+						<form @submit.prevent="submit">
 							<div class="input-row">
 								<input
+									v-model="name"
 									type="text"
 									class="px-4 font-[Ubuntu] input-box"
 									placeholder="Name*"
 									required
 								>
 								<input
+									v-model="email"
 									type="email"
 									class="px-4 font-[Ubuntu] input-box"
 									placeholder="Email*"
@@ -32,19 +71,28 @@ import Button from "~/components/audience/Button.vue"
 								>
 							</div>
 							<input
+								v-model="message"
 								type="text"
 								class="px-4 font-[Ubuntu]"
 								placeholder="Subject*"
 								required
 							>
 							<textarea
+								v-model="description"
 								class="px-4 pt-4 font-[Ubuntu]"
 								placeholder="Please describe what you need."
+								required
 							/>
 							<Button
+								type="submit"
 								class="mt-2 cursor-pointer"
 								text-button="Send Message"
-							/>
+							>
+								{{ loading ? "Mengirim..." : "Kirim" }}
+							</button>
+							<p v-if="info">
+								{{ info }}
+							</p>
 						</form>
 					</div>
 				</div>
@@ -120,6 +168,7 @@ import Button from "~/components/audience/Button.vue"
 								required
 							>
 							<textarea
+								type="textarea"
 								class="px-4 pt-4 font-[Ubuntu]"
 								placeholder="Please describe what you need."
 							/>

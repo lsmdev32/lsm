@@ -18,6 +18,12 @@ export default defineNuxtConfig({
 		},
 	},
 	css: ["~/assets/css/main.css"],
+	runtimeConfig: {
+		smtpUser: process.env.SMTP_USER,
+		smtpPass: process.env.SMTP_PASS,
+		smtpHost: process.env.SMTP_HOST,
+		smtpPort: process.env.SMTP_PORT,
+	},
 	build: {
 		transpile: ["@vuepic/vue-datepicker"],
 	},
