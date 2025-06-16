@@ -2,13 +2,20 @@ import nodemailer from "nodemailer"
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
-	const { name, email, message, description } = body
-	console.log(`data ${name} ${email} ${message} ${description}`)
+	const { name, email, type, description } = body
+	console.log(`data ${name} ${email} ${type} ${description}`)
 
-	if (!name || !email || !message || !description) {
+	if (!name || !email || !type || !description) {
 		return { success: false, error: "Semua field wajib diisi." }
 	}
 
+  let subject = ""
+  if(type === "contact") {
+    subject = `From Contact Us : ${name} ingin menghubungi Anda`
+  } else {
+    subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`
+  }
+    
 	const config = useRuntimeConfig()
 	console.log(config)
 
@@ -24,9 +31,9 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		await transporter.sendMail({
-			from: `"Website Test" <${config.smtpUser}>`,
+			from: `"Website LSM" <${config.smtpUser}>`,
 			to: "ardinatahs.gcp2@gmail.com", // email penerima
-			subject: `From Contact Us : ${message} - ${name}`,
+			subject: subject,
 			html: `
         <p><strong>Nama:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>

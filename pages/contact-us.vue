@@ -4,13 +4,12 @@ import Button from "~/components/audience/Button.vue"
 
 const name = ref("")
 const email = ref("")
-const message = ref("")
 const description = ref("")
 const info = ref("")
 const loading = ref(false)
 
 const submit = async () => {
-	if (!name.value || !email.value || !message.value || !description.value) {
+	if (!name.value || !email.value || !description.value) {
 		info.value = "Semua field wajib diisi."
 		return
 	}
@@ -21,7 +20,7 @@ const submit = async () => {
 		body: {
 			name: name.value,
 			email: email.value,
-			message: message.value,
+			type: "contact",
 			description: description.value,
 		},
 	})
@@ -31,7 +30,6 @@ const submit = async () => {
 		info.value = "Pesan berhasil dikirim!"
 		name.value = ""
 		email.value = ""
-		message.value = ""
 		description.value = ""
 	}
 	else {
@@ -75,13 +73,6 @@ const submit = async () => {
 									required
 								>
 							</div>
-							<input
-								v-model="message"
-								type="text"
-								class="px-4 font-[Ubuntu]"
-								placeholder="Subject*"
-								required
-							>
 							<textarea
 								v-model="description"
 								class="px-4 pt-4 font-[Ubuntu]"
@@ -151,7 +142,7 @@ const submit = async () => {
 						<div class="sub mb-5 mt-2">
 							Contact us for legal support or questions.
 						</div>
-						<form @submit.prevent>
+						<form @submit.prevent="submit">
 							<div class="input-row">
 								<input
 									v-model="name"
@@ -168,13 +159,6 @@ const submit = async () => {
 									required
 								>
 							</div>
-							<input
-								v-model="message"
-								type="text"
-								class="px-4 font-[Ubuntu]"
-								placeholder="Subject*"
-								required
-							>
 							<textarea
 								v-model="description"
 								type="textarea"

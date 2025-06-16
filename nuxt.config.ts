@@ -19,6 +19,12 @@ export default defineNuxtConfig({
 	},
 	css: ["~/assets/css/main.css"],
 	runtimeConfig: {
+		public: {
+      		mailchimpU: process.env.MAILCHIMP_U,
+      		mailchimpId: process.env.MAILCHIMP_ID,
+      		mailchimpFid: process.env.MAILCHIMP_FID,
+      		mailchimpDc: process.env.MAILCHIMP_DC,
+    },
 		smtpUser: process.env.SMTP_USER,
 		smtpPass: process.env.SMTP_PASS,
 		smtpHost: process.env.SMTP_HOST,
