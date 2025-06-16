@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { set } from "firebase/database"
 import Button from "~/components/audience/Button.vue"
 
 const name = ref("")
@@ -36,6 +37,10 @@ const submit = async () => {
 	else {
 		info.value = "Gagal mengirim pesan."
 	}
+
+	setTimeout(() => {
+		info.value = ""
+	}, 2000)
 }
 </script>
 
@@ -149,12 +154,14 @@ const submit = async () => {
 						<form @submit.prevent>
 							<div class="input-row">
 								<input
+									v-model="name"
 									type="text"
 									class="px-4 font-[Ubuntu] input-box"
 									placeholder="Name*"
 									required
 								>
 								<input
+									v-model="email"
 									type="email"
 									class="px-4 font-[Ubuntu] input-box"
 									placeholder="Email*"
@@ -162,15 +169,18 @@ const submit = async () => {
 								>
 							</div>
 							<input
+								v-model="message"
 								type="text"
 								class="px-4 font-[Ubuntu]"
 								placeholder="Subject*"
 								required
 							>
 							<textarea
+								v-model="description"
 								type="textarea"
 								class="px-4 pt-4 font-[Ubuntu]"
 								placeholder="Please describe what you need."
+								required
 							/>
 							<Button
 								class="mt-2 cursor-pointer"
