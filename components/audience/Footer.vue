@@ -24,6 +24,11 @@ const subscribe = async () => {
 		return
 	}
 
+	const resetMessageAfterDelay = () => {
+		setTimeout(() => {
+			message.value = ""
+		}, 5000)
+	}
 	try {
 		const res = await $fetch("/api/subscribe", {
 			method: "POST",
@@ -44,6 +49,7 @@ const subscribe = async () => {
 	}
 
 	loading.value = false
+	resetMessageAfterDelay()
 }
 </script>
 

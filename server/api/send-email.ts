@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
 	try {
 		await transporter.sendMail({
 			from: `"Website LSM" <${config.smtpUser}>`,
-			to: "ardinatahs.gcp2@gmail.com", // email penerima
+			to: "lsmlawfirm@lsmlaw.co.id", // email penerima
 			subject: subject,
 			html: `
         <p><strong>Nama:</strong> ${name}</p>

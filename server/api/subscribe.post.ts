@@ -17,8 +17,16 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    return { success: true }
+    // Karena pakai mode `no-cors`, kita tidak bisa membaca hasil sukses Mailchimp.
+    // Jadi kita anggap berhasil kirim jika tidak ada error.
+    return {
+      success: true,
+      message: "You have been subscribed successfully!"
+    }
   } catch (err) {
-    return { success: false, message: "Failed to subscribe." }
+    return {
+      success: false,
+      message: "Failed to subscribe. Please try again later."
+    }
   }
 })
