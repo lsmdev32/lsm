@@ -239,7 +239,7 @@ const setOption = (index: number) => {
 				</div>
 
 				<!-- Panel 3 -->
-				<div class="relative bg-[url('~/assets/images/bg-ourattorneys.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
+				<div class="relative bg-[url('~/assets/images/about-attorney.jpg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
 					<a href="/attorneys">
 						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 						<!-- Heading -->

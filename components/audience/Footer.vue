@@ -11,14 +11,12 @@ const subscribe = async () => {
 	loading.value = true
 	message.value = ""
 
-	// Validasi input
 	if (!name.value.trim() || !email.value.trim()) {
 		message.value = "Please enter both name and email before subscribing."
 		loading.value = false
 		return
 	}
 
-	// (Optional) Validasi format email
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 	if (!emailRegex.test(email.value)) {
 		message.value = "Please enter a valid email address."
@@ -26,25 +24,23 @@ const subscribe = async () => {
 		return
 	}
 
-	const formData = new FormData()
-	formData.append("FNAME", name.value)
-	formData.append("EMAIL", email.value)
-
 	try {
-		await fetch("https://gmail.us19.list-manage.com/subscribe/post?u=41252f0ab7eee46d5b418a0c2&id=6f56c0cb2c&f_id=004179e7f0", {
+		const res = await $fetch("/api/subscribe", {
 			method: "POST",
-			mode: "no-cors",
-			body: formData,
+			body: { name: name.value, email: email.value },
 		})
 
-		message.value = `Success! ${email.value} was successfully subscribed to our newsletter!`
-
-		// Kosongkan input setelah berhasil
-		name.value = ""
-		email.value = ""
+		if (res.success) {
+			message.value = `Success! ${email.value} was subscribed to our newsletter.`
+			name.value = ""
+			email.value = ""
+		}
+		else {
+			message.value = res.message || "Subscription failed."
+		}
 	}
-	catch (error) {
-		message.value = `Oops! There was a problem subscribing ${email.value} to our newsletter!`
+	catch (e) {
+		message.value = "Something went wrong during subscription."
 	}
 
 	loading.value = false

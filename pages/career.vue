@@ -2,6 +2,45 @@
 import { NuxtImg } from "#components"
 import CheckIc from "~/assets/images/check-icon.svg"
 import Button from "~/components/audience/Button.vue"
+
+const name = ref("")
+const email = ref("")
+const description = ref("")
+const info = ref("")
+const loading = ref(false)
+
+const submit = async () => {
+	if (!name.value || !email.value || !description.value) {
+		info.value = "Semua field wajib diisi."
+		return
+	}
+
+	loading.value = true
+	const { data } = await useFetch("/api/send-email", {
+		method: "POST",
+		body: {
+			name: name.value,
+			email: email.value,
+			type: "career",
+			description: description.value,
+		},
+	})
+	loading.value = false
+
+	if (data.value?.success) {
+		info.value = "Pesan berhasil dikirim!"
+		name.value = ""
+		email.value = ""
+		description.value = ""
+	}
+	else {
+		info.value = "Gagal mengirim pesan."
+	}
+
+	setTimeout(() => {
+		info.value = ""
+	}, 2000)
+}
 </script>
 
 <template>
@@ -75,9 +114,14 @@ import Button from "~/components/audience/Button.vue"
 			</div>
 		</section>
 		<section class="md:min-w-full md:hidden">
-			<div class="flex flex-col px-4 pt-4 pb-6 z-0">
+			<form
+				class="flex flex-col px-4 pt-4 pb-6 z-0"
+				@submit.prevent="submit"
+			>
 				<div class="flex-1 w-full">
 					<input
+						v-model="name"
+						required
 						type="text"
 						placeholder="Name*"
 						class="w-full h-[55px] px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
@@ -85,36 +129,41 @@ import Button from "~/components/audience/Button.vue"
 				</div>
 				<div class="flex-1 w-full">
 					<input
-						type="text"
+						v-model="email"
+						required
+						type="email"
 						placeholder="Email*"
-						class="w-full h-[55px] px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
-					>
-				</div>
-				<div class="flex-1 w-full">
-					<input
-						type="text"
-						placeholder="Subject*"
 						class="w-full h-[55px] px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
 					>
 				</div>
 				<div class="flex-1 w-full items-start">
 					<textarea
+						v-model="description"
 						class="w-full py-3 px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
 						placeholder="Please describe your interest in joining LSM*"
 						:rows="4"
 						required
 					/>
 					<Button
+						type="submit"
 						class="mt-6 cursor-pointer"
 						text-button="Submit"
-					/>
+					>
+						{{ loading ? "Mengirim..." : "Kirim" }}
+					</button>
+					<p v-if="info">
+						{{ info }}
+					</p>
 				</div>
-			</div>
+			</form>
 		</section>
 		<!-- Desktop -->
 		<section class="hidden md:flex flex-row md:min-w-full justify-center items-start px-10 sm:px6 lg:px-8">
 			<div class="max-w-7xl mx-auto pb-12 px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
-				<div class="flex flex-col z-0">
+				<form
+					class="flex flex-col z-0"
+					@submit.prevent="submit"
+				>
 					<div class="flex-1">
 						<h1 class="text-5xl font-[marcellus] text-[#4B3D2A]">
 							Carrer
@@ -129,6 +178,8 @@ import Button from "~/components/audience/Button.vue"
 					<div class="flex flex-row w-full gap-6 mt-6">
 						<div class="flex-1 ">
 							<input
+								v-model="name"
+								required
 								type="text"
 								placeholder="Name*"
 								class="w-full h-[55px] px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
@@ -136,32 +187,34 @@ import Button from "~/components/audience/Button.vue"
 						</div>
 						<div class="flex-1 ">
 							<input
-								type="text"
+								v-model="email"
+								required
+								type="email"
 								placeholder="Email*"
 								class="w-full h-[55px] px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
 							>
 						</div>
 					</div>
-					<div class="flex-1 w-full">
-						<input
-							type="text"
-							placeholder="Subject*"
-							class="w-full h-[55px] px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
-						>
-					</div>
 					<div class="flex-1 w-full items-start">
 						<textarea
+							v-model="description"
 							class="w-full py-3 px-8 mt-6 text-lg bg-[#F5F5F5] font-[Ubuntu] font-light text-[#4B3D2A] border-0 border-[#4B3D2A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#DAB38D]"
 							placeholder="Please describe your interest in joining LSM*"
 							:rows="4"
 							required
 						/>
 						<Button
+							type="submit"
 							class="mt-6 cursor-pointer"
 							text-button="Submit"
-						/>
+						>
+							{{ loading ? "Mengirim..." : "Kirim" }}
+						</button>
+						<p v-if="info">
+							{{ info }}
+						</p>
 					</div>
-				</div>
+				</form>
 				<div class="flex flex-col z-0 justify-center items-center">
 					<div class="flex-1 mt-14 pl-16">
 						<h1 class=" text-3xl font-[marcellus] text-[#DAB38D]">
