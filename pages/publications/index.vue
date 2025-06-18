@@ -6,6 +6,7 @@ import Publications from "~/components/audience/Publications.vue"
 import dayjs from "#build/dayjs.imports.mjs"
 import { cn } from "~/lib/utils"
 import { DEBOUNCE_DEFAULT_TIME } from "~/lib/constants"
+import LogoSVG from "~/assets/images/logo.svg"
 
 const categories = await useCustomFetch("/rest/page-data/categories")
 
@@ -197,11 +198,18 @@ function resetFilters() {
 						class="mb-10"
 						:to="`/publications/${firstContent?.slug}`"
 					>
-						<img
+						<NuxtImg
+							v-if="firstContent?.image_url"
 							:src="firstContent?.image_url"
 							alt="Thumbnail"
 							class="w-full h-64 object-cover object-center mb-4"
-						>
+						/>
+						<NuxtImg
+							v-else
+							:src="LogoSVG"
+							alt="Thumbnail"
+							class="w-full h-64 object-cover object-center mb-4"
+						/>
 						<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ firstContent?.category }}</span>
 						<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
 							{{ firstContent?.title }}
@@ -241,11 +249,18 @@ function resetFilters() {
 							class="mb-6"
 							:to="`/publications/${post.slug}`"
 						>
-							<img
+							<NuxtImg
+								v-if="post.image_url"
 								:src="post.image_url"
 								alt="Thumbnail"
 								class="w-full h-40 object-cover mb-4"
-							>
+							/>
+							<NuxtImg
+								v-else
+								:src="LogoSVG"
+								alt="Thumbnail"
+								class="w-full h-40 object-cover mb-4"
+							/>
 							<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ post.category }}</span>
 							<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug truncate">
 								{{ post.title }}

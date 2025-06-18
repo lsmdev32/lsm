@@ -7,7 +7,14 @@
 				class="flex flex-col"
 			>
 				<nuxt-img
+					v-if="publication.image_url"
 					:src="publication.image_url as string"
+					alt="Thumbnail"
+					class="w-full h-[270px] object-cover mb-4"
+				/>
+				<nuxt-img
+					v-else
+					:src="LogoSVG"
 					alt="Thumbnail"
 					class="w-full h-[270px] object-cover mb-4"
 				/>
@@ -37,7 +44,7 @@
 				<div class="md:hidden mt-2" />
 
 				<nuxt-link
-					:href="`/publications/${publication.slug}`"
+					:href="`/${publication.type === 'blog' ? 'blogs' : 'publications'}/${publication.slug}`"
 					class="mt-4 px-4 py-2 bg-[#4B3D2A] text-[#DAB38D] hover:bg-[#665339] md:bg-[#91AEAC] md:text-white  md:hover:bg-[#9aaea1] rounded w-fit text-sm"
 				>
 					Read More
@@ -48,6 +55,8 @@
 </template>
 
 <script setup lang="ts">
+import LogoSVG from "~/assets/images/logo.svg"
+
 type Props = {
 	publications?: Record<string, unknown>[]
 	defaultAuthorName?: string
