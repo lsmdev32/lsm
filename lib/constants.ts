@@ -82,7 +82,7 @@ export const CREATE_CATEGORY_FORM_CONSTANTS = {
 export const CREATE_CONTENT_FORM_CONSTANTS = {
 	TITLE: {
 		MIN_LENGTH: 10,
-		MAX_LENGTH: 100,
+		MAX_LENGTH: 200,
 	},
 	SLUG: {
 		REGEX: /^[a-z0-9]*(?:-[a-z0-9]+)*$/,
@@ -110,7 +110,7 @@ export const CREATE_CONTENT_FORM_CONSTANTS = {
 	},
 	MSG: {
 		TITLE_MIN_LENGTH_MSG: "Judul minimal 10 karakter",
-		TITLE_MAX_LENGTH_MSG: "Judul maksimal 100 karakter",
+		TITLE_MAX_LENGTH_MSG: "Judul maksimal 200 karakter",
 		SLUG_REGEX_MSG: "Slug hanya boleh mengandung huruf kecil, angka, dan tanda hubung",
 		COVER_IMAGE_TYPE_MSG: "Gambar harus berupa PNG atau JPEG",
 		COVER_IMAGE_SIZE_MSG: "Ukuran file maksimal 10MB",
