@@ -125,7 +125,8 @@ export const PracticeAreaPageDataOutputSchema = z.object({
 										.regex(/^[a-z0-9-]+$/),
 									image_url: z
 										.string()
-										.url(),
+										.url()
+										.nullish(),
 									category: z
 										.string(),
 									author: z
@@ -277,7 +278,8 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 									.string(),
 								image_url: z
 									.string()
-									.url(),
+									.url()
+									.nullish(),
 								category: z
 									.string(),
 								published_at: z
@@ -344,7 +346,9 @@ export const BlogAndPublicationsPageDataOutputSchema = z.object({
 							slug: z
 								.string(),
 							image_url: z
-								.string(),
+								.string()
+								.url()
+								.nullish(),
 							title: z
 								.string(),
 							category: z
@@ -396,7 +400,8 @@ export const ContentDetailPageDataOutputSchema = z.object({
 									.string()),
 							image_url: z
 								.string()
-								.url(),
+								.url()
+								.nullish(),
 							title: z
 								.string(),
 							content: z
@@ -436,7 +441,8 @@ export const ContentDetailPageDataOutputSchema = z.object({
 									.string(),
 								image_url: z
 									.string()
-									.url(),
+									.url()
+									.nullish(),
 								category: z
 									.string(),
 								published_at: z
