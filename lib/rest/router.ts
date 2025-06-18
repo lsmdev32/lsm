@@ -233,8 +233,6 @@ const practiceAreasPageData = base
 	})
 	.output(PracticeAreaPageDataOutputSchema)
 	.handler(async function ({ context }) {
-		console.log(`Fetching practice areas data...`)
-
 		/**
 		 * get contents for practice areas
 		 */
@@ -267,8 +265,6 @@ const practiceAreasPageData = base
 
 			}
 		})
-
-		// console.log(`Fetched contents:`, contents)
 
 		const contentCategoryIds = Array
 			.from(new Set(contents.map(content => content.category_id)))
@@ -308,47 +304,49 @@ const practiceAreasPageData = base
 					}
 				}
 			})
+		}
 
-			/**
-		 * get attorneys for practice areas
-		 */
-			const attorneysQuery = query(
-				getStaffCollectionRef(context.firestore),
-				orderBy("created_at", "desc"),
-				where("type", "==", "partner"),
-				limit(4),
-			)
+		/**
+		     * get attorneys for practice areas
+		 	 */
+		const attorneysQuery = query(
+			getStaffCollectionRef(context.firestore),
+			orderBy("created_at", "desc"),
+			where("type", "==", "partner"),
+			limit(4),
+		)
 
-			const attorneysSnapshot = await getDocs(attorneysQuery)
-			const attorneys = attorneysSnapshot.docs.map((doc) => {
-				const data = doc.data()
-				return {
-					id: data.id!,
-					name: data.fullname,
-					slug: data.slug,
-					image_url: data.profile_picture_url,
-					type: data.type,
-					email: data.email,
-					linkedin_url: data.linkedin_url,
-				}
-			})
-
+		const attorneysSnapshot = await getDocs(attorneysQuery)
+		const attorneys = attorneysSnapshot.docs.map((doc) => {
+			const data = doc.data()
 			return {
-				body: {
-					message: "ok",
-					status: 200,
-					data: {
-						news_and_publications: {
-							data: contents,
-							total: contents.length,
-						},
-						our_attorneys: {
-							data: attorneys,
-							total: attorneys.length,
-						},
+				id: data.id!,
+				name: data.fullname,
+				slug: data.slug,
+				image_url: data.profile_picture_url,
+				type: data.type,
+				email: data.email,
+				linkedin_url: data.linkedin_url,
+			}
+		})
+
+		console.log(`fine 4`)
+
+		return {
+			body: {
+				message: "ok",
+				status: 200,
+				data: {
+					news_and_publications: {
+						data: contents,
+						total: contents.length,
+					},
+					our_attorneys: {
+						data: attorneys,
+						total: attorneys.length,
 					},
 				},
-			}
+			},
 		}
 	})
 
