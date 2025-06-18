@@ -273,7 +273,7 @@ const setOption = (index: number) => {
 				:style="{
 					backgroundImage: latestContent?.image_url
 						? `url(${latestContent.image_url})`
-						: `url('~/assets/images/bg-publication.svg')`,
+						: `url('/images/logo-lsm-main.svg')`,
 				}"
 			>
 				<div class="flex items-center justify-start w-full h-full bg-[rgba(145,174,172,0.4)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 py-16 px-12">

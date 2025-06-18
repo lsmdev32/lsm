@@ -94,10 +94,13 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 						<div class="text-gray-500 leading-relaxed font-[Ubuntu]">
 							Lubis Santosa & Maramis believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
 						</div>
-						<Button
-							class="mt-8 cursor-pointer"
-							text-button="Our Attorneys"
-						/>
+						<div class="flex items-start justify-start mt-4">
+							<NuxtLink
+								type="button"
+								class="w-[40%] bg-[#4B3D2A] text-[#DAB38D] px-3 py-5 rounded-[10px] text-[14px] font-medium text-center cursor-pointer justify-center md:py-5 sm:py-4 mt-16"
+								to="/attorneys"
+							>Our Attorneys</NuxtLink>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -120,7 +123,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 					<NuxtLink
 						type="button"
 						class="custom-button-about d-flex font-[Ubuntu]"
-						to="https://drive.google.com/file/d/1wIZrFZuHFtm-MrMn1mSJ27qlUNofsh0R/view?usp=drive_link"
+						to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
 					>
 						<span>Download Company Profile</span>
 					</NuxtLink>
@@ -191,11 +194,12 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 							</div>
 						</div>
 					</div>
-					<div class="flex flex-col items-center justify-center">
-						<Button
-							class=" cursor-pointer place-items-center "
-							text-button="Our Attorneys"
-						/>
+					<div class="flex flex-col items-center justify-center mt-4">
+						<NuxtLink
+							type="button"
+							class="w-[40%] bg-[#4B3D2A] text-[#DAB38D] px-3 py-5 rounded-[10px] text-[14px] font-medium text-center cursor-pointer justify-center md:py-5 sm:py-4"
+							to="/attorneys"
+						>Our Attorneys</NuxtLink>
 					</div>
 				</div>
 				<div class="last-section  z-0 grid grid-cols-1 ">
@@ -216,7 +220,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 						<NuxtLink
 							type="button"
 							class="custom-button-about d-flex font-[Ubuntu]"
-							to="https://drive.google.com/file/d/1wIZrFZuHFtm-MrMn1mSJ27qlUNofsh0R/view?usp=drive_link"
+							to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
 						>
 							<span>Download Company Profile</span>
 						</NuxtLink>
