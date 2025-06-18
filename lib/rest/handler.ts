@@ -18,21 +18,34 @@ export const handler = new OpenAPIHandler(router, {
 	],
 	clientInterceptors: [
 		onError((error) => {
-			if (error instanceof ORPCError && error.data instanceof ValidationError) {
-				if (error.code === "BAD_REQUEST") {
-					const issues = (error.cause as Record<string, unknown>).issues as ZodIssue[]
-					throw new ORPCError("INPUT_VALIDATION_FAILED", {
-						status: 442,
-						data: new ZodError(issues)
-							.flatten(),
-						cause: error.cause,
-					})
-				}
-				if (error.code === "INTERNAL_SERVER_ERROR") {
-					throw new ORPCError("OUTPUT_VALIDATION_ERROR", {
-						cause: error.cause,
-					})
-				}
+			if (
+				error instanceof ORPCError
+				&& error.code === "BAD_REQUEST"
+				&& error.cause instanceof ValidationError
+			) {
+				// If you only use Zod you can safely cast to ZodIssue[]
+				const zodError = new ZodError(error.cause.issues as ZodIssue[])
+
+				throw new ORPCError("INPUT_VALIDATION_FAILED", {
+					status: 422,
+					data: zodError.flatten(),
+					cause: error.cause,
+				})
+			}
+
+			if (
+				error instanceof ORPCError
+				&& error.code === "INTERNAL_SERVER_ERROR"
+				&& error.cause instanceof ValidationError
+			) {
+				// If you only use Zod you can safely cast to ZodIssue[]
+				const zodError = new ZodError(error.cause.issues as ZodIssue[])
+
+				throw new ORPCError("OUTPUT_VALIDATION_FAILED", {
+					cause: error.cause,
+					status: 500,
+					data: zodError.flatten(),
+				})
 			}
 		}),
 
