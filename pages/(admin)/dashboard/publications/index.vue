@@ -153,7 +153,7 @@ function refresh() {
 				</div>
 			</template>
 			<template #empty-list="{}">
-				<AdminEmptyListPlaceholder item-name="Blogs" />
+				<AdminEmptyListPlaceholder item-name="Publications" />
 			</template>
 		</AdminTableDataTable>
 	</AdminPage>

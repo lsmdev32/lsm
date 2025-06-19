@@ -57,9 +57,12 @@ function handleFetchNextPage() {
 }
 
 const archives = computed(() => {
+	const startYear = 2006
 	const currentYear = dayjs()
 		.year()
-	return Array.from({ length: 10 }, (_, i) => currentYear - i)
+	const years = []
+	for (let y = startYear; y <= currentYear; y++) years.push(y)
+	return years.reverse()
 })
 
 watch([
@@ -174,18 +177,20 @@ function resetFilters() {
 								Arsip
 							</h2>
 						</div>
-						<button
-							v-for="archive in archives"
-							:key="archive"
-							to="#"
-							:class="cn(`text-[#DAB38D] font-[Ubuntu] text-lg mb-2 text-left`, {
-								'hover:underline': yearFilter !== archive,
-								'underline font-bold': yearFilter === archive,
-							})"
-							@click="yearFilter = archive"
-						>
-							{{ archive }}
-						</button>
+						<div class="flex flex-wrap max-w-[150px]">
+							<div
+								v-for="archive in archives"
+								:key="archive"
+								to="#"
+								:class="cn(`text-[#DAB38D] font-[Ubuntu] text-lg text-left w-fit cursor-pointer px-1 py-0.5`, {
+									'hover:underline': yearFilter !== archive,
+									'underline font-bold': yearFilter === archive,
+								})"
+								@click="yearFilter = archive"
+							>
+								{{ archive }}
+							</div>
+						</div>
 					</div>
 				</div>
 
