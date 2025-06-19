@@ -70,11 +70,11 @@ import LogoSVG from "~/assets/images/logo-lsm-main.svg"
 							Career
 						</NuxtLink>
 						<NuxtLink
-							href="/dashboard/blogs"
+							href="/login"
 							style="font-size:medium;"
 							class="pr-8 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
-							Admin
+							login
 						</NuxtLink>
 					</div>
 					<div class="md:hidden items-center hover:cursor-pointer">
