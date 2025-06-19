@@ -10,9 +10,6 @@ const contents = data?.data?.news_and_publications?.data ?? []
 const attorneys = data?.data?.our_attorneys?.data ?? []
 
 const limitedPublications = contents.slice(0, 3)
-
-console.log(contents)
-console.log(attorneys)
 </script>
 
 <template>

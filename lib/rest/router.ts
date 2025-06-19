@@ -330,8 +330,6 @@ const practiceAreasPageData = base
 			}
 		})
 
-		console.log(`fine 4`)
-
 		return {
 			body: {
 				message: "ok",
