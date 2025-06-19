@@ -3,7 +3,7 @@ import { getFirestore } from "firebase/firestore"
 import { getDatabase } from "firebase/database"
 import { defineEventHandler } from "#imports"
 import { API_PATH_PREFIXES } from "~/lib/rest/config/constants"
-import { generateDocs, handler } from "~/lib/rest/handler"
+import { handler } from "~/lib/rest/handler"
 import { createHTMLScalarJSONDoc } from "~/lib/rest/utils"
 
 const notFoundResponseBody = {
@@ -28,10 +28,6 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const { pathname } = new URL(request.url)
-
-	if (pathname.startsWith(API_PATH_PREFIXES.REST_DOCS_JSON)) {
-		return await generateDocs()
-	}
 
 	if (pathname.startsWith(API_PATH_PREFIXES.REST_DOCS_REFERENCE)) {
 		return createHTMLScalarJSONDoc()
