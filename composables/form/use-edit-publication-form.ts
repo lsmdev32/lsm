@@ -180,6 +180,18 @@ export function useEditPublicationForm(id: string) {
 			})
 	}
 
+	async function removeCoverImage() {
+		await updateDoc(publicationDocRef, {
+			cover_image_url: null,
+		})
+			.then(() => {
+				toast.success("Gambar sampul berhasil dihapus")
+			})
+			.catch(() => {
+				toast.error("Gagal menghapus gambar sampul")
+			})
+	}
+
 	return {
 		saveAsDraft,
 		saveAsPublished,
@@ -188,6 +200,7 @@ export function useEditPublicationForm(id: string) {
 		onSubmit,
 		resetForm,
 		resetFields,
+		removeCoverImage,
 		form,
 		isSubmitting,
 		values,

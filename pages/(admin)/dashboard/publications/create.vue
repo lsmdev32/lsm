@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDebounce } from "@vueuse/core"
 import { getDoc } from "firebase/firestore"
-import { PencilIcon } from "lucide-vue-next"
+import { PencilIcon, Trash2 } from "lucide-vue-next"
 import RichTextEditor from "~/components/rte/RichTextEditor.vue"
 import { DEBOUNCE_DEFAULT_TIME, LOCAL_STORAGE_KEYS, SESSION_STORAGE_KEYS } from "~/lib/constants"
 import { getCategoryDocRef, getStaffDocRef } from "~/lib/firestore-model"
@@ -88,42 +88,52 @@ const mappedAuthors = computed(() => {
 			class="w-full flex flex-col gap-y-4 py-20"
 			@submit="form.onSubmit"
 		>
-			<UiFormField
-				v-slot="{ handleChange, meta }"
-				name="cover_image"
-				class="self-center"
-			>
-				<UiFormItem class="self-center">
-					<UiFormLabel :required="meta.required">
-						Gambar Sampul
-					</UiFormLabel>
-					<div class="group w-[600px] aspect-video rounded-lg">
-						<NuxtImg
-							:src="imageURL"
-							class="w-full h-full bg-gray-300 group-hover:hidden object-fill object-center rounded-lg"
-						/>
-						<div
-							class="w-full h-full hidden group-hover:flex flex-col items-center justify-center cursor-pointer bg-gray-300 bg-opacity-60 gap-y-2"
-							@click="onChooseImage"
-						>
-							<PencilIcon class="w-8 h-8 text-gray-500" />
-							<span class="text-lg text-gray-500">Ubah Gambar Sampul</span>
+			<div class="self-center flex flex-col gap-y-2">
+				<UiFormField
+					v-slot="{ handleChange, meta }"
+					name="cover_image"
+					class="self-center"
+				>
+					<UiFormItem class="self-center">
+						<UiFormLabel :required="meta.required">
+							Gambar Sampul
+						</UiFormLabel>
+						<div class="group w-[600px] aspect-video rounded-lg border">
+							<NuxtImg
+								:src="imageURL"
+								class="w-full h-full bg-gray-300 group-hover:hidden object-fill object-center rounded-lg"
+							/>
+							<div
+								class="w-full h-full hidden group-hover:flex flex-col items-center justify-center cursor-pointer bg-gray-300 bg-opacity-60 gap-y-2"
+								@click="onChooseImage"
+							>
+								<PencilIcon class="w-8 h-8 text-gray-500" />
+								<span class="text-lg text-gray-500">Ubah Gambar Sampul</span>
+							</div>
 						</div>
-					</div>
-					<UiFormControl>
-						<UiInput
-							id="image_cover"
-							type="file"
-							accept=".jpg,.jpeg,.png"
-							placeholder="shadcn"
-							class="bg-transparent text-transparent outline hidden"
-							:disabled="isFormSubmitting"
-							@change="handleChange"
-						/>
-					</UiFormControl>
-					<UiFormMessage />
-				</UiFormItem>
-			</UiFormField>
+						<UiFormControl>
+							<UiInput
+								id="image_cover"
+								type="file"
+								accept=".jpg,.jpeg,.png"
+								placeholder="shadcn"
+								class="bg-transparent text-transparent outline hidden"
+								:disabled="isFormSubmitting"
+								@change="handleChange"
+							/>
+						</UiFormControl>
+						<UiFormMessage />
+					</UiFormItem>
+				</UiFormField>
+				<ui-button
+					v-if="imageURL"
+					variant="outline"
+					class="mx-auto"
+					@click.prevent="form.removeCoverImage"
+				>
+					<Trash2 /> Hapus Gambar
+				</ui-button>
+			</div>
 
 			<UiFormField
 				v-slot="{ componentField, meta }"
