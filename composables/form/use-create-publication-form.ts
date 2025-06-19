@@ -92,31 +92,29 @@ export function useCreatePublicationForm() {
 			return
 		}
 
-		// TODO: handle submit
-		const res = await Promise.all([
-			coverUploader
-				.upload(v.cover_image),
-			publicationUploader
-				.upload(v.publication),
-
-		])
-
-		const success = res.every(p => !!p)
-		if (!success) {
-			toast.error("Gagal mengupload file")
-			return
+		let coverImageURL: string | null = null
+		if (v.cover_image) {
+			coverImageURL = await coverUploader.upload(v.cover_image)
+			if (!coverImageURL) {
+				toast.error("Gagal mengupload gambar sampul")
+				return
+			}
 		}
 
-		const [
-			coverImageURL,
-			publicationURL,
-		] = res
+		let publicationURL: string = ""
+		if (v.publication) {
+			publicationURL = await publicationUploader.upload(v.publication)
+			if (!publicationURL) {
+				toast.error("Gagal mengupload publikasi")
+				return
+			}
+		}
 
 		toast.info("Harap tunggu publikasi sedang dibuat...")
 		try {
 			await addDoc(colRef, {
 				type: v.type,
-				cover_image_url: coverImageURL,
+				cover_image_url: coverImageURL ?? null,
 				title: v.title,
 				content: v.content,
 				category_id: v.category,
@@ -150,6 +148,10 @@ export function useCreatePublicationForm() {
 		await onSubmit()
 	}
 
+	async function removeCoverImage() {
+		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.cover_image, null)
+	}
+
 	return {
 		form,
 		isSubmitting,
@@ -159,5 +161,6 @@ export function useCreatePublicationForm() {
 		resetFields,
 		saveAsDraft,
 		saveAsPublished,
+		removeCoverImage,
 	}
 }
