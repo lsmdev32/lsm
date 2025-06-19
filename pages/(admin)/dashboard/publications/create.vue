@@ -208,24 +208,6 @@ const mappedAuthors = computed(() => {
 			</div>
 
 			<UiFormField
-				v-slot="{ handleChange, meta, value }"
-				name="tags"
-			>
-				<UiFormItem class="w-full">
-					<UiFormLabel :required="meta.required">
-						Tag
-					</UiFormLabel>
-					<UiFormControl>
-						<AdminTagInput
-							:initial-values="value"
-							@on-change="handleChange($event)"
-						/>
-					</UiFormControl>
-					<UiFormMessage />
-				</UiFormItem>
-			</UiFormField>
-
-			<UiFormField
 				v-slot="{ handleChange, meta }"
 				name="publication"
 			>
