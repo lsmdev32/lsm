@@ -15,8 +15,6 @@ const contents = data?.data?.contents?.data ?? []
 const attorneys = data?.data?.partners?.data ?? []
 const latestContent = data?.data?.latest_content ?? []
 
-console.log("Latest Content:", latestContent)
-
 const images = [
 	"/images/bedge1.png",
 	"/images/bedge2.png",

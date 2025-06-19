@@ -3,21 +3,20 @@ import nodemailer from "nodemailer"
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
 	const { name, email, type, description } = body
-	console.log(`data ${name} ${email} ${type} ${description}`)
 
 	if (!name || !email || !type || !description) {
 		return { success: false, error: "Semua field wajib diisi." }
 	}
 
-  let subject = ""
-  if(type === "contact") {
-    subject = `From Contact Us : ${name} ingin menghubungi Anda`
-  } else {
-    subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`
-  }
-    
+	let subject = ""
+	if (type === "contact") {
+		subject = `From Contact Us : ${name} ingin menghubungi Anda`
+	}
+	else {
+		subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`
+	}
+
 	const config = useRuntimeConfig()
-	console.log(config)
 
 	const transporter = nodemailer.createTransport({
 		host: config.smtpHost,
