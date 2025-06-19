@@ -92,25 +92,27 @@ export function useCreateBlogForm() {
 		}
 
 		// TODO: handle submit
-		const res = await Promise.all([
-			coverUploader
-				.upload(v.cover_image),
+		let coverImageURL: string | null = null
+		if (v.cover_image) {
+			const res = await Promise.all([
+				coverUploader
+					.upload(v.cover_image),
+			])
 
-		])
+			const success = res.every(p => !!p)
+			if (!success) {
+				toast.error("Gagal mengupload file")
+				return
+			}
 
-		const success = res.every(p => !!p)
-		if (!success) {
-			toast.error("Gagal mengupload file")
-			return
+			coverImageURL = res[0]
 		}
-
-		const [coverImageURL] = res
 
 		toast.info("Harap tunggu blogs sedang dibuat...")
 		try {
 			await addDoc(colRef, {
 				type: v.type,
-				cover_image_url: coverImageURL,
+				cover_image_url: coverImageURL ?? null,
 				title: v.title,
 				content: v.content,
 				category_id: v.category,
@@ -143,6 +145,10 @@ export function useCreateBlogForm() {
 		await onSubmit()
 	}
 
+	async function removeCoverImage() {
+		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.cover_image, null)
+	}
+
 	return {
 		form,
 		isSubmitting,
@@ -152,5 +158,6 @@ export function useCreateBlogForm() {
 		resetFields,
 		saveAsDraft,
 		saveAsPublished,
+		removeCoverImage,
 	}
 }

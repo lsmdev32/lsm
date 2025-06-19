@@ -54,8 +54,7 @@ const debouncedAuthor = useDebounce(author, DEBOUNCE_DEFAULT_TIME)
 const status = ref("")
 
 watch(form.form.values, async (v) => {
-	if (!v.image_url) return
-	localStorage.setItem(LOCAL_STORAGE_KEYS.IMAGE_COVER, v.image_url)
+	if (v.image_url) localStorage.setItem(LOCAL_STORAGE_KEYS.IMAGE_COVER, v.image_url)
 
 	if (v.category) {
 		const doc = await getDoc(getCategoryDocRef(firestore, v.category))
@@ -129,43 +128,53 @@ function onChooseFile() {
 					</UiBadge>
 				</template>
 			</div>
-			<UiFormField
-				v-slot="{ handleChange, meta }"
-				name="cover_image"
-				class="self-center"
-			>
-				<UiFormItem class="self-center">
-					<UiFormLabel :required="meta.required">
-						Gambar Sampul
-					</UiFormLabel>
-					<div class="group w-[600px] aspect-video rounded-lg">
-						<NuxtImg
-							:src="imageURL"
-							loading="lazy"
-							class="w-full h-full bg-gray-300 group-hover:hidden object-fill object-center rounded-lg"
-						/>
-						<div
-							class="w-full h-full hidden group-hover:flex flex-col items-center justify-center cursor-pointer bg-gray-300 bg-opacity-60 gap-y-2"
-							@click="onChooseFile"
-						>
-							<PencilIcon class="w-8 h-8 text-gray-500" />
-							<span class="text-lg text-gray-500">Ubah Gambar Sampul</span>
+			<div class="self-center flex flex-col gap-y-2">
+				<UiFormField
+					v-slot="{ handleChange, meta }"
+					name="cover_image"
+					class="self-center"
+				>
+					<UiFormItem class="self-center">
+						<UiFormLabel :required="meta.required">
+							Gambar Sampul
+						</UiFormLabel>
+						<div class="group w-[600px] aspect-video rounded-lg border">
+							<NuxtImg
+								:src="imageURL"
+								loading="lazy"
+								class="w-full h-full bg-gray-300 group-hover:hidden object-fill object-center rounded-lg"
+							/>
+							<div
+								class="w-full h-full hidden group-hover:flex flex-col items-center justify-center cursor-pointer bg-gray-300 bg-opacity-60 gap-y-2"
+								@click="onChooseFile"
+							>
+								<PencilIcon class="w-8 h-8 text-gray-500" />
+								<span class="text-lg text-gray-500">Ubah Gambar Sampul</span>
+							</div>
 						</div>
-					</div>
-					<UiFormControl>
-						<UiInput
-							id="image_cover"
-							type="file"
-							accept=".jpg,.jpeg,.png"
-							placeholder="shadcn"
-							class="bg-transparent text-transparent outline hidden"
-							:disabled="isFormSubmitting"
-							@change="handleChange"
-						/>
-					</UiFormControl>
-					<UiFormMessage />
-				</UiFormItem>
-			</UiFormField>
+						<UiFormControl>
+							<UiInput
+								id="image_cover"
+								type="file"
+								accept=".jpg,.jpeg,.png"
+								placeholder="shadcn"
+								class="bg-transparent text-transparent outline hidden"
+								:disabled="isFormSubmitting"
+								@change="handleChange"
+							/>
+						</UiFormControl>
+						<UiFormMessage />
+					</UiFormItem>
+				</UiFormField>
+				<ui-button
+					v-if="imageURL"
+					variant="ghost"
+					class="mx-auto"
+					@click.prevent="form.removeCoverImage"
+				>
+					Hapus Gambar
+				</ui-button>
+			</div>
 
 			<UiFormField
 				v-slot="{ componentField, meta }"

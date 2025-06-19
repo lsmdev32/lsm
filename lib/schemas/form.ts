@@ -247,7 +247,9 @@ export const MUTATE_BLOGS_FORM_SCHEMA = z.object({
 					&& img.height <= CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_HEIGHT
 			},
 			CREATE_CONTENT_FORM_CONSTANTS.MSG.COVER_IMAGE_DIMENSION_MSG,
-		),
+		)
+		.nullish()
+		.default(null),
 	[CONTENT_FORM_SCHEMA_KEYS.status]: z
 		.enum([
 			CONTENT_FORM_STATUS.not_published,
@@ -275,7 +277,8 @@ export const EDIT_BLOGS_FORM_SCHEMA = MUTATE_BLOGS_FORM_SCHEMA
 		image_url: z
 			.string()
 			.url()
-			.default(""),
+			.nullish()
+			.default(null),
 	})
 
 export const PUBLICATIONS_FORM_SCHEMA_KEYS = {
@@ -317,11 +320,12 @@ export const EDIT_PUBLICATION_FORM_SCHEMA = MUTATE_PUBLICATION_FORM_SCHEMA
 		[PUBLICATIONS_FORM_SCHEMA_KEYS.image_url]: z
 			.string()
 			.url()
-			.default(""),
+			.nullish()
+			.default(null),
 		[PUBLICATIONS_FORM_SCHEMA_KEYS.publication_url]: z
 			.string()
 			.url()
-			.default(""),
+			.nullish(),
 	})
 
 export const validationSchemas = {
