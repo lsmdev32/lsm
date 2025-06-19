@@ -54,7 +54,7 @@ async function handleSubmit(_payload: LoginFormPayload) {
 		<div class="w-full min-h-screen flex flex-col items-center justify-center">
 			<div
 				:class="[
-					'flex flex-col items-center space-y-6 outline outline-1 outline-black p-4 rounded-lg shadow-xl',
+					'flex flex-col items-center space-y-6 outline outline-1 outline-black p-4 rounded-lg shadow-xl min-w-[416px] min-h-[315px]',
 					isSubmitting ? 'opacity-50' : 'opacity-100',
 				]"
 			>
