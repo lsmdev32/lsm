@@ -317,7 +317,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 
 			async function handleDelete() {
 				// Implement delete logic here
-				const confirmed = window.confirm("Are you sure you want to delete this blog?")
+				const confirmed = window.confirm("Apakah Anda yakin ingin menghapus blog ini?")
 				if (!confirmed) return
 
 				await deleteDoc(docRef)
@@ -339,10 +339,10 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 
 				updateDoc(docRef, newValue)
 					.then(() => {
-						toast.success(`Blog status updated to ${newStatus}`)
+						toast.success(`Status blog berhasil diubah menjadi ${newStatus}`)
 					})
 					.catch(() => {
-						toast.error(`Failed to update blog status`)
+						toast.error(`Gagal memperbarui status blog`)
 					})
 					.finally(() => {
 						window.location.reload()
@@ -545,15 +545,15 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 
 			async function handleDelete() {
 				// Implement delete logic here
-				const confirmed = window.confirm("Are you sure you want to delete this blog?")
+				const confirmed = window.confirm("Yakin ingin menghapus publikasi ini?")
 				if (!confirmed) return
 
 				await deleteDoc(docRef)
 					.then(() => {
-						toast.success("Blog berhasil dihapus")
+						toast.success("Publikasi berhasil dihapus")
 					})
 					.catch(() => {
-						toast.error("Gagal menghapus blog")
+						toast.error("Gagal menghapus publikasi")
 					})
 			}
 
@@ -567,10 +567,10 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 
 				updateDoc(docRef, newValue)
 					.then(() => {
-						toast.success(`Blog status updated to ${newStatus}`)
+						toast.success(`Status publikasi berhasil diubah menjadi ${newStatus}`)
 					})
 					.catch(() => {
-						toast.error(`Failed to update blog status`)
+						toast.error("Gagal mengubah status publikasi")
 					})
 					.finally(() => {
 						window.location.reload()
