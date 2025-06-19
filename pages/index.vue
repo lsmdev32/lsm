@@ -186,7 +186,7 @@ const setOption = (index: number) => {
 			<div class="flex h-[480px] w-full">
 				<!-- Panel 1 -->
 				<div class="relative bg-[url('~/assets/images/bg-whoarewe.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
-					<a href="/about">
+					<nuxt-link href="/about">
 						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 						<!-- Heading -->
 						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
@@ -207,12 +207,12 @@ const setOption = (index: number) => {
 								Lubis Santosa & Partners (formerly Lubis Santosa & Maramis), is one of the leading law firms in Indonesia. It was established in 1986 and has grown to become one of Indonesia's law firms with comprehensive range of practice.
 							</p>
 						</div>
-					</a>
+					</nuxt-link>
 				</div>
 
 				<!-- Panel 2 -->
 				<div class="relative bg-[url('~/assets/images/bg-practicearea.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
-					<a href="/practice-area">
+					<nuxt-link href="/practice-area">
 						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 						<!-- Heading -->
 						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
@@ -233,12 +233,12 @@ const setOption = (index: number) => {
 								Lawyers at LSM are experts in their fields and are dedicated to providing the best legal services to our clients. We have a wide range of practice areas, and we work closely with our clients to understand their needs and provide tailored solutions.
 							</p>
 						</div>
-					</a>
+					</nuxt-link>
 				</div>
 
 				<!-- Panel 3 -->
 				<div class="relative bg-[url('~/assets/images/about-attorney.jpg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
-					<a href="/attorneys">
+					<nuxt-link href="/attorneys">
 						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 						<!-- Heading -->
 						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
@@ -259,7 +259,7 @@ const setOption = (index: number) => {
 								We are dedicated to providing top-quality legal representation for our clients. Our attorneys are highly skilled and experienced in their respective areas of practice, and are committed to achieving the best possible outcomes for our clients.
 							</p>
 						</div>
-					</a>
+					</nuxt-link>
 				</div>
 			</div>
 		</section>

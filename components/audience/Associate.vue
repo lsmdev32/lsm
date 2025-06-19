@@ -30,7 +30,9 @@
 
 					<!-- Hover icons -->
 					<div class="absolute bottom-[120px] right-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition duration-300">
-						<nuxt-link :href="linkedin">
+						<nuxt-link
+							:href="linkedin"
+						>
 							<button class="w-10 h-10 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
 								<Icon
 									name="mdi:linkedin"
@@ -38,7 +40,9 @@
 								/>
 							</button>
 						</nuxt-link>
-						<nuxt-link :href="`mailto:${email}`">
+						<nuxt-link
+							:href="`mailto:${email}`"
+						>
 							<button class="w-10 h-10 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
 								<Icon
 									name="mdi:email-outline"
