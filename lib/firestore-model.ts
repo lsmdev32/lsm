@@ -95,7 +95,7 @@ export type BlogAppModel = AppModelOfType<{
 	type: "blog"
 	title: string
 	slug: string
-	cover_image_url: string
+	cover_image_url: string | null
 	content: string
 	status: "not_published" | "published"
 	published_at: Date
@@ -121,7 +121,7 @@ export type PublicationAppModel = AppModelOfType<{
 	type: "publication"
 	title: string
 	slug: string
-	cover_image_url: string
+	cover_image_url: string | null
 	content: string
 	status: "not_published" | "published"
 	published_at: Date

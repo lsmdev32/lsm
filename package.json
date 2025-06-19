@@ -26,6 +26,7 @@
     "@orpc/server": "^1.5.2",
     "@orpc/zod": "^1.5.2",
     "@tanstack/vue-table": "^8.21.3",
+    "@types/nodemailer": "^6.4.17",
     "@unhead/vue": "^2.0.0-rc.8",
     "@unovis/ts": "^1.5.1",
     "@unovis/vue": "^1.5.1",

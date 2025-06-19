@@ -85,7 +85,6 @@ watch([
 	})
 		.then((res) => {
 			contents.value = res.data.contents
-			console.log(`Should be changed`, contents.value)
 		})
 		.finally(() => {
 			isLoading.value = false

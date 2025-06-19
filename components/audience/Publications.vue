@@ -63,9 +63,7 @@ type Props = {
 	defaultAuthorImage?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
 	publications: () => [],
 })
-
-console.log(props.publications)
 </script>
