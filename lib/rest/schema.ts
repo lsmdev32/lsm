@@ -28,7 +28,6 @@ export const HomepageDataOutputSchema = z.object({
 						.regex(/^[a-z0-9-]+$/),
 					image_url: z
 						.string()
-						.url()
 						.nullish(),
 					category: z
 						.string(),
@@ -43,7 +42,8 @@ export const HomepageDataOutputSchema = z.object({
 						.nullish(),
 					published_at: z
 						.string(),
-				}),
+				})
+				.nullish(),
 			partners: z
 				.object({
 					data: z
@@ -82,8 +82,7 @@ export const HomepageDataOutputSchema = z.object({
 									.regex(/^[a-z0-9-]+$/),
 								image_url: z
 									.string()
-									.url()
-									.nullish(),
+									.url(),
 								category: z
 									.string(),
 								author: z

@@ -251,24 +251,6 @@ function onChooseFile() {
 
 			<UiFormField
 				v-slot="{ handleChange, meta, value }"
-				name="tags"
-			>
-				<UiFormItem class="w-full">
-					<UiFormLabel :required="meta.required">
-						Tag
-					</UiFormLabel>
-					<UiFormControl>
-						<AdminTagInput
-							:initial-values="value"
-							@on-change="handleChange($event)"
-						/>
-					</UiFormControl>
-					<UiFormMessage />
-				</UiFormItem>
-			</UiFormField>
-
-			<UiFormField
-				v-slot="{ handleChange, meta, value }"
 				name="published_at"
 			>
 				<UiFormItem class="w-[400px] flex flex-col">

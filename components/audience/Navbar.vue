@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
+import HamburgerMenu from "~/components/audience/HamburgerMenu.vue"
+import LogoSVG from "~/assets/images/logo-lsm-main.svg"
 </script>
 
 <template>
@@ -12,11 +13,10 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 							to="/"
 							class="flex items-center hover:cursor-pointer"
 						>
-							<Img
-								src="/images/logo-lsm-main.svg"
+							<img
+								:src="LogoSVG"
 								class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
-								to="/"
-							/>
+							>
 						</NuxtLink>
 					</div>
 					<div class="hidden sm:justify-center sm:text-center text-[#4B3D2A] lg:flex space-x-4">
@@ -69,9 +69,16 @@ import HumbergerMenu from "~/components/audience/HumbergMenu.vue"
 						>
 							Career
 						</NuxtLink>
+						<NuxtLink
+							href="/dashboard/blogs"
+							style="font-size:medium;"
+							class="pr-8 hover:text-[#DAB38D] hover:cursor-pointer"
+						>
+							Admin
+						</NuxtLink>
 					</div>
 					<div class="md:hidden items-center hover:cursor-pointer">
-						<HumbergerMenu />
+						<HamburgerMenu />
 					</div>
 				</div>
 			</div>
