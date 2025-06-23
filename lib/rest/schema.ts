@@ -82,7 +82,8 @@ export const HomepageDataOutputSchema = z.object({
 									.regex(/^[a-z0-9-]+$/),
 								image_url: z
 									.string()
-									.url(),
+									.url()
+									.nullish(),
 								category: z
 									.string(),
 								author: z
