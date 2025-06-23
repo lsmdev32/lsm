@@ -3,7 +3,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css"
 
 import { Download } from "lucide-vue-next"
 import Publications from "~/components/audience/Publications.vue"
-import LogoSVG from "~/assets/images/logo.svg"
+import LogoSVG from "/images/book-lsm.png"
 
 const slug = useRoute().params.slug
 
@@ -24,18 +24,18 @@ const relatedContents = data?.data?.related_contents ?? []
 		<!-- Mobile -->
 		<section class="md:hidden">
 			<div class="mb-4 flex flex-col w-full">
-				<NuxtImg
+				<img
 					v-if="detail?.image_url"
 					:src="detail?.image_url"
 					alt="Thumbnail"
 					class="w-full h-72 object-cover mb-4"
-				/>
-				<NuxtImg
+				>
+				<img
 					v-else
 					:src="LogoSVG"
 					alt="Thumbnail"
 					class="w-full h-72 object-cover mb-4"
-				/>
+				>
 				<div class="p-4 self-center flex flex-col gap-y-4">
 					<span class="text-sm text-[#DAB38D] font-[Ubuntu] text-center">{{ detail?.category }}</span>
 					<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug text-center">
@@ -100,18 +100,18 @@ const relatedContents = data?.data?.related_contents ?? []
 				<div class="w-3/4">
 					<!-- Featured Post -->
 					<div class="mb-8 flex flex-col gap-y-4">
-						<NuxtImg
+						<img
 							v-if="detail?.image_url"
 							:src="detail?.image_url"
 							alt="Thumbnail"
 							class="w-full h-80 object-cover mb-4"
-						/>
-						<NuxtImg
+						>
+						<img
 							v-else
 							:src="LogoSVG"
 							alt="Thumbnail"
 							class="w-full h-80 object-cover mb-4"
-						/>
+						>
 						<span class="text-sm text-[#DAB38D] font-[Ubuntu] self-center">{{ detail?.category }}</span>
 						<h3 class="text-2xl font-[Marcellus] text-[#4B3D2A] leading-snug self-center">
 							{{ detail?.title }}
@@ -177,18 +177,18 @@ const relatedContents = data?.data?.related_contents ?? []
 							class="mb-6"
 							:to="`/publications/${content.slug}`"
 						>
-							<NuxtImg
+							<img
 								v-if="content.image_url"
 								:src="content.image_url"
 								alt="Thumbnail"
 								class="w-full h-40 object-cover mb-4"
-							/>
-							<NuxtImg
+							>
+							<img
 								v-else
 								:src="LogoSVG"
 								alt="Thumbnail"
 								class="w-full h-40 object-cover mb-4"
-							/>
+							>
 							<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ content.category }}</span>
 							<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
 								{{ content.title }}
