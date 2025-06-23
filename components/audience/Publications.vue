@@ -6,18 +6,18 @@
 				:key="index"
 				class="flex flex-col"
 			>
-				<nuxt-img
+				<img
 					v-if="publication.image_url"
 					:src="publication.image_url as string"
 					alt="Thumbnail"
 					class="w-full h-[270px] object-cover mb-4"
-				/>
-				<nuxt-img
+				>
+				<img
 					v-else
 					:src="LogoSVG"
 					alt="Thumbnail"
 					class="w-full h-[270px] object-cover mb-4"
-				/>
+				>
 				<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ publication.category }}</span>
 				<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
 					{{ publication.title }}
@@ -55,7 +55,8 @@
 </template>
 
 <script setup lang="ts">
-import LogoSVG from "~/assets/images/logo.svg"
+import LogoSVG from "/images/book-lsm.png"
+// import LogoSVG from "~/assets/images/logo.svg"
 
 type Props = {
 	publications?: Record<string, unknown>[]

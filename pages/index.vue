@@ -292,7 +292,7 @@ const setOption = (index: number) => {
 							</div>
 							<div class="ml-4 mt-4 flex items-center">
 								<NuxtLink
-									to="/attorneys"
+									to="/blogs"
 									class="text-sm text-white hover:cursor-pointer"
 								>
 									View All >>
