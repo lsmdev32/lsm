@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouteQuery } from "@vueuse/router"
 import { useDebounce } from "@vueuse/core"
-import LogoSVG from "/images/book-lsm.png"
+import LogoSVG from "/images/book.png"
 import PublicationQuery from "~/components/audience/PublicationQuery.vue"
 import Publications from "~/components/audience/Publications.vue"
 import dayjs from "#build/dayjs.imports.mjs"
@@ -156,7 +156,8 @@ function resetFilters() {
 							</button>
 						</div>
 					</div>
-					<div class="flex flex-col mb-8">
+					<!-- Kategori been Hidden -->
+					<!-- <div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
 								Kategori
@@ -171,7 +172,7 @@ function resetFilters() {
 						>
 							{{ category.name }}
 						</button>
-					</div>
+					</div> -->
 					<div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
