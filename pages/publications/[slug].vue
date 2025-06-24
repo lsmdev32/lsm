@@ -3,7 +3,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css"
 
 import { Download } from "lucide-vue-next"
 import Publications from "~/components/audience/Publications.vue"
-import LogoSVG from "/images/book-lsm.png"
+import LogoSVG from "/images/book.png"
 
 const slug = useRoute().params.slug
 

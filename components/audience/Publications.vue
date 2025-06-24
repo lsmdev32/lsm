@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import LogoSVG from "/images/book-lsm.png"
+import LogoSVG from "/images/book.png"
 // import LogoSVG from "~/assets/images/logo.svg"
 
 type Props = {

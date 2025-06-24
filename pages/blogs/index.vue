@@ -154,7 +154,8 @@ function resetFilters() {
 							</button>
 						</div>
 					</div>
-					<div class="flex flex-col mb-8">
+					<!-- Kategoti been Hidden -->
+					<!-- <div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
 								Kategori
@@ -169,7 +170,7 @@ function resetFilters() {
 						>
 							{{ category.name }}
 						</button>
-					</div>
+					</div> -->
 					<div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
