@@ -350,29 +350,28 @@ const practiceAreasPageData = base
 			})
 		}
 
-		/**
-							* get attorneys for practice areas
-					*/
-		const attorneysQuery = query(
-			getStaffCollectionRef(context.firestore),
-			orderBy("created_at", "desc"),
-			where("type", "==", "partner"),
-			limit(4),
-		)
+		const homeAttorneyIdsQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.HOME_ATTORNEY_ORDER))
+		const homeAttorneyIdsSnapshot = await get(homeAttorneyIdsQuery)
 
-		const attorneysSnapshot = await getDocs(attorneysQuery)
-		const attorneys = attorneysSnapshot.docs.map((doc) => {
-			const data = doc.data()
-			return {
-				id: data.id!,
-				name: data.fullname,
-				slug: data.slug,
-				image_url: data.profile_picture_url,
-				type: data.type,
-				email: data.email,
-				linkedin_url: data.linkedin_url,
-			}
-		})
+		const attorneyDocs = await Promise
+			.all((homeAttorneyIdsSnapshot.val() as string[])
+				.filter(Boolean)
+				.map(e => getDoc(getStaffDocRef(context.firestore, e))),
+			)
+
+		const attorneys = attorneyDocs.filter(doc => doc.exists())
+			.map((doc) => {
+				const data = doc.data()
+				return ({
+					id: doc.id!,
+					name: data.fullname,
+					slug: data.slug,
+					image_url: data.profile_picture_url,
+					type: data.type,
+					email: data.email,
+					linkedin_url: data.linkedin_url,
+				})
+			})
 
 		return {
 			body: {
