@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref as dbRef, set as dbSet, getDatabase } from "@firebase/database"
+import { toast } from "vue-sonner"
 import { cn } from "~/lib/utils"
+import { RTDB_KEYS } from "~/lib/constants"
 
 type Props = {
 	id: string
@@ -16,6 +19,28 @@ type Emits = {
 
 const emit = defineEmits<Emits>()
 const props = withDefaults(defineProps<Props>(), {})
+
+async function handleSetOrderHome(id: string, order: number) {
+	const staffRef = dbRef(getDatabase(), `${RTDB_KEYS.HOME_ATTORNEY_ORDER}/${order}`)
+	await dbSet(staffRef, id)
+		.then(() => {
+			toast.success(`Berhasil mengatur urutan home`)
+		})
+		.catch(() => {
+			toast.error(`Gagal mengatur urutan home`)
+		})
+}
+
+async function handleSetOrderPracticeAreas(id: string, order: number) {
+	const staffRef = dbRef(getDatabase(), `${RTDB_KEYS.PRACTICE_AREA_ATTORNEY_ORDER}/${order}`)
+	await dbSet(staffRef, id)
+		.then(() => {
+			toast.success(`Berhasil mengatur urutan practice area`)
+		})
+		.catch(() => {
+			toast.error(`Gagal mengatur urutan practice area`)
+		})
+}
 </script>
 
 <template>
@@ -44,6 +69,38 @@ const props = withDefaults(defineProps<Props>(), {})
 					<UiDropdownMenuItem @click="emit('click-delete', { id: props.id, fullname: props.fullname })">
 						<Icon name="mdi:trash" /> Hapus
 					</UiDropdownMenuItem>
+					<UiDropdownMenuSub>
+						<UiDropdownMenuSubTrigger>
+							<span>Set Urutan Home</span>
+						</UiDropdownMenuSubTrigger>
+						<UiDropdownMenuPortal>
+							<UiDropdownMenuSubContent>
+								<UiDropdownMenuItem
+									v-for="i in 4"
+									:key="i"
+									@click="handleSetOrderHome(props.id, i - 1)"
+								>
+									<span>Ke - {{ i }}</span>
+								</UiDropdownMenuItem>
+							</UiDropdownMenuSubContent>
+						</UiDropdownMenuPortal>
+					</UiDropdownMenuSub>
+					<UiDropdownMenuSub>
+						<UiDropdownMenuSubTrigger>
+							<span>Set Urutan Practice Area</span>
+						</UiDropdownMenuSubTrigger>
+						<UiDropdownMenuPortal>
+							<UiDropdownMenuSubContent>
+								<UiDropdownMenuItem
+									v-for="i in 4"
+									:key="i"
+									@click="handleSetOrderPracticeAreas(props.id, i - 1)"
+								>
+									<span>Ke - {{ i }}</span>
+								</UiDropdownMenuItem>
+							</UiDropdownMenuSubContent>
+						</UiDropdownMenuPortal>
+					</UiDropdownMenuSub>
 				</UiDropdownMenuContent>
 			</UiDropdownMenu>
 		</div>
