@@ -27,31 +27,24 @@ export const handler = new OpenAPIHandler(router, {
 		onError((error) => {
 			if (
 				error instanceof ORPCError
-				&& error.code === "BAD_REQUEST"
 				&& error.cause instanceof ValidationError
 			) {
 				// If you only use Zod you can safely cast to ZodIssue[]
 				const zodError = new ZodError(error.cause.issues as ZodIssue[])
 
-				throw new ORPCError("INPUT_VALIDATION_FAILED", {
-					status: 422,
-					data: zodError.flatten(),
-					cause: error.cause,
-				})
-			}
-
-			if (
-				error instanceof ORPCError
-				&& error.code === "INTERNAL_SERVER_ERROR"
-				&& error.cause instanceof ValidationError
-			) {
-				// If you only use Zod you can safely cast to ZodIssue[]
-				const zodError = new ZodError(error.cause.issues as ZodIssue[])
+				if (error.code === "BAD_REQUEST") {
+					throw new ORPCError("INPUT_VALIDATION_FAILED", {
+						status: 422,
+						data: zodError.flatten(),
+						cause: error.cause,
+					})
+				}
+				console.log(`kena`)
 
 				throw new ORPCError("OUTPUT_VALIDATION_FAILED", {
 					cause: error.cause,
 					status: 500,
-					data: zodError.flatten(),
+					data: zodError.issues,
 				})
 			}
 		}),
