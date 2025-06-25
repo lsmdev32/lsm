@@ -16,7 +16,10 @@ export const PATH_NAMES = {
 	BLOG_EDIT: (id: string) => `/dashboard/blogs/edit/${id}`,
 	BLOG_DETAIL: (id: string) => `/dashboard/blogs/detail/${id}`,
 	BLOG_PREVIEW: (id: string) => `/dashboard/blogs/preview/${id}`,
+	CONTENT_SETTER: "/dashboard/content-settings",
 } as const
+
+export const RTDB_KEYS = createPairFromEnum("HOME_PINNED_CONTENT")
 
 export const LOCAL_STORAGE_KEYS = createPairFromEnum("IMAGE_COVER")
 

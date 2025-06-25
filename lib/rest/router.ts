@@ -5,6 +5,7 @@ import dayjs from "dayjs"
 import { z } from "zod"
 import type { algoliasearch } from "algoliasearch"
 import type { Database } from "firebase/database"
+import { query as rtdbQuery, ref as dbRef, get } from "@firebase/database"
 import { API_PATH_PREFIXES } from "~/lib/rest/config/constants"
 import {
 	BlogAndPublicationsPageDataInputSchema,
@@ -22,7 +23,8 @@ import {
 } from "~/lib/rest/schema"
 import type { ContentDetailPageDataOutputType } from "~/lib/rest/schema"
 
-import { getBlogCollectionRef, getCategoryCollectionRef, getCategoryDocRef, getPublicationCollectionRef, getStaffCollectionRef, getStaffDocRef } from "~/lib/firestore-model"
+import { getBlogCollectionRef, getCategoryCollectionRef, getCategoryDocRef, getPublicationCollectionRef, getPublicationDocRef, getStaffCollectionRef, getStaffDocRef } from "~/lib/firestore-model"
+import { RTDB_KEYS } from "~/lib/constants"
 
 type Middleware = {
 	firestore: Firestore
@@ -150,56 +152,90 @@ const homePageData = base
 			})
 		}
 
-		const latestContentQuery = query(
-			getBlogCollectionRef(context.firestore),
-			where("type", "==", "blog"),
-			where("status", "==", "published"),
-			orderBy("published_at", "desc"),
-			limit(1),
-		)
+		const latestContentIdQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.HOME_PINNED_CONTENT))
+		const latestContentIdSnapshot = await get(latestContentIdQuery)
+		const latestContentId = latestContentIdSnapshot.val()
 
-		const latestContentSnapshot = await getDocs(latestContentQuery)
-		const latestContent = latestContentSnapshot.docs.map((doc) => {
-			const data = doc.data()
+		if (!latestContentId) {
 			return {
-				id: doc.id,
-				title: data.title,
-				slug: data.slug,
-				image_url: data.cover_image_url,
-				// @ts-expect-error - just ignore
-				published_at: dayjs(data.published_at.seconds * 1000)
-					.format("MMM D, YYYY"),
-				category_id: data.category_id,
-				author_id: data.author_id,
-				author: null as Record<string, unknown> | null,
-				category: null as string | null,
+				body: {
+					status: 200,
+					message: "ok",
+					data: {
+						latest_content: null,
+						partners: {
+							data: partners,
+							total: partners.length,
+						},
+						contents: {
+							data: contents,
+							total: contents.length,
+						},
+					},
+				},
 			}
-		})
-			.at(0)
+		}
 
-		if (latestContent) {
-			const latestContentCategoryDoc = await getDoc(
-				getCategoryDocRef(context.firestore, latestContent.category_id),
+		const latestContentDoc = await getDoc(getPublicationDocRef(context.firestore, latestContentId))
+
+		if (!latestContentDoc.exists()) {
+			return {
+				body: {
+					status: 200,
+					message: "ok",
+					data: {
+						latest_content: null,
+						partners: {
+							data: partners,
+							total: partners.length,
+						},
+						contents: {
+							data: contents,
+							total: contents.length,
+						},
+					},
+				},
+			}
+		}
+
+		let latestContentData = latestContentDoc.data()
+		latestContentData = {
+			id: latestContentDoc.id,
+			title: latestContentData.title,
+			slug: latestContentData.slug,
+			image_url: latestContentData.cover_image_url,
+			// @ts-expect-error - just ignore
+			published_at: dayjs(latestContentData.published_at.seconds * 1000)
+				.format("MMM D, YYYY"),
+			category_id: latestContentData.category_id,
+			author_id: latestContentData.author_id,
+			author: null as Record<string, unknown> | null,
+			category: null as string | null,
+		}
+
+		if (latestContentData.author_id) {
+			const authorDoc = await getDoc(
+				getStaffDocRef(context.firestore, latestContentData.author_id),
 			)
-			if (latestContentCategoryDoc.exists()) {
-				const latestContentCategoryData = latestContentCategoryDoc.data()
-				if (latestContentCategoryData) {
-					latestContent.category = latestContentCategoryData.name
+
+			const authorData = authorDoc.data()
+			if (authorData) {
+				latestContentData.author = {
+					name: authorData.fullname,
+					photo_url: authorData.profile_picture_url,
 				}
 			}
+		}
 
-			if (latestContent.author_id) {
-				const latestContentAuthorDoc = await getDoc(
-					getStaffDocRef(context.firestore, latestContent.author_id),
-				)
-				if (latestContentAuthorDoc.exists()) {
-					const latestContentAuthorData = latestContentAuthorDoc.data()
-					if (latestContentAuthorData) {
-						latestContent.author = {
-							name: latestContentAuthorData.fullname,
-							photo_url: latestContentAuthorData.profile_picture_url,
-						}
-					}
+		if (latestContentData.category_id) {
+			const categoryDoc = await getDoc(
+				getCategoryDocRef(context.firestore, latestContentData.category_id),
+			)
+
+			if (categoryDoc.exists()) {
+				const categoryData = categoryDoc.data()
+				if (categoryData) {
+					latestContentData.category = categoryData.name
 				}
 			}
 		}
@@ -209,7 +245,7 @@ const homePageData = base
 				status: 200,
 				message: "ok",
 				data: {
-					latest_content: latestContent,
+					latest_content: latestContentData,
 					partners: {
 						data: partners,
 						total: partners.length,
