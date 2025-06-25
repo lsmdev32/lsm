@@ -68,104 +68,191 @@ const homePageData = base
 	})
 	.output(HomepageDataOutputSchema)
 	.handler(async function ({ context }) {
-		const q = query(
-			getStaffCollectionRef(context.firestore),
-			where("type", "==", "partner"),
-			limit(4),
-		)
-		const res = await getDocs(q)
+		try {
+			const homeAttorneyIdsQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.HOME_ATTORNEY_ORDER))
+			const homeAttorneyIdsSnapshot = await get(homeAttorneyIdsQuery)
 
-		const partners = res.docs
-			.map(doc => doc.data())
-			.map(v => ({
-				type: v.type,
-				id: v.id!,
-				slug: v.slug,
-				name: v.fullname,
-				image_url: v.profile_picture_url,
-				linkedin_url: v.linkedin_url,
-				email: v.email,
-			}))
+			const attorneyDocs = await Promise
+				.all((homeAttorneyIdsSnapshot.val() as string[])
+					.filter(Boolean)
+					.map(e => getDoc(getStaffDocRef(context.firestore, e))),
+				)
 
-		const contentQuery = query(
-			getPublicationCollectionRef(context.firestore),
-			where("type", "==", "publication"),
-			where("status", "==", "published"),
-			orderBy("published_at", "desc"),
-			limit(4),
-		)
+			const attorneys = attorneyDocs.filter(doc => doc.exists())
+				.map((doc) => {
+					const data = doc.data()
+					return ({
+						id: doc.id!,
+						name: data.fullname,
+						slug: data.slug,
+						image_url: data.profile_picture_url,
+						type: data.type,
+						email: data.email,
+						linkedin_url: data.linkedin_url,
+					})
+				})
 
-		const contentSnapshot = await getDocs(contentQuery)
+			const contentQuery = query(
+				getPublicationCollectionRef(context.firestore),
+				where("type", "==", "publication"),
+				where("status", "==", "published"),
+				orderBy("published_at", "desc"),
+				limit(4),
+			)
 
-		const contents = contentSnapshot.docs.map((doc) => {
-			const data = doc.data()
-			return {
-				id: doc.id,
-				title: data.title,
-				slug: data.slug,
-				image_url: data.cover_image_url,
+			const contentSnapshot = await getDocs(contentQuery)
+			const contents = contentSnapshot.docs.map((doc) => {
+				const data = doc.data()
+				return {
+					id: doc.id,
+					title: data.title,
+					slug: data.slug,
+					image_url: data.cover_image_url,
+					// @ts-expect-error - just ignore
+					published_at: dayjs(data.published_at.seconds * 1000)
+						.format("MMM D, YYYY"),
+					category_id: data.category_id,
+					author_id: data.author_id,
+					author: null as Record<string, unknown> | null,
+					category: null as string | null,
+				}
+			})
+
+			const contentCategoryIds = Array
+				.from(new Set(contents.map(content => content.category_id)))
+				.filter(Boolean)
+
+			for (const categoryId of contentCategoryIds) {
+				const categoryDoc = await getDoc(
+					getCategoryDocRef(context.firestore, categoryId),
+				)
+				if (!categoryDoc.exists()) continue
+				const categoryData = categoryDoc.data()
+				if (!categoryData) continue
+				contents.forEach((content) => {
+					if (content.category_id === categoryId) {
+						content.category = categoryData.name
+					}
+				})
+			}
+			const contentAuthorIds = Array
+				.from(new Set(contents.map(content => content.author_id)))
+				.filter(Boolean)
+
+			for (const authorId of contentAuthorIds) {
+				if (!authorId) continue
+				const authorDoc = await getDoc(
+					getStaffDocRef(context.firestore, authorId),
+				)
+				if (!authorDoc.exists()) continue
+				const authorData = authorDoc.data()
+				contents.forEach((content) => {
+					if (content.author_id === authorId) {
+						content.author = {
+							name: authorData.fullname,
+							photo_url: authorData.profile_picture_url,
+						}
+					}
+				})
+			}
+
+			const latestContentIdQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.HOME_PINNED_CONTENT))
+			const latestContentIdSnapshot = await get(latestContentIdQuery)
+			const latestContentId = latestContentIdSnapshot.val()
+
+			if (!latestContentId) {
+				return {
+					body: {
+						status: 200,
+						message: "ok",
+						data: {
+							latest_content: null,
+							partners: {
+								data: attorneys,
+								total: attorneys.length,
+							},
+							contents: {
+								data: contents,
+								total: contents.length,
+							},
+						},
+					},
+				}
+			}
+
+			const latestContentDoc = await getDoc(getPublicationDocRef(context.firestore, latestContentId))
+
+			if (!latestContentDoc.exists()) {
+				return {
+					body: {
+						status: 200,
+						message: "ok",
+						data: {
+							latest_content: null,
+							partners: {
+								data: attorneys,
+								total: attorneys.length,
+							},
+							contents: {
+								data: contents,
+								total: contents.length,
+							},
+						},
+					},
+				}
+			}
+
+			let latestContentData = latestContentDoc.data()
+			latestContentData = {
+				id: latestContentDoc.id,
+				title: latestContentData.title,
+				slug: latestContentData.slug,
+				image_url: latestContentData.cover_image_url,
 				// @ts-expect-error - just ignore
-				published_at: dayjs(data.published_at.seconds * 1000)
+				published_at: dayjs(latestContentData.published_at.seconds * 1000)
 					.format("MMM D, YYYY"),
-				category_id: data.category_id,
-				author_id: data.author_id,
+				category_id: latestContentData.category_id,
+				author_id: latestContentData.author_id,
 				author: null as Record<string, unknown> | null,
 				category: null as string | null,
 			}
-		})
 
-		const contentCategoryIds = Array
-			.from(new Set(contents.map(content => content.category_id)))
-			.filter(Boolean)
+			if (latestContentData.author_id) {
+				const authorDoc = await getDoc(
+					getStaffDocRef(context.firestore, latestContentData.author_id),
+				)
 
-		for (const categoryId of contentCategoryIds) {
-			const categoryDoc = await getDoc(
-				getCategoryDocRef(context.firestore, categoryId),
-			)
-			if (!categoryDoc.exists()) continue
-			const categoryData = categoryDoc.data()
-			if (!categoryData) continue
-			contents.forEach((content) => {
-				if (content.category_id === categoryId) {
-					content.category = categoryData.name
-				}
-			})
-		}
-		const contentAuthorIds = Array
-			.from(new Set(contents.map(content => content.author_id)))
-			.filter(Boolean)
-
-		for (const authorId of contentAuthorIds) {
-			if (!authorId) continue
-			const authorDoc = await getDoc(
-				getStaffDocRef(context.firestore, authorId),
-			)
-			if (!authorDoc.exists()) continue
-			const authorData = authorDoc.data()
-			contents.forEach((content) => {
-				if (content.author_id === authorId) {
-					content.author = {
+				const authorData = authorDoc.data()
+				if (authorData) {
+					latestContentData.author = {
 						name: authorData.fullname,
 						photo_url: authorData.profile_picture_url,
 					}
 				}
-			})
-		}
+			}
 
-		const latestContentIdQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.HOME_PINNED_CONTENT))
-		const latestContentIdSnapshot = await get(latestContentIdQuery)
-		const latestContentId = latestContentIdSnapshot.val()
+			if (latestContentData.category_id) {
+				const categoryDoc = await getDoc(
+					getCategoryDocRef(context.firestore, latestContentData.category_id),
+				)
 
-		if (!latestContentId) {
+				if (categoryDoc.exists()) {
+					const categoryData = categoryDoc.data()
+					if (categoryData) {
+						latestContentData.category = categoryData.name
+					}
+				}
+			}
+
 			return {
 				body: {
 					status: 200,
 					message: "ok",
 					data: {
-						latest_content: null,
+						latest_content: latestContentData,
 						partners: {
-							data: partners,
-							total: partners.length,
+							data: attorneys,
+							total: attorneys.length,
 						},
 						contents: {
 							data: contents,
@@ -175,87 +262,8 @@ const homePageData = base
 				},
 			}
 		}
-
-		const latestContentDoc = await getDoc(getPublicationDocRef(context.firestore, latestContentId))
-
-		if (!latestContentDoc.exists()) {
-			return {
-				body: {
-					status: 200,
-					message: "ok",
-					data: {
-						latest_content: null,
-						partners: {
-							data: partners,
-							total: partners.length,
-						},
-						contents: {
-							data: contents,
-							total: contents.length,
-						},
-					},
-				},
-			}
-		}
-
-		let latestContentData = latestContentDoc.data()
-		latestContentData = {
-			id: latestContentDoc.id,
-			title: latestContentData.title,
-			slug: latestContentData.slug,
-			image_url: latestContentData.cover_image_url,
-			// @ts-expect-error - just ignore
-			published_at: dayjs(latestContentData.published_at.seconds * 1000)
-				.format("MMM D, YYYY"),
-			category_id: latestContentData.category_id,
-			author_id: latestContentData.author_id,
-			author: null as Record<string, unknown> | null,
-			category: null as string | null,
-		}
-
-		if (latestContentData.author_id) {
-			const authorDoc = await getDoc(
-				getStaffDocRef(context.firestore, latestContentData.author_id),
-			)
-
-			const authorData = authorDoc.data()
-			if (authorData) {
-				latestContentData.author = {
-					name: authorData.fullname,
-					photo_url: authorData.profile_picture_url,
-				}
-			}
-		}
-
-		if (latestContentData.category_id) {
-			const categoryDoc = await getDoc(
-				getCategoryDocRef(context.firestore, latestContentData.category_id),
-			)
-
-			if (categoryDoc.exists()) {
-				const categoryData = categoryDoc.data()
-				if (categoryData) {
-					latestContentData.category = categoryData.name
-				}
-			}
-		}
-
-		return {
-			body: {
-				status: 200,
-				message: "ok",
-				data: {
-					latest_content: latestContentData,
-					partners: {
-						data: partners,
-						total: partners.length,
-					},
-					contents: {
-						data: contents,
-						total: contents.length,
-					},
-				},
-			},
+		catch (e) {
+			console.log(`error`, e)
 		}
 	})
 
@@ -270,8 +278,8 @@ const practiceAreasPageData = base
 	.output(PracticeAreaPageDataOutputSchema)
 	.handler(async function ({ context }) {
 		/**
-		 * get contents for practice areas
-		 */
+			* get contents for practice areas
+			*/
 		const contentsQuery = query(
 			getPublicationCollectionRef(context.firestore),
 			where("type", "==", "publication"),
@@ -342,29 +350,28 @@ const practiceAreasPageData = base
 			})
 		}
 
-		/**
-		     * get attorneys for practice areas
-		 	 */
-		const attorneysQuery = query(
-			getStaffCollectionRef(context.firestore),
-			orderBy("created_at", "desc"),
-			where("type", "==", "partner"),
-			limit(4),
-		)
+		const homeAttorneyIdsQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.HOME_ATTORNEY_ORDER))
+		const homeAttorneyIdsSnapshot = await get(homeAttorneyIdsQuery)
 
-		const attorneysSnapshot = await getDocs(attorneysQuery)
-		const attorneys = attorneysSnapshot.docs.map((doc) => {
-			const data = doc.data()
-			return {
-				id: data.id!,
-				name: data.fullname,
-				slug: data.slug,
-				image_url: data.profile_picture_url,
-				type: data.type,
-				email: data.email,
-				linkedin_url: data.linkedin_url,
-			}
-		})
+		const attorneyDocs = await Promise
+			.all((homeAttorneyIdsSnapshot.val() as string[])
+				.filter(Boolean)
+				.map(e => getDoc(getStaffDocRef(context.firestore, e))),
+			)
+
+		const attorneys = attorneyDocs.filter(doc => doc.exists())
+			.map((doc) => {
+				const data = doc.data()
+				return ({
+					id: doc.id!,
+					name: data.fullname,
+					slug: data.slug,
+					image_url: data.profile_picture_url,
+					type: data.type,
+					email: data.email,
+					linkedin_url: data.linkedin_url,
+				})
+			})
 
 		return {
 			body: {
