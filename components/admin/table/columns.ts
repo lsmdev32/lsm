@@ -1,11 +1,13 @@
 import { createColumnHelper } from "@tanstack/vue-table"
 import type { ColumnDef } from "@tanstack/vue-table"
-import { ArrowDownIcon, ArrowUpIcon, CopyIcon, DownloadIcon, PencilIcon, SaveIcon, Trash2Icon, TrashIcon } from "lucide-vue-next"
+import { ArrowDownIcon, ArrowUpIcon, CopyIcon, DownloadIcon, PencilIcon, PinIcon, SaveIcon, Trash2Icon, TrashIcon } from "lucide-vue-next"
 import { deleteDoc, getDocs, query, updateDoc, where, writeBatch } from "firebase/firestore"
 import { toast } from "vue-sonner"
+import { getDatabase, ref as dbRef, set } from "firebase/database"
 import { AdminTableAction, NuxtImg, NuxtLink, UiBadge, UiButton, UiInput } from "#components"
 import { cn } from "~/lib/utils"
 import { getBlogDocRef, getCategoryDocRef, getPublicationCollectionRef } from "~/lib/firestore-model"
+import { RTDB_KEYS } from "~/lib/constants"
 
 export type Category = {
 	objectID: string
@@ -329,6 +331,13 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 					})
 			}
 
+			async function handlePinHome() {
+				const db = getDatabase()
+				const pinRef = dbRef(db, RTDB_KEYS.HOME_PINNED_CONTENT)
+				await set(pinRef, id)
+				toast.success(`Berhasil pin konten ke Home`)
+			}
+
 			function handleUpdatePublish() {
 				const newStatus = isPublished ? "not_published" : "published"
 
@@ -365,6 +374,11 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
 						label: "Delete",
 						icon: TrashIcon,
 						onClick: handleDelete,
+					},
+					{
+						label: "Pin ke Home",
+						icon: PinIcon,
+						onClick: handlePinHome,
 					},
 				],
 			})
@@ -557,6 +571,13 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 					})
 			}
 
+			async function handlePinHome() {
+				const db = getDatabase()
+				const pinRef = dbRef(db, RTDB_KEYS.HOME_PINNED_CONTENT)
+				await set(pinRef, id)
+				toast.success(`Berhasil pin konten ke Home`)
+			}
+
 			function handleUpdatePublish() {
 				const newStatus = isPublished ? "not_published" : "published"
 
@@ -593,6 +614,11 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
 						label: "Delete",
 						icon: TrashIcon,
 						onClick: handleDelete,
+					},
+					{
+						label: "Pin ke Home",
+						icon: PinIcon,
+						onClick: handlePinHome,
 					},
 				],
 			})
