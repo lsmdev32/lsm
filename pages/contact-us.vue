@@ -116,7 +116,7 @@ const submit = async () => {
 									width="20"
 								>
 								<nuxt-link
-									href="https://maps.app.goo.gl/ECWYNJ2iU98bC4mt9"
+									href="https://maps.app.goo.gl/QThiKek4Pg5E4B4p7?g_st=iw"
 									target="_blank"
 									rel="noopener"
 									class="map-link"
@@ -197,7 +197,7 @@ const submit = async () => {
 									width="20"
 								>
 								<nuxt-link
-									href="https://maps.app.goo.gl/ECWYNJ2iU98bC4mt9"
+									href="https://maps.app.goo.gl/QThiKek4Pg5E4B4p7?g_st=iw"
 									target="_blank"
 									rel="noopener"
 									class="map-link"
