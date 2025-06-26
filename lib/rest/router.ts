@@ -567,13 +567,26 @@ const ourAttorneyDetailPageData = base
 		)
 
 		const otherPartnersSnapshot = await getDocs(otherPartnersQuery)
-		const otherPartners = otherPartnersSnapshot.docs.map((doc) => {
+		let otherPartners = otherPartnersSnapshot.docs.map((doc) => {
 			const partnerData = doc.data()
 			return {
 				id: partnerData.id!,
 				name: partnerData.fullname,
 				slug: partnerData.slug,
 			}
+		})
+
+		const partnerOrderIdsQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.ATTORNEY_ORDER))
+		const partnerOrderIdsSnapshot = await get(partnerOrderIdsQuery)
+		const partnerOrderIds = partnerOrderIdsSnapshot.val() as string[]
+
+		otherPartners = otherPartners.sort((a, b) => {
+			const indexA = partnerOrderIds.indexOf(a.id)
+			const indexB = partnerOrderIds.indexOf(b.id)
+			if (indexA === -1 && indexB === -1) return 0
+			if (indexA === -1) return 1
+			if (indexB === -1) return -1
+			return indexA - indexB
 		})
 
 		return {
