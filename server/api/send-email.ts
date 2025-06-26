@@ -9,11 +9,15 @@ export default defineEventHandler(async (event) => {
 	}
 
 	let subject = ""
+	let to = "";
+
 	if (type === "contact") {
-		subject = `From Contact Us : ${name} ingin menghubungi Anda`
+		subject = `From Contact Us : ${name} ingin menghubungi Anda`;
+		to = "lsmlawfirm@lsmlaw.co.id";
 	}
 	else {
-		subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`
+		subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`;
+		to = "hrd@lsmlaw.co.id";
 	}
 
 	const config = useRuntimeConfig()
@@ -31,7 +35,7 @@ export default defineEventHandler(async (event) => {
 	try {
 		await transporter.sendMail({
 			from: `"Website LSM" <${config.smtpUser}>`,
-			to: "lsmlawfirm@lsmlaw.co.id", // email penerima
+			to,
 			subject: subject,
 			html: `
         <p><strong>Nama:</strong> ${name}</p>
