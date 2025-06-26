@@ -19,7 +19,7 @@ export const PATH_NAMES = {
 	CONTENT_SETTER: "/dashboard/content-settings",
 } as const
 
-export const RTDB_KEYS = createPairFromEnum("HOME_PINNED_CONTENT", "HOME_ATTORNEY_ORDER", "PRACTICE_AREA_ATTORNEY_ORDER")
+export const RTDB_KEYS = createPairFromEnum("HOME_PINNED_CONTENT", "HOME_ATTORNEY_ORDER", "PRACTICE_AREA_ATTORNEY_ORDER", "ATTORNEY_ORDER")
 
 export const LOCAL_STORAGE_KEYS = createPairFromEnum("IMAGE_COVER")
 
