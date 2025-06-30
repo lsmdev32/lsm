@@ -1,16 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
 import { NuxtLink } from "#components"
-import ArrowIcon from "~/assets/images/arrow-icon.svg"
-import DRThumbnail from "~/assets/images/dr-thumbnail.svg"
-import CCThumbnail from "~/assets/images/cc-thumbnail.svg"
-import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
-import useCustomFetch from "~/composables/useCustomFetch"
-import Partners from "~/components/audience/Partners.vue"
-import Reviews from "~/components/audience/Reviews.vue"
-
-const { data } = await useCustomFetch("/rest/page-data/home")
-const latestContent = data?.data?.latest_content ?? []
 
 const images = [
 	"/images/bedge1.png",
@@ -20,39 +9,6 @@ const images = [
 	"/images/bedge5.png",
 	"/images/bedge6.png",
 ]
-
-// Define available background images and corresponding text
-const contentOptions = [
-	{
-		bgImage: DRThumbnail,
-		text: "Dispute Resolution",
-		paragraph:
-			"Our Dispute Resolution practice group has extensive experience representing a wide range of clients including individuals, corporations, and government entities in complex litigation matters.",
-	},
-	{
-		bgImage: CCThumbnail,
-		text: "Corporate Commercial",
-		paragraph:
-			"We have provided assistance to and maintained relationships with a wide range of clients throughout Indonesia and abroad",
-	},
-	{
-		bgImage: IPThumbnail,
-		text: "Intellectual Property",
-		paragraph:
-			"Our Intellectual Property practice group advises on a wide range of intellectual property matters for diverse industries",
-	},
-]
-
-// Reactive state to track current option
-const currentOptionIndex = ref(0)
-
-// Function to cycle through options
-const cycleContent = () => {
-	currentOptionIndex.value = (currentOptionIndex.value + 1) % contentOptions.length
-}
-const setOption = (index: number) => {
-	currentOptionIndex.value = index
-}
 </script>
 
 <template lang="html">
