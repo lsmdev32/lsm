@@ -406,18 +406,20 @@ const ourAttorneysPageData = base
 			where("type", "==", "partner"),
 		)
 		const partnersSnapshot = await getDocs(partnersQuery)
-		let partners = partnersSnapshot.docs.map((doc) => {
-			const partnerData = doc.data()
-			return {
-				id: partnerData.id!,
-				name: partnerData.fullname,
-				slug: partnerData.slug,
-				image_url: partnerData.profile_picture_url,
-				type: partnerData.type,
-				email: partnerData.email,
-				linkedin_url: partnerData.linkedin_url,
-			}
-		})
+		let partners = partnersSnapshot.docs.filter(e => !e.data().slug.toLowerCase()
+			.includes("hesti"))
+			.map((doc) => {
+				const partnerData = doc.data()
+				return {
+					id: partnerData.id!,
+					name: partnerData.fullname,
+					slug: partnerData.slug,
+					image_url: partnerData.profile_picture_url,
+					type: partnerData.type,
+					email: partnerData.email,
+					linkedin_url: partnerData.linkedin_url,
+				}
+			})
 
 		const partnerOrderIdsQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.ATTORNEY_ORDER))
 		const partnerOrderIdsSnapshot = await get(partnerOrderIdsQuery)
