@@ -58,24 +58,28 @@ const data = response.data.data
 					</div>
 				</div>
 			</div>
-			<div class="container max-w-7xl mx-auto px-2  lg:px-8 mt-8 py-2">
-				<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
-					PARTNERS
-				</h2>
-			</div>
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-4 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 ">
-				<Partners
-					v-for="(partner) in data?.partners.data"
-					:key="partner.id"
-					:image="partner.image_url"
-					:name="partner.name"
-					:linkedin="partner.linkedin_url"
-					:email="partner.email"
-					:slug="partner.slug"
-				/>
+			<div class="flex justify-center">
+				<div>
+					<div class="container max-w-7xl mx-auto px-2  lg:px-8 mt-8 py-2">
+						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
+							PARTNERS
+						</h2>
+					</div>
+					<div class="grid grid-cols-1 md:grid-cols-1 gap-4 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 ">
+						<Partners
+							v-for="(partner) in data?.partners.data"
+							:key="partner.id"
+							:image="partner.image_url"
+							:name="partner.name"
+							:linkedin="partner.linkedin_url"
+							:email="partner.email"
+							:slug="partner.slug"
+						/>
+					</div>
+				</div>
 			</div>
 			<div class="container max-w-7xl mx-auto px-2  lg:px-8 mt-4 py-2">
-				<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
+				<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
 					ASSOCIATE
 				</h2>
 			</div>

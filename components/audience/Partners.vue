@@ -16,21 +16,21 @@
 							@click="navigate"
 						>
 
-							<nuxt-img
+							<!-- <nuxt-img
 								:src="image"
 								alt="Profile photo"
 								class="w-[375px] h-[433px] object-cover object-center transition duration-300 group-hover:opacity-70 cursor-pointer"
-							/>
+							/> -->
 
 							<!-- Nama & role -->
 							<div class="mt-4 inset-0 flex items-end justify-center">
 								<div class="text-center pb-6">
-									<h3 class="text-xl font-[Marcellus] text-[#4B3D2A]">
+									<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] underline">
 										{{ name }}
 									</h3>
-									<p class="text-sm text-[#dab38d] tracking-widest mt-1">
+									<!-- <p class="text-sm text-[#dab38d] tracking-widest mt-1">
 										PARTNERS
-									</p>
+									</p> -->
 								</div>
 							</div>
 
