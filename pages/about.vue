@@ -92,7 +92,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 					<!-- Two paragraphs of text -->
 					<div class="w-full ">
 						<div class="text-gray-500 leading-relaxed font-[Ubuntu]">
-							Lubis Santosa & Maramis believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
+							Lubis Santosa & Partners believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
 						</div>
 						<div class="flex items-start justify-start mt-4">
 							<NuxtLink
@@ -114,7 +114,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 					>
 						Download Company Profile of
 						<br>
-						Lubis, Santosa & Maramis here
+						Lubis, Santosa & Partners here
 					</div>
 				</div>
 				<!-- Right column with content -->
@@ -190,7 +190,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 						<!-- Two paragraphs of text -->
 						<div class="flex flex-col items-center px-4 py-4 space-y-4 text-sm md:text-base text-gray-500 leading-6 max-w-2xl">
 							<div class="font-[Ubuntu]">
-								Lubis Santosa & Maramis believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
+								Lubis Santosa & Partners believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
 							</div>
 						</div>
 					</div>
@@ -211,7 +211,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 						>
 							Download Company Profile of
 							<br>
-							Lubis, Santosa & Maramis here
+							Lubis, Santosa & Partners here
 						</div>
 					</div>
 					<!-- Right column with content -->

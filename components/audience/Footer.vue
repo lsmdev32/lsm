@@ -82,7 +82,7 @@ const subscribe = async () => {
 				</div>
 			</div>
 		</div>
-		<div>
+		<!-- <div>
 			<div>
 				<div
 					class="font-marcellus"
@@ -105,10 +105,10 @@ const subscribe = async () => {
 					placeholder="Email"
 					class="text-black"
 					required
-				>
+				> -->
 
-				<!-- Pesan sukses / gagal -->
-				<div
+		<!-- Pesan sukses / gagal -->
+		<!-- <div
 					v-if="message"
 					class="mb-6 mt-[-10px] text-sm text-black font-bold message-box"
 				>
@@ -123,7 +123,7 @@ const subscribe = async () => {
 					/>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
