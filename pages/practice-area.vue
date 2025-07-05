@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NuxtImg } from "#components"
-import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
+// import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
 import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 </script>
 
@@ -8,7 +8,7 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 	<div class="z-10">
 		<!-- Mobile -->
 		<section class="md:hidden ">
-			<div class="flex flex-col items-start justify-center px-6 py-6 z-0">
+			<div class="flex flex-col items-start justify-center px-4 py-6 z-0">
 				<div class="flex flex-col bg-[url('/images/img-practice-area.svg')] bg-no-repeat bg-cover justify-end items-start w-full h-[556px] p-4">
 					<h1 class="text-4xl font-[marcellus] text-white">
 						Practice Area
@@ -17,16 +17,16 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 			</div>
 		</section>
 		<section class="md:hidden py-3">
-			<div class="flex flex-row px-6 py-6 gap-44 z-0 w-full">
-				<div class="flex-1/3">
+			<div class="flex flex-row px-4 py-6 gap-44 z-0 w-full">
+				<!-- <div class="flex-1/3">
 					<NuxtImg
 						class="w-4 h-6 mt-4"
 						:src="ArrowSm"
 					/>
-				</div>
-				<div class="flex flex-col items-start justify-stretch z-0 w-2/3">
+				</div> -->
+				<div class="flex flex-col items-start justify-stretch z-0">
 					<div class="flex-1">
-						<p class="text-xl font-[Ubuntu] font-light text-left text-[#4B3D2A]">
+						<p class="text-xl font-[Ubuntu] font-light text-justify text-[#4B3D2A]">
 							Lawyers at LSM are experts in their fields and are
 							dedicated to providing the best legal services to our
 							clients. We have a wide range of practice areas, and we
@@ -82,14 +82,14 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 					>
 						Practice Area
 					</h2>
-					<div class="max-w-7xl mx-auto md:mt-28 lg:mt-16 ">
+					<!-- <div class="max-w-7xl mx-auto md:mt-28 lg:mt-16 ">
 						<img
 							src="../assets/Arrow 1.png"
 							height="60px"
 							alt=""
 							style=""
 						>
-					</div>
+					</div> -->
 				</div>
 				<!-- Right column with content -->
 				<div class="space-y-8 ">
@@ -101,7 +101,7 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 					</div>
 				</div>
 			</div>
-			<div class="z-0 grid grid-cols-1 md:grid-cols-2 gap-12 md:mt-[-70px] lg:mt-[-70px]">
+			<div class="z-0 grid grid-cols-1 md:grid-cols-2 gap-12 ">
 				<!-- Left column with Down arrow -->
 				<div />
 				<!-- Right column with content -->

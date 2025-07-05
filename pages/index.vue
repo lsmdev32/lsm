@@ -31,23 +31,8 @@ const images = [
 			</div>
 		</section>
 
-		<section class="md:min-w-full md:hidden">
-			<div class="flex flex-col items-start justify-center px-4 py-6 z-0">
-				<div class="flex-1">
-					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
-						Founded in 1986, our law firm has built a legacy of excellence as a pioneer in groundbreaking litigation cases. Renowned for our innovative approach and creative legal strategies, we have consistently delivered exceptional results in complex and high-stakes disputes.
-					</p>
-					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
-						Our comprehensive legal services encompass a wide spectrum of areas, including civil, commercial, administrative, constitutional, and criminal litigation. We are dedicated to managing each type of case with expertise and diligence, ensuring that our clients receive the highest level of representation. Whether we are navigating complex commercial disputes or defending constitutional rights, our attorneys are unwavering in their commitment to achieving successful outcomes that are tailored to the unique needs of each client. Additionally, we are passionate about handling public interest cases and advocating for public policy, striving for impactful legal outcomes that contribute to societal progress. Guided by unwavering integrity, we uphold the highest ethical standards in every case we take on.
-						<br>
-						We serve with heart by putting our clients’ interests as our main priority. Anticipating and providing what our clients’ needs are what we do.
-					</p>
-				</div>
-			</div>
-		</section>
-
 		<!-- Desktop -->
-		<section class="hidden md:block md:min-w-full">
+		<section class="hidden md:flex justify-center items-center md:min-w-full">
 			<div class="flex bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center bg-cover items-end justify-start text-left w-full h-[575px] pl-[30px] py-[30px] md:pl-12">
 				<div class="flex flex-col items-start justify-start text-left pl-[30px] py-[60px] md:pl-12 ">
 					<div>
@@ -86,14 +71,14 @@ const images = [
 						<br>
 						LSM
 					</h2>
-					<div class="max-w-7xl mx-auto md:mt-28 lg:mt-16 ">
+					<!-- <div class="max-w-7xl mx-auto md:mt-28 lg:mt-16 ">
 						<img
 							src="../assets/Arrow 1.png"
 							height="60px"
 							alt=""
 							style=""
 						>
-					</div>
+					</div> -->
 				</div>
 				<!-- Right column with content -->
 				<div class="space-y-8 ">
@@ -105,7 +90,7 @@ const images = [
 					</div>
 				</div>
 			</div>
-			<div class="z-0 grid grid-cols-1 md:grid-cols-2 gap-12 md:mt-[-70px] lg:mt-[-70px]">
+			<div class="z-0 grid grid-cols-1 md:grid-cols-2 gap-12 ">
 				<!-- Left column with Down arrow -->
 				<div />
 				<!-- Right column with content -->
@@ -212,33 +197,30 @@ const images = [
 						ABOUT LSM
 					</h2>
 				</div>
-				<div class="grid grid-cols-2 md:grid-cols-2 gap-6">
+				<div>
+					<!-- Body Text -->
+					<p class="text-md md:text-base text-justify text-gray-500 leading-6 max-w-2xl ">
+						Our comprehensive legal services encompass a wide spectrum of areas, including civil, commercial, administrative, constitutional, and criminal litigation. We are dedicated to managing each type of case with expertise and diligence, ensuring that our clients receive the highest level of representation. Whether we are navigating complex commercial disputes or defending constitutional rights, our attorneys are unwavering in their commitment to achieving successful outcomes that are tailored to the unique needs of each client. Additionally, we are passionate about handling public interest cases and advocating for public policy, striving for impactful legal outcomes that contribute to societal progress. Guided by unwavering integrity, we uphold the highest ethical standards in every case we take on.
+					</p>
+					<br>
+					<p class="text-md md:text-base text-justify text-gray-500 leading-6 max-w-2xl ">
+						We serve with heart by putting our clients’ interests as our main priority. Anticipating and providing what our clients’ needs are what we do.
+					</p>
+				</div>
+				<div class="flex gap-6">
 					<!-- Panah -->
-					<div class="">
+					<!-- <div class="">
 						<img
 							src="../assets/Arrow 1.png"
 							alt=""
 							style="height: 34px; width: 16px;"
 						>
-					</div>
+					</div> -->
 
 					<!-- Deskripsi -->
-					<p class="text-[#D9B28C] text-1xl font-[Marcellus] ml-[-100px] eading-relaxed">
+					<p class="text-[#D9B28C] text-lg text-justify font-[Marcellus] eading-relaxed">
 						We are committed to providing responsive attorneys, efficiently managed transactions and cases that meet the needs of our Clients
 					</p>
-				</div>
-				<div>
-					<!-- Body Text -->
-					<p class="text-sm md:text-base text-gray-500 leading-6 max-w-2xl ">
-						Our comprehensive legal services encompass a wide spectrum of areas, including civil, commercial, administrative, constitutional, and criminal litigation. We are dedicated to managing each type of case with expertise and diligence, ensuring that our clients receive the highest level of representation. Whether we are navigating complex commercial disputes or defending constitutional rights, our attorneys are unwavering in their commitment to achieving successful outcomes that are tailored to the unique needs of each client. Additionally, we are passionate about handling public interest cases and advocating for public policy, striving for impactful legal outcomes that contribute to societal progress. Guided by unwavering integrity, we uphold the highest ethical standards in every case we take on.
-					</p>
-					<br>
-					<p class="text-sm md:text-base text-gray-500 leading-6 max-w-2xl ">
-						We serve with heart by putting our clients’ interests as our main priority. Anticipating and providing what our clients’ needs are what we do.
-					</p>
-				</div>
-				<div class="container max-w-7xl mx-auto lg:px-8 py-8 ">
-					<ThreePic />
 				</div>
 			</div>
 			<div>
@@ -257,7 +239,7 @@ const images = [
 					<!-- Right column with content -->
 					<div class="space-y-8 mt-4 flex flex-col">
 						<!-- Two paragraphs of text -->
-						<div class="flex flex-col items-center px-4 py-4 space-y-4 text-sm md:text-base text-gray-500 leading-6 max-w-2xl">
+						<div class="flex flex-col items-center px-4 py-4 space-y-4 text-md md:text-base text-gray-500 leading-6 max-w-2xl">
 							<div class="font-[Ubuntu]">
 								Lubis Santosa & Partners believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
 							</div>

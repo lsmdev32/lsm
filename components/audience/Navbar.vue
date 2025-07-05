@@ -20,13 +20,13 @@ import LogoSVG from "~/assets/images/logo-lsm-main.svg"
 						</NuxtLink>
 					</div>
 					<div class="hidden sm:justify-center sm:text-center text-[#4B3D2A] lg:flex space-x-4">
-						<NuxtLink
+						<!-- <NuxtLink
 							to="/about"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
 							About LSM
-						</NuxtLink>
+						</NuxtLink> -->
 						<NuxtLink
 							to="/practice-area"
 							style="font-size:medium;"
