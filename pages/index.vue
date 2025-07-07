@@ -66,7 +66,7 @@ const setOption = (index: number) => {
 				<div class="flex flex-col items-start justify-start text-left pl-[30px] py-[30px] md:pl-12 ">
 					<div>
 						<h1 class="text-6xl text-white">
-							Lubis,<br> Santosa <br>& Mitra
+							Lubis,<br> Santosa <br>& Partners
 						</h1>
 					</div>
 					<div class="pt-[160px]">
@@ -77,7 +77,23 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
-		<section class="md:min-w-full md:hidden font-[philosopher] ">
+
+		<section class="md:min-w-full md:hidden">
+			<div class="flex flex-col items-start justify-center px-4 py-6 z-0">
+				<div class="flex-1">
+					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
+						Founded in 1986, our law firm has built a legacy of excellence as a pioneer in groundbreaking litigation cases. Renowned for our innovative approach and creative legal strategies, we have consistently delivered exceptional results in complex and high-stakes disputes.
+					</p>
+					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
+						Our comprehensive legal services encompass a wide spectrum of areas, including civil, commercial, administrative, constitutional, and criminal litigation. We are dedicated to managing each type of case with expertise and diligence, ensuring that our clients receive the highest level of representation. Whether we are navigating complex commercial disputes or defending constitutional rights, our attorneys are unwavering in their commitment to achieving successful outcomes that are tailored to the unique needs of each client. Additionally, we are passionate about handling public interest cases and advocating for public policy, striving for impactful legal outcomes that contribute to societal progress. Guided by unwavering integrity, we uphold the highest ethical standards in every case we take on.
+						<br>
+						We serve with heart by putting our clients’ interests as our main priority. Anticipating and providing what our clients’ needs are what we do.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- <section class="md:min-w-full md:hidden font-[philosopher] ">
 			<a
 				:href="`/practice-area?category=${0}`"
 				class="block"
@@ -118,10 +134,10 @@ const setOption = (index: number) => {
 					</div>
 				</div>
 			</a>
-		</section>
+		</section> -->
 
-		<!-- Blog and Publication Section here! -->
-		<section class="sm:justify-center md:hidden md:min-w-full">
+		<!-- Blog and Publication Section here! Hidden -->
+		<!-- <section class="sm:justify-center md:hidden md:min-w-full">
 			<div class="w-full mx-auto sm:px-6 lg:px-8">
 				<h1 class="text-3xl font-[Marcellus] text-center py-4">
 					Publications
@@ -130,10 +146,10 @@ const setOption = (index: number) => {
 			<div class="items-center justify-center px-6 py-6 z-0">
 				<Publications :publications="contents" />
 			</div>
-		</section>
+		</section> -->
 
-		<!-- Our Attorneys Section -->
-		<section class="sm:justify-center md:hidden md:min-w-full">
+		<!-- Our Attorneys Section Hidden -->
+		<!-- <section class="sm:justify-center md:hidden md:min-w-full">
 			<div class="w-full mx-auto sm:px-6 lg:px-8">
 				<h1 class="text-3xl font-[Marcellus] text-center py-4">
 					Our Attorneys
@@ -151,7 +167,7 @@ const setOption = (index: number) => {
 					:slug="partner.slug"
 				/>
 			</div>
-		</section>
+		</section> -->
 
 		<!-- Desktop -->
 		<section class="hidden md:block md:min-w-full">

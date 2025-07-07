@@ -53,7 +53,7 @@ const submit = async () => {
 						Career
 					</h1>
 					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
-						LUBIS, SANTOSA & MARAMIS (LSM) is a leading Indonesia law firm with strong dispute
+						LUBIS, SANTOSA & PARTNERS (LSM) is a leading Indonesia law firm with strong dispute
 						resolution and corporate & commercial practices, providing assistance to a wide range of
 						clients throughout Indonesia and abroad including individuals, corporations, major governmental
 						and private financial institutions and large, medium and small businesses.
@@ -169,7 +169,7 @@ const submit = async () => {
 							Carrer
 						</h1>
 						<p class="mt-6 text-md font-[Ubuntu] font-light text-left text-[#949494]">
-							LUBIS, SANTOSA & MARAMIS (LSM) is a leading Indonesia law firm with strong dispute
+							LUBIS, SANTOSA & PARTNERS (LSM) is a leading Indonesia law firm with strong dispute
 							resolution and corporate & commercial practices, providing assistance to a wide range of
 							clients throughout Indonesia and abroad including individuals, corporations, major governmental
 							and private financial institutions and large, medium and small businesses.

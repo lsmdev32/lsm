@@ -155,15 +155,15 @@ const getBackgroundImage = (categoryIndex: number) => {
 				<div class="mt-6 p-4 transition-all duration-300">
 					<div class="flex flex-col md:flex-row gap-4">
 						<!-- Left Column: Last line -->
-						<div class="flex-1">
+						<!-- <div class="flex-1">
 							<p class="text-[#949494] font-[Ubuntu] text-justify mb-4">
 								{{ activeSubItem.description[activeSubItem.description.length - 1] }}
 							</p>
-						</div>
+						</div> -->
 						<!-- Right Column: All lines except the last -->
 						<div class="flex-1">
 							<p
-								v-for="(line, index) in activeSubItem.description.slice(0, -1)"
+								v-for="(line, index) in activeSubItem.description"
 								:key="index"
 								class="text-[#949494] font-[Ubuntu] text-justify mb-4"
 							>
@@ -275,22 +275,22 @@ const getBackgroundImage = (categoryIndex: number) => {
 						</div>
 						<div class="mt-6 p-4 transition-all duration-300">
 							<div class="flex flex-row gap-12">
-								<!-- Left Column: Last line -->
-								<div class="flex-1">
-									<p class="text-gray-300 font-[marcellus] text-2xl text-left mb-4">
-										{{ activeSubItem.description[activeSubItem.description.length - 1] }}
-									</p>
-								</div>
-								<!-- Right Column: All lines except the last -->
+								<!-- Left Column: All lines except the last -->
 								<div class="flex-1">
 									<p
-										v-for="(line, index) in activeSubItem.description.slice(0, -1)"
+										v-for="(line, index) in activeSubItem.description"
 										:key="index"
 										class="text-[#949494] font-[Ubuntu] text-justify mb-4"
 									>
 										{{ line }}
 									</p>
 								</div>
+								<!-- Right Column: Last line -->
+								<!-- <div class="flex-1">
+									<p class="text-gray-300 font-[marcellus] text-2xl text-left mb-4">
+										{{ activeSubItem.description[activeSubItem.description.length - 1] }}
+									</p>
+								</div> -->
 							</div>
 						</div>
 					</div>
