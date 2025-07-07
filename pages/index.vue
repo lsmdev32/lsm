@@ -18,7 +18,7 @@ const images = [
 			<div class="banner">
 				<div class="flex flex-col items-start justify-start text-left pl-[30px] py-[30px] md:pl-12 ">
 					<div>
-						<h1 class="text-6xl text-white">
+						<h1 class="text-6xl text-white ">
 							Lubis,<br> Santosa <br>& Partners
 						</h1>
 					</div>
@@ -33,7 +33,7 @@ const images = [
 
 		<!-- Desktop -->
 		<section class="hidden md:flex justify-center items-center md:min-w-full">
-			<div class="flex bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center bg-cover items-end justify-start text-left w-full h-[575px] pl-[30px] py-[30px] md:pl-12">
+			<div class="flex bg-[url('/images/about-lsm.jpg')] bg-no-repeat bg-center bg-cover items-end justify-start text-left w-full h-[575px] pl-[30px] py-[30px] md:pl-12">
 				<div class="flex flex-col items-start justify-start text-left pl-[30px] py-[60px] md:pl-12 ">
 					<div>
 						<h1 class="text-8xl font-[philosopher] text-white">
@@ -98,7 +98,7 @@ const images = [
 					<!-- Image section -->
 					<div class="w-full h-64 md:h-72 lg:h-72 overflow-hidden">
 						<img
-							src="../assets/about-1.png"
+							src="/images/main-home.jpg"
 							alt=""
 							class="w-full h-full object-cover transform -scale-x-100"
 						>
@@ -106,14 +106,7 @@ const images = [
 				</div>
 			</div>
 			<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
-				<!-- Left column with Light gray text -->
-				<div class="">
-					<p class="text-3xl font-light text-gray-300 leading-relaxed font-[Marcellus]">
-						We are committed to providing responsive attorneys, efficiently managed transactions and cases that meet the needs of our Clients
-					</p>
-				</div>
-
-				<!-- Right column with content -->
+				<!-- Left column with content -->
 				<div class="space-y-8">
 					<!-- Two paragraphs of text -->
 					<div class="space-y-8 ">
@@ -125,13 +118,19 @@ const images = [
 						</p>
 					</div>
 				</div>
+				<!-- Right column with Light gray text -->
+				<div class="">
+					<p class="text-3xl font-light text-gray-300 leading-relaxed font-[Marcellus]">
+						We are committed to providing responsive attorneys, efficiently managed transactions and cases that meet the needs of our Clients
+					</p>
+				</div>
 			</div>
 			<div class="container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-16 ">
 				<ThreePic />
 			</div>
-			<div class="mt-8 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8  z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
-				<!-- Left column with Light gray text -->
-				<div
+			<!-- <div class="mt-8 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8  z-0 grid grid-cols-1 md:grid-cols-2 gap-12"> -->
+			<!-- Left column with Light gray text -->
+			<!-- <div
 					class="container d-flex justify-content-between align-items-center"
 					style=""
 				>
@@ -139,12 +138,12 @@ const images = [
 						class="image-bottom"
 						src="../assets/images/about-attorney.jpg"
 					>
-				</div>
+				</div> -->
 
-				<!-- Right column with content -->
-				<div class="space-y-8 flex flex-col justify-center">
-					<!-- Two paragraphs of text -->
-					<div class="w-full ">
+			<!-- Right column with content -->
+			<!-- <div class="space-y-8 flex flex-col justify-center"> -->
+			<!-- Two paragraphs of text -->
+			<!-- <div class="w-full ">
 						<div class="text-gray-500 leading-relaxed font-[Ubuntu]">
 							Lubis Santosa & Partners believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
 						</div>
@@ -157,7 +156,7 @@ const images = [
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="last-section  px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
 				<!-- Left column with Text -->
@@ -184,12 +183,13 @@ const images = [
 				</div>
 			</div>
 		</section>
+		<!-- Mobile -->
 		<section class="md:hidden">
 			<div class="flex flex-col items-center px-4 py-6 space-y-4">
 				<!-- Gambar dengan ABOUT LSM -->
 				<div class="relative w-full">
 					<img
-						src="../assets/about-1.png"
+						src="/images/main-home.jpg"
 						alt=""
 						class="w-full h-auto object-cover"
 					>
@@ -226,7 +226,7 @@ const images = [
 			<div>
 				<div class="mt-8 grid-cols-1 gap-12">
 					<!-- Left column with Light gray text -->
-					<div
+					<!-- <div
 						class="w-full h-auto relative bg-cover overflow-hidden"
 						style=""
 					>
@@ -234,12 +234,12 @@ const images = [
 							class="w-full h-auto object-cover"
 							src="../assets/images/about-attorney.jpg"
 						>
-					</div>
+					</div> -->
 
 					<!-- Right column with content -->
-					<div class="space-y-8 mt-4 flex flex-col">
-						<!-- Two paragraphs of text -->
-						<div class="flex flex-col items-center px-4 py-4 space-y-4 text-md md:text-base text-gray-500 leading-6 max-w-2xl">
+					<!-- <div class="space-y-8 mt-4 flex flex-col"> -->
+					<!-- Two paragraphs of text -->
+					<!-- <div class="flex flex-col items-center px-4 py-4 space-y-4 text-md md:text-base text-gray-500 leading-6 max-w-2xl">
 							<div class="font-[Ubuntu]">
 								Lubis Santosa & Partners believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
 							</div>
@@ -252,29 +252,30 @@ const images = [
 							to="/attorneys"
 						>Our Attorneys</NuxtLink>
 					</div>
-				</div>
-				<div class="last-section  z-0 grid grid-cols-1 ">
-					<!-- Left column with Text -->
-					<div class="relative">
-						<div
-							class="font-[Marcellus] last-section-text "
-							style=""
-						>
-							Download Company Profile of
-							<br>
-							Lubis, Santosa & Partners here
+				</div> -->
+					<div class="last-section  z-0 grid grid-cols-1 ">
+						<!-- Left column with Text -->
+						<div class="relative">
+							<div
+								class="font-[Marcellus] last-section-text "
+								style=""
+							>
+								Download Company Profile of
+								<br>
+								Lubis, Santosa & Partners here
+							</div>
 						</div>
-					</div>
-					<!-- Right column with content -->
-					<div class="space-y-8 mt-10">
-						<!-- Button -->
-						<NuxtLink
-							type="button"
-							class="custom-button-about d-flex font-[Ubuntu]"
-							to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
-						>
-							<span>Download Company Profile</span>
-						</NuxtLink>
+						<!-- Right column with content -->
+						<div class="space-y-8 mt-10">
+							<!-- Button -->
+							<NuxtLink
+								type="button"
+								class="custom-button-about d-flex font-[Ubuntu]"
+								to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
+							>
+								<span>Download Company Profile</span>
+							</NuxtLink>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -284,7 +285,7 @@ const images = [
 
 <style>
 .banner {
-	background: url('~/assets/images/banner1.svg') no-repeat center center;
+	background: url('/images/about-lsm.jpg') no-repeat right center;
 	background-size: cover;
 	height: 445px;
 	display: flex;

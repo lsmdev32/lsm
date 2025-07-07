@@ -102,13 +102,13 @@
 				<!-- Specialized Sectors Section -->
 				<div class="mb-16">
 					<!-- Section Title -->
-					<div class="mb-8">
-						<h2 class="text-2xl font-marcellus text-[#4B3D2A]">
+					<div class="mb-4">
+						<h2 class="text-3xl font-marcellus text-[#4B3D2A]">
 							Specialized Sectors
 						</h2>
 					</div>
-
-					<div class="flex flex-row gap-20">
+					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+					<div class="flex flex-row gap-20 pt-4">
 						<!-- First Half -->
 						<div class="flex-1 flex flex-col gap-12 text-[#DAB38D] font-marcellus">
 							<div
