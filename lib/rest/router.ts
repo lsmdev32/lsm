@@ -437,9 +437,16 @@ const ourAttorneysPageData = base
 		const associatesQuery = query(
 			getStaffCollectionRef(context.firestore),
 			where("type", "==", "associate"),
+			orderBy("fullname"),
 		)
 
-		const associatesSnapshot = await getDocs(associatesQuery)
+		let associatesSnapshot = { docs: [] }
+		try {
+			associatesSnapshot = await getDocs(associatesQuery)
+		}
+		catch (e) {
+			console.error("Error fetching associates:", e)
+		}
 		const associates = associatesSnapshot.docs.map((doc) => {
 			const associateData = doc.data()
 			return {
