@@ -49,7 +49,7 @@
 				<NuxtLink
 					to="/blogs"
 					@click="closeMenu"
-				>Blog</NuxtLink>
+				>Updates</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
