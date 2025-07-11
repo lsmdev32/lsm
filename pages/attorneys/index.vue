@@ -79,6 +79,23 @@ const data = response.data.data
 					</div>
 					<div class="container max-w-7xl mx-auto px-2 lg:px-8 mt-8 py-2">
 						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
+							OF COUNSEL
+						</h2>
+					</div>
+					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 ">
+						<Partners
+							v-for="(partner) in data?.partners.data.slice(-1, 1)"
+							:key="partner.id"
+							:image="partner.image_url"
+							:name="partner.name"
+							:linkedin="partner.linkedin_url"
+							:email="partner.email"
+							:slug="partner.slug"
+						/>
+					</div>
+					<div class="container max-w-7xl mx-auto px-2 lg:px-8 mt-8 py-2">
+						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
 							PARTNERS
 						</h2>
 					</div>
