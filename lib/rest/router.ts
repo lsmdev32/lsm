@@ -406,6 +406,11 @@ const ourAttorneysPageData = base
 			where("type", "==", "partner"),
 		)
 		const partnersSnapshot = await getDocs(partnersQuery)
+		const hestiParner = partnersSnapshot.docs.findLast(e => e.data().fullname
+			.toLowerCase()
+			.includes("hesti"))
+			?.data()
+
 		let partners = partnersSnapshot.docs.filter(e => !e.data().slug.toLowerCase()
 			.includes("hesti"))
 			.map((doc) => {
@@ -433,6 +438,18 @@ const ourAttorneysPageData = base
 			if (indexB === -1) return -1
 			return indexA - indexB
 		})
+
+		if (hestiParner) {
+			partners.push({
+				id: hestiParner.id!,
+				name: hestiParner.fullname,
+				slug: hestiParner.slug,
+				image_url: hestiParner.profile_picture_url,
+				type: hestiParner.type,
+				email: hestiParner.email,
+				linkedin_url: hestiParner.linkedin_url,
+			})
+		}
 
 		const associatesQuery = query(
 			getStaffCollectionRef(context.firestore),
