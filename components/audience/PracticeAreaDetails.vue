@@ -148,7 +148,7 @@
 							class="flex items-end justify-start bg-cover bg-center w-full h-72 mb-4 px-4 pb-8 relative"
 						>
 							<div class="absolute inset-0 bg-black bg-opacity-40" />
-							<h2 class="text-4xl text-white font-marcellus font-light relative z-10">
+							<h2 class="text-4xl text-white font-marcellus relative z-10">
 								{{ activeItem.title }}
 							</h2>
 						</div>
@@ -293,7 +293,8 @@ const specializedSectors = [
 const activeItem = ref(null)
 
 onMounted(() => {
-	activeItem.value = mainCategories.find(item => item.title === "Administrative Dispute")
+	activeItem.value = mainCategories.find(item => item.title === "Administrative Dispute") || mainCategories[0]
+	console.log("Initial Active Item:", activeItem.value.title)
 })
 
 const getMainSubItems = (columnIndex: number) => {
@@ -309,47 +310,37 @@ const getSpecializedSubItems = (columnIndex: number) => {
 }
 
 const getItemSource = (item: { title: string, description: string[] }) => {
-	if (mainCategories.includes(item)) return "main"
-	if (specializedSectors.includes(item)) return "specialized"
+	if (mainCategories.some(category => category.title === item.title)) return "main"
+	if (specializedSectors.some(category => category.title === item.title)) return "specialized"
 	return "main"
 }
 
 const getBackgroundImage = (item: { title: string, description: string[] }) => {
 	const source = getItemSource(item)
-	const index = source === "main" ? mainCategories.indexOf(item) : specializedSectors.indexOf(item)
-
-	// Using placeholder background images - you can replace these with actual images
-	const mainImages = [
-		"https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1556745757-8d76bdb6984b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-	]
-
-	const specializedImages = [
-		"https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1580894742597-87bc8789db3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1589994965851-a8f479c573a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-		"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-	]
-
-	return source === "main" ? mainImages[index] || mainImages[0] : specializedImages[index] || specializedImages[0]
+	const index = source === "main" ? mainCategories.findIndex(category => category.title === item.title) : specializedSectors.findIndex(category => category.title === item.title)
+	const images = source === "main" ? mainImages : specializedImages
+	const image = images[index] || images[0]
+	console.log(`Source: ${source}, Index: ${index}, Image: ${image}`)
+	return image
 }
+
+const mainImages = [
+	"/images/administrative-dispute.jpg",
+	"/images/constitutional-2.jpg",
+	"/images/industrial-dispute.jpg",
+	"/images/criminal-defense.jpg",
+	"/images/commercial-litigation.jpg",
+	"/images/bankruptcy.jpg",
+	"/images/arbitration.jpg",
+]
+
+const specializedImages = [
+	"/images/mass-media.jpg",
+	"/images/energy.jpg",
+	"/images/education.jpg",
+	"/images/corruption.jpg",
+	"/images/election.jpg",
+	"/images/environment.jpg",
+	"/images/corporate.jpg",
+]
 </script>
-
-<style scoped>
-/* Custom font classes for Marcellus and Ubuntu */
-.font-marcellus {
-  font-family: 'Marcellus', serif;
-}
-
-.font-ubuntu {
-  font-family: 'Ubuntu', sans-serif;
-}
-</style>

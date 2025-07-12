@@ -9,7 +9,7 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 		<!-- Mobile -->
 		<section class="md:hidden ">
 			<div class="flex flex-col items-start justify-center px-4 py-6 z-0">
-				<div class="flex flex-col bg-[url('/images/img-practice-area.svg')] bg-no-repeat bg-cover justify-end items-start w-full h-[556px] p-4">
+				<div class="flex flex-col bg-[url('images/practice-area-1.jpg')] bg-no-repeat bg-center justify-end items-start w-full h-[556px] p-4">
 					<h1 class="text-4xl font-[marcellus] text-white">
 						Practice Area
 					</h1>
@@ -109,9 +109,9 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
 					<!-- Image section -->
 					<div class="w-full h-64 md:h-72 lg:h-72 overflow-hidden">
 						<img
-							src="../assets/about-1.png"
+							src="/images/practice-area-1.jpg"
 							alt=""
-							class="w-full h-full object-cover transform -scale-x-100"
+							class="w-full h-full object-cover object-left-top transform -scale-x-100"
 						>
 					</div>
 				</div>

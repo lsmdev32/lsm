@@ -33,7 +33,7 @@ const images = [
 
 		<!-- Desktop -->
 		<section class="hidden md:flex justify-center items-center md:min-w-full">
-			<div class="flex bg-[url('/images/about-lsm.jpg')] bg-no-repeat bg-center bg-cover items-end justify-start text-left w-full h-[575px] pl-[30px] py-[30px] md:pl-12">
+			<div class="flex bg-[url('images/gambar-utama.jpg')] bg-no-repeat bg-center bg-cover items-end justify-start text-left w-full h-[575px] pl-[30px] py-[30px] md:pl-12">
 				<div class="flex flex-col items-start justify-start text-left pl-[30px] py-[60px] md:pl-12 ">
 					<div>
 						<h1 class="text-8xl font-[philosopher] text-white">
@@ -98,7 +98,7 @@ const images = [
 					<!-- Image section -->
 					<div class="w-full h-64 md:h-72 lg:h-72 overflow-hidden">
 						<img
-							src="/images/main-home.jpg"
+							src="/images/about-lsm.jpg"
 							alt=""
 							class="w-full h-full object-cover transform -scale-x-100"
 						>
@@ -189,7 +189,7 @@ const images = [
 				<!-- Gambar dengan ABOUT LSM -->
 				<div class="relative w-full">
 					<img
-						src="/images/main-home.jpg"
+						src="/images/about-lsm.jpg"
 						alt=""
 						class="w-full h-auto object-cover"
 					>
@@ -285,7 +285,7 @@ const images = [
 
 <style>
 .banner {
-	background: url('/images/about-lsm.jpg') no-repeat right center;
+	background: url('/images/gambar-utama.jpg') no-repeat right center;
 	background-size: cover;
 	height: 445px;
 	display: flex;

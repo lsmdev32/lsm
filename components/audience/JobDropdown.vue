@@ -1,7 +1,7 @@
 <template>
 	<div class="relative w-full">
 		<h2 class="text-3xl font-[marcellus] text-[#DAB38D]">
-			Job Positions
+			Requirements
 		</h2>
 		<select
 			v-model="selectedJob"
@@ -12,7 +12,7 @@
 				value=""
 				disabled
 			>
-				Select a job position
+				Select a position
 			</option>
 			<option
 				v-for="job in jobs"
