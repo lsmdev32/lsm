@@ -56,23 +56,8 @@ const submit = async () => {
 					<h3 class="mt-6 text-2xl font-[Ubuntu] font-light text-justify text-[#949494]">
 						Your next big case begins here!
 					</h3>
-					<p class="mt-6 mb-6 text-xl font-[Ubuntu] font-light text-justify text-[#949494]">
-						LUBIS, SANTOSA & PARTNERS (LSM) is a leading Indonesia law firm with strong dispute
-						resolution and corporate & commercial practices, providing assistance to a wide range of
-						clients throughout Indonesia and abroad including individuals, corporations, major governmental
-						and private financial institutions and large, medium and small businesses.
-					</p>
-					<p class="mt-6 text-xl font-[Ubuntu] font-light text-justify text-[#949494]">
-						Candidates should send a detailed application, CV, expected salary to Office Manager to the following email address :
-					</p>
-					<p class="mt-2 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
-						<a
-							class="hover:text-[#DAB38D] hover:underline"
-							href="mailto:hrd@lsmlaw.co.id"
-						>hrd@lsmlaw.co.id</a>
-					</p>
-					<p class="mt-6 mb-6 text-2xl font-[Ubuntu] font-light text-justify text-[#949494]">
-						We are always eager to meet with new colleagues, so checks out our open position.
+					<p class="mb-6 mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
+						We are always eager to meet with new colleagues. <a class="font-bold">We are currently hiring</a>, so checks out our "Updates" for open position.
 					</p>
 					<JobDropdown />
 					<!-- <h1 class="mt-6 text-4xl font-[marcellus] text-[#DAB38D]">
