@@ -24,7 +24,7 @@ const relatedContents = data?.data?.related_contents ?? []
 		<!-- Mobile -->
 		<section class="md:hidden">
 			<div class="mb-4 flex flex-col w-full">
-				<img
+				<!-- <img
 					v-if="detail?.image_url"
 					:src="detail?.image_url"
 					alt="Thumbnail"
@@ -35,7 +35,7 @@ const relatedContents = data?.data?.related_contents ?? []
 					:src="LogoSVG"
 					alt="Thumbnail"
 					class="w-full h-72 object-cover mb-4"
-				>
+				> -->
 				<div class="p-4 self-center flex flex-col gap-y-4">
 					<span class="text-sm text-[#DAB38D] font-[Ubuntu] text-center">{{ detail?.category }}</span>
 					<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug text-center">
@@ -67,7 +67,7 @@ const relatedContents = data?.data?.related_contents ?? []
 				/>
 
 				<div class="flex justify-between px-4">
-					<div class="w-[400px] flex gap-x-4 items-center">
+					<!-- <div class="w-[400px] flex gap-x-4 items-center">
 						<span
 							v-for="tag in detail.tags"
 							:key="tag"
@@ -75,12 +75,12 @@ const relatedContents = data?.data?.related_contents ?? []
 						>
 							#{{ tag }}
 						</span>
-					</div>
+					</div> -->
 					<div class="w-full">
 						<nuxt-link
 							:to="detail?.publication_file_url"
 							target="_blank"
-							class="flex items-center justify-center p-6 bg-[#4B3D2A] rounded-lg text-[#DAB38D]"
+							class="flex items-center font-[Marcellus] justify-center py-4 bg-[#4B3D2A] rounded-lg text-[#DAB38D]"
 						>
 							Download Publication
 						</nuxt-link>
@@ -100,7 +100,7 @@ const relatedContents = data?.data?.related_contents ?? []
 				<div class="w-3/4">
 					<!-- Featured Post -->
 					<div class="mb-8 flex flex-col gap-y-4">
-						<img
+						<!-- <img
 							v-if="detail?.image_url"
 							:src="detail?.image_url"
 							alt="Thumbnail"
@@ -111,7 +111,7 @@ const relatedContents = data?.data?.related_contents ?? []
 							:src="LogoSVG"
 							alt="Thumbnail"
 							class="w-full h-80 object-cover mb-4"
-						>
+						> -->
 						<span class="text-sm text-[#DAB38D] font-[Ubuntu] self-center">{{ detail?.category }}</span>
 						<h3 class="text-2xl font-[Marcellus] text-[#4B3D2A] leading-snug self-center">
 							{{ detail?.title }}

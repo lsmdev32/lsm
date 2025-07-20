@@ -140,7 +140,7 @@ const data = response.data.data
 					<img
 						src="../../assets/mobile_attorneys.png"
 						alt=""
-						class="w-full h-[358px] object-cover"
+						class="w-full h-[556px] object-cover"
 					>
 					<h2 class="absolute bottom-6 left-6 text-white text-3xl font-[Marcellus] font-light">
 						OUR ATTORNEYS
