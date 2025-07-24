@@ -2,14 +2,6 @@
 import { NuxtImg } from "#components"
 import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
 import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue"
-import Publications from "~/components/audience/Publications.vue"
-import Partners from "~/components/audience/Partners.vue"
-
-const { data } = await useCustomFetch("/rest/page-data/practice-areas")
-const contents = data?.data?.news_and_publications?.data ?? []
-const attorneys = data?.data?.our_attorneys?.data ?? []
-
-const limitedPublications = contents.slice(0, 3)
 </script>
 
 <template>
@@ -50,7 +42,7 @@ const limitedPublications = contents.slice(0, 3)
 				<PracticeAreaDetails />
 			</div>
 		</section>
-		<section class="md:hidden items-center justify-center w-full">
+		<!-- <section class="md:hidden items-center justify-center w-full">
 			<div class="w-full mx-auto sm:px-6 lg:px-8">
 				<h1 class="text-3xl font-[Marcellus] text-center py-4">
 					Publications
@@ -59,8 +51,8 @@ const limitedPublications = contents.slice(0, 3)
 			<div class="items-center justify-center px-6 py-6 z-0">
 				<Publications :publications="contents" />
 			</div>
-		</section>
-		<section class="md:hidden items-center justify-center w-full">
+		</section> -->
+		<!-- <section class="md:hidden items-center justify-center w-full">
 			<div class="w-full mx-auto sm:px-6 lg:px-8">
 				<h1 class="text-3xl font-[Marcellus] text-center py-4">
 					Our Attorneys
@@ -78,7 +70,7 @@ const limitedPublications = contents.slice(0, 3)
 					:slug="partner.slug"
 				/>
 			</div>
-		</section>
+		</section> -->
 		<!-- Desktop -->
 		<section class="hidden md:block">
 			<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -128,7 +120,7 @@ const limitedPublications = contents.slice(0, 3)
 		<section class="hidden md:flex w-full h-120 z-0 mt-4">
 			<PracticeAreaDetails />
 		</section>
-		<div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+		<!-- <div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 			<h1 class="text-3xl font-[Marcellus] text-left py-4">
 				Publications
 			</h1>
@@ -137,13 +129,13 @@ const limitedPublications = contents.slice(0, 3)
 			<div class="flex max-w-7xl items-center justify-center gap-8 mx-auto">
 				<Publications :publications="limitedPublications" />
 			</div>
-		</section>
-		<div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mt-4">
+		</section> -->
+		<!-- <div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mt-4">
 			<h1 class="text-3xl font-[Marcellus] text-left py-4">
 				Our Attorneys
 			</h1>
-		</div>
-		<section class="hidden md:flex items-center justify-center w-full h-120 z-0 mt-4">
+		</div> -->
+		<!-- <section class="hidden md:flex items-center justify-center w-full h-120 z-0 mt-4">
 			<div class="flex max-w-7xl items-center justify-center gap-8 mx-auto">
 				<Partners
 					v-for="(partner, index) in attorneys"
@@ -156,6 +148,6 @@ const limitedPublications = contents.slice(0, 3)
 					:slug="partner.slug"
 				/>
 			</div>
-		</section>
+		</section> -->
 	</div>
 </template>

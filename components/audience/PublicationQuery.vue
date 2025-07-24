@@ -69,7 +69,7 @@ function resetFilters() {
 				</button>
 			</div>
 			<!-- Buttons -->
-			<div class="flex justify-between mb-4">
+			<!-- <div class="flex justify-between mb-4">
 				<button
 					class="flex-1 mx-1 p-2 font-[Ubuntu] rounded-md"
 					:class="{
@@ -90,7 +90,7 @@ function resetFilters() {
 				>
 					Archives
 				</button>
-			</div>
+			</div> -->
 
 			<!-- Categories Menu -->
 			<div

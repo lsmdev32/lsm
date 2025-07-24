@@ -171,7 +171,7 @@ function resetFilters() {
 							{{ category.name }}
 						</button>
 					</div> -->
-					<div class="flex flex-col mb-8">
+					<!-- <div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
 								Arsip
@@ -191,13 +191,13 @@ function resetFilters() {
 								{{ archive }}
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 
 				<!-- Main Content -->
 				<div class="w-3/4">
 					<!-- Featured Post -->
-					<nuxt-link
+					<!-- <nuxt-link
 						v-if="firstContent"
 						class="mb-10"
 						:to="`/blogs/${firstContent?.slug}`"
@@ -242,31 +242,30 @@ function resetFilters() {
 						<button class="mt-4 px-4 py-2 bg-[#91AEAC] text-white hover:bg-[#9aaea1] rounded w-fit text-sm">
 							Read More
 						</button>
-					</nuxt-link>
+					</nuxt-link> -->
 
 					<!-- Grid of Posts -->
-					<div class="grid grid-cols-3 gap-4 mt-10">
+					<div class="grid grid-cols-1 gap-4 mt-10">
 						<nuxt-link
-							v-for="(post, index) in contents.slice(1)"
+							v-for="(post, index) in contents"
 							:key="index"
 							class="mb-6"
 							:to="`/blogs/${post.slug}`"
 						>
-							<NuxtImg
-								v-if="post.image_url"
-								:src="post.image_url"
-								alt="Thumbnail"
-								class="w-full h-40 object-cover mb-4"
+							<!-- <NuxtImg
+								v-if="post?.image_url"
+								:src="post?.image_url"
+								class="w-full h-64 object-cover object-center mb-4"
 							/>
 							<NuxtImg
 								v-else
 								:src="LogoSVG"
 								alt="Thumbnail"
-								class="w-full h-40 object-cover mb-4"
-							/>
-							<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ post.category }}</span>
-							<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug truncate">
-								{{ post.title }}
+								class="w-full h-64 object-cover object-center mb-4"
+							/> -->
+							<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ post?.category }}</span>
+							<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
+								{{ post?.title }}
 							</h3>
 							<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">
 								<div class="flex items-center space-x-1 ">
@@ -276,7 +275,7 @@ function resetFilters() {
 										alt="Author"
 										class="w-8 h-8 rounded-full mr-1"
 									>
-									<span class="uppercase tracking-wider text-[#DAB38D]">{{ post.author?.name || 'LSM Content Team' }}</span>
+									<span class="uppercase tracking-wider text-[#DAB38D]">{{ post?.author?.name || 'LSM Content Team' }}</span>
 								</div>
 								<div class="flex items-center space-x-1">
 									<Icon
@@ -284,9 +283,12 @@ function resetFilters() {
 										size="20"
 										class="text-[#DAB38D]"
 									/>
-									<span class="uppercase text-[#DAB38D]">{{ post.published_at }}</span>
+									<span class="uppercase text-[#DAB38D]">{{ post?.published_at }}</span>
 								</div>
 							</div>
+							<p class="mt-4 text-gray-700 line-clamp-2">
+								{{ post?.description }}
+							</p>
 							<button class="mt-4 px-4 py-2 bg-[#91AEAC] text-white hover:bg-[#9aaea1] rounded w-fit text-sm">
 								Read More
 							</button>

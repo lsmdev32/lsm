@@ -150,7 +150,7 @@ function closeAssociates() {
 						class="[&_*]:tracking-wide text-justify ql-editor"
 						v-html="result.person.bio"
 					/>
-					<div class="flex justify-between items-center pt-4">
+					<!-- <div class="flex justify-between items-center pt-4">
 						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
 							Publication
 						</h2>
@@ -160,7 +160,7 @@ function closeAssociates() {
 						>
 							See More &gt;
 						</NuxtLink>
-					</div>
+					</div> -->
 					<div class="pb-8 flex-row">
 						<Publications
 							:default-author-name="result.person.name"
@@ -311,12 +311,12 @@ function closeAssociates() {
 							class="[&_*]:tracking-wide text-justify ql-editor"
 							v-html="result.person.bio"
 						/>
-						<div class="flex justify-center items-center pt-2">
+						<!-- <div class="flex justify-center items-center pt-2">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
 								Publication
 							</h2>
-						</div>
-						<div class="mt-4 flex-row">
+						</div> -->
+						<!-- <div class="mt-4 flex-row">
 							<Publications
 								:default-author-name="result.person.name"
 								:default-author-image="result.person.image_url"
@@ -330,7 +330,7 @@ function closeAssociates() {
 									See More &gt;
 								</NuxtLink>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
