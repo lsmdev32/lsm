@@ -21,12 +21,12 @@
 					@click="closeMenu"
 				>Home</NuxtLink>
 			</li>
-			<li>
+			<!-- <li>
 				<NuxtLink
 					to="/about"
 					@click="closeMenu"
 				>About LSM</NuxtLink>
-			</li>
+			</li> -->
 			<li>
 				<NuxtLink
 					to="/practice-area"
@@ -49,7 +49,7 @@
 				<NuxtLink
 					to="/blogs"
 					@click="closeMenu"
-				>Blog</NuxtLink>
+				>Updates</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
@@ -142,6 +142,7 @@ export default {
 .menu-panel a {
 	color: #4B3D2A;
 	text-decoration: none;
+	font-family: Macellus;
 	font-size: 24px;
 }
 
