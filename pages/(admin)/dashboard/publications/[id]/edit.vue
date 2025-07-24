@@ -347,6 +347,15 @@ function handlePublicationChange(event: Event) {
 					{{ form.form.values.published_at ? 'Simpan' : 'Simpan sebagai Draft' }}
 				</ui-button>
 			</div>
+			<ui-button
+				type="button"
+				variant="outline"
+				class="mt-4 w-full"
+				:disabled="isFormSubmitting"
+				@click="form.resetForm()"
+			>
+				Reset Formulir
+			</ui-button>
 		</form>
 	</AdminPage>
 </template>
