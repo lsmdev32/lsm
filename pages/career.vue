@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { NuxtImg } from "#components"
 import CheckIc from "~/assets/images/check-icon.svg"
+import JobDropdown from "~/components/audience/JobDropdown.vue"
 import Button from "~/components/audience/Button.vue"
 
 const name = ref("")
@@ -52,13 +53,14 @@ const submit = async () => {
 					<h1 class="text-4xl font-[marcellus] text-[#4B3D2A]">
 						Career
 					</h1>
-					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
-						LUBIS, SANTOSA & PARTNERS (LSM) is a leading Indonesia law firm with strong dispute
-						resolution and corporate & commercial practices, providing assistance to a wide range of
-						clients throughout Indonesia and abroad including individuals, corporations, major governmental
-						and private financial institutions and large, medium and small businesses.
+					<h3 class="mt-6 text-2xl font-[Ubuntu] font-light text-justify text-[#949494]">
+						Your next big case begins here!
+					</h3>
+					<p class="mb-6 mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
+						We are always eager to meet with new colleagues. <a class="font-bold">We are currently hiring</a>, so checks out our "Updates" for open position.
 					</p>
-					<h1 class="mt-6 text-4xl font-[marcellus] text-[#DAB38D]">
+					<JobDropdown />
+					<!-- <h1 class="mt-6 text-4xl font-[marcellus] text-[#DAB38D]">
 						Lawyers
 					</h1>
 					<p class="mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
@@ -109,12 +111,12 @@ const submit = async () => {
 							/>
 							<div>an excellent English speaking and writing skills.</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</section>
 		<section class="md:min-w-full md:hidden">
-			<form
+			<!-- <form
 				class="flex flex-col px-4 pt-4 pb-6 z-0"
 				@submit.prevent="submit"
 			>
@@ -155,12 +157,24 @@ const submit = async () => {
 						{{ info }}
 					</p>
 				</div>
-			</form>
+			</form> -->
 		</section>
 		<!-- Desktop -->
 		<section class="hidden md:flex flex-row md:min-w-full justify-center items-start px-10 sm:px6 lg:px-8">
 			<div class="max-w-7xl mx-auto pb-12 px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
-				<form
+				<div class="flex-1">
+					<h1 class="text-5xl font-[marcellus] text-[#4B3D2A]">
+						Career
+					</h1>
+					<h3 class="mt-6 text-3xl font-[Ubuntu] font-light text-left text-[#949494]">
+						Your next big case begins here!
+					</h3>
+					<p class="mb-6 mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
+						We are always eager to meet with new colleagues. <a class="font-bold">We are currently hiring</a>, so checks out our "Updates" for open position.
+					</p>
+				</div>
+
+				<!-- <form
 					class="flex flex-col z-0"
 					@submit.prevent="submit"
 				>
@@ -214,9 +228,19 @@ const submit = async () => {
 							{{ info }}
 						</p>
 					</div>
-				</form>
-				<div class="flex flex-col z-0 justify-center items-center">
-					<div class="flex-1 mt-14 pl-16">
+				</form> -->
+				<div class="flex flex-col z-0 justify-center items-center pt-14">
+					<JobDropdown />
+					<p class="mt-6 text-md font-[Ubuntu] font-light text-left text-[#949494]">
+						Please send your CV to the following email address:
+					</p>
+					<p class="mt-2 text-md font-[Ubuntu] font-light text-left text-[#949494]">
+						<a
+							class="hover:text-[#DAB38D] hover:underline"
+							href="mailto:hrd@lsmlaw.co.id"
+						>hrd@lsmlaw.co.id</a>
+					</p>
+					<!-- <div class="flex-1 mt-14 pl-16">
 						<h1 class=" text-3xl font-[marcellus] text-[#DAB38D]">
 							Lawyers
 						</h1>
@@ -269,7 +293,7 @@ const submit = async () => {
 								<div>an excellent English speaking and writing skills.</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</section>

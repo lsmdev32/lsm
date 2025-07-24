@@ -21,14 +21,14 @@ const data = response.data.data
 						<br>
 						ATTORNEYS
 					</h2>
-					<div class="max-w-7xl mx-auto md:mt-28 lg:mt-16 ">
+					<!-- <div class="max-w-7xl mx-auto md:mt-28 lg:mt-16 ">
 						<img
 							src="../../assets/Arrow 1.png"
 							height="60px"
 							alt=""
 							style=""
 						>
-					</div>
+					</div> -->
 				</div>
 				<!-- Right column with content -->
 				<div class="space-y-8 ">
@@ -43,7 +43,7 @@ const data = response.data.data
 					</div>
 				</div>
 			</div>
-			<div class="z-0 grid grid-cols-1 md:grid-cols-2 gap-12 md:mt-[-70px] lg:mt-[-70px]">
+			<div class="z-0 grid grid-cols-1 md:grid-cols-2 gap-12 ">
 				<!-- Left column with Down arrow -->
 				<div />
 				<!-- Right column with content -->
@@ -60,14 +60,49 @@ const data = response.data.data
 			</div>
 			<div class="flex justify-center">
 				<div>
-					<div class="container max-w-7xl mx-auto px-2  lg:px-8 mt-8 py-2">
+					<div class="container max-w-7xl mx-auto px-2 lg:px-8 mt-8 py-2">
+						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
+							FOUNDERS
+						</h2>
+					</div>
+					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4 ">
+						<Partners
+							v-for="(partner) in data?.partners.data.slice(0, 2)"
+							:key="partner.id"
+							:image="partner.image_url"
+							:name="partner.name"
+							:linkedin="partner.linkedin_url"
+							:email="partner.email"
+							:slug="partner.slug"
+						/>
+					</div>
+					<div class="container max-w-7xl mx-auto px-2 lg:px-8 mt-8 py-2">
 						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
 							PARTNERS
 						</h2>
 					</div>
-					<div class="grid grid-cols-1 md:grid-cols-1 gap-4 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 ">
+					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4 ">
 						<Partners
-							v-for="(partner) in data?.partners.data"
+							v-for="(partner) in data?.partners.data.slice(2, 6)"
+							:key="partner.id"
+							:image="partner.image_url"
+							:name="partner.name"
+							:linkedin="partner.linkedin_url"
+							:email="partner.email"
+							:slug="partner.slug"
+						/>
+					</div>
+					<div class="container max-w-7xl mx-auto px-2 lg:px-8 mt-8 py-2">
+						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
+							OF COUNSEL
+						</h2>
+					</div>
+					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+					<div class="grid gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4">
+						<Partners
+							v-for="(partner) in data?.partners.data.slice(-1)"
 							:key="partner.id"
 							:image="partner.image_url"
 							:name="partner.name"
@@ -83,7 +118,8 @@ const data = response.data.data
 					ASSOCIATE
 				</h2>
 			</div>
-			<div class="grid grid-cols-1 md:grid-cols-4 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mb-8">
+			<div class="w-full justify-center  container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+			<div class="grid grid-cols-1 md:grid-cols-4 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mb-8 mt-4">
 				<Associate
 					v-for="(associate) in data?.associates.data"
 					:key="associate.id"
@@ -104,24 +140,24 @@ const data = response.data.data
 					<img
 						src="../../assets/mobile_attorneys.png"
 						alt=""
-						class="w-full h-[358px] object-cover"
+						class="w-full h-[556px] object-cover"
 					>
 					<h2 class="absolute bottom-6 left-6 text-white text-3xl font-[Marcellus] font-light">
 						OUR ATTORNEYS
 					</h2>
 				</div>
-				<div class="w-full grid grid-cols-2 md:grid-cols-2 gap-6">
+				<div class="w-full py-6 flex">
 					<!-- Panah -->
-					<div class="">
+					<!-- <div class="">
 						<img
 							src="../../assets/Arrow 1.png"
 							alt=""
 							style="height: 34px; width: 16px;"
 						>
-					</div>
+					</div> -->
 
 					<!-- Deskripsi -->
-					<p class="text-[#D9B28C] text-1xl font-[Marcellus] ml-[-100px] eading-relaxed">
+					<p class="text-xl font-[Ubuntu] font-light text-justify text-[#4B3D2A]">
 						We are dedicated to providing top-quality legal representation for our
 						clients. Our attorneys are highly skilled and experienced in their
 						respective areas of practice, and are committed to achieving the best
@@ -130,15 +166,50 @@ const data = response.data.data
 				</div>
 			</div>
 			<div class="flex justify-center">
-				<div>
-					<div class="container max-w-7xl mx-auto px-2  lg:px-8 mt-8 py-2">
+				<div calss="px-4">
+					<div class="container max-w-7xl mx-auto px-2 lg:px-8 mt-8 py-2">
+						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
+							FOUNDERS
+						</h2>
+					</div>
+					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4 ">
+						<Partners
+							v-for="(partner) in data?.partners.data.slice(0, 2)"
+							:key="partner.id"
+							:image="partner.image_url"
+							:name="partner.name"
+							:linkedin="partner.linkedin_url"
+							:email="partner.email"
+							:slug="partner.slug"
+						/>
+					</div>
+					<div class="container max-w-7xl mx-auto px-2 lg:px-8 mt-8 py-2">
 						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
 							PARTNERS
 						</h2>
 					</div>
-					<div class="grid grid-cols-1 md:grid-cols-1 gap-4 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 ">
+					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4 ">
 						<Partners
-							v-for="(partner) in data?.partners.data"
+							v-for="(partner) in data?.partners.data.slice(2, 6)"
+							:key="partner.id"
+							:image="partner.image_url"
+							:name="partner.name"
+							:linkedin="partner.linkedin_url"
+							:email="partner.email"
+							:slug="partner.slug"
+						/>
+					</div>
+					<div class="container max-w-7xl mx-auto px-2 lg:px-8 mt-8 py-2">
+						<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A] text-center">
+							OF COUNSEL
+						</h2>
+					</div>
+					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+					<div class="grid gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4">
+						<Partners
+							v-for="(partner) in data?.partners.data.slice(-1)"
 							:key="partner.id"
 							:image="partner.image_url"
 							:name="partner.name"
@@ -154,7 +225,8 @@ const data = response.data.data
 					ASSOCIATE
 				</h2>
 			</div>
-			<div class="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-0 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mb-8">
+			<div class="w-full justify-center  container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
+			<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mb-8 mt-4">
 				<Associate
 					v-for="(associate) in data?.associates.data"
 					:key="associate.id"
