@@ -16,21 +16,21 @@
 							@click="navigate"
 						>
 
-							<nuxt-img
+							<!-- <nuxt-img
 								:src="image"
 								alt="Profile photo"
 								class="w-[375px] h-[433px] object-cover object-center transition duration-300 group-hover:opacity-70 cursor-pointer"
-							/>
+							/> -->
 
 							<!-- Nama & role -->
 							<div class="mt-4 inset-0 flex items-end justify-center">
 								<div class="text-center pb-6">
-									<h3 class="text-xl font-[Marcellus] text-[#4B3D2A]">
+									<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] underline">
 										{{ name }}
 									</h3>
-									<p class="text-sm text-[#dab38d] tracking-widest mt-1">
+									<!-- <p class="text-sm text-[#dab38d] tracking-widest mt-1">
 										PARTNERS
-									</p>
+									</p> -->
 								</div>
 							</div>
 
@@ -68,52 +68,51 @@
 
 		<!-- Mobile View -->
 		<div class="md:hidden flex flex-col space-y-3 ">
-			<div class="relative cursor-pointer group overflow-hidden">
-				<nuxt-link
-					:href="`/attorneys/${slug}`"
-					class="cursor-pointer"
-				>
-					<nuxt-img
+			<nuxt-link
+				:href="`/attorneys/${slug}`"
+				class="cursor-pointer"
+			>
+				<div class="relative cursor-pointer group overflow-hidden">
+					<!-- <nuxt-img
 						:src="image"
 						alt="Profile photo"
 						class="w-full h-[338px] object-cover object-[50%_40%] transition duration-300 group-hover:opacity-70  cursor-pointer"
-					/>
+					/> -->
 
-				</nuxt-link>
+					<!-- Nama & role -->
+					<div class="mt-4 inset-0 flex items-end justify-center">
+						<div class="text-center pb-6">
+							<h3 class="text-1xl font-[Marcellus] text-[#4B3D2A] underline">
+								{{ name }}
+							</h3>
+							<!-- <p class="text-sm text-[#dab38d] tracking-widest mt-1">
+								PARTNERS
+							</p> -->
+						</div>
+					</div>
 
-				<!-- Nama & role -->
-				<div class="mt-4 inset-0 flex items-end justify-center">
-					<div class="text-center pb-6">
-						<h3 class="text-1xl font-[Marcellus] text-[#4B3D2A]">
-							{{ name }}
-						</h3>
-						<p class="text-sm text-[#dab38d] tracking-widest mt-1">
-							PARTNERS
-						</p>
+					<!-- Hover icons -->
+					<div class="absolute bottom-[120px] right-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition duration-300">
+						<nuxt-link :href="linkedin">
+							<button class="w-8 h-8 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
+								<Icon
+									name="mdi:linkedin"
+									size="16"
+								/>
+							</button>
+						</nuxt-link>
+
+						<nuxt-link :href="`mailto:${email}`">
+							<button class="w-8 h-8 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
+								<Icon
+									name="mdi:email-outline"
+									size="16"
+								/>
+							</button>
+						</nuxt-link>
 					</div>
 				</div>
-
-				<!-- Hover icons -->
-				<div class="absolute bottom-[120px] right-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition duration-300">
-					<nuxt-link :href="linkedin">
-						<button class="w-8 h-8 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
-							<Icon
-								name="mdi:linkedin"
-								size="16"
-							/>
-						</button>
-					</nuxt-link>
-
-					<nuxt-link :href="`mailto:${email}`">
-						<button class="w-8 h-8 bg-[#4B3D2A] text-white flex items-center justify-center rounded-full">
-							<Icon
-								name="mdi:email-outline"
-								size="16"
-							/>
-						</button>
-					</nuxt-link>
-				</div>
-			</div>
+			</nuxt-link>
 		</div>
 	</div>
 </template>

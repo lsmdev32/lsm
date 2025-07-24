@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { set } from "firebase/database"
 import Button from "~/components/audience/Button.vue"
+import LogoSVG from "~/assets/images/logo-lsm-main.svg"
 
 const name = ref("")
 const email = ref("")
@@ -99,6 +99,12 @@ const submit = async () => {
 						<h4 class="reach">
 							Reach Out Now
 						</h4>
+						<div class="flex-shrink-0 py-6">
+							<img
+								:src="LogoSVG"
+								class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
+							>
+						</div>
 						<div class="left-section">
 							Equity Tower<br>
 							12th Floor Sudirman Central Business District (SCBD)<br>
@@ -180,6 +186,12 @@ const submit = async () => {
 						<h4 class="reach">
 							Reach Out Now
 						</h4>
+						<div class="flex-shrink-0 py-6">
+							<img
+								:src="LogoSVG"
+								class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
+							>
+						</div>
 						<div class="left-section">
 							Equity Tower<br>
 							12th Floor Sudirman Central Business District (SCBD)<br>
@@ -239,7 +251,6 @@ const submit = async () => {
   letter-spacing: 0px;
   text-align: left;
   color: #dab38d;
-  margin-bottom: 18px;
 }
 
 input {

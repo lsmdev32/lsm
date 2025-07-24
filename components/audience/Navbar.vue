@@ -53,7 +53,7 @@ import LogoSVG from "~/assets/images/logo-lsm-main.svg"
 							style="font-size:medium;"
 							class="pr-4 hover:text-[#DAB38D] hover:cursor-pointer"
 						>
-							Blog
+							Updates
 						</NuxtLink>
 						<NuxtLink
 							to="/contact-us"

@@ -1,19 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
 import { NuxtLink } from "#components"
-import ArrowIcon from "~/assets/images/arrow-icon.svg"
-import DRThumbnail from "~/assets/images/dr-thumbnail.svg"
-import CCThumbnail from "~/assets/images/cc-thumbnail.svg"
-import IPThumbnail from "~/assets/images/ip-thumbnail.svg"
-import useCustomFetch from "~/composables/useCustomFetch"
-import Partners from "~/components/audience/Partners.vue"
-import Publications from "~/components/audience/Publications.vue"
-import Reviews from "~/components/audience/Reviews.vue"
-
-const { data } = await useCustomFetch("/rest/page-data/home")
-const contents = data?.data?.contents?.data ?? []
-const attorneys = data?.data?.partners?.data ?? []
-const latestContent = data?.data?.latest_content ?? []
 
 const images = [
 	"/images/bedge1.png",
@@ -23,39 +9,6 @@ const images = [
 	"/images/bedge5.png",
 	"/images/bedge6.png",
 ]
-
-// Define available background images and corresponding text
-const contentOptions = [
-	{
-		bgImage: DRThumbnail,
-		text: "Dispute Resolution",
-		paragraph:
-			"Our Dispute Resolution practice group has extensive experience representing a wide range of clients including individuals, corporations, and government entities in complex litigation matters.",
-	},
-	{
-		bgImage: CCThumbnail,
-		text: "Corporate Commercial",
-		paragraph:
-			"We have provided assistance to and maintained relationships with a wide range of clients throughout Indonesia and abroad",
-	},
-	{
-		bgImage: IPThumbnail,
-		text: "Intellectual Property",
-		paragraph:
-			"Our Intellectual Property practice group advises on a wide range of intellectual property matters for diverse industries",
-	},
-]
-
-// Reactive state to track current option
-const currentOptionIndex = ref(0)
-
-// Function to cycle through options
-const cycleContent = () => {
-	currentOptionIndex.value = (currentOptionIndex.value + 1) % contentOptions.length
-}
-const setOption = (index: number) => {
-	currentOptionIndex.value = index
-}
 </script>
 
 <template lang="html">
@@ -93,82 +46,6 @@ const setOption = (index: number) => {
 			</div>
 		</section>
 
-		<!-- <section class="md:min-w-full md:hidden font-[philosopher] ">
-			<a
-				:href="`/practice-area?category=${0}`"
-				class="block"
-			>
-				<div class="flex items-center justify-start bg-[url('~/assets/images/dr-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
-					<div>
-						<h2 class="text-2xl text-white">
-							Dispute Resolution
-						</h2>
-					</div>
-				</div>
-			</a>
-		</section>
-		<section class="md:min-w-full md:hidden font-[philosopher] ">
-			<a
-				:href="`/practice-area?category=${1}`"
-				class="block"
-			>
-				<div class="flex items-center justify-start bg-[url('~/assets/images/cc-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[15px] z-0">
-					<div>
-						<h2 class="text-2xl text-white">
-							Corporate Commercial
-						</h2>
-					</div>
-				</div>
-			</a>
-		</section>
-		<section class="md:min-w-full md:hidden font-[philosopher] ">
-			<a
-				:href="`/practice-area?category=${2}`"
-				class="block"
-			>
-				<div class="flex items-center justify-start bg-[url('~/assets/images/ip-m-thumbnail.svg')] bg-cover h-[89px] pl-[30px] mx-[15px] mb-[24px]  z-0">
-					<div>
-						<h2 class="text-2xl text-white">
-							Intelectual Property
-						</h2>
-					</div>
-				</div>
-			</a>
-		</section> -->
-
-		<!-- Blog and Publication Section here! Hidden -->
-		<!-- <section class="sm:justify-center md:hidden md:min-w-full">
-			<div class="w-full mx-auto sm:px-6 lg:px-8">
-				<h1 class="text-3xl font-[Marcellus] text-center py-4">
-					Publications
-				</h1>
-			</div>
-			<div class="items-center justify-center px-6 py-6 z-0">
-				<Publications :publications="contents" />
-			</div>
-		</section> -->
-
-		<!-- Our Attorneys Section Hidden -->
-		<!-- <section class="sm:justify-center md:hidden md:min-w-full">
-			<div class="w-full mx-auto sm:px-6 lg:px-8">
-				<h1 class="text-3xl font-[Marcellus] text-center py-4">
-					Our Attorneys
-				</h1>
-			</div>
-			<div class="items-center justify-center px-6 py-6 z-0">
-				<Partners
-					v-for="(partner, index) in attorneys"
-					:key="index"
-					class="capitalize"
-					:image="partner.image_url"
-					:name="partner.name"
-					:linkedin="partner.linkedin_url"
-					:email="partner.email"
-					:slug="partner.slug"
-				/>
-			</div>
-		</section> -->
-
 		<!-- Desktop -->
 		<section class="hidden md:block md:min-w-full">
 			<div class="flex bg-[url('~/assets/images/banner1.svg')] bg-no-repeat bg-center bg-cover items-end justify-start text-left w-full h-[575px] pl-[30px] py-[30px] md:pl-12">
@@ -197,223 +74,229 @@ const setOption = (index: number) => {
 				</div>
 			</div>
 		</section>
-
-		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
-			<div class="flex h-[480px] w-full">
-				<!-- Panel 1 -->
-				<div class="relative bg-[url('~/assets/images/bg-whoarewe.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] hover:bg-[url('~/assets/images/banner1.svg'),rgba(218,179,141,0.5)] transition-all duration-300 group overflow-hidden">
-					<nuxt-link href="/about">
-						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-						<!-- Heading -->
-						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
-							<h2 class="text-5xl text-white ">
-								Who <br> Are We
-							</h2>
-						</div>
-						<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
-							<NuxtImg
-								class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
-								:src="ArrowIcon"
-							/>
-						</div>
-						<!-- Animated on hover (pops from the bottom) -->
-						<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 pl-8 pr-8 pb-8">
-							<p class="text-xl text-justify text-white">
-								<!-- cahnge the text -->
-								Lubis Santosa & Partners (formerly Lubis Santosa & Maramis), is one of the leading law firms in Indonesia. It was established in 1986 and has grown to become one of Indonesia's law firms with comprehensive range of practice.
-							</p>
-						</div>
-					</nuxt-link>
-				</div>
-
-				<!-- Panel 2 -->
-				<div class="relative bg-[url('~/assets/images/bg-practicearea.svg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
-					<nuxt-link href="/practice-area">
-						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-						<!-- Heading -->
-						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
-							<h2 class="text-5xl text-white ">
-								Practice <br> Area
-							</h2>
-						</div>
-						<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
-							<NuxtImg
-								class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
-								:src="ArrowIcon"
-							/>
-						</div>
-						<!-- Animated on hover (pops from the bottom) -->
-						<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100 pl-8 pr-8 pb-8">
-							<p class="text-xl text-justify text-white">
-								<!-- cahnge the text -->
-								Lawyers at LSM are experts in their fields and are dedicated to providing the best legal services to our clients. We have a wide range of practice areas, and we work closely with our clients to understand their needs and provide tailored solutions.
-							</p>
-						</div>
-					</nuxt-link>
-				</div>
-
-				<!-- Panel 3 -->
-				<div class="relative bg-[url('~/assets/images/about-attorney.jpg')] bg-cover bg-no-repeat bg-center flex-1 justify-items-stretch hover:cursor-pointer hover:flex-[2] transition-all duration-300 group overflow-hidden">
-					<nuxt-link href="/attorneys">
-						<div class="absolute inset-0 bg-[rgba(75,61,42,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-						<!-- Heading -->
-						<div class="absolute inset-0 flex items-end justify-start pl-8 pr-8 pb-8 font-[Marcellus] transition-all duration-300 group-hover:translate-y-[-12rem] ">
-							<h2 class="text-5xl text-white ">
-								Our <br> Attorneys
-							</h2>
-						</div>
-						<div class="absolute inset-0 flex items-end justify-end pl-8 pr-8 pb-8 transition-all duration-300 group-hover:translate-y-[-12rem]">
-							<NuxtImg
-								class="w-[50px] h-[50px] transition-transform duration-300 group-hover:rotate-90"
-								:src="ArrowIcon"
-							/>
-						</div>
-						<!-- Animated on hover (pops from the bottom) -->
-						<div class="absolute inset-x-0 bottom-0 flex items-end justify-start translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100 pl-8 pr-8 pb-8">
-							<p class="text-xl text-justify text-white">
-								<!-- cahnge the text -->
-								We are dedicated to providing top-quality legal representation for our clients. Our attorneys are highly skilled and experienced in their respective areas of practice, and are committed to achieving the best possible outcomes for our clients.
-							</p>
-						</div>
-					</nuxt-link>
-				</div>
-			</div>
-		</section>
-
-		<!-- Latest Content Section -->
-		<section class="hidden md:block md:min-w-full">
-			<div
-				class="flex flex-nowrap h-[480px] w-full relative bg-no-repeat bg-center bg-cover items-center justify-center transition-all duration-300 group overflow-hidden"
-				:style="{
-					backgroundImage: latestContent?.image_url
-						? `url(${latestContent.image_url})`
-						: `url('/images/logo-lsm-main.svg')`,
-				}"
-			>
-				<div class="flex items-center justify-start w-full h-full bg-[rgba(145,174,172,0.4)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 py-16 px-12">
-					<!-- Heading -->
-					<div class="flex flex-col items-center justify-center px-8 font-[Marcellus] transition-all duration-300 max-w-full">
-						<h2 class="text-5xl text-white text-left">
-							{{ latestContent?.title }}
-						</h2>
-						<div class="mt-4 flex flex-row items-center justify-start w-full translate-y-8 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-100">
-							<div class="flex justify-center text-center text-sm text-[#DAB38D]">
-								<NuxtLink
-									type="button"
-									class="mt-4 bg-white rounded-md px-10 py-4 hover:cursor-pointer"
-									:href="`/blogs/${latestContent?.slug}`"
-								>
-									Read
-								</NuxtLink>
-							</div>
-							<div class="ml-4 mt-4 flex items-center">
-								<NuxtLink
-									to="/blogs"
-									class="text-sm text-white hover:cursor-pointer"
-								>
-									View All >>
-								</NuxtLink>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="hidden md:block md:min-w-full">
-			<div class="flex h-[442px] w-full">
-				<!-- First Div: Clickable Background Image -->
-				<div
-					role="button"
-					tabindex="0"
-					class="flex flex-1 bg-no-repeat bg-center bg-cover cursor-pointer transition-all duration-500"
-					:style="{ backgroundImage: `url(${contentOptions[currentOptionIndex]?.bgImage})` }"
-					@click="cycleContent"
-				/>
-				<!-- Second Div: Text and Clickable Option -->
-				<div class="flex flex-1 flex-col">
-					<!-- First Child: Text Display -->
-					<div class="basis-2/3 bg-[#4A3C32] flex flex-col  items-start justify-center px-20 transition-all duration-500">
-						<p class="text-[#DAB38D] text-md font-semibold text-left font-[ubuntu] py-4">
-							{{ contentOptions[currentOptionIndex]?.text }}
-						</p>
-						<p class="text-white text-3xl font-normal font-[Marcellus] text-left">
-							{{ contentOptions[currentOptionIndex]?.paragraph }}
-						</p>
-					</div>
-					<!-- Second Child: Clickable Text Option -->
-					<div class="basis-1/3 bg-[#6A817F] font-[Marcellus] flex flex-row items-center justify-start px-20">
-						<span
-							role="button"
-							tabindex="0"
-							class="px-2 text-white text-3xl font-light opacity-50 cursor-pointer hover:opacity-100 transition-colors duration-200"
-							:class="{ 'font-bold opacity-100': currentOptionIndex === 0 }"
-							@click="setOption(0)"
-							@keyup.enter="setOption(0)"
-							@keyup.space="setOption(0)"
-						>
-							DR
-						</span>
-						<span
-							role="button"
-							tabindex="0"
-							class="px-2 text-white text-3xl font-light opacity-50 cursor-pointer hover:opacity-100 transition-colors duration-200"
-							:class="{ 'font-bold opacity-100': currentOptionIndex === 1 }"
-							@click="setOption(1)"
-							@keyup.enter="setOption(1)"
-							@keyup.space="setOption(1)"
-						>
-							CC
-						</span>
-						<span
-							role="button"
-							tabindex="0"
-							class="px-2 text-white text-3xl font-light opacity-50 cursor-pointer hover:opacity-100 transition-colors duration-200"
-							:class="{ 'font-bold opacity-100': currentOptionIndex === 2 }"
-							@click="setOption(2)"
-							@keyup.enter="setOption(2)"
-							@keyup.space="setOption(2)"
-						>
-							IP
-						</span>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="hidden md:block sm:max-[hidden] max-w-7xl items-center justify-center mx-auto">
-			<div class="flex flex-col h-172 w-full">
-				<div class="flex flex-row items-center justify-between">
-					<h1 class="text-3xl font-[Marcellus] text-left py-4">
-						Partners
-					</h1>
-					<NuxtLink
-						to="/attorneys"
-						class="text-sm font-[Ubuntu] text-[#DAB38D] hover:cursor-pointer"
+		<section class="hidden md:block">
+			<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
+				<!-- Left column with title and arrow -->
+				<div class="relative">
+					<h2
+						class="text-5xl font-light font-[Marcellus]"
+						style="color: #DAB38D;"
 					>
-						View All >
+						ABOUT
+						<br>
+						LSM
+					</h2>
+					<div class="max-w-7xl mx-auto md:mt-28 lg:mt-16 ">
+						<img
+							src="../assets/Arrow 1.png"
+							height="60px"
+							alt=""
+							style=""
+						>
+					</div>
+				</div>
+				<!-- Right column with content -->
+				<div class="space-y-8 ">
+					<!-- Top description -->
+					<div class="mb-8">
+						<p class="text-gray-500 leading-relaxed font-[Ubuntu] font-light">
+							Founded in 1986, our law firm has built a legacy of excellence as a pioneer in groundbreaking litigation cases. Renowned for our innovative approach and creative legal strategies, we have consistently delivered exceptional results in complex and high-stakes disputes
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="z-0 grid grid-cols-1 md:grid-cols-2 gap-12 md:mt-[-70px] lg:mt-[-70px]">
+				<!-- Left column with Down arrow -->
+				<div />
+				<!-- Right column with content -->
+				<div class="space-y-8">
+					<!-- Image section -->
+					<div class="w-full h-64 md:h-72 lg:h-72 overflow-hidden">
+						<img
+							src="../assets/about-1.png"
+							alt=""
+							class="w-full h-full object-cover transform -scale-x-100"
+						>
+					</div>
+				</div>
+			</div>
+			<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
+				<!-- Left column with Light gray text -->
+				<div class="">
+					<p class="text-3xl font-light text-gray-300 leading-relaxed font-[Marcellus]">
+						We are committed to providing responsive attorneys, efficiently managed transactions and cases that meet the needs of our Clients
+					</p>
+				</div>
+
+				<!-- Right column with content -->
+				<div class="space-y-8">
+					<!-- Two paragraphs of text -->
+					<div class="space-y-8 ">
+						<p class="text-gray-500 leading-relaxed font-[Ubuntu]">
+							Our comprehensive legal services encompass a wide spectrum of areas, including civil, commercial, administrative, constitutional, and criminal litigation. We are dedicated to managing each type of case with expertise and diligence, ensuring that our clients receive the highest level of representation. Whether we are navigating complex commercial disputes or defending constitutional rights, our attorneys are unwavering in their commitment to achieving successful outcomes that are tailored to the unique needs of each client. Additionally, we are passionate about handling public interest cases and advocating for public policy, striving for impactful legal outcomes that contribute to societal progress. Guided by unwavering integrity, we uphold the highest ethical standards in every case we take on.
+						</p>
+						<p class="text-gray-500 leading-relaxed font-[Ubuntu]">
+							We serve with heart by putting our clients’ interests as our main priority. Anticipating and providing what our clients’ needs are what we do.
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-16 ">
+				<ThreePic />
+			</div>
+			<div class="mt-8 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8  z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
+				<!-- Left column with Light gray text -->
+				<div
+					class="container d-flex justify-content-between align-items-center"
+					style=""
+				>
+					<img
+						class="image-bottom"
+						src="../assets/images/about-attorney.jpg"
+					>
+				</div>
+
+				<!-- Right column with content -->
+				<div class="space-y-8 flex flex-col justify-center">
+					<!-- Two paragraphs of text -->
+					<div class="w-full ">
+						<div class="text-gray-500 leading-relaxed font-[Ubuntu]">
+							Lubis Santosa & Partners believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
+						</div>
+						<div class="flex items-start justify-start mt-4">
+							<NuxtLink
+								type="button"
+								class="w-[40%] bg-[#4B3D2A] text-[#DAB38D] px-3 py-5 rounded-[10px] text-[14px] font-medium text-center cursor-pointer justify-center md:py-5 sm:py-4 mt-16"
+								to="/attorneys"
+							>Our Attorneys</NuxtLink>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="last-section  px-2 sm:px-6 lg:px-8 md:pt-16 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
+				<!-- Left column with Text -->
+				<div class="relative">
+					<div
+						class="font-[Marcellus] last-section-text "
+						style=""
+					>
+						Download Company Profile of
+						<br>
+						Lubis, Santosa & Partners here
+					</div>
+				</div>
+				<!-- Right column with content -->
+				<div class="space-y-8">
+					<!-- Button -->
+					<NuxtLink
+						type="button"
+						class="custom-button-about d-flex font-[Ubuntu]"
+						to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
+					>
+						<span>Download Company Profile</span>
 					</NuxtLink>
 				</div>
 			</div>
-			<div class="flex items-center justify-center gap-8">
-				<Partners
-					v-for="(partner) in data?.data?.partners.data.slice(0, 4)"
-					:key="partner.id"
-					:image="partner.image_url"
-					:name="partner.name"
-					:linkedin="partner.linkedin_url"
-					:email="partner.email"
-					class="capitalize"
-					:slug="partner.slug"
-				/>
+		</section>
+		<section class="md:hidden">
+			<div class="flex flex-col items-center px-4 py-6 space-y-4">
+				<!-- Gambar dengan ABOUT LSM -->
+				<div class="relative w-full">
+					<img
+						src="../assets/about-1.png"
+						alt=""
+						class="w-full h-auto object-cover"
+					>
+					<h2 class="absolute bottom-6 left-6 text-white text-3xl font-[Marcellus] font-light">
+						ABOUT LSM
+					</h2>
+				</div>
+				<div class="grid grid-cols-2 md:grid-cols-2 gap-6">
+					<!-- Panah -->
+					<div class="">
+						<img
+							src="../assets/Arrow 1.png"
+							alt=""
+							style="height: 34px; width: 16px;"
+						>
+					</div>
+
+					<!-- Deskripsi -->
+					<p class="text-[#D9B28C] text-1xl font-[Marcellus] ml-[-100px] eading-relaxed">
+						We are committed to providing responsive attorneys, efficiently managed transactions and cases that meet the needs of our Clients
+					</p>
+				</div>
+				<div>
+					<!-- Body Text -->
+					<p class="text-sm md:text-base text-gray-500 leading-6 max-w-2xl ">
+						Our comprehensive legal services encompass a wide spectrum of areas, including civil, commercial, administrative, constitutional, and criminal litigation. We are dedicated to managing each type of case with expertise and diligence, ensuring that our clients receive the highest level of representation. Whether we are navigating complex commercial disputes or defending constitutional rights, our attorneys are unwavering in their commitment to achieving successful outcomes that are tailored to the unique needs of each client. Additionally, we are passionate about handling public interest cases and advocating for public policy, striving for impactful legal outcomes that contribute to societal progress. Guided by unwavering integrity, we uphold the highest ethical standards in every case we take on.
+					</p>
+					<br>
+					<p class="text-sm md:text-base text-gray-500 leading-6 max-w-2xl ">
+						We serve with heart by putting our clients’ interests as our main priority. Anticipating and providing what our clients’ needs are what we do.
+					</p>
+				</div>
+				<div class="container max-w-7xl mx-auto lg:px-8 py-8 ">
+					<ThreePic />
+				</div>
+			</div>
+			<div>
+				<div class="mt-8 grid-cols-1 gap-12">
+					<!-- Left column with Light gray text -->
+					<div
+						class="w-full h-auto relative bg-cover overflow-hidden"
+						style=""
+					>
+						<img
+							class="w-full h-auto object-cover"
+							src="../assets/images/about-attorney.jpg"
+						>
+					</div>
+
+					<!-- Right column with content -->
+					<div class="space-y-8 mt-4 flex flex-col">
+						<!-- Two paragraphs of text -->
+						<div class="flex flex-col items-center px-4 py-4 space-y-4 text-sm md:text-base text-gray-500 leading-6 max-w-2xl">
+							<div class="font-[Ubuntu]">
+								Lubis Santosa & Partners believes that Client’s trust is responsibility. We perform our responsibilities and earn our client’s trust through the application of knowledge, diligence and creative thinking. At Lubis Santosa & Maramis, we help businesses build, manage and profit.
+							</div>
+						</div>
+					</div>
+					<div class="flex flex-col items-center justify-center mt-4">
+						<NuxtLink
+							type="button"
+							class="w-[40%] bg-[#4B3D2A] text-[#DAB38D] px-3 py-5 rounded-[10px] text-[14px] font-medium text-center cursor-pointer justify-center md:py-5 sm:py-4"
+							to="/attorneys"
+						>Our Attorneys</NuxtLink>
+					</div>
+				</div>
+				<div class="last-section  z-0 grid grid-cols-1 ">
+					<!-- Left column with Text -->
+					<div class="relative">
+						<div
+							class="font-[Marcellus] last-section-text "
+							style=""
+						>
+							Download Company Profile of
+							<br>
+							Lubis, Santosa & Partners here
+						</div>
+					</div>
+					<!-- Right column with content -->
+					<div class="space-y-8 mt-10">
+						<!-- Button -->
+						<NuxtLink
+							type="button"
+							class="custom-button-about d-flex font-[Ubuntu]"
+							to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
+						>
+							<span>Download Company Profile</span>
+						</NuxtLink>
+					</div>
+				</div>
 			</div>
 		</section>
-		<section class="hidden md:block sm:max-[hidden] md:min-w-full">
-			<Reviews />
-		</section>
-		<!-- <section class="hidden md:block sm:max-[hidden] md:min-w-full">
-			<div class="flex h-[265px] w-full items-center justify-center">
-				Clients here!
-			</div>
-		</section> -->
 	</div>
 </template>
 
@@ -442,5 +325,48 @@ const setOption = (index: number) => {
 	margin-left: 15px;
 	margin-bottom: 15px;
 	z-index: 0;
+}
+
+.last-section {
+  margin-top: 50px;
+  padding: 70px 10%;
+  display: flex;
+  background-color: #91AEAC;
+  color: white;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.last-section-text {
+  font-size: 32px;
+  margin-right: 40px;
+  line-height: 110%;
+}
+
+.custom-button-about {
+  background-color: white;
+  padding: 20px 25px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #dab38d;
+}
+
+@media (max-width: 768px) {
+  .custom-button-about {
+    margin-top: 30px;
+  }
+  .last-section-text {
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+  }
+  .last-section-text {
+    margin: 0;
+  }
+  .last-section {
+    padding: 40px 5%;
+    flex-direction: column;
+  }
 }
 </style>

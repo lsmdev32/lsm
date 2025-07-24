@@ -17,56 +17,48 @@
 		<ul>
 			<li>
 				<NuxtLink
-					style="font-size:medium;"
 					to="/"
 					@click="closeMenu"
 				>Home</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
-					style="font-size:medium;"
 					to="/about"
 					@click="closeMenu"
 				>About LSM</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
-					style="font-size:medium;"
 					to="/practice-area"
 					@click="closeMenu"
 				>Practice Area</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
-					style="font-size:medium;"
 					to="/attorneys"
 					@click="closeMenu"
 				>Attorneys</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
-					style="font-size:medium;"
 					to="/publications"
 					@click="closeMenu"
 				>Publication</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
-					style="font-size:medium;"
 					to="/blogs"
 					@click="closeMenu"
 				>Blog</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
-					style="font-size:medium;"
 					to="/contact-us"
 					@click="closeMenu"
 				>Contact Us</NuxtLink>
 			</li>
 			<li>
 				<NuxtLink
-					style="font-size:medium;"
 					to="/career"
 					@click="closeMenu"
 				>Career</NuxtLink>
@@ -148,9 +140,9 @@ export default {
 }
 
 .menu-panel a {
+	color: #4B3D2A;
 	text-decoration: none;
-	color: #fff;
-	font-size: 18px;
+	font-size: 24px;
 }
 
 .menu-panel a:hover {

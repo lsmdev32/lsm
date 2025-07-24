@@ -6,7 +6,7 @@
 				:key="index"
 				class="flex flex-col"
 			>
-				<img
+				<!-- <img
 					v-if="publication.image_url"
 					:src="publication.image_url as string"
 					alt="Thumbnail"
@@ -17,9 +17,9 @@
 					:src="LogoSVG"
 					alt="Thumbnail"
 					class="w-full h-[270px] object-cover mb-4"
-				>
+				> -->
 				<span class="text-sm text-[#DAB38D] font-[Ubuntu]">{{ publication.category }}</span>
-				<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug">
+				<h3 class="text-xl font-[Marcellus] text-[#4B3D2A] leading-snug line-clamp-2">
 					{{ publication.title }}
 				</h3>
 				<div class="flex items-center text-xs mt-4 space-x-4 text-[#2e1e10] font-[Ubuntu]">

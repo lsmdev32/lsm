@@ -1,7 +1,5 @@
-```vue
 <script setup lang="ts">
-import { ref, computed } from "vue"
-import { NuxtLink } from "#components"
+import { ref } from "vue"
 
 const category = useRoute().query.category
 
