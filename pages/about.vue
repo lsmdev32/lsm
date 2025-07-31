@@ -31,7 +31,7 @@ import ThreePic from "~/components/audience/ThreePic.vue"
 					<!-- Top description -->
 					<div class="mb-8">
 						<p class="text-gray-500 leading-relaxed font-[Ubuntu] font-light">
-							Founded in 1986, our law firm has built a legacy of excellence as a pioneer in groundbreaking litigation cases. Renowned for our innovative approach and creative legal strategies, we have consistently delivered exceptional results in complex and high-stakes disputes
+							Founded in 1986, our law firm has built a legacy of excellence as a pioneer in groundbreaking litigation cases. Renowned for our innovative approach and creative legal strategies, we have consistently delivered exceptional results in complex and high-stakes disputes.
 						</p>
 					</div>
 				</div>
