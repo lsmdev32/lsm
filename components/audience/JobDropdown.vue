@@ -3,13 +3,13 @@
 		<h2 class="text-3xl font-[marcellus] text-[#DAB38D]">
 			Requirements
 		</h2>
-		<select 
+		<select disabled
 			v-model="selectedJob"
 			class="mx-auto mt-4 pl-2 block font-[Ubuntu] font-light text-[#4B3D2A] w-full rounded-md focus:ring  focus:ring-opacity-50"
 			@change="showRequirements"
 		>
 			<option
-				value=""
+				value=" "
 				disabled
 			>
 				Select a position
@@ -47,7 +47,7 @@ export default {
 	name: "JobDropdown",
 	data() {
 		return {
-			selectedJob: "",
+			selectedJob: " ",
 			jobs: [
 				{
 					position: "Lawyer",
