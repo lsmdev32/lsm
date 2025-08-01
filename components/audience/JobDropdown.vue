@@ -9,7 +9,7 @@
 			@change="showRequirements"
 		>
 			<option
-				value=""
+				value="Receptionist/Junior Secretary"
 				disabled
 			>
 				Select a position
@@ -47,7 +47,7 @@ export default {
 	name: "JobDropdown",
 	data() {
 		return {
-			selectedJob: "",
+			selectedJob: true,
 			jobs: [
 				{
 					position: "Lawyer",
