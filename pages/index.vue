@@ -202,6 +202,7 @@ const images = [
 					<p class="text-md md:text-base text-justify text-gray-500 leading-6 max-w-2xl ">
 						Founded in 1986, our law firm has built a legacy of excellence as a pioneer in groundbreaking litigation cases. Renowned for our innovative approach and creative legal strategies, we have consistently delivered exceptional results in complex and high-stakes disputes.	
 					</p>
+					<br>
 					<p class="text-md md:text-base text-justify text-gray-500 leading-6 max-w-2xl ">
 						Our comprehensive legal services encompass a wide spectrum of areas, including civil, commercial, administrative, constitutional, and criminal litigation. We are dedicated to managing each type of case with expertise and diligence, ensuring that our clients receive the highest level of representation. Whether we are navigating complex commercial disputes or defending constitutional rights, our attorneys are unwavering in their commitment to achieving successful outcomes that are tailored to the unique needs of each client. Additionally, we are passionate about handling public interest cases and advocating for public policy, striving for impactful legal outcomes that contribute to societal progress. Guided by unwavering integrity, we uphold the highest ethical standards in every case we take on.
 					</p>
