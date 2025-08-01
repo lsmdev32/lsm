@@ -47,7 +47,7 @@ export default {
 	name: "JobDropdown",
 	data() {
 		return {
-			selectedJob: "Receptionist/Junior Secretary",
+			selectedJob: "",
 			jobs: [
 				{
 					position: "Lawyer",
