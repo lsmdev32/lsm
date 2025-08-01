@@ -204,7 +204,7 @@ const images = [
 					</p>
 					<br>
 					<p class="text-md md:text-base text-justify text-gray-500 leading-6 max-w-2xl ">
-						We serve with heart by putting our clients’ interests as our main priority. Anticipating and providing what our clients’ needs are what we do.
+						We serve with heart by putting our clients’ interests as our main priority. Anticipating and providing what our clients’ needs are what we do..
 					</p>
 				</div>
 				<div class="flex gap-6">
