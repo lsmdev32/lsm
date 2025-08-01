@@ -171,7 +171,8 @@ const submit = async () => {
 						Your next big case begins here!
 					</h3>
 					<p class="mb-6 mt-6 text-xl font-[Ubuntu] font-light text-left text-[#949494]">
-						We are always eager to meet with new colleagues. <a class="font-bold">We are currently hiring</a>, so checks out our "Updates" for open position.
+						We are always eager to meet with new colleagues. <!--<a class="font-bold">We are currently hiring</a>, so checks out our "Updates" for open position.-->
+						Please check on “Updates” for hiring announcement and open position.
 					</p>
 				</div>
 
