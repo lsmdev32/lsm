@@ -275,7 +275,7 @@ const images = [
 							<NuxtLink
 								type="button"
 								class="custom-button-about d-flex font-[Ubuntu]"
-								to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
+								to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20%20Capability%20Statement.pdf?alt=media&token=f46d53fd-19af-4450-85e5-0a382ee2afa6"
 							>
 								<span>Download Company Profile</span>
 							</NuxtLink>
@@ -357,4 +357,5 @@ const images = [
   }
 }
 </style>
+
 
