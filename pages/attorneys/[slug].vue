@@ -137,7 +137,10 @@ function closeAssociates() {
 							:key="associate.id"
 							class="cursor-pointer hover:underline"
 						>
-							<nuxt-link :href="`/attorneys/${associate.slug}`">
+							<nuxt-link
+								:href="`/attorneys/${associate.slug}`"
+								class="line-clamp-2 text-wrap truncate w-[150px]"
+							>
 								{{ associate.name }}
 							</nuxt-link>
 						</li>
