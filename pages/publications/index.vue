@@ -133,14 +133,14 @@ function resetFilters() {
 					<div class="flex flex-col mb-8">
 						<div class="flex mb-8">
 							<h2 class="text-3xl font-[Marcellus] text-[#4B3D2A]">
-								Cari
+								Search
 							</h2>
 						</div>
 						<div class="w-full flex flex-col gap-y-4">
 							<UiInput
 								v-model="keywordFilter"
 								type="text"
-								placeholder="Cari..."
+								placeholder="Search..."
 								class="w-full p-2 border bg-[#F5F5F5] border-gray-300 rounded-md"
 							/>
 
