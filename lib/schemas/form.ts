@@ -35,11 +35,15 @@ export const STAFF_FORM_SCHEMA_KEYS = {
 export const STAFF_TYPES = {
 	associate: "associate",
 	partner: "partner",
+	founder: "founder",
+	of_counsel: "of_counsel",
 } as const
 
 export const STAFF_TYPES_LIST = [
 	STAFF_TYPES.associate,
 	STAFF_TYPES.partner,
+	STAFF_TYPES.founder,
+	STAFF_TYPES.of_counsel,
 ] as const
 
 export const CREATE_STAFF_FORM_SCHEMA = z.object({

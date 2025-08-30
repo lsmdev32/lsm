@@ -457,31 +457,66 @@ const ourAttorneysPageData = base
 			orderBy("fullname"),
 		)
 
-		let associatesSnapshot = { docs: [] }
-		try {
-			associatesSnapshot = await getDocs(associatesQuery)
-		}
-		catch (e) {
-			console.error("Error fetching associates:", e)
-		}
-		const associates = associatesSnapshot.docs.map((doc) => {
-			const associateData = doc.data()
-			return {
-				id: associateData.id!,
-				name: associateData.fullname,
-				slug: associateData.slug,
-				image_url: associateData.profile_picture_url,
-				email: associateData.email,
-				linkedin_url: associateData.linkedin_url,
-				type: associateData.type,
-			}
-		})
+		const associatesSnapshot = await getDocs(associatesQuery)
+		const associates = associatesSnapshot.docs
+			.map(d => d.data())
+			.map(doc => ({
+				id: doc.id!,
+				name: doc.fullname,
+				slug: doc.slug,
+				image_url: doc.profile_picture_url,
+				email: doc.email,
+				linkedin_url: doc.linkedin_url,
+				type: doc.type,
+			}))
+
+		const foundersQuery = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "founder"),
+			orderBy("fullname"),
+		)
+
+		const foundersSnapshot = await getDocs(foundersQuery)
+		const founders = foundersSnapshot.docs
+			.map(d => d.data())
+			.map(doc => ({
+				id: doc.id!,
+				name: doc.fullname,
+				slug: doc.slug,
+				image_url: doc.profile_picture_url,
+				email: doc.email,
+				linkedin_url: doc.linkedin_url,
+				type: doc.type,
+			}))
+
+		const ofCounselQuery = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "of_counsel"),
+			orderBy("fullname"),
+		)
+
+		const ofCounselSnapshot = await getDocs(ofCounselQuery)
+		const ofCounsel = ofCounselSnapshot.docs
+			.map(d => d.data())
+			.map(doc => ({
+				id: doc.id!,
+				name: doc.fullname,
+				slug: doc.slug,
+				image_url: doc.profile_picture_url,
+				email: doc.email,
+				linkedin_url: doc.linkedin_url,
+				type: doc.type,
+			}))
 
 		return {
 			body: {
 				message: "ok",
 				status: 200,
 				data: {
+					founders: {
+						data: founders,
+						total: founders.length,
+					},
 					partners: {
 						data: partners,
 						total: partners.length,
@@ -489,6 +524,10 @@ const ourAttorneysPageData = base
 					associates: {
 						data: associates,
 						total: associates.length,
+					},
+					of_counsels: {
+						data: ofCounsel,
+						total: ofCounsel.length,
 					},
 				},
 			},
@@ -576,14 +615,15 @@ const ourAttorneyDetailPageData = base
 		)
 
 		const otherAssociatesSnapshot = await getDocs(otherAssociatesQuery)
-		const otherAssociates = otherAssociatesSnapshot.docs.map((doc) => {
-			const associateData = doc.data()
-			return {
-				id: associateData.id!,
-				name: associateData.fullname,
-				slug: associateData.slug,
-			}
-		})
+		const otherAssociates = otherAssociatesSnapshot.docs
+			.map(d => d.data())
+			.map((doc) => {
+				return {
+					id: doc.id!,
+					name: doc.fullname,
+					slug: doc.slug,
+				}
+			})
 
 		const otherPartnersQuery = query(
 			getStaffCollectionRef(context.firestore),
@@ -593,14 +633,13 @@ const ourAttorneyDetailPageData = base
 		)
 
 		const otherPartnersSnapshot = await getDocs(otherPartnersQuery)
-		let otherPartners = otherPartnersSnapshot.docs.map((doc) => {
-			const partnerData = doc.data()
-			return {
-				id: partnerData.id!,
-				name: partnerData.fullname,
-				slug: partnerData.slug,
-			}
-		})
+		let otherPartners = otherPartnersSnapshot.docs
+			.map(d => d.data())
+			.map(doc => ({
+				id: doc.id!,
+				name: doc.fullname,
+				slug: doc.slug,
+			}))
 
 		const partnerOrderIdsQuery = rtdbQuery(dbRef(context.rtdb, RTDB_KEYS.ATTORNEY_ORDER))
 		const partnerOrderIdsSnapshot = await get(partnerOrderIdsQuery)
@@ -614,6 +653,38 @@ const ourAttorneyDetailPageData = base
 			if (indexB === -1) return -1
 			return indexA - indexB
 		})
+
+		const otherFoundersQuery = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "founder"),
+			where("slug", "!=", staffData.slug),
+			limit(10),
+		)
+
+		const otherFoundersSnapshot = await getDocs(otherFoundersQuery)
+		const otherFounders = otherFoundersSnapshot.docs
+			.map(d => d.data())
+			.map(doc => ({
+				id: doc.id!,
+				name: doc.fullname,
+				slug: doc.slug,
+			}))
+
+		const otherOfCounselsQuery = query(
+			getStaffCollectionRef(context.firestore),
+			where("type", "==", "of_counsel"),
+			where("slug", "!=", staffData.slug),
+			limit(10),
+		)
+
+		const otherOfCounselsSnapshot = await getDocs(otherOfCounselsQuery)
+		const otherOfCounsels = otherOfCounselsSnapshot.docs
+			.map(d => d.data())
+			.map(doc => ({
+				id: doc.id!,
+				name: doc.fullname,
+				slug: doc.slug,
+			}))
 
 		return {
 			body: {
@@ -634,6 +705,8 @@ const ourAttorneyDetailPageData = base
 					publications: publications,
 					other_associates: otherAssociates,
 					other_partners: otherPartners,
+					other_founders: otherFounders,
+					other_of_counsels: otherOfCounsels,
 				},
 			},
 		}

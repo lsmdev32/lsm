@@ -3,6 +3,8 @@ import { z } from "zod"
 export const StaffTypeFilter = z.enum([
 	"partner",
 	"associate",
+	"founder",
+	"of_counsel",
 	"all",
 ])
 
@@ -227,6 +229,54 @@ export const OurAttorneysPageDataOutputSchema = z.object({
 								})),
 						total: z.number(),
 					}),
+				founders: z
+					.object({
+						data: z
+							.array(z
+								.object({
+									id: z
+										.string(),
+									name: z
+										.string(),
+									slug: z
+										.string(),
+									image_url: z
+										.string()
+										.url(),
+									linkedin_url: z
+										.string()
+										.url(),
+									email: z
+										.string()
+										.email(),
+									type: StaffTypeFilter,
+								})),
+						total: z.number(),
+					}),
+				of_counsels: z
+					.object({
+						data: z
+							.array(z
+								.object({
+									id: z
+										.string(),
+									name: z
+										.string(),
+									slug: z
+										.string(),
+									image_url: z
+										.string()
+										.url(),
+									linkedin_url: z
+										.string()
+										.url(),
+									email: z
+										.string()
+										.email(),
+									type: StaffTypeFilter,
+								})),
+						total: z.number(),
+					}),
 			}),
 	}),
 })
@@ -296,6 +346,26 @@ export const OurAttorneyDetailPageDataOutputSchema = z.object({
 									.string(),
 							})),
 					other_associates: z
+						.array(z
+							.object({
+								id: z
+									.string(),
+								name: z
+									.string(),
+								slug: z
+									.string(),
+							})),
+					other_founders: z
+						.array(z
+							.object({
+								id: z
+									.string(),
+								name: z
+									.string(),
+								slug: z
+									.string(),
+							})),
+					other_of_counsels: z
 						.array(z
 							.object({
 								id: z
