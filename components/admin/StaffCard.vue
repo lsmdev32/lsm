@@ -110,7 +110,7 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
 			class="size-36 rounded-full object-cover mb-4 flex items-center justify-center"
 		/>
 		<div class="mb-4">
-			<span class="capitalize p-2 bg-orange-300 rounded-full text-xs font-bold text-black tracking-wide">{{ type }}</span>
+			<span class="capitalize p-2 bg-orange-300 rounded-full text-xs font-bold text-black tracking-wide">{{ type.replaceAll('_', ' ') }}</span>
 		</div>
 		<div class="flex items-center gap-2 mb-2 [&_a]:cursor-pointer">
 			<NuxtLink

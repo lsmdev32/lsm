@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import Publications from "~/components/audience/Publications.vue"
 
 const slug = useRoute().params.slug as string
@@ -24,27 +24,49 @@ defineProps({
 	description: String,
 })
 
-// State
-const showPartners = ref(false)
-const showAssociates = ref(false)
+// Unified active tab state
+const activeTab = ref<
+	"partner" | "associate" | "founder" | "of-counsel" | null
+>(null)
 
-// Methods
+// Computed booleans for template compatibility
+const showPartners = computed(() => activeTab.value === "partner")
+const showAssociates = computed(() => activeTab.value === "associate")
+const showFounders = computed(() => activeTab.value === "founder")
+const showOfCounsels = computed(() => activeTab.value === "of-counsel")
+
+// Toggle helpers
 function togglePartners() {
-	showPartners.value = !showPartners.value
-	showAssociates.value = false
-}
-
-function closePartners() {
-	showPartners.value = false
+	activeTab.value = activeTab.value === "partner" ? null : "partner"
 }
 
 function toggleAssociates() {
-	showAssociates.value = !showAssociates.value
-	showPartners.value = false
+	activeTab.value = activeTab.value === "associate" ? null : "associate"
+}
+
+function toggleFounders() {
+	activeTab.value = activeTab.value === "founder" ? null : "founder"
+}
+
+function toggleOfCounsels() {
+	activeTab.value = activeTab.value === "of-counsel" ? null : "of-counsel"
+}
+
+// Close helpers (only close if that tab is currently active)
+function closePartners() {
+	if (activeTab.value === "partner") activeTab.value = null
 }
 
 function closeAssociates() {
-	showAssociates.value = false
+	if (activeTab.value === "associate") activeTab.value = null
+}
+
+function closeFounders() {
+	if (activeTab.value === "founder") activeTab.value = null
+}
+
+function closeOfCounsels() {
+	if (activeTab.value === "of-counsel") activeTab.value = null
 }
 </script>
 
@@ -52,27 +74,48 @@ function closeAssociates() {
 	<div>
 		<!-- Desktop -->
 		<section class="hidden md:block">
-			<div class="max-w-7xl mx-auto py-12 flex flex-col md:flex-row gap-28 px-2 sm:px-6 lg:px-8">
+			<div class="max-w-7xl mx-auto py-12 flex flex-col md:flex-row gap-10 px-2 sm:px-6 lg:px-8">
 				<!-- Sidebar: List Partners -->
-				<aside class="md:col-span-1 space-y-4 pr-8">
-					<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
-						Partners
-					</h2>
-					<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
-						<li
-							v-for="partner in result.other_partners"
-							:key="partner.id"
-							class="cursor-pointer hover:underline"
-						>
-							<nuxt-link
-								:href="`/attorneys/${partner.slug}`"
-								class="line-clamp-2 text-wrap truncate w-[150px]"
+				<div class="flex flex-col space-y-4">
+					<aside class="md:col-span-1 space-y-4 pr-8">
+						<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
+							Founders
+						</h2>
+						<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
+							<li
+								v-for="founder in result.other_founders"
+								:key="founder.id"
+								class="cursor-pointer hover:underline"
 							>
-								{{ partner.name }}
-							</nuxt-link>
-						</li>
-					</ul>
-				</aside>
+								<nuxt-link
+									:href="`/attorneys/${founder.slug}`"
+									class="line-clamp-2 text-wrap truncate w-[150px]"
+								>
+									{{ founder.name }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</aside>
+					<aside class="md:col-span-1 space-y-4 pr-8">
+						<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
+							Partners
+						</h2>
+						<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
+							<li
+								v-for="partner in result.other_partners"
+								:key="partner.id"
+								class="cursor-pointer hover:underline"
+							>
+								<nuxt-link
+									:href="`/attorneys/${partner.slug}`"
+									class="line-clamp-2 text-wrap truncate w-[150px]"
+								>
+									{{ partner.name }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</aside>
+				</div>
 
 				<!-- Main Profile Section -->
 				<div class="w-full bg-[#dfb78d] md:rounded-bl-[152px] lg:rounded-bl-[128px] flex flex-col md:flex-row items-center border-bottom-left-radius  ">
@@ -125,24 +168,48 @@ function closeAssociates() {
 					</div>
 				</div>
 			</div>
-			<div class="max-w-7xl mx-auto pb-12 flex flex-col md:flex-row gap-28 px-2 sm:px-6 lg:px-8">
+			<div class="max-w-7xl mx-auto pb-12 flex flex-col md:flex-row gap-10 px-2 sm:px-6 lg:px-8">
 				<!-- Sidebar: List Partners -->
-				<aside class="md:col-span-1 space-y-4 pr-8">
-					<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
-						Associate
-					</h2>
-					<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
-						<li
-							v-for="associate in result.other_associates"
-							:key="associate.id"
-							class="cursor-pointer hover:underline"
-						>
-							<nuxt-link :href="`/attorneys/${associate.slug}`">
-								{{ associate.name }}
-							</nuxt-link>
-						</li>
-					</ul>
-				</aside>
+				<div class="flex flex-col space-y-4">
+					<aside class="md:col-span-1 space-y-4 pr-2">
+						<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
+							Of Counsels
+						</h2>
+						<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
+							<li
+								v-for="counsel in result.other_of_counsels"
+								:key="counsel.id"
+								class="cursor-pointer hover:underline"
+							>
+								<nuxt-link
+									:href="`/attorneys/${counsel.slug}`"
+									class="line-clamp-2 text-wrap truncate w-[150px]"
+								>
+									{{ counsel.name }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</aside>
+					<aside class="md:col-span-1 space-y-4 pr-8">
+						<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
+							Associate
+						</h2>
+						<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
+							<li
+								v-for="associate in result.other_associates"
+								:key="associate.id"
+								class="cursor-pointer hover:underline"
+							>
+								<nuxt-link
+									:href="`/attorneys/${associate.slug}`"
+									class="line-clamp-2 text-wrap truncate w-[150px]"
+								>
+									{{ associate.name }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</aside>
+				</div>
 
 				<!-- Main Profile Section -->
 				<div class="w-full flex flex-col font-[Ubuntu] text-[#949494] space-y-4">
@@ -183,12 +250,32 @@ function closeAssociates() {
 							<button
 								class="flex-1 mx-1 p-2  font-[Ubuntu] rounded-md"
 								:class="{
+									'text-[#DAB38D] ': !showFounders,
+									'text-[#4B3D2A] border border-[#4B3D2A] bg-[#DAB38D]': showFounders,
+								}"
+								@click="toggleFounders"
+							>
+								Founders
+							</button>
+							<button
+								class="flex-1 mx-1 p-2  font-[Ubuntu] rounded-md"
+								:class="{
 									'text-[#DAB38D] ': !showPartners,
 									'text-[#4B3D2A] border border-[#4B3D2A] bg-[#DAB38D]': showPartners,
 								}"
 								@click="togglePartners"
 							>
 								Partners
+							</button>
+							<button
+								class="flex-1 mx-1 p-2 font-[Ubuntu] rounded-md"
+								:class="{
+									'text-[#DAB38D] bg-white': !showOfCounsels,
+									'text-[#4B3D2A] border border-[#4B3D2A] bg-[#DAB38D]': showOfCounsels,
+								}"
+								@click="toggleOfCounsels"
+							>
+								Of Counsels
 							</button>
 							<button
 								class="flex-1 mx-1 p-2 font-[Ubuntu] rounded-md"
@@ -200,6 +287,32 @@ function closeAssociates() {
 							>
 								Associates
 							</button>
+						</div>
+
+						<!-- Founders Menu -->
+						<div
+							v-if="showFounders"
+							class="bg-white p-2 w-full"
+						>
+							<div class="flex justify-end mb-2">
+								<button
+									class="text-gray-600 hover:text-gray-800"
+									@click="closeFounders"
+								>
+									✕
+								</button>
+							</div>
+							<ul>
+								<li
+									v-for="founder in result.other_founders"
+									:key="founder.id"
+									class="py-2 text-lg font-[Ubuntu] text-[#DAB38D] last:border-b-0"
+								>
+									<nuxt-link :href="`/attorneys/${founder.slug}`">
+										{{ founder.name }}
+									</nuxt-link>
+								</li>
+							</ul>
 						</div>
 
 						<!-- Partners Menu -->
@@ -223,6 +336,32 @@ function closeAssociates() {
 								>
 									<nuxt-link :href="`/attorneys/${partner.slug}`">
 										{{ partner.name }}
+									</nuxt-link>
+								</li>
+							</ul>
+						</div>
+
+						<!-- Of Counsel Menu -->
+						<div
+							v-if="showOfCounsels"
+							class="bg-white p-2 w-full"
+						>
+							<div class="flex justify-end mb-2">
+								<button
+									class="text-gray-600 hover:text-gray-800"
+									@click="closeOfCounsels"
+								>
+									✕
+								</button>
+							</div>
+							<ul>
+								<li
+									v-for="ofCounsel in result.other_of_counsels"
+									:key="ofCounsel.id"
+									class="py-2 text-lg font-[Ubuntu] text-[#DAB38D] last:border-b-0"
+								>
+									<nuxt-link :href="`/attorneys/${ofCounsel.slug}`">
+										{{ ofCounsel.name }}
 									</nuxt-link>
 								</li>
 							</ul>
