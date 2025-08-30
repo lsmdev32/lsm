@@ -68,7 +68,7 @@ const data = response.data.data
 					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
 					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4 ">
 						<Partners
-							v-for="(partner) in data?.partners.data.slice(0, 2)"
+							v-for="(partner) in data?.founders.data"
 							:key="partner.id"
 							:image="partner.image_url"
 							:name="partner.name"
@@ -85,7 +85,7 @@ const data = response.data.data
 					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
 					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4 ">
 						<Partners
-							v-for="(partner) in data?.partners.data.slice(2, 6)"
+							v-for="(partner) in data?.partners.data"
 							:key="partner.id"
 							:image="partner.image_url"
 							:name="partner.name"
@@ -102,7 +102,7 @@ const data = response.data.data
 					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
 					<div class="grid gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4">
 						<Partners
-							v-for="(partner) in data?.partners.data.slice(-1)"
+							v-for="(partner) in data?.of_counsels.data"
 							:key="partner.id"
 							:image="partner.image_url"
 							:name="partner.name"
@@ -175,7 +175,7 @@ const data = response.data.data
 					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
 					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4 ">
 						<Partners
-							v-for="(partner) in data?.partners.data.slice(0, 2)"
+							v-for="(partner) in data?.founders.data"
 							:key="partner.id"
 							:image="partner.image_url"
 							:name="partner.name"
@@ -192,7 +192,7 @@ const data = response.data.data
 					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
 					<div class="grid grid-cols-2 md:grid-cols-2 gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4 ">
 						<Partners
-							v-for="(partner) in data?.partners.data.slice(2, 6)"
+							v-for="(partner) in data?.partners.data"
 							:key="partner.id"
 							:image="partner.image_url"
 							:name="partner.name"
@@ -209,7 +209,7 @@ const data = response.data.data
 					<div class="w-full justify-center container max-w-7xl h-[2px] mx-auto bg-[#949494]" />
 					<div class="grid gap-10 container max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 mt-4">
 						<Partners
-							v-for="(partner) in data?.partners.data.slice(-1)"
+							v-for="(partner) in data?.of_counsels.data"
 							:key="partner.id"
 							:image="partner.image_url"
 							:name="partner.name"
