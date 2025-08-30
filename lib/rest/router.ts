@@ -877,6 +877,7 @@ const publicationDetailPageData = base
 		const relatedContentsQuery = query(
 			getPublicationCollectionRef(context.firestore),
 			where("category_id", "==", publicationData.category_id),
+			where("type", "==", "publication"),
 			where("status", "==", "published"),
 			where("slug", "!=", publicationData.slug),
 			limit(3),
