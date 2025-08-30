@@ -54,25 +54,46 @@ function closeAssociates() {
 		<section class="hidden md:block">
 			<div class="max-w-7xl mx-auto py-12 flex flex-col md:flex-row gap-28 px-2 sm:px-6 lg:px-8">
 				<!-- Sidebar: List Partners -->
-				<aside class="md:col-span-1 space-y-4 pr-8">
-					<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
-						Partners
-					</h2>
-					<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
-						<li
-							v-for="partner in result.other_partners"
-							:key="partner.id"
-							class="cursor-pointer hover:underline"
-						>
-							<nuxt-link
-								:href="`/attorneys/${partner.slug}`"
-								class="line-clamp-2 text-wrap truncate w-[150px]"
+				<div class="flex flex-col space-y-4">
+					<aside class="md:col-span-1 space-y-4 pr-8">
+						<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
+							Founders
+						</h2>
+						<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
+							<li
+								v-for="founder in result.other_founders"
+								:key="founder.id"
+								class="cursor-pointer hover:underline"
 							>
-								{{ partner.name }}
-							</nuxt-link>
-						</li>
-					</ul>
-				</aside>
+								<nuxt-link
+									:href="`/attorneys/${founder.slug}`"
+									class="line-clamp-2 text-wrap truncate w-[150px]"
+								>
+									{{ founder.name }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</aside>
+					<aside class="md:col-span-1 space-y-4 pr-8">
+						<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
+							Partners
+						</h2>
+						<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
+							<li
+								v-for="partner in result.other_partners"
+								:key="partner.id"
+								class="cursor-pointer hover:underline"
+							>
+								<nuxt-link
+									:href="`/attorneys/${partner.slug}`"
+									class="line-clamp-2 text-wrap truncate w-[150px]"
+								>
+									{{ partner.name }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</aside>
+				</div>
 
 				<!-- Main Profile Section -->
 				<div class="w-full bg-[#dfb78d] md:rounded-bl-[152px] lg:rounded-bl-[128px] flex flex-col md:flex-row items-center border-bottom-left-radius  ">
@@ -125,27 +146,48 @@ function closeAssociates() {
 					</div>
 				</div>
 			</div>
-			<div class="max-w-7xl mx-auto pb-12 flex flex-col md:flex-row gap-28 px-2 sm:px-6 lg:px-8">
+			<div class="max-w-7xl mx-auto pb-12 flex flex-col md:flex-row gap-20 px-2 sm:px-6 lg:px-8">
 				<!-- Sidebar: List Partners -->
-				<aside class="md:col-span-1 space-y-4 pr-8">
-					<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
-						Associate
-					</h2>
-					<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
-						<li
-							v-for="associate in result.other_associates"
-							:key="associate.id"
-							class="cursor-pointer hover:underline"
-						>
-							<nuxt-link
-								:href="`/attorneys/${associate.slug}`"
-								class="line-clamp-2 text-wrap truncate w-[150px]"
+				<div class="flex flex-col space-y-4">
+					<aside class="md:col-span-1 space-y-4 pr-8">
+						<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
+							Founders
+						</h2>
+						<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
+							<li
+								v-for="counsel in result.other_of_counsels"
+								:key="counsel.id"
+								class="cursor-pointer hover:underline"
 							>
-								{{ associate.name }}
-							</nuxt-link>
-						</li>
-					</ul>
-				</aside>
+								<nuxt-link
+									:href="`/attorneys/${counsel.slug}`"
+									class="line-clamp-2 text-wrap truncate w-[150px]"
+								>
+									{{ counsel.name }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</aside>
+					<aside class="md:col-span-1 space-y-4 pr-8">
+						<h2 class="text-3xl font-[Marcellus] text-[#2e1e10]">
+							Associate
+						</h2>
+						<ul class="text-[#c89d71] space-y-2 font-[Ubuntu] whitespace-nowrap">
+							<li
+								v-for="associate in result.other_associates"
+								:key="associate.id"
+								class="cursor-pointer hover:underline"
+							>
+								<nuxt-link
+									:href="`/attorneys/${associate.slug}`"
+									class="line-clamp-2 text-wrap truncate w-[150px]"
+								>
+									{{ associate.name }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</aside>
+				</div>
 
 				<!-- Main Profile Section -->
 				<div class="w-full flex flex-col font-[Ubuntu] text-[#949494] space-y-4">

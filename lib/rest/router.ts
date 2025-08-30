@@ -670,6 +670,7 @@ const ourAttorneyDetailPageData = base
 				name: doc.fullname,
 				slug: doc.slug,
 			}))
+			.sort((a, b) => -a.name.localeCompare(b.name))
 
 		const otherOfCounselsQuery = query(
 			getStaffCollectionRef(context.firestore),
