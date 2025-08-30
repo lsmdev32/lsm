@@ -488,6 +488,7 @@ const ourAttorneysPageData = base
 				linkedin_url: doc.linkedin_url,
 				type: doc.type,
 			}))
+			.sort((a, b) => -a.name.localeCompare(b.name))
 
 		const ofCounselQuery = query(
 			getStaffCollectionRef(context.firestore),
