@@ -3,7 +3,7 @@
 		<h2 class="text-3xl font-[marcellus] text-[#DAB38D]">
 			Requirements
 		</h2>
-		<select disabled
+		<select 
 			v-model="selectedJob"
 			class="mx-auto mt-4 pl-2 block font-[Ubuntu] font-light text-[#4B3D2A] w-full rounded-md focus:ring  focus:ring-opacity-50"
 			@change="showRequirements"
@@ -50,25 +50,27 @@ export default {
 			selectedJob: "",
 			jobs: [
 				{
-					position: "Lawyer",
+					position: "Mid-Level Associate",
 					requirements: [
-						"Having a law bachelor's degree, with impressive academic record",
-						"Strictly a minimum of 5 years experience working in relevant law areas",
+						"Having a law bachelor's degree",
+						"A minimum of 5 years' experience working as a lawyer",
 						"An advocates license",
-						"Commitment to provide best services to clients",
+						"Commitment to provide the best services to clients",
 						"Strong communication skills",
 						"Excellent English speaking and writing skills",
+						"Able to work well under pressure",
 					],
 				},
 				{
 					position: "Junior Associate",
 					requirements: [
 						"Having a law bachelor's degree from a reputable University",
-						"Minimum 1.5 years working experience in relevant law areas",
-						"Fluent in English, both writing and verbal",
+						"Minimum 1.5 years' experience working in relevant law areas",
+						"Excellent English speaking and writing skills",
 						"Committed to self-development and learning",
 						"Able to work as a team",
 						"Having a good communication skill and personality",
+						"Able to work well under pressure",
 					],
 				},
 				{
@@ -84,14 +86,15 @@ export default {
 				{
 					position: "Internship",
 					requirements: [
-						"Having a law bachelor's degree from a reputable University",
-						"Active and fluent in English, both writing and verbal",
+						"Having a law bachelor's degree from a reputable University or in the last semester of the Faculty of Law",
+						"Excellent English speaking and writing skills",
 						"Committed to self-development and learning",
 						"Able to work as a team",
-						"Have a good communication skill and personality",
-						"Experience working in the legal field is preferable",
+						"Having good communication skills and personality ",
+						"Having experience working/interning in the legal field is preferable",
 					],
 				},
+				<!-- non aktifkan posisi
 				{
 					position: "Finance & Accounting Staff",
 					requirements: [
@@ -127,7 +130,7 @@ export default {
 						"The capacity to troubleshoot and resolve technical issues",
 						"Working effectively with other IT professionals",
 					],
-				},
+				}, non aktifkan posisi -->
 			],
 		}
 	},
