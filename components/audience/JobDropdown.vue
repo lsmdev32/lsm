@@ -74,16 +74,6 @@ export default {
 					],
 				},
 				{
-					position: "Trainee Associate",
-					requirements: [
-						"Having a law bachelor's degree",
-						"Experience working in the legal field is preferable",
-						"Fluent in English, both writing and verbal",
-						"Able to work as a team",
-						"Having a good communication skill and personality",
-					],
-				},
-				{
 					position: "Internship",
 					requirements: [
 						"Having a law bachelor's degree from a reputable University or in the last semester of the Faculty of Law",
