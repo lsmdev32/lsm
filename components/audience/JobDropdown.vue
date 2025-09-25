@@ -94,7 +94,7 @@ export default {
 						"Having experience working/interning in the legal field is preferable",
 					],
 				},
-				<!-- non aktifkan posisi
+				<!-- posisi yang tidak perlu
 				{
 					position: "Finance & Accounting Staff",
 					requirements: [
@@ -130,7 +130,7 @@ export default {
 						"The capacity to troubleshoot and resolve technical issues",
 						"Working effectively with other IT professionals",
 					],
-				}, non aktifkan posisi -->
+				}, posisi yang tidak perlu -->
 			],
 		}
 	},
