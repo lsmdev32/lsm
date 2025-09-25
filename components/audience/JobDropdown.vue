@@ -3,7 +3,7 @@
 		<h2 class="text-3xl font-[marcellus] text-[#DAB38D]">
 			Requirements
 		</h2>
-		<select disabled
+		<select 
 			v-model="selectedJob"
 			class="mx-auto mt-4 pl-2 block font-[Ubuntu] font-light text-[#4B3D2A] w-full rounded-md focus:ring  focus:ring-opacity-50"
 			@change="showRequirements"
@@ -92,6 +92,7 @@ export default {
 						"Experience working in the legal field is preferable",
 					],
 				},
+				<!-- Non aktifkan lowongan yang tidak perlu
 				{
 					position: "Finance & Accounting Staff",
 					requirements: [
@@ -128,6 +129,7 @@ export default {
 						"Working effectively with other IT professionals",
 					],
 				},
+				Non aktifkan lowongan yang tidak perlu -->
 			],
 		}
 	},
