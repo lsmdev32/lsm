@@ -94,43 +94,6 @@ export default {
 						"Having experience working/interning in the legal field is preferable",
 					],
 				},
-				<!-- posisi yang tidak perlu
-				{
-					position: "Finance & Accounting Staff",
-					requirements: [
-						"Male/Female (Single), age: 25-30 years",
-						"Education min. D3 / S1, Majoring in Accounting/Finance",
-						"Minimum 1 year working experience in Finance & Accounting",
-						"Having good knowledge about Financial & Tax report",
-						"Preferably having A & B certificates",
-						"Good communication in English",
-						"Have good working attitude",
-					],
-				}, -->
-				{
-					position: "Receptionist/Junior Secretary",
-					requirements: [
-						"Female",
-						"Age 20 – 27 years old",
-						"Diploma 3 (D3 or higher)",
-						"Professional and Presentable Appearance",
-						"Minimum 1 (one) year of experience as a receptionist or secretary",
-						"Excellent English both written and oral",
-						"Good personality and communication skills",
-						"Computer literate and proficient in using MS Office",
-					],
-				},
-				{
-					position: "IT",
-					requirements: [
-						"Bachelor's Degree: Most IT jobs, especially those beyond entry-level",
-						"Knowledge of various computer operating systems (Windows, macOS, Linux)",
-						"Understanding of computer hardware components and software applications",
-						"Familiarity with networking concepts and technologies",
-						"The capacity to troubleshoot and resolve technical issues",
-						"Working effectively with other IT professionals",
-					],
-				},
 			],
 		}
 	},
