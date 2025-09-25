@@ -92,7 +92,6 @@ export default {
 						"Experience working in the legal field is preferable",
 					],
 				},
-				<!-- Non aktifkan lowongan yang tidak perlu
 				{
 					position: "Finance & Accounting Staff",
 					requirements: [
@@ -129,7 +128,6 @@ export default {
 						"Working effectively with other IT professionals",
 					],
 				},
-				Non aktifkan lowongan yang tidak perlu -->
 			],
 		}
 	},
