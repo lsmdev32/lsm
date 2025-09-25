@@ -106,7 +106,7 @@ export default {
 						"Good communication in English",
 						"Have good working attitude",
 					],
-				},
+				}, -->
 				{
 					position: "Receptionist/Junior Secretary",
 					requirements: [
@@ -130,7 +130,7 @@ export default {
 						"The capacity to troubleshoot and resolve technical issues",
 						"Working effectively with other IT professionals",
 					],
-				}, posisi yang tidak perlu -->
+				},
 			],
 		}
 	},
