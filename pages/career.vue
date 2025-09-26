@@ -61,7 +61,7 @@ const submit = async () => {
 						Please check on “Updates” for hiring announcement and open position.
 					</p>
 					<JobDropdown />
-					<p class="mt-6 text-sm font-[Ubuntu] font-light text-left text-[#949494]">
+					<p class="mt-6 text-md font-[Ubuntu] font-light text-left text-[#949494]">
 						Please send your CV to the following email address:
 					</p>
 					<p class="mt-2 text-md font-[Ubuntu] font-light text-left text-[#949494]">
