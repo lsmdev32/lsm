@@ -61,6 +61,15 @@ const submit = async () => {
 						Please check on “Updates” for hiring announcement and open position.
 					</p>
 					<JobDropdown />
+					<p class="mt-6 text-sm font-[Ubuntu] font-light text-left text-[#949494]">
+						Please send your CV to the following email address:
+					</p>
+					<p class="mt-2 text-md font-[Ubuntu] font-light text-left text-[#949494]">
+						<a
+							class="hover:text-[#DAB38D] hover:underline"
+							href="mailto:hrd@lsmlaw.co.id"
+						>hrd@lsmlaw.co.id</a>
+					</p>
 					<!-- <h1 class="mt-6 text-4xl font-[marcellus] text-[#DAB38D]">
 						Lawyers
 					</h1>
