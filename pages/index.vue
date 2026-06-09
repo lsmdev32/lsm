@@ -8,6 +8,7 @@ const images = [
 	"/images/bedge4.png",
 	"/images/bedge5.png",
 	"/images/bedge6.png",
+	"/images/bedge7.png",
 ]
 </script>
 
