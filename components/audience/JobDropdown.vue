@@ -84,6 +84,18 @@ export default {
 						"Having experience working/interning in the legal field is preferable",
 					],
 				},
+				{
+					position: "Receptionist ",
+					requirements: [
+						"Female",
+						"Aged between 20 – 28 years old",
+						"Minimum D 1 Degree",
+						"At least 1 (one) year of experience ",
+						"Good command or English language",
+						"Pleasant personality with strong interpersonal and communication skills",
+						"Professional appearance and customer-oriented attitude",
+					],
+				},
 			],
 		}
 	},
