@@ -52,16 +52,18 @@ export default {
 				{
 					position: "Mid-Level Associate",
 					requirements: [
-						"Having a law bachelor's degree",
-						"A minimum of 5 years' experience working as a lawyer",
-						"An advocates license",
-						"Commitment to provide the best services to clients",
-						"Strong communication skills",
-						"Excellent English speaking and writing skills",
-						"Able to work well under pressure",
+						"Bachelor of Laws (LL.B.) degree from a reputable university",
+						"Minimum GPA of 3.00 (on a 4.00 scale)",
+						"Minimum of 5 (five) years of experience practicing law",
+						"Holds a valid Advocate License",
+						"Strong commitment to delivering excellent legal services to clients",
+						"Excellent interpersonal and communication skills",
+						"Fluent in English, both written and spoken",
+						"Ability to work effectively both independently and as part of a team",
+						"Able to perform well under pressure and manage multiple assignments",
 					],
 				},
-				{
+			/*	{
 					position: "Junior Associate",
 					requirements: [
 						"Having a law bachelor's degree from a reputable University",
@@ -72,7 +74,7 @@ export default {
 						"Having a good communication skill and personality",
 						"Able to work well under pressure",
 					],
-				},
+				}, 
 				{
 					position: "Internship",
 					requirements: [
@@ -83,7 +85,7 @@ export default {
 						"Having good communication skills and personality ",
 						"Having experience working/interning in the legal field is preferable",
 					],
-				},
+				}, */
 				{
 					position: "Receptionist ",
 					requirements: [
