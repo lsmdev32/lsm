@@ -246,6 +246,10 @@ const submit = async () => {
 				</form> -->
 				<div class="flex flex-col z-0 justify-center items-center pt-14">
 					<JobDropdown />
+					<p class="mt-6"><img src="/images/hiring-Mid-level-Associate.jpg"/>
+					</p>
+					<p class="mt-6"><img src="/images/hiring-Receptonist.jpg"/>
+					</p>
 					<p class="mt-6 text-md font-[Ubuntu] font-light text-left text-[#949494]">
 						Please send your Application Letter, CV and Recent Photograph to the following email address:
 					</p>
