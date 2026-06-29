@@ -61,6 +61,8 @@ const submit = async () => {
 						Please check on “Updates” for hiring announcement and open position.
 					</p>
 					<JobDropdown />
+					<p><img src="/images/hiring-Mid-level-Associate.jpg"/>
+					</p>
 					<p class="mt-6 text-md font-[Ubuntu] font-light text-left text-[#949494]">
 						Please send your Application Letter, CV and Recent Photograph to the following email address:
 					</p>
