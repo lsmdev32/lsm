@@ -147,9 +147,6 @@ function onResetForm() {
 											<UiSelectItem value="of_counsel">
 												Of Counsel
 											</UiSelectItem>
-											<UiSelectItem value="intern">
-												Intern
-											</UiSelectItem>
 										</UiSelectGroup>
 									</UiSelectContent>
 								</UiSelect>
