@@ -159,6 +159,9 @@ const ppAlt = computed(() => {
 											<UiSelectItem value="of_counsel">
 												Of Counsel
 											</UiSelectItem>
+											<UiSelectItem value="intern">
+												Intern
+											</UiSelectItem>
 										</UiSelectGroup>
 									</UiSelectContent>
 								</UiSelect>
