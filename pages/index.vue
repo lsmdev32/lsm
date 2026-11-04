@@ -178,7 +178,7 @@ const images = [
 					<NuxtLink
 						type="button"
 						class="custom-button-about d-flex font-[Ubuntu]"
-						to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=657a761e-5459-4834-98f1-802d223e95aa"
+						to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20260921-LSM-Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=e503f7dc-7b7c-4f23-b559-6ff5f860c950"
 					>
 						<span>Download Company Profile</span>
 					</NuxtLink>
@@ -277,7 +277,7 @@ const images = [
 							<NuxtLink
 								type="button"
 								class="custom-button-about d-flex font-[Ubuntu]"
-								to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=657a761e-5459-4834-98f1-802d223e95aa"
+								to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20260921-LSM-Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=e503f7dc-7b7c-4f23-b559-6ff5f860c950"
 							>
 								<span>Download Company Profile</span>
 							</NuxtLink>
