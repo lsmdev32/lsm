@@ -125,7 +125,7 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
     />
     <div class="mb-4">
       <span
-        class="rounded-full bg-orange-300 p-2 text-xs font-bold capitalize tracking-wide text-black"
+        class="rounded-full bg-orange-300 p-2 text-xs font-bold tracking-wide text-black capitalize"
         >{{ type.replaceAll("_", " ") }}</span
       >
     </div>
@@ -146,7 +146,7 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
       </NuxtLink>
     </div>
     <div
-      class="mb-1 line-clamp-2 truncate text-ellipsis text-wrap text-center text-sm font-semibold"
+      class="mb-1 line-clamp-2 truncate text-center text-sm font-semibold text-wrap text-ellipsis"
     >
       {{ props.fullname }}
     </div>

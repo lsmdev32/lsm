@@ -80,6 +80,7 @@ export async function getHomePageData({
   const latestContentIdSnapshot = await rtdbGet(
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.HOME_PINNED_CONTENT))
   );
+
   const latestContentId = latestContentIdSnapshot.val() as string | null;
 
   let latestContent: ContentSummary | null = null;

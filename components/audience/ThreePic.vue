@@ -61,7 +61,7 @@
           class="relative h-[89px] w-full cursor-pointer bg-[url('~/assets/mobile-about-1.svg')] bg-cover"
         >
           <div
-            class="font-marcellus absolute left-[3%] top-1/2 -translate-y-1/2 transform text-2xl text-white"
+            class="font-marcellus absolute top-1/2 left-[3%] -translate-y-1/2 transform text-2xl text-white"
           >
             Dispute Resolution
           </div>
@@ -72,7 +72,7 @@
           class="relative h-[89px] w-full cursor-pointer bg-[url('~/assets/mobile-about-2.svg')] bg-cover"
         >
           <div
-            class="font-marcellus absolute left-[3%] top-1/2 -translate-y-1/2 transform text-2xl text-white"
+            class="font-marcellus absolute top-1/2 left-[3%] -translate-y-1/2 transform text-2xl text-white"
           >
             Corporate Commercial
           </div>
@@ -83,7 +83,7 @@
           class="relative h-[89px] w-full cursor-pointer bg-[url('~/assets/mobile-about-3.svg')] bg-cover"
         >
           <div
-            class="font-marcellus absolute left-[3%] top-1/2 -translate-y-1/2 transform text-2xl text-white"
+            class="font-marcellus absolute top-1/2 left-[3%] -translate-y-1/2 transform text-2xl text-white"
           >
             Intellectual Property
           </div>

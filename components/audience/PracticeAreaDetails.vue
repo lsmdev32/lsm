@@ -3,11 +3,11 @@
     <!-- Mobile -->
     <section class="md:hidden">
       <!-- Main Categories -->
-      <div class="mt-4 flex flex-wrap gap-y-10 pl-4 pr-4">
+      <div class="mt-4 flex flex-wrap gap-y-10 pr-4 pl-4">
         <div
           v-for="(item, idx) in mainCategories"
           :key="idx"
-          class="font-ubuntu shrink-0 basis-1/2 cursor-pointer whitespace-normal text-base text-[#DAB38D] transition-colors hover:text-[#4B3D2A]"
+          class="font-ubuntu shrink-0 basis-1/2 cursor-pointer text-base whitespace-normal text-[#DAB38D] transition-colors hover:text-[#4B3D2A]"
           @click="activeItem = item"
         >
           {{ item.title }}
@@ -22,7 +22,7 @@
       </div>
 
       <!-- Specialized Categories -->
-      <div class="mt-4 flex flex-wrap gap-y-8 pl-4 pr-2">
+      <div class="mt-4 flex flex-wrap gap-y-8 pr-2 pl-4">
         <div
           v-for="(item, idx) in specializedSectors"
           :key="idx"
@@ -41,7 +41,7 @@
           :style="{ backgroundImage: `url(${getBackgroundImage(activeItem)})` }"
           class="relative mb-4 flex h-36 w-full items-center justify-start bg-cover bg-center px-4"
         >
-          <div class="absolute inset-0 bg-black bg-opacity-40" />
+          <div class="bg-opacity-40 absolute inset-0 bg-black" />
           <h2
             class="font-marcellus relative z-10 text-4xl font-light text-white"
           >
@@ -172,7 +172,7 @@
               }"
               class="relative mb-4 flex h-72 w-full items-end justify-start bg-cover bg-center px-4 pb-8"
             >
-              <div class="absolute inset-0 bg-black bg-opacity-40" />
+              <div class="bg-opacity-40 absolute inset-0 bg-black" />
               <h2 class="font-marcellus relative z-10 text-4xl text-white">
                 {{ activeItem.title }}
               </h2>

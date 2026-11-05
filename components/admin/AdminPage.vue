@@ -55,7 +55,7 @@ const breadcrumbs = computed(() =>
       </BreadcrumbList>
     </Breadcrumb>
     <p
-      class="mb-2 text-2xl font-bold capitalize text-gray-500 dark:text-gray-400"
+      class="mb-2 text-2xl font-bold text-gray-500 capitalize dark:text-gray-400"
     >
       {{ pageTitle }}
     </p>

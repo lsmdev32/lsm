@@ -114,6 +114,7 @@ export async function getAttorneysPageData({
   const partnerOrderIdsSnapshot = await rtdbGet(
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.ATTORNEY_ORDER))
   );
+
   const partnerOrderIds = partnerOrderIdsSnapshot.val() as string[];
 
   partners = sortByPartnerOrder(partners, partnerOrderIds);
@@ -310,6 +311,7 @@ export async function getAttorneyDetailPageData(
   const partnerOrderIdsSnapshot = await rtdbGet(
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.ATTORNEY_ORDER))
   );
+
   const partnerOrderIds = partnerOrderIdsSnapshot.val() as string[];
 
   sortByPartnerOrder(otherPartners, partnerOrderIds);

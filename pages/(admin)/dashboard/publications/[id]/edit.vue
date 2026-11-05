@@ -182,7 +182,7 @@ function handlePublicationChange(event: Event) {
                 class="h-full w-full rounded-lg bg-gray-300 object-fill object-center group-hover:hidden"
               />
               <div
-                class="hidden h-full w-full cursor-pointer flex-col items-center justify-center gap-y-2 bg-gray-300 bg-opacity-60 group-hover:flex"
+                class="bg-opacity-60 hidden h-full w-full cursor-pointer flex-col items-center justify-center gap-y-2 bg-gray-300 group-hover:flex"
                 @click="onChooseImageFile"
               >
                 <PencilIcon class="h-8 w-8 text-gray-500" />

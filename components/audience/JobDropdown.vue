@@ -4,7 +4,7 @@
     <select
       disabled
       v-model="selectedJob"
-      class="mx-auto mt-4 block w-full rounded-md pl-2 font-[Ubuntu] font-light text-[#4B3D2A] focus:ring focus:ring-opacity-50"
+      class="focus:ring-opacity-50 mx-auto mt-4 block w-full rounded-md pl-2 font-[Ubuntu] font-light text-[#4B3D2A] focus:ring"
       @change="showRequirements"
     >
       <option value="" disabled>Select a position</option>
@@ -21,7 +21,7 @@
           v-for="req in jobs.find((j) => j.position === selectedJob)
             .requirements"
           :key="req"
-          class="font-[Ubuntu] font-light leading-relaxed text-[#949494] sm:text-sm"
+          class="font-[Ubuntu] leading-relaxed font-light text-[#949494] sm:text-sm"
         >
           {{ req }}
         </li>

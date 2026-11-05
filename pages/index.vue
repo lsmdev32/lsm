@@ -95,7 +95,7 @@ const images = [
         <div class="space-y-8">
           <!-- Top description -->
           <div class="mb-8">
-            <p class="font-[Ubuntu] font-light leading-relaxed text-gray-500">
+            <p class="font-[Ubuntu] leading-relaxed font-light text-gray-500">
               Founded in 1986, our law firm has built a legacy of excellence as
               a pioneer in groundbreaking litigation cases. Renowned for our
               innovative approach and creative legal strategies, we have
@@ -152,7 +152,7 @@ const images = [
         <!-- Right column with Light gray text -->
         <div class="">
           <p
-            class="font-[Marcellus] text-3xl font-light leading-relaxed text-gray-300"
+            class="font-[Marcellus] text-3xl leading-relaxed font-light text-gray-300"
           >
             We are committed to providing responsive attorneys, efficiently
             managed transactions and cases that meet the needs of our Clients

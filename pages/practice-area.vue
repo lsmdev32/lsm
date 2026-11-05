@@ -98,7 +98,7 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue";
         <div class="space-y-8">
           <!-- Top description -->
           <div class="mb-8">
-            <p class="font-[Ubuntu] font-light leading-relaxed text-gray-500">
+            <p class="font-[Ubuntu] leading-relaxed font-light text-gray-500">
               Lawyers at LSM are experts in their fields and are dedicated to
               providing the best legal services to our clients. We have a wide
               range of practice areas, and we work closely with our clients to
@@ -123,7 +123,7 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue";
         </div>
       </div>
     </section>
-    <section class="h-120 z-0 mt-4 hidden w-full md:flex">
+    <section class="z-0 mt-4 hidden h-120 w-full md:flex">
       <PracticeAreaDetails />
     </section>
     <!-- <div class="hidden md:flex max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">

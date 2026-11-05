@@ -36,7 +36,7 @@
               alt="Author"
               class="mr-1 h-8 w-8 rounded-full object-cover object-top"
             />
-            <span class="uppercase tracking-wider text-[#DAB38D]">{{
+            <span class="tracking-wider text-[#DAB38D] uppercase">{{
               publication?.author?.name ||
               defaultAuthorName ||
               "LSM Content Team"
@@ -44,7 +44,7 @@
           </div>
           <div class="flex items-center space-x-1">
             <Icon name="mdi:calendar" size="20" class="text-[#DAB38D]" />
-            <span class="uppercase text-[#DAB38D]">{{
+            <span class="text-[#DAB38D] uppercase">{{
               publication.published_at
             }}</span>
           </div>

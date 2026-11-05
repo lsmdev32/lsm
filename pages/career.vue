@@ -59,7 +59,7 @@ const submit = async () => {
             Your next big case begins here!
           </h3>
           <p
-            class="mb-6 mt-6 text-left font-[Ubuntu] text-xl font-light text-[#949494]"
+            class="mt-6 mb-6 text-left font-[Ubuntu] text-xl font-light text-[#949494]"
           >
             We are always eager to meet with new colleagues.
             <!--<a class="font-bold">We are currently hiring</a>, so checks out our "Updates" for open position.-->
@@ -199,7 +199,7 @@ const submit = async () => {
             Your next big case begins here!
           </h3>
           <p
-            class="mb-6 mt-6 text-left font-[Ubuntu] text-xl font-light text-[#949494]"
+            class="mt-6 mb-6 text-left font-[Ubuntu] text-xl font-light text-[#949494]"
           >
             We are always eager to meet with new colleagues.
             <!--<a class="font-bold">We are currently hiring</a>, so checks out our "Updates" for open position.-->

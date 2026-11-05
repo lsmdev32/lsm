@@ -26,7 +26,7 @@
 
             <!-- Hover icons -->
             <div
-              class="absolute bottom-[120px] right-4 flex space-x-3 opacity-0 transition duration-300 group-hover:opacity-100"
+              class="absolute right-4 bottom-[120px] flex space-x-3 opacity-0 transition duration-300 group-hover:opacity-100"
             >
               <nuxt-link :href="linkedin">
                 <button
@@ -71,7 +71,7 @@
 
             <!-- Hover icons -->
             <div
-              class="absolute bottom-[100px] right-4 flex space-x-3 opacity-0 transition duration-300 group-hover:opacity-100"
+              class="absolute right-4 bottom-[100px] flex space-x-3 opacity-0 transition duration-300 group-hover:opacity-100"
             >
               <nuxt-link :href="linkedin">
                 <button

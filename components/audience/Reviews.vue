@@ -37,7 +37,7 @@
 
               <!-- Review Text -->
               <blockquote
-                class="mb-6 font-[Marcellus] text-lg italic leading-relaxed text-white"
+                class="mb-6 font-[Marcellus] text-lg leading-relaxed text-white italic"
               >
                 "{{ review.text }}"
               </blockquote>
@@ -74,7 +74,7 @@
     <!-- Navigation Arrows Container -->
     <div class="pointer-events-none absolute inset-0 mx-auto max-w-7xl px-4">
       <button
-        class="group pointer-events-auto absolute left-4 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-[#BFE7E4] p-3 shadow-md transition-all duration-200 hover:shadow-lg"
+        class="group pointer-events-auto absolute top-1/2 left-4 z-10 -translate-y-1/2 transform rounded-full bg-[#BFE7E4] p-3 shadow-md transition-all duration-200 hover:shadow-lg"
         @click="prevSlide"
       >
         <svg
@@ -93,7 +93,7 @@
       </button>
 
       <button
-        class="group pointer-events-auto absolute right-4 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-[#BFE7E4] p-3 shadow-md transition-all duration-200 hover:shadow-lg"
+        class="group pointer-events-auto absolute top-1/2 right-4 z-10 -translate-y-1/2 transform rounded-full bg-[#BFE7E4] p-3 shadow-md transition-all duration-200 hover:shadow-lg"
         @click="nextSlide"
       >
         <svg

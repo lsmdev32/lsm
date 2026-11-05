@@ -125,7 +125,7 @@ async function _signOut() {
                 as-child
                 :class="
                   $route.path.includes(item.path)
-                    ? 'rounded-full border border-black border-opacity-45 bg-opacity-50'
+                    ? 'border-opacity-45 bg-opacity-50 rounded-full border border-black'
                     : ''
                 "
               >

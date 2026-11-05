@@ -28,7 +28,7 @@ export async function getCategoryName(
     return null;
   }
 
-  return (categoryDoc.data().name as string | undefined) ?? null;
+  return categoryDoc.data().name ?? null;
 }
 
 export async function getStaffData(
@@ -73,6 +73,7 @@ export async function enrichContentSummaries(
       contents.map((content) => content.category_id).filter(isNonEmptyString)
     ),
   ];
+
   const authorIds = [
     ...new Set(
       contents.map((content) => content.author_id).filter(isNonEmptyString)

@@ -38,20 +38,20 @@ function onClear() {
       <div class="relative w-full max-w-sm items-center">
         <UiComboboxInput
           v-model:model-value="selectedItem"
-          class="pl-9 pr-9"
+          class="pr-9 pl-9"
           :display-value="(val) => val?.label ?? ''"
           :placeholder="placeholder"
         />
         <span
           class="absolute inset-y-0 start-0 flex items-center justify-center px-3"
         >
-          <Search class="size-4 text-muted-foreground" />
+          <Search class="text-muted-foreground size-4" />
         </span>
         <!-- Clear button -->
         <button
           v-if="selectedItem"
           type="button"
-          class="absolute inset-y-0 end-0 flex items-center justify-center px-3 text-muted-foreground hover:text-foreground focus:outline-none"
+          class="text-muted-foreground hover:text-foreground absolute inset-y-0 end-0 flex items-center justify-center px-3 focus:outline-none"
           tabindex="-1"
           aria-label="Clear selection"
           @click="onClear"
