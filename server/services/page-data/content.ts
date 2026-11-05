@@ -14,6 +14,7 @@ import {
   getPublicationCollectionRef,
 } from "~/lib/firestore-model";
 
+import { replaceInlineArticleImages } from "./article-images";
 import { getCategoryName, getStaffData } from "./helpers";
 import type { PageDataServices } from "./types";
 
@@ -129,7 +130,11 @@ export async function getBlogDetailPageData(
       "MMM D, YYYY HH:mm"
     ),
     category: blogData.category_id,
-    content: blogData.content,
+    content: replaceInlineArticleImages(
+      blogData.content,
+      "blogs",
+      blogData.id!
+    ),
     tags: blogData.tags || [],
     type: blogData.type,
   };
@@ -276,7 +281,11 @@ export async function getPublicationDetailPageData(
       "MMM D, YYYY HH:mm"
     ),
     category: publicationData.category_id,
-    content: publicationData.content,
+    content: replaceInlineArticleImages(
+      publicationData.content,
+      "publications",
+      publicationData.id!
+    ),
     tags: publicationData.tags || [],
     type: publicationData.type,
     publication_file_url: publicationData.publication,
