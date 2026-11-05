@@ -23,7 +23,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import LogoSVG from "~/assets/images/logo.svg";
 import {
@@ -108,7 +107,6 @@ async function _signOut() {
 </script>
 
 <template>
-  <SidebarTrigger />
   <Sidebar>
     <SidebarContent>
       <SidebarHeader class="flex flex-row items-center justify-center">
@@ -166,7 +164,7 @@ async function _signOut() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               side="top"
-              class="w-[--reka-popper-anchor-width]"
+              class="w-(--reka-popper-anchor-width)"
             >
               <DropdownMenuItem v-if="!!auth" @click="_signOut">
                 <span>Sign out</span>
