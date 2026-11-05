@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NuxtLink } from "#components";
+import ThreePic from "~/components/audience/ThreePic.vue";
 
 const images = [
   "/images/bedge1.png",
