@@ -2,7 +2,7 @@
 import Associate from "~/components/audience/Associate.vue";
 import Partners from "~/components/audience/Partners.vue";
 
-const response = await useCustomFetch("/rest/page-data/staffs");
+const response = await useCustomFetch("/api/page-data/staffs");
 const { data } = response.data;
 </script>
 
@@ -36,7 +36,7 @@ const { data } = response.data;
         <div class="space-y-8">
           <!-- Top description -->
           <div class="mb-8">
-            <p class="font-[Ubuntu] font-light leading-relaxed text-gray-500">
+            <p class="font-[Ubuntu] leading-relaxed font-light text-gray-500">
               We are dedicated to providing top-quality legal representation for
               our clients. Our attorneys are highly skilled and experienced in
               their respective areas of practice, and are committed to achieving
@@ -136,7 +136,7 @@ const { data } = response.data;
         class="container mx-auto h-[2px] w-full max-w-7xl justify-center bg-[#949494]"
       />
       <div
-        class="container mx-auto mb-8 mt-4 grid max-w-7xl grid-cols-1 gap-10 px-2 py-4 sm:px-6 md:grid-cols-4 lg:px-8"
+        class="container mx-auto mt-4 mb-8 grid max-w-7xl grid-cols-1 gap-10 px-2 py-4 sm:px-6 md:grid-cols-4 lg:px-8"
       >
         <Associate
           v-for="associate in data?.associates.data"
@@ -263,7 +263,7 @@ const { data } = response.data;
         class="container mx-auto h-[2px] w-full max-w-7xl justify-center bg-[#949494]"
       />
       <div
-        class="container mx-auto mb-8 mt-4 grid max-w-7xl grid-cols-2 gap-10 px-2 py-4 sm:grid-cols-2 sm:px-6 md:grid-cols-4 lg:px-8"
+        class="container mx-auto mt-4 mb-8 grid max-w-7xl grid-cols-2 gap-10 px-2 py-4 sm:grid-cols-2 sm:px-6 md:grid-cols-4 lg:px-8"
       >
         <Associate
           v-for="associate in data?.associates.data"

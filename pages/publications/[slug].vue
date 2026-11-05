@@ -7,7 +7,7 @@ import Publications from "~/components/audience/Publications.vue";
 
 const { slug } = useRoute().params;
 
-const { data } = await useCustomFetch(`/rest/page-data/publications/${slug}`);
+const { data } = await useCustomFetch(`/api/page-data/publications/${slug}`);
 
 if (!data) {
   throw createError({
@@ -56,13 +56,13 @@ const relatedContents = data?.data?.related_contents ?? [];
                 alt="Author"
                 class="mr-1 h-8 w-8 rounded-full"
               />
-              <span class="uppercase tracking-wider text-[#DAB38D]">{{
+              <span class="tracking-wider text-[#DAB38D] uppercase">{{
                 detail.author?.name || "LSM Content Team"
               }}</span>
             </div>
             <div class="flex items-center space-x-1">
               <Icon name="mdi:calendar" size="20" class="text-[#DAB38D]" />
-              <span class="uppercase text-[#DAB38D]">{{
+              <span class="text-[#DAB38D] uppercase">{{
                 detail?.published_at
               }}</span>
             </div>
@@ -143,13 +143,13 @@ const relatedContents = data?.data?.related_contents ?? [];
                     class="mr-1 h-8 w-8 rounded-full"
                   />
                 </nuxt-link>
-                <span class="uppercase tracking-wider text-[#DAB38D]">{{
+                <span class="tracking-wider text-[#DAB38D] uppercase">{{
                   detail.author?.name || "LSM Content Team"
                 }}</span>
               </div>
               <div class="flex items-center space-x-1">
                 <Icon name="mdi:calendar" size="20" class="text-[#DAB38D]" />
-                <span class="uppercase text-[#DAB38D]">{{
+                <span class="text-[#DAB38D] uppercase">{{
                   detail?.published_at
                 }}</span>
               </div>
@@ -220,13 +220,13 @@ const relatedContents = data?.data?.related_contents ?? [];
                     alt="Author"
                     class="mr-1 h-8 w-8 rounded-full"
                   />
-                  <span class="uppercase tracking-wider text-[#DAB38D]">{{
+                  <span class="tracking-wider text-[#DAB38D] uppercase">{{
                     content.author?.name || "LSM Content Team"
                   }}</span>
                 </div>
                 <div class="flex items-center space-x-1">
                   <Icon name="mdi:calendar" size="20" class="text-[#DAB38D]" />
-                  <span class="uppercase text-[#DAB38D]">{{
+                  <span class="text-[#DAB38D] uppercase">{{
                     content.published_at
                   }}</span>
                 </div>

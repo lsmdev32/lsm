@@ -6,7 +6,7 @@ import Publications from "~/components/audience/Publications.vue";
 
 const slug = useRoute().params.slug as string;
 
-const { data } = await useCustomFetch(`/rest/page-data/staffs/${slug}`);
+const { data } = await useCustomFetch(`/api/page-data/staffs/${slug}`);
 
 const result = data?.data;
 
@@ -90,7 +90,7 @@ function closeOfCounsels() {
           <aside class="space-y-4 pr-8 md:col-span-1">
             <h2 class="font-[Marcellus] text-3xl text-[#2e1e10]">Founders</h2>
             <ul
-              class="space-y-2 whitespace-nowrap font-[Ubuntu] text-[#c89d71]"
+              class="space-y-2 font-[Ubuntu] whitespace-nowrap text-[#c89d71]"
             >
               <li
                 v-for="founder in result.other_founders"
@@ -109,7 +109,7 @@ function closeOfCounsels() {
           <aside class="space-y-4 pr-8 md:col-span-1">
             <h2 class="font-[Marcellus] text-3xl text-[#2e1e10]">Partners</h2>
             <ul
-              class="space-y-2 whitespace-nowrap font-[Ubuntu] text-[#c89d71]"
+              class="space-y-2 font-[Ubuntu] whitespace-nowrap text-[#c89d71]"
             >
               <li
                 v-for="partner in result.other_partners"
@@ -145,7 +145,7 @@ function closeOfCounsels() {
           <!-- Text Content -->
           <div class="mt-6 text-center md:ml-10 md:text-left">
             <h1
-              class="font-[Marcellus] text-4xl uppercase leading-tight text-[#3a2b1c]"
+              class="font-[Marcellus] text-4xl leading-tight text-[#3a2b1c] uppercase"
             >
               {{ result.person.name }}
             </h1>
@@ -198,7 +198,7 @@ function closeOfCounsels() {
               Of Counsels
             </h2>
             <ul
-              class="space-y-2 whitespace-nowrap font-[Ubuntu] text-[#c89d71]"
+              class="space-y-2 font-[Ubuntu] whitespace-nowrap text-[#c89d71]"
             >
               <li
                 v-for="counsel in result.other_of_counsels"
@@ -217,7 +217,7 @@ function closeOfCounsels() {
           <aside class="space-y-4 pr-8 md:col-span-1">
             <h2 class="font-[Marcellus] text-3xl text-[#2e1e10]">Associate</h2>
             <ul
-              class="space-y-2 whitespace-nowrap font-[Ubuntu] text-[#c89d71]"
+              class="space-y-2 font-[Ubuntu] whitespace-nowrap text-[#c89d71]"
             >
               <li
                 v-for="associate in result.other_associates"

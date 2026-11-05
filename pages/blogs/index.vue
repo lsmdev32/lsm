@@ -9,7 +9,7 @@ import Publications from "~/components/audience/Publications.vue";
 import { DEBOUNCE_DEFAULT_TIME } from "~/lib/constants";
 import { cn } from "~/lib/utils";
 
-const categories = await useCustomFetch("/rest/page-data/categories");
+const categories = await useCustomFetch("/api/page-data/categories");
 
 const keywordFilter = useRouteQuery<string>("keyword", undefined);
 const categoryFilter = useRouteQuery<string>("category", undefined);
@@ -25,7 +25,7 @@ const blink = ref(false);
 
 onMounted(() => {
   isLoading.value = true;
-  $fetch("/rest/page-data/content-list", {
+  $fetch("/api/page-data/content-list", {
     params: {
       type: "blog",
       search: keywordFilter.value ?? undefined,
@@ -43,7 +43,7 @@ onMounted(() => {
 });
 
 function handleFetchNextPage() {
-  $fetch("/rest/page-data/content-list", {
+  $fetch("/api/page-data/content-list", {
     params: {
       type: "blog",
       search: keywordFilter.value,
@@ -76,7 +76,7 @@ watch(
     pageFilter.value = 1;
 
     isLoading.value = true;
-    $fetch("/rest/page-data/content-list", {
+    $fetch("/api/page-data/content-list", {
       params: {
         type: "blog",
         search: keyword,
@@ -281,13 +281,13 @@ function resetFilters() {
                     alt="Author"
                     class="mr-1 h-8 w-8 rounded-full"
                   />
-                  <span class="uppercase tracking-wider text-[#DAB38D]">{{
+                  <span class="tracking-wider text-[#DAB38D] uppercase">{{
                     post?.author?.name || "LSM Content Team"
                   }}</span>
                 </div>
                 <div class="flex items-center space-x-1">
                   <Icon name="mdi:calendar" size="20" class="text-[#DAB38D]" />
-                  <span class="uppercase text-[#DAB38D]">{{
+                  <span class="text-[#DAB38D] uppercase">{{
                     post?.published_at
                   }}</span>
                 </div>

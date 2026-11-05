@@ -1,6 +1,4 @@
-export default async function useCustomFetch<
-  const Path extends `/rest/${string}`,
->(path: Path) {
+export default async function useCustomFetch(path: `/api/${string}`) {
   const data = await useFetch<Record<string, unknown>>(path);
 
   return {
