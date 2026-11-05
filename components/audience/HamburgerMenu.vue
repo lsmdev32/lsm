@@ -1,16 +1,16 @@
 <template>
   <IconMenu
     v-if="!isOpen"
-    class="hamburger-menu my-4 size-[40px] cursor-pointer text-[#4B3D2A] duration-200 animate-in spin-in"
+    class="hamburger-menu animate-in spin-in my-4 size-[40px] cursor-pointer text-[#4B3D2A] duration-200"
     @click="toggleMenu"
   />
   <IconX
     v-else
-    class="hamburger-menu my-auto size-[40px] cursor-pointer text-[#4B3D2A] duration-200 animate-in spin-in"
+    class="hamburger-menu animate-in spin-in my-auto size-[40px] cursor-pointer text-[#4B3D2A] duration-200"
     @click="toggleMenu"
   />
 
-  <div class="menu-panel" :class="{ open: isOpen }">
+  <div ref="menuPanel" class="menu-panel" :class="{ open: isOpen }">
     <ul>
       <li>
         <NuxtLink to="/" @click="closeMenu">Home</NuxtLink>
@@ -73,13 +73,14 @@ export default {
       this.isOpen = false;
     },
     handleOutsideClick(event) {
-      const menuPanel = this.$el.querySelector(".menu-panel");
-      const hamburgerMenu = this.$el.querySelector(".hamburger-menu");
+      const menuPanel = this.$refs.menuPanel;
+      const target = event.target;
 
-      if (
-        !menuPanel.contains(event.target) &&
-        !hamburgerMenu.contains(event.target)
-      ) {
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      if (!menuPanel?.contains(target) && !target.closest(".hamburger-menu")) {
         this.closeMenu();
       }
     },
