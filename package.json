@@ -8,7 +8,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "check": "ultracite check",
+    "fix": "ultracite fix"
   },
   "dependencies": {
     "@firebase/app-types": "^0.9.3",
@@ -65,10 +67,15 @@
     "@iconify-json/devicon": "^1.2.29",
     "@iconify-json/material-symbols": "^1.2.28",
     "@iconify-json/mdi": "^1.2.3",
+    "@shadcn/lint": "^0.2.3",
     "autoprefixer": "^10.4.21",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0",
+    "oxlint-tsgolint": "^7.0.2005",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "ultracite": "8.1.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
