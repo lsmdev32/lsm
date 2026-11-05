@@ -10,7 +10,7 @@ import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue";
     <section class="md:hidden">
       <div class="z-0 flex flex-col items-start justify-center px-4 py-6">
         <div
-          class="flex h-[556px] w-full flex-col items-start justify-end bg-[url('images/practice-area-1-sm.jpg')] bg-cover bg-center bg-no-repeat p-4"
+          class="flex h-[556px] w-full flex-col items-start justify-end bg-[url('/images/practice-area-1-sm.jpg')] bg-cover bg-center bg-no-repeat p-4"
         >
           <h1 class="font-[marcellus] text-4xl text-white">Practice Area</h1>
         </div>
