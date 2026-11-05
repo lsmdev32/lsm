@@ -15,7 +15,7 @@ export function replaceInlineArticleImages(
 ): string {
   let index = 0;
 
-  return content.replace(INLINE_IMAGE_PATTERN, (_match, quote: string) => {
+  return content.replaceAll(INLINE_IMAGE_PATTERN, (_match, quote: string) => {
     const url = `/api/page-data/images/${collection}/${id}/${index}`;
     index += 1;
 

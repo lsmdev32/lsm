@@ -73,8 +73,8 @@ export default {
       this.isOpen = false;
     },
     handleOutsideClick(event) {
-      const menuPanel = this.$refs.menuPanel;
-      const target = event.target;
+      const { menuPanel } = this.$refs;
+      const { target } = event;
 
       if (!(target instanceof Element)) {
         return;
