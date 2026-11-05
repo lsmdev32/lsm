@@ -1,5 +1,5 @@
 const INLINE_IMAGE_PATTERN =
-  /src=(["'])data:image\/([a-zA-Z0-9.+-]+);base64,([^"']+)\1/g;
+  /src=(?<quote>["'])data:image\/(?<mime>[a-zA-Z0-9.+-]+);base64,(?<base64>[^"']+)\k<quote>/gu;
 
 export type ArticleImageCollection = "blogs" | "publications";
 
@@ -29,8 +29,7 @@ export function extractInlineArticleImages(
   const images: InlineArticleImage[] = [];
 
   for (const match of content.matchAll(INLINE_IMAGE_PATTERN)) {
-    const mime = match[2];
-    const base64 = match[3];
+    const [, , mime, base64] = match;
 
     if (mime !== undefined && base64 !== undefined) {
       images.push({ mime, base64 });

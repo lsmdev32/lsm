@@ -3,8 +3,9 @@ import { useDebounce } from "@vueuse/core";
 import { addDoc, getDocs, limit, query, where } from "firebase/firestore";
 import { useForm } from "vee-validate";
 import { toast } from "vue-sonner";
+import { z } from "zod";
 
-import { useUploader } from "~/composables";
+import { useUploader } from "~/composables/firebase/use-uploader";
 import {
   DEBOUNCE_DEFAULT_TIME,
   IMAGES_STORAGE_PATH,
@@ -14,9 +15,24 @@ import { getCollectionRef } from "~/lib/firestore-model";
 import {
   CREATE_STAFF_FORM_SCHEMA,
   STAFF_FORM_SCHEMA_KEYS,
+  STAFF_TYPES_LIST,
 } from "~/lib/schemas/form";
 
 const validationSchema = toTypedSchema(CREATE_STAFF_FORM_SCHEMA);
+
+const storedFormSchema = z
+  .object({
+    [STAFF_FORM_SCHEMA_KEYS.profile_picture]: z.custom<File>(),
+    [STAFF_FORM_SCHEMA_KEYS.type]: z.enum(STAFF_TYPES_LIST),
+    [STAFF_FORM_SCHEMA_KEYS.fullname]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.short_bio]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.bio]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.email]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.linkedin_url]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.slug]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.cv]: z.custom<File>(),
+  })
+  .partial();
 
 export function useCreateStaffForm() {
   const form = useForm({
@@ -35,12 +51,18 @@ export function useCreateStaffForm() {
       SESSION_STORAGE_KEYS.CREATE_STAFF_FORM
     );
 
-    if (!saved) {
+    if (saved === null || saved === "") {
       return;
     }
 
-    const parsed = JSON.parse(saved);
-    form.setValues(parsed);
+    const stored: unknown = JSON.parse(saved);
+    const parsed = storedFormSchema.safeParse(stored);
+
+    if (!parsed.success) {
+      return;
+    }
+
+    form.setValues(parsed.data);
   });
 
   watch(
@@ -59,7 +81,7 @@ export function useCreateStaffForm() {
   watch(
     () => values.value.fullname,
     (v) => {
-      if (!v) {
+      if (v === undefined || v === "") {
         form.resetField(STAFF_FORM_SCHEMA_KEYS.slug);
 
         return;
@@ -67,8 +89,8 @@ export function useCreateStaffForm() {
 
       const slug = v
         .toLowerCase()
-        .replaceAll(/[^a-z0-9]+/g, "-")
-        .replaceAll(/^-|-$/g, "");
+        .replaceAll(/[^a-z0-9]+/gu, "-")
+        .replaceAll(/^-|-$/gu, "");
 
       form.setFieldValue(STAFF_FORM_SCHEMA_KEYS.slug, slug);
     }
@@ -87,7 +109,6 @@ export function useCreateStaffForm() {
   const onSubmit = form.handleSubmit(async (v) => {
     toast.info("Mengupload file...");
 
-    // TODO: handle submit
     const res = await Promise.all([
       ppUploader.upload(v.profile_picture),
       cvUploader.upload(v.cv),
@@ -144,7 +165,7 @@ export function useCreateStaffForm() {
     toast.success("Profil sukses dibuat");
     resetForm();
 
-    router.replace("/dashboard/profiles");
+    void router.replace("/dashboard/profiles");
   });
 
   return {

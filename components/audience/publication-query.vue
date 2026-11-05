@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { cn } from "~/lib/utils";
 
+interface PublicationCategory {
+  id: string;
+  name: string;
+}
+
 interface Props {
   archives?: number[];
-  categories?: Record<string, unknown>[];
+  categories?: PublicationCategory[];
 }
 
 defineProps<Props>();

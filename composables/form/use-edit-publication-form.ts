@@ -2,6 +2,7 @@ import { useDebounce } from "@vueuse/core";
 import { updateDoc } from "firebase/firestore";
 import { useForm } from "vee-validate";
 import { toast } from "vue-sonner";
+import { z } from "zod";
 
 import {
   DEBOUNCE_DEFAULT_TIME,
@@ -14,7 +15,27 @@ import {
   CONTENT_FORM_TYPE,
   CONTENT_FORM_SCHEMA_KEYS,
   CONTENT_FORM_STATUS,
+  PUBLICATIONS_FORM_SCHEMA_KEYS,
 } from "~/lib/schemas/form";
+
+const storedFormSchema = z
+  .object({
+    [CONTENT_FORM_SCHEMA_KEYS.type]: z.literal(CONTENT_FORM_TYPE.publication),
+    [CONTENT_FORM_SCHEMA_KEYS.title]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.slug]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.category]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.author]: z.string().nullish(),
+    [CONTENT_FORM_SCHEMA_KEYS.content]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.status]: z.enum([
+      CONTENT_FORM_STATUS.not_published,
+      CONTENT_FORM_STATUS.publish,
+    ]),
+    [CONTENT_FORM_SCHEMA_KEYS.published_at]: z.coerce.date(),
+    [CONTENT_FORM_SCHEMA_KEYS.tags]: z.array(z.string()),
+    [PUBLICATIONS_FORM_SCHEMA_KEYS.image_url]: z.string().nullish(),
+    [PUBLICATIONS_FORM_SCHEMA_KEYS.publication_url]: z.string().nullish(),
+  })
+  .partial();
 
 export function useEditPublicationForm(id: string) {
   const form = useForm({
@@ -49,10 +70,11 @@ export function useEditPublicationForm(id: string) {
       author: v.author_id ?? null,
       status: v.status,
       image_url: v.cover_image_url ?? undefined,
-      // @ts-expect-error - assuming v.published_at is a Firestore Timestamp
-      published_at: v.published_at
-        ? new Date(v.published_at.seconds * 1000)
-        : undefined,
+      // @ts-expect-error - Firestore stores published_at as a Timestamp, not a Date
+      published_at:
+        v.published_at === null || v.published_at === undefined
+          ? undefined
+          : new Date(v.published_at.seconds * 1000),
       tags: v.tags,
       type: CONTENT_FORM_TYPE.publication,
       publication_url: v.publication,
@@ -64,12 +86,18 @@ export function useEditPublicationForm(id: string) {
       SESSION_STORAGE_KEYS.EDIT_PUBLICATION_FORM
     );
 
-    if (!saved) {
+    if (saved === null || saved === "") {
       return;
     }
 
-    const parsed = JSON.parse(saved);
-    form.setValues(parsed);
+    const stored: unknown = JSON.parse(saved);
+    const parsed = storedFormSchema.safeParse(stored);
+
+    if (!parsed.success) {
+      return;
+    }
+
+    form.setValues(parsed.data);
   });
 
   watch(
@@ -88,7 +116,7 @@ export function useEditPublicationForm(id: string) {
   watch(
     () => values.value.title,
     (v) => {
-      if (!v) {
+      if (v === undefined || v === "") {
         form.resetField(CONTENT_FORM_SCHEMA_KEYS.slug);
 
         return;
@@ -96,8 +124,8 @@ export function useEditPublicationForm(id: string) {
 
       const slug = v
         .toLowerCase()
-        .replaceAll(/[^a-z0-9]+/g, "-")
-        .replaceAll(/^-|-$/g, "");
+        .replaceAll(/[^a-z0-9]+/gu, "-")
+        .replaceAll(/^-|-$/gu, "");
 
       form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.slug, slug);
     }
@@ -139,7 +167,7 @@ export function useEditPublicationForm(id: string) {
 
     toast.success("Publikasi sukses diperbarui");
     resetForm();
-    router.replace("/dashboard/publications");
+    void router.replace("/dashboard/publications");
   });
 
   async function saveAsDraft() {
@@ -180,12 +208,6 @@ export function useEditPublicationForm(id: string) {
   }
 
   async function uploadPublication(file: File) {
-    if (!file) {
-      toast.error("File publikasi tidak boleh kosong");
-
-      return;
-    }
-
     if (!file.type.includes("pdf")) {
       toast.error("File publikasi harus berupa PDF");
 
@@ -210,9 +232,7 @@ export function useEditPublicationForm(id: string) {
     await updateDoc(publicationDocRef, {
       publication: url,
     })
-      .then(() => {
-        toast.success("File publikasi berhasil diperbarui");
-      })
+      .then(() => toast.success("File publikasi berhasil diperbarui"))
       .catch(() => {
         toast.error("Gagal memperbarui file publikasi");
       });
@@ -222,9 +242,7 @@ export function useEditPublicationForm(id: string) {
     await updateDoc(publicationDocRef, {
       cover_image_url: null,
     })
-      .then(() => {
-        toast.success("Gambar sampul berhasil dihapus");
-      })
+      .then(() => toast.success("Gambar sampul berhasil dihapus"))
       .catch(() => {
         toast.error("Gagal menghapus gambar sampul");
       });

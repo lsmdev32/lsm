@@ -4,7 +4,7 @@ import { deleteDoc } from "firebase/firestore";
 import { RefreshCcw, UserPlus2 } from "lucide-vue-next";
 import { toast } from "vue-sonner";
 
-import EmptyListPlaceholder from "~/components/admin/EmptyListPlaceholder.vue";
+import EmptyListPlaceholder from "~/components/admin/empty-list-placeholder.vue";
 import { getStaffDocRef } from "~/lib/firestore-model";
 import type { StaffAppModel } from "~/lib/firestore-model";
 
@@ -38,14 +38,16 @@ async function onOpenDialog(payload: { id: string; fullname: string }) {
     return;
   }
 
-  deleteDoc(getStaffDocRef(useFirestore(), payload.id))
-    .then(() => {
-      toast.success(`Profil ${payload.fullname} berhasil dihapus.`);
-      refresh();
-    })
-    .catch(() => {
-      toast.error(`Gagal menghapus profil ${payload.fullname}`);
-    });
+  try {
+    await deleteDoc(getStaffDocRef(useFirestore(), payload.id));
+  } catch {
+    toast.error(`Gagal menghapus profil ${payload.fullname}`);
+
+    return;
+  }
+
+  toast.success(`Profil ${payload.fullname} berhasil dihapus.`);
+  refresh();
 }
 </script>
 

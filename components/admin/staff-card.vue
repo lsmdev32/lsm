@@ -20,36 +20,40 @@ type Emits = (
 ) => void;
 
 const emit = defineEmits<Emits>();
-const props = withDefaults(defineProps<Props>(), {});
+const { id, type, fullname, linkedinUrl, email, ppUrl } = defineProps<Props>();
 
-async function handleSetOrderHome(id: string, order: number) {
+async function handleSetOrderHome(staffId: string, order: number) {
   const staffRef = dbRef(
     getDatabase(),
     `${RTDB_KEYS.HOME_ATTORNEY_ORDER}/${order}`
   );
 
-  await dbSet(staffRef, id)
-    .then(() => {
-      toast.success(`Berhasil mengatur urutan home`);
-    })
-    .catch(() => {
-      toast.error(`Gagal mengatur urutan home`);
-    });
+  try {
+    await dbSet(staffRef, staffId);
+  } catch {
+    toast.error("Gagal mengatur urutan home");
+
+    return;
+  }
+
+  toast.success("Berhasil mengatur urutan home");
 }
 
-async function handleSetOrderPracticeAreas(id: string, order: number) {
+async function handleSetOrderPracticeAreas(staffId: string, order: number) {
   const staffRef = dbRef(
     getDatabase(),
     `${RTDB_KEYS.PRACTICE_AREA_ATTORNEY_ORDER}/${order}`
   );
 
-  await dbSet(staffRef, id)
-    .then(() => {
-      toast.success(`Berhasil mengatur urutan practice area`);
-    })
-    .catch(() => {
-      toast.error(`Gagal mengatur urutan practice area`);
-    });
+  try {
+    await dbSet(staffRef, staffId);
+  } catch {
+    toast.error("Gagal mengatur urutan practice area");
+
+    return;
+  }
+
+  toast.success("Berhasil mengatur urutan practice area");
 }
 </script>
 
@@ -72,15 +76,11 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
         <UiDropdownMenuContent>
           <UiDropdownMenuLabel>Menu</UiDropdownMenuLabel>
           <UiDropdownMenuItem>
-            <NuxtLink :to="`/dashboard/profiles/${props.id}/edit`">
+            <NuxtLink :to="`/dashboard/profiles/${id}/edit`">
               <Icon name="mdi:pencil" /> Ubah Profil
             </NuxtLink>
           </UiDropdownMenuItem>
-          <UiDropdownMenuItem
-            @click="
-              emit('click-delete', { id: props.id, fullname: props.fullname })
-            "
-          >
+          <UiDropdownMenuItem @click="emit('click-delete', { id, fullname })">
             <Icon name="mdi:trash" /> Hapus
           </UiDropdownMenuItem>
           <UiDropdownMenuSub>
@@ -92,7 +92,7 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
                 <UiDropdownMenuItem
                   v-for="i in 4"
                   :key="i"
-                  @click="handleSetOrderHome(props.id, i - 1)"
+                  @click="handleSetOrderHome(id, i - 1)"
                 >
                   <span>Ke - {{ i }}</span>
                 </UiDropdownMenuItem>
@@ -108,7 +108,7 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
                 <UiDropdownMenuItem
                   v-for="i in 4"
                   :key="i"
-                  @click="handleSetOrderPracticeAreas(props.id, i - 1)"
+                  @click="handleSetOrderPracticeAreas(id, i - 1)"
                 >
                   <span>Ke - {{ i }}</span>
                 </UiDropdownMenuItem>
@@ -119,7 +119,7 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
       </UiDropdownMenu>
     </div>
     <NuxtImg
-      :src="props.ppUrl"
+      :src="ppUrl"
       alt="Profile"
       class="mb-4 flex size-36 items-center justify-center rounded-full object-cover"
     />
@@ -131,13 +131,13 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
     </div>
     <div class="mb-2 flex items-center gap-2 [&_a]:cursor-pointer">
       <NuxtLink
-        :to="`mailto:${props.email}`"
+        :to="`mailto:${email}`"
         class="flex cursor-pointer items-center gap-x-2 text-sm text-gray-500 hover:cursor-pointer hover:underline"
       >
         <Icon name="material-symbols:mail-outline" size="28" />
       </NuxtLink>
       <NuxtLink
-        :to="props.linkedinUrl"
+        :to="linkedinUrl"
         target="_blank"
         rel="noopener noreferrer"
         class="flex items-center gap-x-2 text-sm text-blue-600 hover:underline"
@@ -148,7 +148,7 @@ async function handleSetOrderPracticeAreas(id: string, order: number) {
     <div
       class="mb-1 line-clamp-2 truncate text-center text-sm font-semibold text-wrap text-ellipsis"
     >
-      {{ props.fullname }}
+      {{ fullname }}
     </div>
   </div>
 </template>

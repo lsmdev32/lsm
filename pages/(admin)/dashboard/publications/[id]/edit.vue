@@ -4,7 +4,7 @@ import { getDoc } from "firebase/firestore";
 import { DownloadIcon, PencilIcon, Trash2 } from "lucide-vue-next";
 import { toast } from "vue-sonner";
 
-import RichTextEditor from "~/components/rte/RichTextEditor.vue";
+import RichTextEditor from "~/components/rte/rich-text-editor.vue";
 import { DEBOUNCE_DEFAULT_TIME, LOCAL_STORAGE_KEYS } from "~/lib/constants";
 import { getCategoryDocRef, getStaffDocRef } from "~/lib/firestore-model";
 import type { CategoryAppModel, StaffAppModel } from "~/lib/firestore-model";
@@ -14,6 +14,8 @@ definePageMeta({
   middleware: ["auth"],
 });
 
+// SAFETY: `/dashboard/publications/[id]/edit` always matches exactly one `id`
+// segment, which the router types as `string`.
 const id = useRoute().params.id as string;
 const firestore = useFirestore();
 
@@ -130,6 +132,8 @@ function onChooseImageFile() {
 }
 
 function handlePublicationChange(event: Event) {
+  // SAFETY: bound to `@change` on the publication file input, so the event
+  // target is that input element.
   const target = event.target as HTMLInputElement;
   const file = target.files?.item(0);
 

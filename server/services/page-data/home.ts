@@ -34,6 +34,16 @@ interface HomePageData {
   };
 }
 
+function toStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter(
+    (item): item is string => typeof item === "string" && item !== ""
+  );
+}
+
 export async function getHomePageData({
   firestore,
   rtdb,
@@ -43,9 +53,9 @@ export async function getHomePageData({
   );
 
   const attorneyDocs = await Promise.all(
-    (homeAttorneyIdsSnapshot.val() as string[])
-      .filter(Boolean)
-      .map(async (id) => await getDoc(getStaffDocRef(firestore, id)))
+    toStringArray(homeAttorneyIdsSnapshot.val()).map(
+      async (id) => await getDoc(getStaffDocRef(firestore, id))
+    )
   );
 
   const attorneys: StaffSummary[] = attorneyDocs
@@ -81,11 +91,14 @@ export async function getHomePageData({
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.HOME_PINNED_CONTENT))
   );
 
-  const latestContentId = latestContentIdSnapshot.val() as string | null;
+  const latestContentIdValue: unknown = latestContentIdSnapshot.val();
+
+  const latestContentId =
+    typeof latestContentIdValue === "string" ? latestContentIdValue : null;
 
   let latestContent: ContentSummary | null = null;
 
-  if (latestContentId) {
+  if (latestContentId != null && latestContentId !== "") {
     const latestContentDoc = await getDoc(
       getPublicationDocRef(firestore, latestContentId)
     );

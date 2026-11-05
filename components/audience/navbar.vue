@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LogoSVG from "~/assets/images/logo-lsm-main.svg";
-import HamburgerMenu from "~/components/audience/HamburgerMenu.vue";
+import HamburgerMenu from "~/components/audience/hamburger-menu.vue";
 </script>
 
 <template>

@@ -118,45 +118,41 @@
 import { ref, onMounted, onUnmounted } from "vue";
 
 // Props for customization
-const props = defineProps({
-  reviews: {
-    type: Array,
-    default: () => [
-      {
-        name: "bayu imantoro",
-        text: "Para partners yang senior dalam bidang hukum, ramah, dan senang berbagi dengan mahasiswa. Thanks Prof Todung Lubis, Ibu Lelyana Santosa, dan Bang Teguh Maramis yang juga akrab menjadi komentator di televisi khususnya bagi kami pecinta sepakbola.",
-        rating: 5,
-      },
-      {
-        name: "Ardha Billy",
-        text: "Big five lawyer in jakarta",
-        rating: 5,
-      },
-      {
-        name: "Nanda Tanjung",
-        text: "Kantor Hukum terpercaya dan profesional",
-        rating: 5,
-      },
-    ],
-  },
-  autoSlideInterval: {
-    type: Number,
-    default: 5000, // 5 seconds
-  },
+const {
+  reviews = [
+    {
+      name: "bayu imantoro",
+      text: "Para partners yang senior dalam bidang hukum, ramah, dan senang berbagi dengan mahasiswa. Thanks Prof Todung Lubis, Ibu Lelyana Santosa, dan Bang Teguh Maramis yang juga akrab menjadi komentator di televisi khususnya bagi kami pecinta sepakbola.",
+      rating: 5,
+    },
+    {
+      name: "Ardha Billy",
+      text: "Big five lawyer in jakarta",
+      rating: 5,
+    },
+    {
+      name: "Nanda Tanjung",
+      text: "Kantor Hukum terpercaya dan profesional",
+      rating: 5,
+    },
+  ],
+  // 5 seconds
+  autoSlideInterval = 5000,
+} = defineProps({
+  reviews: { type: Array },
+  autoSlideInterval: { type: Number },
 });
 
 const currentSlide = ref(0);
 let intervalId = null;
 
 const nextSlide = () => {
-  currentSlide.value = (currentSlide.value + 1) % props.reviews.length;
+  currentSlide.value = (currentSlide.value + 1) % reviews.length;
 };
 
 const prevSlide = () => {
   currentSlide.value =
-    currentSlide.value === 0
-      ? props.reviews.length - 1
-      : currentSlide.value - 1;
+    currentSlide.value === 0 ? reviews.length - 1 : currentSlide.value - 1;
 };
 
 const goToSlide = (index) => {
@@ -164,7 +160,7 @@ const goToSlide = (index) => {
 };
 
 const startAutoSlide = () => {
-  intervalId = setInterval(nextSlide, props.autoSlideInterval);
+  intervalId = setInterval(nextSlide, autoSlideInterval);
 };
 
 const stopAutoSlide = () => {

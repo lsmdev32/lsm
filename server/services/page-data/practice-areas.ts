@@ -32,6 +32,16 @@ interface PracticeAreasPageData {
   };
 }
 
+function toStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter(
+    (item): item is string => typeof item === "string" && item !== ""
+  );
+}
+
 export async function getPracticeAreasPageData({
   firestore,
   rtdb,
@@ -54,9 +64,9 @@ export async function getPracticeAreasPageData({
   );
 
   const attorneyDocs = await Promise.all(
-    (homeAttorneyIdsSnapshot.val() as string[])
-      .filter(Boolean)
-      .map(async (id) => await getDoc(getStaffDocRef(firestore, id)))
+    toStringArray(homeAttorneyIdsSnapshot.val()).map(
+      async (id) => await getDoc(getStaffDocRef(firestore, id))
+    )
   );
 
   const attorneys: StaffSummary[] = attorneyDocs

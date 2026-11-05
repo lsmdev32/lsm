@@ -3,8 +3,8 @@ import { useDebounce, useFileDialog } from "@vueuse/core";
 import { getDoc } from "firebase/firestore";
 import { PencilIcon } from "lucide-vue-next";
 
-import RichTextEditor from "~/components/rte/RichTextEditor.vue";
-import { useEditBlogForm } from "~/composables";
+import RichTextEditor from "~/components/rte/rich-text-editor.vue";
+import { useEditBlogForm } from "~/composables/form/use-edit-blog-form";
 import { DEBOUNCE_DEFAULT_TIME, LOCAL_STORAGE_KEYS } from "~/lib/constants";
 import { getCategoryDocRef, getStaffDocRef } from "~/lib/firestore-model";
 import type { CategoryAppModel, StaffAppModel } from "~/lib/firestore-model";
@@ -14,6 +14,8 @@ definePageMeta({
   middleware: ["auth"],
 });
 
+// SAFETY: `/dashboard/blogs/[id]/edit` always matches exactly one `id`
+// segment, which the router types as `string`.
 const id = useRoute().params.id as string;
 const firestore = useFirestore();
 

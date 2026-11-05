@@ -1,12 +1,22 @@
 import nodemailer from "nodemailer";
+import { z } from "zod";
+
+const sendEmailBodySchema = z.object({
+  name: z.string().min(1),
+  email: z.string().min(1),
+  type: z.string().min(1),
+  description: z.string().min(1),
+});
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
-  const { name, email, type, description } = body;
+  const rawBody: unknown = await readBody(event);
+  const parsedBody = sendEmailBodySchema.safeParse(rawBody);
 
-  if (!name || !email || !type || !description) {
+  if (!parsedBody.success) {
     return { success: false, error: "Semua field wajib diisi." };
   }
+
+  const { name, email, type, description } = parsedBody.data;
 
   let subject = "";
   let to = "";

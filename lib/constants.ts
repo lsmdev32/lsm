@@ -1,17 +1,35 @@
+function isCompletePairRecord<T extends string>(
+  record: Partial<Record<T, T>>,
+  keys: readonly T[]
+): record is { [K in T]: K } {
+  return keys.every((key) => record[key] === key);
+}
+
+function toPairRecord<T extends string>(
+  keys: readonly T[],
+  record: Partial<Record<T, T>>
+): {
+  [K in T]: K;
+} {
+  if (isCompletePairRecord(record, keys)) {
+    return record;
+  }
+
+  throw new Error("createPairFromEnum requires every key to equal its value");
+}
+
 function createPairFromEnum<const T extends string>(
   ...e: T[]
 ): {
   [K in T]: K;
 } {
-  const initialValue = {} as { [K in T]: K };
+  const pairs: Partial<Record<T, T>> = {};
 
-  return e.reduce(
-    (acc, curr) => ({
-      ...acc,
-      [curr]: curr,
-    }),
-    initialValue
-  );
+  for (const key of e) {
+    pairs[key] = key;
+  }
+
+  return toPairRecord(e, pairs);
 }
 
 export const PATH_NAMES = {
@@ -49,21 +67,28 @@ export const CREATE_STAFF_FORM_CONSTANTS = {
   PROFILE_PICTURE: {
     MAX_WIDTH: 4000 as const,
     MAX_HEIGHT: 6000 as const,
-    MAX_SIZE: 10 * 1024 * 1024, // 2MB
+    // 2MB
+    MAX_SIZE: 10 * 1024 * 1024,
+    // SAFETY: callers only use this list with `Array#includes` on an arbitrary
+    // `File.type` value, so the literal tuple is widened to `string[]`.
     IMAGE_TYPES: ["image/jpeg", "image/png"] as string[],
   },
   SLUG: {
-    REGEX: /^[a-z0-9]*(?:-[a-z0-9]+)*$/,
+    REGEX: /^[a-z0-9]*(?:-[a-z0-9]+)*$/u,
   },
   BIO: {
     MIN_LENGTH: 100,
   },
   CV: {
-    MAX_SIZE: 10 * 1024 * 1024, // 10MB
+    // 10MB
+    MAX_SIZE: 10 * 1024 * 1024,
+    // SAFETY: callers only use this list with `Array#includes` on an arbitrary
+    // `File.type` value, so the literal tuple is widened to `string[]`.
     FILE_TYPES: ["application/pdf"] as string[],
   },
   LINKEDIN: {
-    REGEX: /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/,
+    REGEX:
+      /^(?<protocol>https?:\/\/)?(?<subdomain>www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/u,
   },
   MSG: {
     PP_IMAGE_TYPE_MSG: "Gambar harus berupa PNG atau JPEG",
@@ -98,12 +123,15 @@ export const CREATE_CONTENT_FORM_CONSTANTS = {
     MAX_LENGTH: 200,
   },
   SLUG: {
-    REGEX: /^[a-z0-9]*(?:-[a-z0-9]+)*$/,
+    REGEX: /^[a-z0-9]*(?:-[a-z0-9]+)*$/u,
   },
   COVER_IMAGE: {
     MAX_WIDTH: 6000 as const,
     MAX_HEIGHT: 4000 as const,
-    MAX_SIZE: 10 * 1024 * 1024, // 10MB
+    // 10MB
+    MAX_SIZE: 10 * 1024 * 1024,
+    // SAFETY: callers only use this list with `Array#includes` on an arbitrary
+    // `File.type` value, so the literal tuple is widened to `string[]`.
     IMAGE_TYPES: ["image/jpeg", "image/png"] as string[],
   },
   CONTENT: {
@@ -113,8 +141,11 @@ export const CREATE_CONTENT_FORM_CONSTANTS = {
     VALID_STATUSES: ["draft", "published"] as const,
   },
   PUBLICATION: {
+    // SAFETY: callers only use this list with `Array#includes` on an arbitrary
+    // `File.type` value, so the literal tuple is widened to `string[]`.
     FILE_TYPES: ["application/pdf"] as string[],
-    MAX_SIZE: 20 * 1024 * 1024, // 20MB
+    // 20MB
+    MAX_SIZE: 20 * 1024 * 1024,
   },
   MSG: {
     TITLE_MIN_LENGTH_MSG: "Judul minimal 10 karakter",

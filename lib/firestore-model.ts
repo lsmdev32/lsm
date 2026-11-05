@@ -36,11 +36,11 @@ const createFirestoreConverter = <
   DocumentModel extends CommonDocumentType,
 >() => ({
   toFirestore: (item: AppModel) => {
-    const created_at = item.created_at ? item.created_at : serverTimestamp();
+    const created_at = item.created_at ?? serverTimestamp();
 
     const updated_at = serverTimestamp();
 
-    const { id, ...data } = item;
+    const { id: _existingId, ...data } = item;
 
     return {
       ...data,
@@ -184,9 +184,10 @@ export function getDocRef(
   name: CollectionNames,
   id?: string
 ) {
-  const d = id
-    ? doc(firestore, map[name][0], id)
-    : doc(firestore, map[name][0]);
+  const d =
+    id !== undefined && id !== ""
+      ? doc(firestore, map[name][0], id)
+      : doc(firestore, map[name][0]);
 
   return d.withConverter(map[name][1]);
 }

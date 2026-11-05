@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import LogoSVG from "~/assets/images/logo.svg";
-import Publications from "~/components/audience/Publications.vue";
+import Publications from "~/components/audience/publications.vue";
 
 const { slug } = useRoute().params;
 

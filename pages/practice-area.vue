@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NuxtImg } from "#components";
 // import ArrowSm from "~/assets/images/arrow-sm-icon.svg"
-import PracticeAreaDetails from "~/components/audience/PracticeAreaDetails.vue";
+import PracticeAreaDetails from "~/components/audience/practice-area-details.vue";
 </script>
 
 <template>

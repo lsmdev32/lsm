@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { NuxtImg } from "#components";
 import CheckIc from "~/assets/images/check-icon.svg";
-import Button from "~/components/audience/Button.vue";
-import JobDropdown from "~/components/audience/JobDropdown.vue";
+import Button from "~/components/audience/button.vue";
+import JobDropdown from "~/components/audience/job-dropdown.vue";
 
 const name = ref("");
 const email = ref("");

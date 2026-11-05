@@ -49,10 +49,11 @@ export function useEditBlogForm(id: string) {
       author: v.author_id ?? undefined,
       status: v.status,
       image_url: v.cover_image_url ?? undefined,
-      // @ts-expect-error - assuming v.published_at is a Firestore Timestamp
-      published_at: v.published_at
-        ? new Date(v.published_at.seconds * 1000)
-        : undefined,
+      // @ts-expect-error - Firestore stores published_at as a Timestamp, not a Date
+      published_at:
+        v.published_at === null || v.published_at === undefined
+          ? undefined
+          : new Date(v.published_at.seconds * 1000),
       tags: v.tags,
       type: CONTENT_FORM_TYPE.blog,
     });
@@ -61,7 +62,7 @@ export function useEditBlogForm(id: string) {
   watch(
     () => values.value.title,
     (v) => {
-      if (!v) {
+      if (v === undefined || v === "") {
         form.resetField(CONTENT_FORM_SCHEMA_KEYS.slug);
 
         return;
@@ -69,8 +70,8 @@ export function useEditBlogForm(id: string) {
 
       const slug = v
         .toLowerCase()
-        .replaceAll(/[^a-z0-9]+/g, "-")
-        .replaceAll(/^-|-$/g, "");
+        .replaceAll(/[^a-z0-9]+/gu, "-")
+        .replaceAll(/^-|-$/gu, "");
 
       form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.slug, slug);
     }
@@ -113,7 +114,7 @@ export function useEditBlogForm(id: string) {
 
     toast.success("Blog sukses diperbarui");
     resetForm();
-    router.replace("/dashboard/blogs");
+    void router.replace("/dashboard/blogs");
   });
 
   async function saveAsDraft() {
@@ -152,9 +153,7 @@ export function useEditBlogForm(id: string) {
     await updateDoc(blogDocRef, {
       cover_image_url: null,
     })
-      .then(() => {
-        toast.success("Gambar sampul berhasil dihapus");
-      })
+      .then(() => toast.success("Gambar sampul berhasil dihapus"))
       .catch(() => {
         toast.error("Gagal menghapus gambar sampul");
       });

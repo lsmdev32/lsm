@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import LoadingPage from "~/components/LoadingPage.vue";
+import LoadingPage from "~/components/loading-page.vue";
 
 const indicator = useLoadingIndicator();
 </script>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import LogoSVG from "/images/book.png";
 import { Download } from "lucide-vue-next";
 
-import Publications from "~/components/audience/Publications.vue";
+import Publications from "~/components/audience/publications.vue";
 
 const { slug } = useRoute().params;
+
+/** Placeholder cover; it lives in `public/`, so it is referenced by URL. */
+const LOGO_SRC = "/images/book.png";
 
 const { data } = await useCustomFetch(`/api/page-data/publications/${slug}`);
 
@@ -33,7 +35,7 @@ const relatedContents = data?.data?.related_contents ?? [];
 				>
 				<img
 					v-else
-					:src="LogoSVG"
+					:src="LOGO_SRC"
 					alt="Thumbnail"
 					class="w-full h-72 object-cover mb-4"
 				> -->
@@ -117,7 +119,7 @@ const relatedContents = data?.data?.related_contents ?? [];
 						>
 						<img
 							v-else
-							:src="LogoSVG"
+							:src="LOGO_SRC"
 							alt="Thumbnail"
 							class="w-full h-80 object-cover mb-4"
 						> -->
@@ -200,7 +202,7 @@ const relatedContents = data?.data?.related_contents ?? [];
               />
               <img
                 v-else
-                :src="LogoSVG"
+                :src="LOGO_SRC"
                 alt="Thumbnail"
                 class="mb-4 h-40 w-full object-cover"
               />

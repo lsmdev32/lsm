@@ -8,10 +8,8 @@ interface Props {
   format?: string;
 }
 
-withDefaults(defineProps<Props>(), {
-  clearable: true,
-  format: "dd MMMM yyyy HH:mm",
-});
+const { clearable = true, format = "dd MMMM yyyy HH:mm" } =
+  defineProps<Props>();
 
 const model = defineModel<Date>();
 </script>

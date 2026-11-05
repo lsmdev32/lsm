@@ -3,9 +3,7 @@ interface Props {
   itemName?: `${string}${"s" | "es"}`;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  itemName: "items",
-});
+const { itemName = "items" } = defineProps<Props>();
 </script>
 
 <template>
@@ -15,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
       <rect x="16" y="28" width="32" height="4" rx="2" fill="#e5e7eb" />
       <rect x="16" y="36" width="24" height="4" rx="2" fill="#e5e7eb" />
     </svg>
-    <p class="message">No {{ props.itemName }} found</p>
+    <p class="message">No {{ itemName }} found</p>
   </div>
 </template>
 

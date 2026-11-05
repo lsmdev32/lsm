@@ -3,6 +3,7 @@ import { useDebounce } from "@vueuse/core";
 import { updateDoc } from "firebase/firestore";
 import { useForm } from "vee-validate";
 import { toast } from "vue-sonner";
+import { z } from "zod";
 
 import {
   DEBOUNCE_DEFAULT_TIME,
@@ -10,9 +11,27 @@ import {
   SESSION_STORAGE_KEYS,
 } from "~/lib/constants";
 import { getDocRef } from "~/lib/firestore-model";
-import { EDIT_STAFF_FORM_SCHEMA } from "~/lib/schemas/form";
+import {
+  EDIT_STAFF_FORM_SCHEMA,
+  STAFF_FORM_SCHEMA_KEYS,
+  STAFF_TYPES_LIST,
+} from "~/lib/schemas/form";
 
 const validationSchema = toTypedSchema(EDIT_STAFF_FORM_SCHEMA);
+
+const storedFormSchema = z
+  .object({
+    [STAFF_FORM_SCHEMA_KEYS.type]: z.enum(STAFF_TYPES_LIST),
+    [STAFF_FORM_SCHEMA_KEYS.fullname]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.short_bio]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.bio]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.email]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.linkedin_url]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.slug]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.cv_url]: z.string(),
+    [STAFF_FORM_SCHEMA_KEYS.pp_url]: z.string(),
+  })
+  .partial();
 
 export function useEditStaffForm(id: Ref<string>) {
   const router = useRouter();
@@ -46,12 +65,18 @@ export function useEditStaffForm(id: Ref<string>) {
   onMounted(() => {
     const saved = sessionStorage.getItem(SESSION_STORAGE_KEYS.EDIT_STAFF_FORM);
 
-    if (!saved) {
+    if (saved === null || saved === "") {
       return;
     }
 
-    const parsed = JSON.parse(saved);
-    form.setValues(parsed);
+    const stored: unknown = JSON.parse(saved);
+    const parsed = storedFormSchema.safeParse(stored);
+
+    if (!parsed.success) {
+      return;
+    }
+
+    form.setValues(parsed.data);
   });
 
   watch(
@@ -101,13 +126,13 @@ export function useEditStaffForm(id: Ref<string>) {
     toast.success("Profil sukses diperbarui");
     resetForm();
 
-    router.replace("/dashboard/profiles");
+    void router.replace("/dashboard/profiles");
   });
 
   async function updateProfilePicture(file: File) {
-    const res = await ppUploader.upload(file).catch(() => {});
+    const res = await ppUploader.upload(file);
 
-    if (!res) {
+    if (res === "") {
       toast.error("Gagal memperbarui foto profil");
 
       return;
@@ -117,7 +142,7 @@ export function useEditStaffForm(id: Ref<string>) {
       profile_picture_url: res,
     })
       .then(() => true)
-      .catch(() => {});
+      .catch(() => false);
 
     if (!res2) {
       toast.error("Gagal memperbarui foto profil");
@@ -129,9 +154,9 @@ export function useEditStaffForm(id: Ref<string>) {
   }
 
   async function updateCV(file: File) {
-    const res = await cvUploader.upload(file).catch(() => {});
+    const res = await cvUploader.upload(file);
 
-    if (!res) {
+    if (res === "") {
       toast.error("Gagal memperbarui CV");
 
       return;
@@ -141,7 +166,7 @@ export function useEditStaffForm(id: Ref<string>) {
       cv_url: res,
     })
       .then(() => true)
-      .catch(() => {});
+      .catch(() => false);
 
     if (!res2) {
       toast.error("Gagal memperbarui CV");

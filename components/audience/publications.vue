@@ -63,16 +63,29 @@
 </template>
 
 <script setup lang="ts">
-import LogoSVG from "/images/book.png";
-// import LogoSVG from "~/assets/images/logo.svg"
+interface PublicationAuthor {
+  name: string;
+  photo_url: string;
+}
+
+interface PublicationCard {
+  title: string;
+  slug: string;
+  category: string | null;
+  published_at: string;
+  type?: string;
+  author?: PublicationAuthor | null;
+}
 
 interface Props {
-  publications?: Record<string, unknown>[];
+  publications?: PublicationCard[];
   defaultAuthorName?: string;
   defaultAuthorImage?: string;
 }
 
-withDefaults(defineProps<Props>(), {
-  publications: () => [],
-});
+const {
+  publications = [],
+  defaultAuthorName = "",
+  defaultAuthorImage = "",
+} = defineProps<Props>();
 </script>

@@ -11,17 +11,19 @@ interface Emits {
 
 defineEmits<Emits>();
 
-withDefaults(defineProps<Props>(), {
-  placeholder: "Tambahkan tag...",
-  initialValues: () => [],
-});
+const { placeholder = "Tambahkan tag...", initialValues = [] } =
+  defineProps<Props>();
 
 function convertValue(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .replaceAll(/[^a-z0-9\s-]/g, "") // Remove special characters
-    .replaceAll(/\s+/g, "-"); // Replace spaces with hyphens
+  return (
+    value
+      .trim()
+      .toLowerCase()
+      // Remove special characters
+      .replaceAll(/[^a-z0-9\s-]/gu, "")
+      // Replace spaces with hyphens
+      .replaceAll(/\s+/gu, "-")
+  );
 }
 </script>
 

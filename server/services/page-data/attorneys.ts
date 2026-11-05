@@ -56,11 +56,19 @@ interface AttorneyDetailPageData {
   other_of_counsels: StaffReference[];
 }
 
+function toStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter((item): item is string => typeof item === "string");
+}
+
 function sortByPartnerOrder(
   staff: StaffReference[],
   partnerOrderIds: string[]
 ): StaffReference[] {
-  return staff.sort((a, b) => {
+  return staff.toSorted((a, b) => {
     const indexA = partnerOrderIds.indexOf(a.id);
     const indexB = partnerOrderIds.indexOf(b.id);
 
@@ -91,9 +99,9 @@ export async function getAttorneysPageData({
 
   const partnersSnapshot = await getDocs(partnersQuery);
 
-  const hestiPartner = partnersSnapshot.docs
-    .findLast((doc) => doc.data().fullname.toLowerCase().includes("hesti"))
-    ?.data();
+  const hestiPartnerDoc = partnersSnapshot.docs.findLast((doc) =>
+    doc.data().fullname.toLowerCase().includes("hesti")
+  );
 
   let partners: StaffSummary[] = partnersSnapshot.docs
     .filter((doc) => !doc.data().slug.toLowerCase().includes("hesti"))
@@ -101,7 +109,7 @@ export async function getAttorneysPageData({
       const partnerData = doc.data();
 
       return {
-        id: partnerData.id!,
+        id: doc.id,
         name: partnerData.fullname,
         slug: partnerData.slug,
         image_url: partnerData.profile_picture_url,
@@ -115,13 +123,15 @@ export async function getAttorneysPageData({
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.ATTORNEY_ORDER))
   );
 
-  const partnerOrderIds = partnerOrderIdsSnapshot.val() as string[];
+  const partnerOrderIds = toStringArray(partnerOrderIdsSnapshot.val());
 
   partners = sortByPartnerOrder(partners, partnerOrderIds);
 
-  if (hestiPartner) {
+  if (hestiPartnerDoc != null) {
+    const hestiPartner = hestiPartnerDoc.data();
+
     partners.push({
-      id: hestiPartner.id!,
+      id: hestiPartnerDoc.id,
       name: hestiPartner.fullname,
       slug: hestiPartner.slug,
       image_url: hestiPartner.profile_picture_url,
@@ -139,17 +149,19 @@ export async function getAttorneysPageData({
 
   const associatesSnapshot = await getDocs(associatesQuery);
 
-  const associates: StaffSummary[] = associatesSnapshot.docs
-    .map((doc) => doc.data())
-    .map((data) => ({
-      id: data.id!,
+  const associates: StaffSummary[] = associatesSnapshot.docs.map((doc) => {
+    const data = doc.data();
+
+    return {
+      id: doc.id,
       name: data.fullname,
       slug: data.slug,
       image_url: data.profile_picture_url,
       email: data.email,
       linkedin_url: data.linkedin_url,
       type: data.type,
-    }));
+    };
+  });
 
   const foundersQuery = query(
     getStaffCollectionRef(firestore),
@@ -160,17 +172,20 @@ export async function getAttorneysPageData({
   const foundersSnapshot = await getDocs(foundersQuery);
 
   const founders: StaffSummary[] = foundersSnapshot.docs
-    .map((doc) => doc.data())
-    .map((data) => ({
-      id: data.id!,
-      name: data.fullname,
-      slug: data.slug,
-      image_url: data.profile_picture_url,
-      email: data.email,
-      linkedin_url: data.linkedin_url,
-      type: data.type,
-    }))
-    .sort((a, b) => -a.name.localeCompare(b.name));
+    .map((doc) => {
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        name: data.fullname,
+        slug: data.slug,
+        image_url: data.profile_picture_url,
+        email: data.email,
+        linkedin_url: data.linkedin_url,
+        type: data.type,
+      };
+    })
+    .toSorted((a, b) => -a.name.localeCompare(b.name));
 
   const ofCounselQuery = query(
     getStaffCollectionRef(firestore),
@@ -180,17 +195,19 @@ export async function getAttorneysPageData({
 
   const ofCounselSnapshot = await getDocs(ofCounselQuery);
 
-  const ofCounsel: StaffSummary[] = ofCounselSnapshot.docs
-    .map((doc) => doc.data())
-    .map((data) => ({
-      id: data.id!,
+  const ofCounsel: StaffSummary[] = ofCounselSnapshot.docs.map((doc) => {
+    const data = doc.data();
+
+    return {
+      id: doc.id,
       name: data.fullname,
       slug: data.slug,
       image_url: data.profile_picture_url,
       email: data.email,
       linkedin_url: data.linkedin_url,
       type: data.type,
-    }));
+    };
+  });
 
   return {
     founders: {
@@ -222,16 +239,18 @@ export async function getAttorneyDetailPageData(
     query(staffColRef, where("slug", "==", slug))
   );
 
-  if (staffSnapshot.empty) {
+  const staffDoc = staffSnapshot.docs.at(0);
+
+  if (staffDoc == null) {
     return null;
   }
 
-  const staffData = staffSnapshot.docs.at(0)!.data();
+  const staffData = staffDoc.data();
 
   const publicationsQuery = query(
     getPublicationCollectionRef(firestore),
     where("type", "==", "publication"),
-    where("author_id", "==", staffData.id),
+    where("author_id", "==", staffDoc.id),
     where("status", "==", "published"),
     orderBy("published_at", "desc"),
     limit(6)
@@ -263,7 +282,7 @@ export async function getAttorneyDetailPageData(
   for (const categoryId of publicationCategoryIds) {
     const categoryName = await getCategoryName(firestore, categoryId);
 
-    if (!categoryName) {
+    if (categoryName == null || categoryName === "") {
       continue;
     }
 
@@ -283,13 +302,17 @@ export async function getAttorneyDetailPageData(
 
   const otherAssociatesSnapshot = await getDocs(otherAssociatesQuery);
 
-  const otherAssociates: StaffReference[] = otherAssociatesSnapshot.docs
-    .map((doc) => doc.data())
-    .map((data) => ({
-      id: data.id!,
-      name: data.fullname,
-      slug: data.slug,
-    }));
+  const otherAssociates: StaffReference[] = otherAssociatesSnapshot.docs.map(
+    (doc) => {
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        name: data.fullname,
+        slug: data.slug,
+      };
+    }
+  );
 
   const otherPartnersQuery = query(
     getStaffCollectionRef(firestore),
@@ -300,21 +323,28 @@ export async function getAttorneyDetailPageData(
 
   const otherPartnersSnapshot = await getDocs(otherPartnersQuery);
 
-  const otherPartners: StaffReference[] = otherPartnersSnapshot.docs
-    .map((doc) => doc.data())
-    .map((data) => ({
-      id: data.id!,
-      name: data.fullname,
-      slug: data.slug,
-    }));
+  const otherPartners: StaffReference[] = otherPartnersSnapshot.docs.map(
+    (doc) => {
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        name: data.fullname,
+        slug: data.slug,
+      };
+    }
+  );
 
   const partnerOrderIdsSnapshot = await rtdbGet(
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.ATTORNEY_ORDER))
   );
 
-  const partnerOrderIds = partnerOrderIdsSnapshot.val() as string[];
+  const partnerOrderIds = toStringArray(partnerOrderIdsSnapshot.val());
 
-  sortByPartnerOrder(otherPartners, partnerOrderIds);
+  const sortedOtherPartners = sortByPartnerOrder(
+    otherPartners,
+    partnerOrderIds
+  );
 
   const otherFoundersQuery = query(
     getStaffCollectionRef(firestore),
@@ -326,13 +356,16 @@ export async function getAttorneyDetailPageData(
   const otherFoundersSnapshot = await getDocs(otherFoundersQuery);
 
   const otherFounders: StaffReference[] = otherFoundersSnapshot.docs
-    .map((doc) => doc.data())
-    .map((data) => ({
-      id: data.id!,
-      name: data.fullname,
-      slug: data.slug,
-    }))
-    .sort((a, b) => -a.name.localeCompare(b.name));
+    .map((doc) => {
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        name: data.fullname,
+        slug: data.slug,
+      };
+    })
+    .toSorted((a, b) => -a.name.localeCompare(b.name));
 
   const otherOfCounselsQuery = query(
     getStaffCollectionRef(firestore),
@@ -343,17 +376,21 @@ export async function getAttorneyDetailPageData(
 
   const otherOfCounselsSnapshot = await getDocs(otherOfCounselsQuery);
 
-  const otherOfCounsels: StaffReference[] = otherOfCounselsSnapshot.docs
-    .map((doc) => doc.data())
-    .map((data) => ({
-      id: data.id!,
-      name: data.fullname,
-      slug: data.slug,
-    }));
+  const otherOfCounsels: StaffReference[] = otherOfCounselsSnapshot.docs.map(
+    (doc) => {
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        name: data.fullname,
+        slug: data.slug,
+      };
+    }
+  );
 
   return {
     person: {
-      id: staffData.id!,
+      id: staffDoc.id,
       email: staffData.email,
       name: staffData.fullname,
       image_url: staffData.profile_picture_url,
@@ -365,7 +402,7 @@ export async function getAttorneyDetailPageData(
     },
     publications,
     other_associates: otherAssociates,
-    other_partners: otherPartners,
+    other_partners: sortedOtherPartners,
     other_founders: otherFounders,
     other_of_counsels: otherOfCounsels,
   };

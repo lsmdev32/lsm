@@ -7,7 +7,7 @@ type ImageStoragePath = typeof IMAGES_STORAGE_PATH;
 
 type Paths = ImageStoragePath[keyof ImageStoragePath];
 
-export function useUploader<P extends Paths>(path: P) {
+export function useUploader(path: Paths) {
   const storage = useFirebaseStorage();
 
   const filename = crypto.randomUUID();

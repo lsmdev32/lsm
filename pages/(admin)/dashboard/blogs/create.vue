@@ -3,7 +3,7 @@ import { useDebounce } from "@vueuse/core";
 import { getDoc } from "firebase/firestore";
 import { PencilIcon } from "lucide-vue-next";
 
-import RichTextEditor from "~/components/rte/RichTextEditor.vue";
+import RichTextEditor from "~/components/rte/rich-text-editor.vue";
 import {
   DEBOUNCE_DEFAULT_TIME,
   LOCAL_STORAGE_KEYS,

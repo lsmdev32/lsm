@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import Button from "../../components/audience/Button.vue";
+import Button from "../../components/audience/button.vue";
 
 const name = ref("");
 const email = ref("");
@@ -19,7 +19,7 @@ const subscribe = async () => {
     return;
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
 
   if (!emailRegex.test(email.value)) {
     message.value = "Please enter a valid email address.";

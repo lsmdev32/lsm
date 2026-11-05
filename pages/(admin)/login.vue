@@ -27,24 +27,25 @@ async function handleSubmit(_payload: LoginFormPayload) {
     return;
   }
 
-  await signInWithEmailAndPassword(auth, _payload.email, _payload.password)
-    .then(() => {
-      toast.success("Login successful!", {
-        dismissible: true,
-      });
-
-      indicator.start();
-      navigateTo("/dashboard");
-    })
-    .catch((_) => {
-      toast.error("Email or password invalid !", {
-        dismissible: true,
-        closeButton: true,
-      });
-    })
-    .finally(() => {
-      indicator.finish();
+  try {
+    await signInWithEmailAndPassword(auth, _payload.email, _payload.password);
+  } catch {
+    toast.error("Email or password invalid !", {
+      dismissible: true,
+      closeButton: true,
     });
+
+    return;
+  } finally {
+    indicator.finish();
+  }
+
+  toast.success("Login successful!", {
+    dismissible: true,
+  });
+
+  indicator.start();
+  void navigateTo("/dashboard");
 }
 </script>
 

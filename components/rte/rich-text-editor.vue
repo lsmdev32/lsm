@@ -11,10 +11,11 @@ interface Props {
 
 type Emits = (key: "handleChange", value: string) => void;
 
-const props = withDefaults(defineProps<Props>(), {
-  disabled: false,
-  initialValue: "",
-});
+const {
+  class: className = "",
+  disabled = false,
+  initialValue = "",
+} = defineProps<Props>();
 
 defineEmits<Emits>();
 </script>
@@ -23,12 +24,8 @@ defineEmits<Emits>();
   <ClientOnly fallback="Loading...">
     <quill-editor
       :content="initialValue"
-      :class="[
-        'mb-40 min-h-[50px]',
-        props.class,
-        props.disabled ? 'opacity-40' : '',
-      ]"
-      :enable="!props.disabled"
+      :class="['mb-40 min-h-[50px]', className, disabled ? 'opacity-40' : '']"
+      :enable="!disabled"
       :toolbar="[
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
@@ -38,7 +35,7 @@ defineEmits<Emits>();
         ['link', 'image'],
         ['clean'],
       ]"
-      :read-only="props.disabled"
+      :read-only="disabled"
       content-type="html"
       @update:content="$emit('handleChange', $event)"
     />

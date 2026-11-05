@@ -4,10 +4,28 @@ import { useRouteQuery } from "@vueuse/router";
 
 import dayjs from "#build/dayjs.imports.mjs";
 import LogoSVG from "~/assets/images/logo.svg";
-import PublicationQuery from "~/components/audience/PublicationQuery.vue";
-import Publications from "~/components/audience/Publications.vue";
+import PublicationQuery from "~/components/audience/publication-query.vue";
+import Publications from "~/components/audience/publications.vue";
 import { DEBOUNCE_DEFAULT_TIME } from "~/lib/constants";
 import { cn } from "~/lib/utils";
+
+interface ContentListAuthor {
+  id: string;
+  name: string;
+  photo_url: string;
+}
+
+interface ContentListItem {
+  author: string | ContentListAuthor | null;
+  category: string | null;
+  description?: string;
+  id: string;
+  image_url?: string | null;
+  published_at: string;
+  slug: string;
+  title: string;
+  type: string;
+}
 
 const categories = await useCustomFetch("/api/page-data/categories");
 
@@ -18,32 +36,35 @@ const yearFilter = useRouteQuery<number>("year", undefined);
 
 const debouncedKeyword = useDebounce(keywordFilter, DEBOUNCE_DEFAULT_TIME);
 
-const contents = ref<Record<string, any>[]>([]);
+const contents = ref<ContentListItem[]>([]);
 const firstContent = computed(() => contents.value.at(0));
 const isLoading = ref(false);
 const blink = ref(false);
 
-onMounted(() => {
+onMounted(async () => {
   isLoading.value = true;
-  $fetch("/api/page-data/content-list", {
-    params: {
-      type: "blog",
-      search: keywordFilter.value ?? undefined,
-      category: categoryFilter.value?.length ? categoryFilter.value : undefined,
-      page: pageFilter.value,
-      year: yearFilter.value ?? undefined,
-    },
-  })
-    .then((res) => {
-      contents.value = res.data.contents;
-    })
-    .finally(() => {
-      isLoading.value = false;
+
+  try {
+    const res = await $fetch("/api/page-data/content-list", {
+      params: {
+        type: "blog",
+        search: keywordFilter.value ?? undefined,
+        category: categoryFilter.value?.length
+          ? categoryFilter.value
+          : undefined,
+        page: pageFilter.value,
+        year: yearFilter.value ?? undefined,
+      },
     });
+
+    contents.value = res.data.contents;
+  } finally {
+    isLoading.value = false;
+  }
 });
 
-function handleFetchNextPage() {
-  $fetch("/api/page-data/content-list", {
+async function handleFetchNextPage() {
+  const res = await $fetch("/api/page-data/content-list", {
     params: {
       type: "blog",
       search: keywordFilter.value,
@@ -51,9 +72,9 @@ function handleFetchNextPage() {
       page: (pageFilter.value || 1) + 1,
       year: yearFilter.value,
     },
-  }).then((res) => {
-    contents.value.push(...res.data.contents);
   });
+
+  contents.value.push(...res.data.contents);
 }
 
 const archives = computed(() => {
@@ -61,36 +82,37 @@ const archives = computed(() => {
 
   const currentYear = dayjs().year();
 
-  const years = [];
+  const years: number[] = [];
 
-  for (let y = startYear; y <= currentYear; y++) {
+  for (let y = startYear; y <= currentYear; y += 1) {
     years.push(y);
   }
 
-  return years.reverse();
+  return years.toReversed();
 });
 
 watch(
   [debouncedKeyword, categoryFilter, yearFilter],
-  ([keyword, category, year]) => {
+  async ([keyword, category, year]) => {
     pageFilter.value = 1;
 
     isLoading.value = true;
-    $fetch("/api/page-data/content-list", {
-      params: {
-        type: "blog",
-        search: keyword,
-        category,
-        page: 1,
-        year,
-      },
-    })
-      .then((res) => {
-        contents.value = res.data.contents;
-      })
-      .finally(() => {
-        isLoading.value = false;
+
+    try {
+      const res = await $fetch("/api/page-data/content-list", {
+        params: {
+          type: "blog",
+          search: keyword,
+          category,
+          page: 1,
+          year,
+        },
       });
+
+      contents.value = res.data.contents;
+    } finally {
+      isLoading.value = false;
+    }
   }
 );
 
@@ -100,7 +122,7 @@ function loadMore() {
   }
 
   isLoading.value = true;
-  handleFetchNextPage();
+  void handleFetchNextPage();
   isLoading.value = false;
 }
 

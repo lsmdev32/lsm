@@ -5,18 +5,20 @@ import { getBlogDocRef, getPublicationDocRef } from "~/lib/firestore-model";
 import { extractInlineArticleImages } from "~/server/services/page-data/article-images";
 import { createPageDataServices } from "~/server/utils/page-data";
 
+type ServeableImageType = "avif" | "gif" | "jpeg" | "png" | "webp";
+
 const articleDocumentSchema = z.object({
   status: z.string(),
   content: z.string(),
 });
 
-const SERVEABLE_IMAGE_TYPES: Record<string, true> = {
+const SERVEABLE_IMAGE_TYPES = {
   jpeg: true,
   png: true,
   gif: true,
   webp: true,
   avif: true,
-};
+} satisfies Record<ServeableImageType, true>;
 
 export default defineEventHandler(async (event) => {
   const collection = getRouterParam(event, "collection");
@@ -60,7 +62,7 @@ export default defineEventHandler(async (event) => {
 
   const image = extractInlineArticleImages(parsed.data.content).at(index);
 
-  if (!image || SERVEABLE_IMAGE_TYPES[image.mime] !== true) {
+  if (!image || !Object.hasOwn(SERVEABLE_IMAGE_TYPES, image.mime)) {
     throw createError({ statusCode: 404, statusMessage: "Image not found" });
   }
 

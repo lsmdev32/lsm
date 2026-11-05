@@ -2,8 +2,10 @@
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { ref, computed } from "vue";
 
-import Publications from "~/components/audience/Publications.vue";
+import Publications from "~/components/audience/publications.vue";
 
+// SAFETY: the route is `/attorneys/[slug]`, so the matched segment is a
+// single string rather than an array or undefined.
 const slug = useRoute().params.slug as string;
 
 const { data } = await useCustomFetch(`/api/page-data/staffs/${slug}`);
@@ -17,12 +19,12 @@ if (!result) {
   });
 }
 
-defineProps({
-  image: String,
-  name: String,
-  email: String,
-  description: String,
-});
+defineProps<{
+  image?: string;
+  name?: string;
+  email?: string;
+  description?: string;
+}>();
 
 // Unified active tab state
 const activeTab = ref<

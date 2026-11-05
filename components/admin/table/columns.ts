@@ -121,15 +121,21 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
           return;
         }
 
-        await updateDoc(docRef, {
-          name: inputValue,
-        })
-          .then(() => {
-            toast.success("Kategori berhasil diperbarui");
-          })
-          .catch((error) => {
-            toast.error(`Gagal memperbarui kategori: ${error.message}`);
+        try {
+          await updateDoc(docRef, {
+            name: inputValue,
           });
+        } catch (error) {
+          toast.error(
+            `Gagal memperbarui kategori: ${
+              error instanceof Error ? error.message : String(error)
+            }`
+          );
+
+          return;
+        }
+
+        toast.success("Kategori berhasil diperbarui");
       }
 
       async function handleDeleteCategory() {
@@ -150,23 +156,26 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
         const publicationsSnapshot = await getDocs(publicationsQuery);
 
         const batch = writeBatch(firestore);
-        publicationsSnapshot.forEach((doc) => {
-          batch.delete(doc.ref);
-        });
+
+        for (const publicationDoc of publicationsSnapshot.docs) {
+          batch.delete(publicationDoc.ref);
+        }
 
         await batch.commit();
 
-        await deleteDoc(docRef)
-          .then(() => {
-            toast.success("Kategori berhasil dihapus");
-          })
-          .catch(() => {
-            toast.error(`Gagal menghapus kategori`);
-          });
+        try {
+          await deleteDoc(docRef);
+        } catch {
+          toast.error("Gagal menghapus kategori");
+
+          return;
+        }
+
+        toast.success("Kategori berhasil dihapus");
       }
 
       function handleChange(value: string | number) {
-        inputRef.value = value as string;
+        inputRef.value = String(value);
       }
 
       return h(
@@ -240,9 +249,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
       function copy() {
         navigator.clipboard
           .writeText(slug)
-          .then(() => {
-            toast.success("Judul tersalin ke clipboard");
-          })
+          .then(() => toast.success("Judul tersalin ke clipboard"))
           .catch(() => {
             toast.error("Gagal menyalin judul");
           });
@@ -284,8 +291,8 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
         },
         "Status"
       ),
-    cell: ({ getValue }) => {
-      const value = getValue() as "published" | "not_published";
+    cell: ({ row }) => {
+      const value = row.original.status;
       const isPublished = value === "published";
 
       return h(
@@ -312,9 +319,9 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
         },
         "Dibuat pada"
       ),
-    cell: ({ getValue }) => {
+    cell: ({ row }) => {
       const dayjs = useDayjs();
-      const value = getValue() as { _seconds: number; _nanoseconds: number };
+      const value = row.original.created_at;
       const ms = value._seconds * 1000;
 
       return h("span", {}, dayjs(new Date(ms)).format("DD MMM YYYY HH:mm"));
@@ -330,13 +337,10 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
         },
         "Diterbitkan pada"
       ),
-    cell: ({ getValue }) => {
+    cell: ({ row }) => {
       const dayjs = useDayjs();
 
-      const value = getValue() as {
-        _seconds: number;
-        _nanoseconds: number;
-      } | null;
+      const value = row.original.published_at;
 
       if (!value) {
         return h("span", {}, "Belum diterbitkan");
@@ -376,13 +380,15 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
           return;
         }
 
-        await deleteDoc(docRef)
-          .then(() => {
-            toast.success("Blog berhasil dihapus");
-          })
-          .catch(() => {
-            toast.error("Gagal menghapus blog");
-          });
+        try {
+          await deleteDoc(docRef);
+        } catch {
+          toast.error("Gagal menghapus blog");
+
+          return;
+        }
+
+        toast.success("Blog berhasil dihapus");
       }
 
       async function handlePinHome() {
@@ -395,17 +401,16 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
       function handleUpdatePublish() {
         const newStatus = isPublished ? "not_published" : "published";
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const newValue: Record<string, any> = {
+        const newValue = {
           status: newStatus,
         };
 
-        updateDoc(docRef, newValue)
-          .then(() => {
-            toast.success(`Status blog berhasil diubah menjadi ${newStatus}`);
-          })
+        void updateDoc(docRef, newValue)
+          .then(() =>
+            toast.success(`Status blog berhasil diubah menjadi ${newStatus}`)
+          )
           .catch(() => {
-            toast.error(`Gagal memperbarui status blog`);
+            toast.error("Gagal memperbarui status blog");
           })
           .finally(() => {
             window.location.reload();
@@ -475,9 +480,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
       function copy() {
         navigator.clipboard
           .writeText(slug)
-          .then(() => {
-            toast.success("Judul tersalin ke clipboard");
-          })
+          .then(() => toast.success("Judul tersalin ke clipboard"))
           .catch(() => {
             toast.error("Gagal menyalin judul");
           });
@@ -519,8 +522,8 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         },
         "Status"
       ),
-    cell: ({ getValue }) => {
-      const value = getValue() as "published" | "not_published";
+    cell: ({ row }) => {
+      const value = row.original.status;
       const isPublished = value === "published";
 
       return h(
@@ -547,9 +550,9 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         },
         "Dibuat pada"
       ),
-    cell: ({ getValue }) => {
+    cell: ({ row }) => {
       const dayjs = useDayjs();
-      const value = getValue() as { _seconds: number; _nanoseconds: number };
+      const value = row.original.created_at;
       const ms = value._seconds * 1000;
 
       return h("span", {}, dayjs(new Date(ms)).format("DD MMM YYYY HH:mm"));
@@ -565,13 +568,10 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         },
         "Diterbitkan pada"
       ),
-    cell: ({ getValue }) => {
+    cell: ({ row }) => {
       const dayjs = useDayjs();
 
-      const value = getValue() as {
-        _seconds: number;
-        _nanoseconds: number;
-      } | null;
+      const value = row.original.published_at;
 
       if (!value) {
         return h("span", {}, "Belum diterbitkan");
@@ -593,11 +593,11 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         },
         "Link Publikasi"
       ),
-    cell: ({ getValue }) =>
+    cell: ({ row }) =>
       h(
         NuxtLink,
         {
-          href: getValue() as string,
+          href: row.original.publication,
           class: cn(
             "flex w-[50px] justify-center text-blue-600 hover:underline"
           ),
@@ -635,13 +635,15 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
           return;
         }
 
-        await deleteDoc(docRef)
-          .then(() => {
-            toast.success("Publikasi berhasil dihapus");
-          })
-          .catch(() => {
-            toast.error("Gagal menghapus publikasi");
-          });
+        try {
+          await deleteDoc(docRef);
+        } catch {
+          toast.error("Gagal menghapus publikasi");
+
+          return;
+        }
+
+        toast.success("Publikasi berhasil dihapus");
       }
 
       async function handlePinHome() {
@@ -654,17 +656,16 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
       function handleUpdatePublish() {
         const newStatus = isPublished ? "not_published" : "published";
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const newValue: Record<string, any> = {
+        const newValue = {
           status: newStatus,
         };
 
-        updateDoc(docRef, newValue)
-          .then(() => {
+        void updateDoc(docRef, newValue)
+          .then(() =>
             toast.success(
               `Status publikasi berhasil diubah menjadi ${newStatus}`
-            );
-          })
+            )
+          )
           .catch(() => {
             toast.error("Gagal mengubah status publikasi");
           })

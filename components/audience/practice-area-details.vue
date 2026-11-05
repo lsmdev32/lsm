@@ -315,7 +315,12 @@ const specializedSectors = [
   },
 ];
 
-const activeItem = ref(null);
+interface PracticeArea {
+  title: string;
+  description: string[];
+}
+
+const activeItem = ref<PracticeArea | null>(null);
 
 onMounted(() => {
   activeItem.value =
@@ -337,6 +342,26 @@ const getSpecializedSubItems = (columnIndex: number) => {
 
   return columnIndex === 0 ? items.slice(0, half) : items.slice(half);
 };
+
+const mainImages = [
+  "/images/administrative-dispute.jpg",
+  "/images/constitutional-2.jpg",
+  "/images/industrial-dispute.jpg",
+  "/images/criminal-defense.jpg",
+  "/images/commercial-litigation.jpg",
+  "/images/bankruptcy.jpg",
+  "/images/arbitration.jpg",
+];
+
+const specializedImages = [
+  "/images/mass-media.jpg",
+  "/images/energy.jpg",
+  "/images/education.jpg",
+  "/images/corruption.jpg",
+  "/images/election.jpg",
+  "/images/environment.jpg",
+  "/images/corporate.jpg",
+];
 
 const getItemSource = (item: { title: string; description: string[] }) => {
   if (mainCategories.some((category) => category.title === item.title)) {
@@ -366,24 +391,4 @@ const getBackgroundImage = (item: { title: string; description: string[] }) => {
 
   return image;
 };
-
-const mainImages = [
-  "/images/administrative-dispute.jpg",
-  "/images/constitutional-2.jpg",
-  "/images/industrial-dispute.jpg",
-  "/images/criminal-defense.jpg",
-  "/images/commercial-litigation.jpg",
-  "/images/bankruptcy.jpg",
-  "/images/arbitration.jpg",
-];
-
-const specializedImages = [
-  "/images/mass-media.jpg",
-  "/images/energy.jpg",
-  "/images/education.jpg",
-  "/images/corruption.jpg",
-  "/images/election.jpg",
-  "/images/environment.jpg",
-  "/images/corporate.jpg",
-];
 </script>

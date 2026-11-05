@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import AppSidebar from "~/components/AdminSidebar.vue";
+import AppSidebar from "~/components/admin-sidebar.vue";
 import {
   SidebarInset,
   SidebarProvider,

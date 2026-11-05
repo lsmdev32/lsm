@@ -2,13 +2,10 @@ import { limit, query, where } from "firebase/firestore";
 
 import { getCollectionRef } from "~/lib/firestore-model";
 
-export function useSearchWithFirestore<const T extends Record<string, unknown>>(
-  index: string,
-  q: Ref<string>
-) {
+export function useSearchWithFirestore(index: string, q: Ref<string>) {
   const firestore = useFirestore();
 
-  const algoliaResult = useSearch<T>(index, q, ["slug"]);
+  const algoliaResult = useSearch(index, q, ["slug"]);
   const hits = algoliaResult.result?.value?.hits ?? [];
 
   const queries = computed(() =>
@@ -33,7 +30,9 @@ export function useSearchWithFirestore<const T extends Record<string, unknown>>(
 
   return {
     result: firestoreResult.data,
-    isLoading: algoliaResult.isLoading || firestoreResult.pending,
+    isLoading: computed(
+      () => algoliaResult.isLoading.value || firestoreResult.pending.value
+    ),
     refresh: algoliaResult.refresh,
   };
 }

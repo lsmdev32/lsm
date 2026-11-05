@@ -67,16 +67,12 @@ const mappedAuthors = computed(() => {
 watch(tempCategorySearch, (value) => {
   if (!value) {
     category.value = "";
-
-    return;
   }
 });
 
 watch(tempAuthorSearch, (value) => {
   if (!value) {
     author.value = "";
-
-    return;
   }
 });
 

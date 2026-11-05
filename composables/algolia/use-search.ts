@@ -5,7 +5,10 @@ import { DEBOUNCE_DEFAULT_TIME } from "~/lib/constants";
 
 export function useSearch<
   const T extends Record<string, unknown>,
-  const TA extends readonly (keyof T)[] = readonly (keyof T)[],
+  const TA extends readonly Extract<keyof T, string>[] = readonly Extract<
+    keyof T,
+    string
+  >[],
 >(index: string, query: Ref<string>, onlyAttributes?: [...TA]) {
   const isLoading = ref(false);
   const debouncedValue = useDebounce(query, DEBOUNCE_DEFAULT_TIME);
@@ -15,7 +18,7 @@ export function useSearch<
   type Options = RequestOptions & SearchOptions;
 
   const requestOptions: Options = {
-    attributesToRetrieve: onlyAttributes as string[] | undefined,
+    attributesToRetrieve: onlyAttributes,
   };
 
   watch(

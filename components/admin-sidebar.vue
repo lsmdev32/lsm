@@ -92,17 +92,19 @@ async function _signOut() {
     return;
   }
 
-  await signOut(auth)
-    .then(() => {
-      toast.success("Sign out successful!", { dismissible: true });
-      navigateTo("/login");
-    })
-    .catch((_) => {
-      toast.error("Sign out failed!", {
-        dismissible: true,
-        closeButton: true,
-      });
+  try {
+    await signOut(auth);
+  } catch {
+    toast.error("Sign out failed!", {
+      dismissible: true,
+      closeButton: true,
     });
+
+    return;
+  }
+
+  toast.success("Sign out successful!", { dismissible: true });
+  void navigateTo("/login");
 }
 </script>
 

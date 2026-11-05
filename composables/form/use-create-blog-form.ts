@@ -2,6 +2,7 @@ import { useDebounce } from "@vueuse/core";
 import { query, getDocs, addDoc, where, limit } from "firebase/firestore";
 import { useForm } from "vee-validate";
 import { toast } from "vue-sonner";
+import { z } from "zod";
 
 import {
   DEBOUNCE_DEFAULT_TIME,
@@ -15,6 +16,24 @@ import {
   CONTENT_FORM_TYPE,
   validationSchemas,
 } from "~/lib/schemas/form";
+
+const storedFormSchema = z
+  .object({
+    [CONTENT_FORM_SCHEMA_KEYS.type]: z.literal(CONTENT_FORM_TYPE.blog),
+    [CONTENT_FORM_SCHEMA_KEYS.title]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.slug]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.category]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.author]: z.string().nullish(),
+    [CONTENT_FORM_SCHEMA_KEYS.content]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.cover_image]: z.custom<File | null>(),
+    [CONTENT_FORM_SCHEMA_KEYS.status]: z.enum([
+      CONTENT_FORM_STATUS.not_published,
+      CONTENT_FORM_STATUS.publish,
+    ]),
+    [CONTENT_FORM_SCHEMA_KEYS.published_at]: z.coerce.date(),
+    [CONTENT_FORM_SCHEMA_KEYS.tags]: z.array(z.string()),
+  })
+  .partial();
 
 export function useCreateBlogForm() {
   const form = useForm({
@@ -37,16 +56,18 @@ export function useCreateBlogForm() {
   onMounted(() => {
     const saved = sessionStorage.getItem(SESSION_STORAGE_KEYS.CREATE_BLOG_FORM);
 
-    if (!saved) {
+    if (saved === null || saved === "") {
       return;
     }
 
-    const parsed = JSON.parse(saved);
-    parsed[CONTENT_FORM_SCHEMA_KEYS.published_at] = new Date(
-      parsed?.[CONTENT_FORM_SCHEMA_KEYS.published_at]
-    );
+    const stored: unknown = JSON.parse(saved);
+    const parsed = storedFormSchema.safeParse(stored);
 
-    form.setValues(parsed);
+    if (!parsed.success) {
+      return;
+    }
+
+    form.setValues(parsed.data);
   });
 
   watch(
@@ -65,7 +86,7 @@ export function useCreateBlogForm() {
   watch(
     () => values.value.title,
     (v) => {
-      if (!v) {
+      if (v === undefined || v === "") {
         form.resetField(CONTENT_FORM_SCHEMA_KEYS.slug);
 
         return;
@@ -73,8 +94,8 @@ export function useCreateBlogForm() {
 
       const slug = v
         .toLowerCase()
-        .replaceAll(/[^a-z0-9]+/g, "-")
-        .replaceAll(/^-|-$/g, "");
+        .replaceAll(/[^a-z0-9]+/gu, "-")
+        .replaceAll(/^-|-$/gu, "");
 
       form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.slug, slug);
     }
@@ -109,21 +130,18 @@ export function useCreateBlogForm() {
       return;
     }
 
-    // TODO: handle submit
     let coverImageURL: string | null = null;
 
-    if (v.cover_image) {
-      const res = await Promise.all([coverUploader.upload(v.cover_image)]);
+    if (v.cover_image !== null && v.cover_image !== undefined) {
+      const uploadedCoverImageURL = await coverUploader.upload(v.cover_image);
 
-      const success = res.every((p) => !!p);
-
-      if (!success) {
+      if (uploadedCoverImageURL === "") {
         toast.error("Gagal mengupload file");
 
         return;
       }
 
-      coverImageURL = res[0];
+      coverImageURL = uploadedCoverImageURL;
     }
 
     toast.info("Harap tunggu blogs sedang dibuat...");
@@ -152,7 +170,7 @@ export function useCreateBlogForm() {
 
     toast.success("Blog sukses dibuat");
     resetForm();
-    router.replace("/dashboard/blogs");
+    void router.replace("/dashboard/blogs");
   });
 
   async function saveAsDraft() {

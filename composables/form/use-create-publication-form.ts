@@ -2,6 +2,7 @@ import { useDebounce } from "@vueuse/core";
 import { query, getDocs, addDoc, where, limit } from "firebase/firestore";
 import { useForm } from "vee-validate";
 import { toast } from "vue-sonner";
+import { z } from "zod";
 
 import {
   DEBOUNCE_DEFAULT_TIME,
@@ -15,6 +16,25 @@ import {
   CONTENT_FORM_TYPE,
   validationSchemas,
 } from "~/lib/schemas/form";
+
+const storedFormSchema = z
+  .object({
+    [CONTENT_FORM_SCHEMA_KEYS.type]: z.literal(CONTENT_FORM_TYPE.publication),
+    [CONTENT_FORM_SCHEMA_KEYS.title]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.slug]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.category]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.author]: z.string().nullish(),
+    [CONTENT_FORM_SCHEMA_KEYS.content]: z.string(),
+    [CONTENT_FORM_SCHEMA_KEYS.cover_image]: z.custom<File | null>(),
+    [CONTENT_FORM_SCHEMA_KEYS.status]: z.enum([
+      CONTENT_FORM_STATUS.not_published,
+      CONTENT_FORM_STATUS.publish,
+    ]),
+    [CONTENT_FORM_SCHEMA_KEYS.published_at]: z.coerce.date(),
+    [CONTENT_FORM_SCHEMA_KEYS.tags]: z.array(z.string()),
+    publication: z.custom<File | null>(),
+  })
+  .partial();
 
 export function useCreatePublicationForm() {
   const form = useForm({
@@ -40,16 +60,18 @@ export function useCreatePublicationForm() {
       SESSION_STORAGE_KEYS.CREATE_PUBLICATION_FORM
     );
 
-    if (!saved) {
+    if (saved === null || saved === "") {
       return;
     }
 
-    const parsed = JSON.parse(saved);
-    parsed[CONTENT_FORM_SCHEMA_KEYS.published_at] = new Date(
-      parsed?.[CONTENT_FORM_SCHEMA_KEYS.published_at]
-    );
+    const stored: unknown = JSON.parse(saved);
+    const parsed = storedFormSchema.safeParse(stored);
 
-    form.setValues(parsed);
+    if (!parsed.success) {
+      return;
+    }
+
+    form.setValues(parsed.data);
   });
 
   watch(
@@ -68,7 +90,7 @@ export function useCreatePublicationForm() {
   watch(
     () => values.value.title,
     (v) => {
-      if (!v) {
+      if (v === undefined || v === "") {
         form.resetField(CONTENT_FORM_SCHEMA_KEYS.slug);
 
         return;
@@ -76,8 +98,8 @@ export function useCreatePublicationForm() {
 
       const slug = v
         .toLowerCase()
-        .replaceAll(/[^a-z0-9]+/g, "-")
-        .replaceAll(/^-|-$/g, "");
+        .replaceAll(/[^a-z0-9]+/gu, "-")
+        .replaceAll(/^-|-$/gu, "");
 
       form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.slug, slug);
     }
@@ -114,22 +136,22 @@ export function useCreatePublicationForm() {
 
     let coverImageURL: string | null = null;
 
-    if (v.cover_image) {
+    if (v.cover_image !== null && v.cover_image !== undefined) {
       coverImageURL = await coverUploader.upload(v.cover_image);
 
-      if (!coverImageURL) {
+      if (coverImageURL === "") {
         toast.error("Gagal mengupload gambar sampul");
 
         return;
       }
     }
 
-    let publicationURL: string = "";
+    let publicationURL = "";
 
-    if (v.publication) {
+    if (v.publication !== null && v.publication !== undefined) {
       publicationURL = await publicationUploader.upload(v.publication);
 
-      if (!publicationURL) {
+      if (publicationURL === "") {
         toast.error("Gagal mengupload publikasi");
 
         return;
@@ -163,7 +185,7 @@ export function useCreatePublicationForm() {
 
     toast.success("Publikasi sukses dibuat");
     resetForm();
-    router.replace("/dashboard/publications");
+    void router.replace("/dashboard/publications");
   });
 
   async function saveAsDraft() {

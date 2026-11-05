@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Button from "~/components/audience/Button.vue";
-import ThreePic from "~/components/audience/ThreePic.vue";
+import Button from "~/components/audience/button.vue";
+import ThreePic from "~/components/audience/three-pic.vue";
 </script>
 
 <template>

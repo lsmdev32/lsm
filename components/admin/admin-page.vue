@@ -12,21 +12,15 @@ interface Props {
   transformCrumbs?: Record<number, (segment: string) => string | undefined>;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  transformCrumbs() {
-    return {};
-  },
-});
+const { pageTitle, transformCrumbs = {} } = defineProps<Props>();
 
 const router = useRouter();
 
-const pathSegments = router.currentRoute.value.path
-  .split("/")
-  .filter((segment) => segment);
+const pathSegments = router.currentRoute.value.path.split("/").filter(Boolean);
 
 const breadcrumbs = computed(() =>
   pathSegments.map((segment, idx) => {
-    const newSegment = props.transformCrumbs[idx]?.(segment) ?? segment;
+    const newSegment = transformCrumbs[idx]?.(segment) ?? segment;
 
     return {
       text: newSegment.replaceAll("-", " ").toLowerCase(),

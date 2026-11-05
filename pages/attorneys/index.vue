@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Associate from "~/components/audience/Associate.vue";
-import Partners from "~/components/audience/Partners.vue";
+import Associate from "~/components/audience/associate.vue";
+import Partners from "~/components/audience/partners.vue";
 
 const response = await useCustomFetch("/api/page-data/staffs");
 const { data } = response.data;

@@ -65,19 +65,21 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
     )
 
     .refine(async (v) => {
-      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-          resolve(img);
-        };
+      const imageEl = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
 
-        img.onerror = reject;
-        img.src = URL.createObjectURL(v);
+        image.addEventListener("load", () => {
+          resolve(image);
+        });
+
+        image.addEventListener("error", reject);
+        image.src = URL.createObjectURL(v);
       });
 
       return (
-        img.width <= CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_WIDTH &&
-        img.height <= CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_HEIGHT
+        imageEl.width <=
+          CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_WIDTH &&
+        imageEl.height <= CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_HEIGHT
       );
     }, CREATE_STAFF_FORM_CONSTANTS.MSG.PP_IMAGE_DIMENSION_MSG),
   [STAFF_FORM_SCHEMA_KEYS.type]: z.enum(STAFF_TYPES_LIST).default("associate"),
@@ -224,19 +226,20 @@ export const MUTATE_BLOGS_FORM_SCHEMA = z.object({
       CREATE_CONTENT_FORM_CONSTANTS.MSG.COVER_IMAGE_SIZE_MSG
     )
     .refine(async (v) => {
-      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-          resolve(img);
-        };
+      const imageEl = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
 
-        img.onerror = reject;
-        img.src = URL.createObjectURL(v);
+        image.addEventListener("load", () => {
+          resolve(image);
+        });
+
+        image.addEventListener("error", reject);
+        image.src = URL.createObjectURL(v);
       });
 
       return (
-        img.width <= CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_WIDTH &&
-        img.height <= CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_HEIGHT
+        imageEl.width <= CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_WIDTH &&
+        imageEl.height <= CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_HEIGHT
       );
     }, CREATE_CONTENT_FORM_CONSTANTS.MSG.COVER_IMAGE_DIMENSION_MSG)
     .nullish()

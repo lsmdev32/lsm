@@ -4,8 +4,11 @@ interface Props {
   type?: "button" | "submit" | "reset";
 }
 
-const props = defineProps<Props>();
-const emit = defineEmits(["click"]);
+const { textButton, type = "button" } = defineProps<Props>();
+
+type Emits = (event: "click") => void;
+
+defineEmits<Emits>();
 </script>
 
 <template>

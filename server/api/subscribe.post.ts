@@ -1,15 +1,31 @@
+import { z } from "zod";
+
+const subscribeBodySchema = z.object({
+  name: z.string(),
+  email: z.string(),
+});
+
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
+  const rawBody: unknown = await readBody(event);
+  const parsedBody = subscribeBodySchema.safeParse(rawBody);
+
+  if (!parsedBody.success) {
+    return {
+      success: false,
+      message: "Failed to subscribe. Please try again later.",
+    };
+  }
+
   const config = useRuntimeConfig();
 
   const formData = new URLSearchParams();
-  formData.append("FNAME", body.name);
-  formData.append("EMAIL", body.email);
+  formData.append("FNAME", parsedBody.data.name);
+  formData.append("EMAIL", parsedBody.data.email);
 
   const url = `https://${config.public.mailchimpDc}.list-manage.com/subscribe/post?u=${config.public.mailchimpU}&id=${config.public.mailchimpId}&f_id=${config.public.mailchimpFid}`;
 
   try {
-    const response = await fetch(url, {
+    await fetch(url, {
       method: "POST",
       body: formData,
       headers: {

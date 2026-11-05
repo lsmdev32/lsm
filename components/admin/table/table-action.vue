@@ -10,25 +10,25 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
+interface TableActionItem {
+  label: string;
+  icon?: FunctionalComponent;
+  iconClass?: string;
+  onClick?: (...args: unknown[]) => void;
+  href?: string;
+}
+
 interface Props {
-  // open?: boolean
   title?: string;
-  actions?: {
-    label: string;
-    icon?: FunctionalComponent;
-    iconClass?: string;
-    onClick?(...args: unknown[]): void;
-    href?: string;
-  }[];
+  actions?: TableActionItem[];
   disabled?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
-  title: "Actions",
-  // open: false,
-  actions: () => [],
-  disabled: false,
-});
+const {
+  title = "Actions",
+  actions = [],
+  disabled = false,
+} = defineProps<Props>();
 </script>
 
 <template>

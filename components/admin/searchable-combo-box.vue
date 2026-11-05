@@ -17,12 +17,12 @@ interface Props {
   emptyPlaceholderText?: string;
 }
 
-const _props = withDefaults(defineProps<Props>(), {
-  items: () => [],
-  selected: "",
-  placeholder: "Select an item...",
-  emptyPlaceholderText: "No items found",
-});
+const {
+  items = [],
+  selected = "",
+  placeholder = "Select an item...",
+  emptyPlaceholderText = "No items found",
+} = defineProps<Props>();
 
 const selectedItem = defineModel<string>();
 

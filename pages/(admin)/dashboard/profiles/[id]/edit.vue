@@ -2,7 +2,7 @@
 import { Download, Pencil } from "lucide-vue-next";
 import { toast } from "vue-sonner";
 
-import RichTextEditor from "~/components/rte/RichTextEditor.vue";
+import RichTextEditor from "~/components/rte/rich-text-editor.vue";
 
 definePageMeta({
   layout: "auth",
@@ -10,6 +10,9 @@ definePageMeta({
 });
 
 const route = useRoute();
+
+// SAFETY: `/dashboard/profiles/[id]/edit` always matches exactly one `id`
+// segment, which the router types as `string`.
 const id = ref<string>(route.params.id as string);
 
 const form = useEditStaffForm(id);
@@ -33,6 +36,8 @@ function onChooseFile() {
 }
 
 async function handlePPChange(event: Event) {
+  // SAFETY: bound to `@change` on the `#pp` file input, so the event target is
+  // that input element.
   const target = event.target as HTMLInputElement;
 
   const file = target.files?.item(0);
@@ -52,6 +57,8 @@ async function handlePPChange(event: Event) {
 }
 
 async function handleCVChange(event: Event) {
+  // SAFETY: bound to `@change` on the CV file input, so the event target is
+  // that input element.
   const target = event.target as HTMLInputElement;
 
   const file = target.files?.item(0);

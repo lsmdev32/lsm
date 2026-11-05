@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Pencil, UserIcon } from "lucide-vue-next";
 
-import RichTextEditor from "~/components/rte/RichTextEditor.vue";
+import RichTextEditor from "~/components/rte/rich-text-editor.vue";
 
 definePageMeta({
   layout: "auth",
@@ -41,14 +41,14 @@ function onChooseFile() {
   target.click();
 }
 
-function onCancel() {
-  onResetForm();
-  router.replace({ path: "/dashboard/profiles" });
-}
-
 function onResetForm() {
   form.resetForm();
   window.location.reload();
+}
+
+function onCancel() {
+  onResetForm();
+  router.replace({ path: "/dashboard/profiles" });
 }
 </script>
 

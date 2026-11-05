@@ -22,10 +22,10 @@ function refresh() {
 }
 
 async function submitCreateCategory() {
-  await submit().then(() => {
-    isCreateModalOpen.value = false;
-    refresh();
-  });
+  await submit();
+
+  isCreateModalOpen.value = false;
+  refresh();
 }
 </script>
 

@@ -49,9 +49,7 @@ export function useCreateCategory() {
     await addDoc(colRef, {
       name: tempCategory.value,
     })
-      .then(() => {
-        toast.success("Berhasil menambahkan kategori");
-      })
+      .then(() => toast.success("Berhasil menambahkan kategori"))
       .catch(() => {
         toast.error("Gagal menambahkan kategori");
       })
