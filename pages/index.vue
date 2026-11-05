@@ -20,7 +20,7 @@ const images = [
     <section class="md:hidden md:min-w-full">
       <div class="banner">
         <div
-          class="flex flex-col items-start justify-start py-[30px] pl-[30px] text-left md:pl-12"
+          class="flex h-full flex-col items-start justify-between py-[30px] pl-[30px] text-left md:pl-12"
         >
           <div>
             <h1 class="text-6xl text-white">
@@ -28,7 +28,7 @@ const images = [
               Santosa <br />& Partners
             </h1>
           </div>
-          <div class="pt-[160px]">
+          <div>
             <h2 class="text-2xl text-white">
               Local Wisdom,<br />Legal Insight
             </h2>
@@ -40,7 +40,7 @@ const images = [
     <!-- Desktop -->
     <section class="hidden items-center justify-center md:flex md:min-w-full">
       <div
-        class="flex h-[575px] w-full items-end justify-start bg-[url('/images/gambar-utama.jpg')] bg-cover bg-center bg-no-repeat py-[30px] pl-[30px] text-left md:pl-12"
+        class="flex h-[50vh] w-full items-end justify-start bg-[url('/images/gambar-utama.jpg')] bg-cover bg-center bg-no-repeat py-[30px] pl-[30px] text-left md:pl-12"
       >
         <div
           class="flex flex-col items-start justify-start py-[60px] pl-[30px] text-left md:pl-12"
@@ -54,17 +54,21 @@ const images = [
       </div>
     </section>
     <!-- Bedge here! -->
-    <section class="hidden items-center justify-center md:flex md:min-w-full">
-      <div class="flex h-64 max-w-7xl items-center justify-center gap-x-4">
+    <section
+      class="hidden items-center justify-center py-6 md:flex md:min-w-full"
+    >
+      <div
+        class="flex max-w-7xl flex-wrap items-center justify-center gap-4 px-2"
+      >
         <div
           v-for="(image, index) in images"
           :key="index"
-          class="flex flex-row items-center justify-center"
+          class="size-28 shrink-0 lg:size-32"
         >
           <img
             :src="image"
             :alt="`Badge ${index + 1}`"
-            class="h-37 w-44 object-center"
+            class="h-full w-full object-contain"
           />
         </div>
       </div>
@@ -351,7 +355,7 @@ const images = [
 .banner {
   background: url("/images/gambar-utama.jpg") no-repeat right center;
   background-size: cover;
-  height: 445px;
+  height: 50vh;
   display: flex;
   align-items: center;
   font-family: "Philosopher", sans-serif;
