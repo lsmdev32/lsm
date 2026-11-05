@@ -1,156 +1,175 @@
-import { useDebounce } from "@vueuse/core"
-import { updateDoc } from "firebase/firestore"
-import { useForm } from "vee-validate"
-import { toast } from "vue-sonner"
+import { useDebounce } from "@vueuse/core";
+import { updateDoc } from "firebase/firestore";
+import { useForm } from "vee-validate";
+import { toast } from "vue-sonner";
+
 import {
-	DEBOUNCE_DEFAULT_TIME,
-	IMAGES_STORAGE_PATH,
-	SESSION_STORAGE_KEYS,
-} from "~/lib/constants"
-import { getBlogDocRef } from "~/lib/firestore-model"
+  DEBOUNCE_DEFAULT_TIME,
+  IMAGES_STORAGE_PATH,
+  SESSION_STORAGE_KEYS,
+} from "~/lib/constants";
+import { getBlogDocRef } from "~/lib/firestore-model";
 import {
-	validationSchemas,
-	CONTENT_FORM_TYPE,
-	CONTENT_FORM_SCHEMA_KEYS,
-	CONTENT_FORM_STATUS,
-} from "~/lib/schemas/form"
+  validationSchemas,
+  CONTENT_FORM_TYPE,
+  CONTENT_FORM_SCHEMA_KEYS,
+  CONTENT_FORM_STATUS,
+} from "~/lib/schemas/form";
 
 export function useEditBlogForm(id: string) {
-	const form = useForm({
-		validationSchema: validationSchemas.editBlogsForm,
-		initialValues: {
-			type: CONTENT_FORM_TYPE.blog,
-			published_at: new Date(),
-		},
-	})
-	const isSubmitting = form.isSubmitting
+  const form = useForm({
+    validationSchema: validationSchemas.editBlogsForm,
+    initialValues: {
+      type: CONTENT_FORM_TYPE.blog,
+      published_at: new Date(),
+    },
+  });
 
-	const firestore = useFirestore()
-	const router = useRouter()
+  const { isSubmitting } = form;
 
-	const blogDocRef = getBlogDocRef(firestore, id)
-	const blog = useDocument(blogDocRef)
+  const firestore = useFirestore();
+  const router = useRouter();
 
-	const values = useDebounce(form.controlledValues, DEBOUNCE_DEFAULT_TIME)
-	const coverUploader = useUploader(IMAGES_STORAGE_PATH.BLOG_IMAGES)
+  const blogDocRef = getBlogDocRef(firestore, id);
+  const blog = useDocument(blogDocRef);
 
-	watch(blog.data, (v) => {
-		if (!v) return
+  const values = useDebounce(form.controlledValues, DEBOUNCE_DEFAULT_TIME);
+  const coverUploader = useUploader(IMAGES_STORAGE_PATH.BLOG_IMAGES);
 
-		form.setValues({
-			title: v.title,
-			content: v.content,
-			slug: v.slug,
-			category: v.category_id,
-			author: v.author_id ?? undefined,
-			status: v.status,
-			image_url: v.cover_image_url ?? undefined,
-			// @ts-expect-error - assuming v.published_at is a Firestore Timestamp
-			published_at: v.published_at ? new Date(v.published_at.seconds * 1000) : undefined,
-			tags: v.tags,
-			type: CONTENT_FORM_TYPE.blog,
-		})
-	})
+  watch(blog.data, (v) => {
+    if (!v) {
+      return;
+    }
 
-	watch(() => values.value.title, (v) => {
-		if (!v) {
-			form.resetField(CONTENT_FORM_SCHEMA_KEYS.slug)
-			return
-		}
+    form.setValues({
+      title: v.title,
+      content: v.content,
+      slug: v.slug,
+      category: v.category_id,
+      author: v.author_id ?? undefined,
+      status: v.status,
+      image_url: v.cover_image_url ?? undefined,
+      // @ts-expect-error - assuming v.published_at is a Firestore Timestamp
+      published_at: v.published_at
+        ? new Date(v.published_at.seconds * 1000)
+        : undefined,
+      tags: v.tags,
+      type: CONTENT_FORM_TYPE.blog,
+    });
+  });
 
-		const slug = v
-			.toLowerCase()
-			.replaceAll(/[^a-z0-9]+/g, "-")
-			.replaceAll(/^-|-$/g, "")
+  watch(
+    () => values.value.title,
+    (v) => {
+      if (!v) {
+        form.resetField(CONTENT_FORM_SCHEMA_KEYS.slug);
 
-		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.slug, slug)
-	})
+        return;
+      }
 
-	function resetForm() {
-		sessionStorage.removeItem(SESSION_STORAGE_KEYS.EDIT_BLOG_FORM)
-		form.resetForm()
-	}
+      const slug = v
+        .toLowerCase()
+        .replaceAll(/[^a-z0-9]+/g, "-")
+        .replaceAll(/^-|-$/g, "");
 
-	function resetFields() {
-		form.handleReset()
-		form.resetForm()
-	}
+      form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.slug, slug);
+    }
+  );
 
-	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Harap tunggu blogs sedang diperbarui...")
-		try {
-			await updateDoc(blogDocRef, {
-				type: CONTENT_FORM_TYPE.blog,
-				cover_image_url: v.image_url,
-				title: v.title,
-				content: v.content,
-				category_id: v.category,
-				author_id: v.author ?? null,
-				slug: v.slug,
-				status: v.status,
-				tags: v.tags,
-				published_at: v.published_at,
-			})
-		}
+  function resetForm() {
+    sessionStorage.removeItem(SESSION_STORAGE_KEYS.EDIT_BLOG_FORM);
+    form.resetForm();
+  }
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		catch (_e) {
-			toast.error("Gagal memperbarui blog")
-			return
-		}
+  function resetFields() {
+    form.handleReset();
+    form.resetForm();
+  }
 
-		toast.success("Blog sukses diperbarui")
-		resetForm()
-		router.replace("/dashboard/blogs")
-	})
+  const onSubmit = form.handleSubmit(async (v) => {
+    toast.info("Harap tunggu blogs sedang diperbarui...");
 
-	async function saveAsDraft() {
-		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.status, CONTENT_FORM_STATUS.not_published)
-		await onSubmit()
-	}
+    try {
+      await updateDoc(blogDocRef, {
+        type: CONTENT_FORM_TYPE.blog,
+        cover_image_url: v.image_url,
+        title: v.title,
+        content: v.content,
+        category_id: v.category,
+        author_id: v.author ?? null,
+        slug: v.slug,
+        status: v.status,
+        tags: v.tags,
+        published_at: v.published_at,
+      });
+    }
 
-	async function saveAsPublished() {
-		form.setFieldValue(CONTENT_FORM_SCHEMA_KEYS.status, CONTENT_FORM_STATUS.publish)
-		await onSubmit()
-	}
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch {
+      toast.error("Gagal memperbarui blog");
 
-	async function uploadCoverImage(file: File) {
-		const url = await coverUploader.upload(file)
-		if (!url) {
-			toast.error("Gagal mengupload gambar sampul")
-			return
-		}
+      return;
+    }
 
-		await updateDoc(blogDocRef, {
-			cover_image_url: url,
-		})
-			.catch(() => {
-				toast.error("Gagal memperbarui gambar sampul")
-			})
-	}
+    toast.success("Blog sukses diperbarui");
+    resetForm();
+    router.replace("/dashboard/blogs");
+  });
 
-	async function removeCoverImage() {
-		await updateDoc(blogDocRef, {
-			cover_image_url: null,
-		})
-			.then(() => {
-				toast.success("Gambar sampul berhasil dihapus")
-			})
-			.catch(() => {
-				toast.error("Gagal menghapus gambar sampul")
-			})
-	}
+  async function saveAsDraft() {
+    form.setFieldValue(
+      CONTENT_FORM_SCHEMA_KEYS.status,
+      CONTENT_FORM_STATUS.not_published
+    );
+    await onSubmit();
+  }
 
-	return {
-		saveAsDraft,
-		saveAsPublished,
-		uploadCoverImage,
-		onSubmit,
-		resetForm,
-		resetFields,
-		form,
-		isSubmitting,
-		values,
-		removeCoverImage,
-	}
+  async function saveAsPublished() {
+    form.setFieldValue(
+      CONTENT_FORM_SCHEMA_KEYS.status,
+      CONTENT_FORM_STATUS.publish
+    );
+    await onSubmit();
+  }
+
+  async function uploadCoverImage(file: File) {
+    const url = await coverUploader.upload(file);
+
+    if (!url) {
+      toast.error("Gagal mengupload gambar sampul");
+
+      return;
+    }
+
+    await updateDoc(blogDocRef, {
+      cover_image_url: url,
+    }).catch(() => {
+      toast.error("Gagal memperbarui gambar sampul");
+    });
+  }
+
+  async function removeCoverImage() {
+    await updateDoc(blogDocRef, {
+      cover_image_url: null,
+    })
+      .then(() => {
+        toast.success("Gambar sampul berhasil dihapus");
+      })
+      .catch(() => {
+        toast.error("Gagal menghapus gambar sampul");
+      });
+  }
+
+  return {
+    saveAsDraft,
+    saveAsPublished,
+    uploadCoverImage,
+    onSubmit,
+    resetForm,
+    resetFields,
+    form,
+    isSubmitting,
+    values,
+    removeCoverImage,
+  };
 }

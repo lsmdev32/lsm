@@ -11,10 +11,12 @@ const loading = ref(false)
 const submit = async () => {
 	if (!name.value || !email.value || !description.value) {
 		info.value = "Semua field wajib diisi."
+
 		return
 	}
 
 	loading.value = true
+
 	const { data } = await useFetch("/api/send-email", {
 		method: "POST",
 		body: {
@@ -24,6 +26,7 @@ const submit = async () => {
 			description: description.value,
 		},
 	})
+
 	loading.value = false
 
 	if (data.value?.success) {

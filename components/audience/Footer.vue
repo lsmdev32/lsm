@@ -1,88 +1,84 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import Button from "../../components/audience/Button.vue"
+import { ref } from "vue";
 
-const name = ref("")
-const email = ref("")
-const message = ref("")
-const loading = ref(false)
+import Button from "../../components/audience/Button.vue";
+
+const name = ref("");
+const email = ref("");
+const message = ref("");
+const loading = ref(false);
 
 const subscribe = async () => {
-	loading.value = true
-	message.value = ""
+  loading.value = true;
+  message.value = "";
 
-	if (!name.value.trim() || !email.value.trim()) {
-		message.value = "Please enter both name and email before subscribing."
-		loading.value = false
-		return
-	}
+  if (!name.value.trim() || !email.value.trim()) {
+    message.value = "Please enter both name and email before subscribing.";
+    loading.value = false;
 
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-	if (!emailRegex.test(email.value)) {
-		message.value = "Please enter a valid email address."
-		loading.value = false
-		return
-	}
+    return;
+  }
 
-	const resetMessageAfterDelay = () => {
-		setTimeout(() => {
-			message.value = ""
-		}, 5000)
-	}
-	try {
-		const res = await $fetch("/api/subscribe", {
-			method: "POST",
-			body: { name: name.value, email: email.value },
-		})
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-		if (res.success) {
-			message.value = `Success! ${email.value} was subscribed to our newsletter.`
-			name.value = ""
-			email.value = ""
-		}
-		else {
-			message.value = res.message || "Subscription failed."
-		}
-	}
-	catch (e) {
-		message.value = "Something went wrong during subscription."
-	}
+  if (!emailRegex.test(email.value)) {
+    message.value = "Please enter a valid email address.";
+    loading.value = false;
 
-	loading.value = false
-	resetMessageAfterDelay()
-}
+    return;
+  }
+
+  const resetMessageAfterDelay = () => {
+    setTimeout(() => {
+      message.value = "";
+    }, 5000);
+  };
+
+  try {
+    const res = await $fetch("/api/subscribe", {
+      method: "POST",
+      body: { name: name.value, email: email.value },
+    });
+
+    if (res.success) {
+      message.value = `Success! ${email.value} was subscribed to our newsletter.`;
+      name.value = "";
+      email.value = "";
+    } else {
+      message.value = res.message || "Subscription failed.";
+    }
+  } catch {
+    message.value = "Something went wrong during subscription.";
+  }
+
+  loading.value = false;
+  resetMessageAfterDelay();
+};
 </script>
 
 <template>
-	<div class="container-footer background-footer">
-		<div>
-			<img
-				src="../../assets/images/LSM_Logo-White.svg"
-				alt="lsm-white"
-				class="logo-white"
-			>
+  <div class="container-footer background-footer">
+    <div>
+      <img
+        src="../../assets/images/LSM_Logo-White.svg"
+        alt="lsm-white"
+        class="logo-white"
+      />
 
-			<div class="left-section">
-				Equity Tower, 12th Floor <br>
-				Sudirman Central Business District (SCBD) <br>
-				Jl. Jend. Sudirman Kav. 52-53, Jakarta 12190 <br>
-				Indonesia<br><br>
+      <div class="left-section">
+        Equity Tower, 12th Floor <br />
+        Sudirman Central Business District (SCBD) <br />
+        Jl. Jend. Sudirman Kav. 52-53, Jakarta 12190 <br />
+        Indonesia<br /><br />
 
-				E-mail: lsmlawfirm@lsmlaw.co.id <br>Telephone: (62-21)2903-5900
-				<br>Fax: (62-21)2903-5909 <br><br><br>
-				<a
-					href="/"
-					class="bottom-text-style"
-				>
-					WWW.LSMLAW.CO.ID
-				</a>
-				<br><br><br>
-				<div class="bottom-text-style">
-					© 2025 All Rights Reserved.
-				</div>
-			</div>
-		</div>
-		<!-- <div>
+        E-mail: lsmlawfirm@lsmlaw.co.id <br />Telephone: (62-21)2903-5900
+        <br />Fax: (62-21)2903-5909 <br /><br /><br />
+        <a href="/" class="bottom-text-style"> WWW.LSMLAW.CO.ID </a>
+        <br /><br /><br />
+        <div class="bottom-text-style">© 2025 All Rights Reserved.</div>
+      </div>
+    </div>
+    <!-- <div>
 			<div>
 				<div
 					class="font-marcellus"
@@ -107,8 +103,8 @@ const subscribe = async () => {
 					required
 				> -->
 
-		<!-- Pesan sukses / gagal -->
-		<!-- <div
+    <!-- Pesan sukses / gagal -->
+    <!-- <div
 					v-if="message"
 					class="mb-6 mt-[-10px] text-sm text-black font-bold message-box"
 				>
@@ -124,7 +120,7 @@ const subscribe = async () => {
 				</div>
 			</div>
 		</div> -->
-	</div>
+  </div>
 </template>
 
 <style scoped>

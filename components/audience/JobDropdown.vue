@@ -1,69 +1,57 @@
 <template>
-	<div class="relative w-full">
-		<h2 class="text-3xl font-[marcellus] text-[#DAB38D]">
-			Requirements
-		</h2>
-		<select disabled
-			v-model="selectedJob"
-			class="mx-auto mt-4 pl-2 block font-[Ubuntu] font-light text-[#4B3D2A] w-full rounded-md focus:ring  focus:ring-opacity-50"
-			@change="showRequirements"
-		>
-			<option
-				value=""
-				disabled
-			>
-				Select a position
-			</option>
-			<option
-				v-for="job in jobs"
-				:key="job.position"
-				:value="job.position"
-			>
-				{{ job.position }}
-			</option>
-		</select>
-		<div
-			v-if="selectedJob"
-			class="mt-4 p-4"
-		>
-			<h3 class="text-xl sm:text-2xl font-[marcellus] text-[#4B3D2A]">
-				{{ selectedJob }}
-			</h3>
-			<ul class="mt-2 list-disc list-inside sm:pl-2">
-				<li
-					v-for="req in jobs.find(j => j.position === selectedJob).requirements"
-					:key="req"
-					class="sm:text-sm leading-relaxed font-[Ubuntu] font-light text-[#949494]"
-				>
-					{{ req }}
-				</li>
-			</ul>
-		</div>
-	</div>
+  <div class="relative w-full">
+    <h2 class="font-[marcellus] text-3xl text-[#DAB38D]">Requirements</h2>
+    <select
+      disabled
+      v-model="selectedJob"
+      class="mx-auto mt-4 block w-full rounded-md pl-2 font-[Ubuntu] font-light text-[#4B3D2A] focus:ring focus:ring-opacity-50"
+      @change="showRequirements"
+    >
+      <option value="" disabled>Select a position</option>
+      <option v-for="job in jobs" :key="job.position" :value="job.position">
+        {{ job.position }}
+      </option>
+    </select>
+    <div v-if="selectedJob" class="mt-4 p-4">
+      <h3 class="font-[marcellus] text-xl text-[#4B3D2A] sm:text-2xl">
+        {{ selectedJob }}
+      </h3>
+      <ul class="mt-2 list-inside list-disc sm:pl-2">
+        <li
+          v-for="req in jobs.find((j) => j.position === selectedJob)
+            .requirements"
+          :key="req"
+          class="font-[Ubuntu] font-light leading-relaxed text-[#949494] sm:text-sm"
+        >
+          {{ req }}
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-	name: "JobDropdown",
-	data() {
-		return {
-			selectedJob: "",
-			jobs: [
-				{
-					position: "Mid-Level Associate",
-					requirements: [
-						"Bachelor of Laws (LL.B.) degree from a reputable university",
-						"Minimum GPA of 3.00 (on a 4.00 scale)",
-						"Minimum of 5 (five) years of experience practicing law",
-						"Holds a valid Advocate License",
-						"Strong commitment to delivering excellent legal services to clients",
-						"Excellent interpersonal and communication skills",
-						"Fluent in English, both written and spoken",
-						"Ability to work effectively both independently and as part of a team",
-						"Able to perform well under pressure and manage multiple assignments",
-					],
-				},
-			/*	{
+  name: "JobDropdown",
+  data() {
+    return {
+      selectedJob: "",
+      jobs: [
+        {
+          position: "Mid-Level Associate",
+          requirements: [
+            "Bachelor of Laws (LL.B.) degree from a reputable university",
+            "Minimum GPA of 3.00 (on a 4.00 scale)",
+            "Minimum of 5 (five) years of experience practicing law",
+            "Holds a valid Advocate License",
+            "Strong commitment to delivering excellent legal services to clients",
+            "Excellent interpersonal and communication skills",
+            "Fluent in English, both written and spoken",
+            "Ability to work effectively both independently and as part of a team",
+            "Able to perform well under pressure and manage multiple assignments",
+          ],
+        },
+        /*	{
 					position: "Junior Associate",
 					requirements: [
 						"Having a law bachelor's degree from a reputable University",
@@ -86,22 +74,22 @@ export default {
 						"Having experience working/interning in the legal field is preferable",
 					],
 				}, */
-				{
-					position: "Receptionist ",
-					requirements: [
-						"Female",
-						"Aged between 20 – 28 years old",
-						"Minimum D 1 Degree",
-						"At least 1 (one) year of experience ",
-						"Good command or English language",
-						"Pleasant personality with strong interpersonal and communication skills",
-						"Professional appearance and customer-oriented attitude",
-					],
-				},
-			],
-		}
-	},
-}
+        {
+          position: "Receptionist ",
+          requirements: [
+            "Female",
+            "Aged between 20 – 28 years old",
+            "Minimum D 1 Degree",
+            "At least 1 (one) year of experience ",
+            "Good command or English language",
+            "Pleasant personality with strong interpersonal and communication skills",
+            "Professional appearance and customer-oriented attitude",
+          ],
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style scoped>

@@ -1,27 +1,39 @@
-import { limit, query, where } from "firebase/firestore"
-import { getCollectionRef } from "~/lib/firestore-model"
+import { limit, query, where } from "firebase/firestore";
 
-export function useSearchWithFirestore<
-	const T extends Record<string, unknown>,
->(index: string, q: Ref<string>) {
-	const firestore = useFirestore()
+import { getCollectionRef } from "~/lib/firestore-model";
 
-	const algoliaResult = useSearch<T>(index, q, ["slug"])
-	const hits = algoliaResult.result?.value?.hits ?? []
+export function useSearchWithFirestore<const T extends Record<string, unknown>>(
+  index: string,
+  q: Ref<string>
+) {
+  const firestore = useFirestore();
 
-	const queries = computed(() => q.value !== "" ? [] : [where("slug", "in", hits.map(e => e.slug))])
+  const algoliaResult = useSearch<T>(index, q, ["slug"]);
+  const hits = algoliaResult.result?.value?.hits ?? [];
 
-	const firestoreQuery = query(
-		getCollectionRef(firestore, "staff"),
-		...queries.value,
-		limit(30),
-	)
+  const queries = computed(() =>
+    q.value === ""
+      ? [
+          where(
+            "slug",
+            "in",
+            hits.map((e) => e.slug)
+          ),
+        ]
+      : []
+  );
 
-	const firestoreResult = useCollection(firestoreQuery)
+  const firestoreQuery = query(
+    getCollectionRef(firestore, "staff"),
+    ...queries.value,
+    limit(30)
+  );
 
-	return {
-		result: firestoreResult.data,
-		isLoading: algoliaResult.isLoading || firestoreResult.pending,
-		refresh: algoliaResult.refresh,
-	}
+  const firestoreResult = useCollection(firestoreQuery);
+
+  return {
+    result: firestoreResult.data,
+    isLoading: algoliaResult.isLoading || firestoreResult.pending,
+    refresh: algoliaResult.refresh,
+  };
 }

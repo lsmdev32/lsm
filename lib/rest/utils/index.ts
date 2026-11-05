@@ -1,13 +1,17 @@
-import { OpenAPIGenerator } from "@orpc/openapi"
-import { ZodToJsonSchemaConverter } from "@orpc/zod"
-import { APP_OPENAPI_INFO, API_PATH_PREFIXES } from "~/lib/rest/config/constants"
+import { OpenAPIGenerator } from "@orpc/openapi";
+import { ZodToJsonSchemaConverter } from "@orpc/zod";
+
+import {
+  APP_OPENAPI_INFO,
+  API_PATH_PREFIXES,
+} from "~/lib/rest/config/constants";
 
 export const openAPIGenerator = new OpenAPIGenerator({
-	schemaConverters: [new ZodToJsonSchemaConverter()],
-})
+  schemaConverters: [new ZodToJsonSchemaConverter()],
+});
 
-export const createHTMLScalarJSONDoc = () => {
-	return `
+export const createHTMLScalarJSONDoc = () =>
+  `
 				<!doctype html>
 				<html>
 						<head>
@@ -21,5 +25,4 @@ export const createHTMLScalarJSONDoc = () => {
 								<script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
 						</body>
 				</html>
-		`
-}
+		`;

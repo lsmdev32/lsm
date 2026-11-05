@@ -1,28 +1,28 @@
 <script setup lang="ts">
-type Props = {
-	textButton: string
-	type?: "button" | "submit" | "reset"
+interface Props {
+  textButton: string;
+  type?: "button" | "submit" | "reset";
 }
 
-const props = defineProps<Props>()
-const emit = defineEmits(["click"])
+const props = defineProps<Props>();
+const emit = defineEmits(["click"]);
 </script>
 
 <template>
-	<button
-		:type="type || 'button'"
-		class="custom-button font-ubuntu color-soft-orange"
-		@click="$emit('click')"
-	>
-		<span>{{ textButton }}</span>
-	</button>
+  <button
+    :type="type || 'button'"
+    class="custom-button font-ubuntu color-soft-orange"
+    @click="$emit('click')"
+  >
+    <span>{{ textButton }}</span>
+  </button>
 </template>
 
 <style scoped>
 .custom-button {
   width: 40%;
-  background-color: #4B3D2A;
-  color: #DAB38D;
+  background-color: #4b3d2a;
+  color: #dab38d;
   padding: 20px 12px;
   border-radius: 10px;
   font-size: 14px;

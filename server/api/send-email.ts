@@ -1,52 +1,50 @@
-import nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
 
 export default defineEventHandler(async (event) => {
-	const body = await readBody(event)
-	const { name, email, type, description } = body
+  const body = await readBody(event);
+  const { name, email, type, description } = body;
 
-	if (!name || !email || !type || !description) {
-		return { success: false, error: "Semua field wajib diisi." }
-	}
+  if (!name || !email || !type || !description) {
+    return { success: false, error: "Semua field wajib diisi." };
+  }
 
-	let subject = ""
-	let to = "";
+  let subject = "";
+  let to = "";
 
-	if (type === "contact") {
-		subject = `From Contact Us : ${name} ingin menghubungi Anda`;
-		to = "lsmlawfirm@lsmlaw.co.id";
-	}
-	else {
-		subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`;
-		to = "hrd@lsmlaw.co.id";
-	}
+  if (type === "contact") {
+    subject = `From Contact Us : ${name} ingin menghubungi Anda`;
+    to = "lsmlawfirm@lsmlaw.co.id";
+  } else {
+    subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`;
+    to = "hrd@lsmlaw.co.id";
+  }
 
-	const config = useRuntimeConfig()
+  const config = useRuntimeConfig();
 
-	const transporter = nodemailer.createTransport({
-		host: config.smtpHost,
-		port: Number(config.smtpPort),
-		secure: true,
-		auth: {
-			user: config.smtpUser,
-			pass: config.smtpPass,
-		},
-	})
+  const transporter = nodemailer.createTransport({
+    host: config.smtpHost,
+    port: Number(config.smtpPort),
+    secure: true,
+    auth: {
+      user: config.smtpUser,
+      pass: config.smtpPass,
+    },
+  });
 
-	try {
-		await transporter.sendMail({
-			from: `"Website LSM" <${config.smtpUser}>`,
-			to,
-			subject: subject,
-			html: `
+  try {
+    await transporter.sendMail({
+      from: `"Website LSM" <${config.smtpUser}>`,
+      to,
+      subject,
+      html: `
         <p><strong>Nama:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Deskripsi:</strong> ${description}</p>
       `,
-		})
+    });
 
-		return { success: true }
-	}
-	catch (err) {
-		return { success: false, error: "Gagal mengirim email." }
-	}
-})
+    return { success: true };
+  } catch {
+    return { success: false, error: "Gagal mengirim email." };
+  }
+});

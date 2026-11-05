@@ -1,13 +1,9 @@
 <template>
-	<div class="flex items-center justify-center w-full h-screen">
-		<NuxtImg src="~/images/logo.svg" />
-	</div>
+  <div class="flex h-screen w-full items-center justify-center">
+    <NuxtImg src="~/images/logo.svg" />
+  </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

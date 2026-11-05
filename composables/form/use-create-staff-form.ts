@@ -1,137 +1,156 @@
-import { toTypedSchema } from "@vee-validate/zod"
-import { useDebounce } from "@vueuse/core"
-import { addDoc, getDocs, limit, query, where } from "firebase/firestore"
-import { useForm } from "vee-validate"
-import { toast } from "vue-sonner"
-import { useUploader } from "~/composables"
-import {
-	DEBOUNCE_DEFAULT_TIME,
-	IMAGES_STORAGE_PATH,
-	SESSION_STORAGE_KEYS,
-} from "~/lib/constants"
-import { getCollectionRef } from "~/lib/firestore-model"
-import {
-	CREATE_STAFF_FORM_SCHEMA,
-	STAFF_FORM_SCHEMA_KEYS,
-} from "~/lib/schemas/form"
+import { toTypedSchema } from "@vee-validate/zod";
+import { useDebounce } from "@vueuse/core";
+import { addDoc, getDocs, limit, query, where } from "firebase/firestore";
+import { useForm } from "vee-validate";
+import { toast } from "vue-sonner";
 
-const validationSchema = toTypedSchema(CREATE_STAFF_FORM_SCHEMA)
+import { useUploader } from "~/composables";
+import {
+  DEBOUNCE_DEFAULT_TIME,
+  IMAGES_STORAGE_PATH,
+  SESSION_STORAGE_KEYS,
+} from "~/lib/constants";
+import { getCollectionRef } from "~/lib/firestore-model";
+import {
+  CREATE_STAFF_FORM_SCHEMA,
+  STAFF_FORM_SCHEMA_KEYS,
+} from "~/lib/schemas/form";
+
+const validationSchema = toTypedSchema(CREATE_STAFF_FORM_SCHEMA);
 
 export function useCreateStaffForm() {
-	const form = useForm({
-		validationSchema,
-		validateOnMount: false,
-	})
+  const form = useForm({
+    validationSchema,
+    validateOnMount: false,
+  });
 
-	const firestore = useFirestore()
-	const router = useRouter()
-	const values = useDebounce(form.controlledValues, DEBOUNCE_DEFAULT_TIME)
-	const ppUploader = useUploader(IMAGES_STORAGE_PATH.PROFILE_PICTURE)
-	const cvUploader = useUploader(IMAGES_STORAGE_PATH.CV)
+  const firestore = useFirestore();
+  const router = useRouter();
+  const values = useDebounce(form.controlledValues, DEBOUNCE_DEFAULT_TIME);
+  const ppUploader = useUploader(IMAGES_STORAGE_PATH.PROFILE_PICTURE);
+  const cvUploader = useUploader(IMAGES_STORAGE_PATH.CV);
 
-	onMounted(() => {
-		const saved = sessionStorage.getItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
-		if (!saved) return
+  onMounted(() => {
+    const saved = sessionStorage.getItem(
+      SESSION_STORAGE_KEYS.CREATE_STAFF_FORM
+    );
 
-		const parsed = JSON.parse(saved)
-		form.setValues(parsed)
-	})
+    if (!saved) {
+      return;
+    }
 
-	watch(values, (v) => {
-		sessionStorage.setItem(
-			SESSION_STORAGE_KEYS.CREATE_STAFF_FORM,
-			JSON.stringify(v),
-		)
-	}, {
-		deep: true,
-	})
+    const parsed = JSON.parse(saved);
+    form.setValues(parsed);
+  });
 
-	watch(() => values.value.fullname, (v) => {
-		if (!v) {
-			form.resetField(STAFF_FORM_SCHEMA_KEYS.slug)
-			return
-		}
+  watch(
+    values,
+    (v) => {
+      sessionStorage.setItem(
+        SESSION_STORAGE_KEYS.CREATE_STAFF_FORM,
+        JSON.stringify(v)
+      );
+    },
+    {
+      deep: true,
+    }
+  );
 
-		const slug = v
-			.toLowerCase()
-			.replaceAll(/[^a-z0-9]+/g, "-")
-			.replaceAll(/^-|-$/g, "")
+  watch(
+    () => values.value.fullname,
+    (v) => {
+      if (!v) {
+        form.resetField(STAFF_FORM_SCHEMA_KEYS.slug);
 
-		form.setFieldValue(STAFF_FORM_SCHEMA_KEYS.slug, slug)
-	})
+        return;
+      }
 
-	function resetForm() {
-		sessionStorage.removeItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM)
-		form.resetForm()
-	}
+      const slug = v
+        .toLowerCase()
+        .replaceAll(/[^a-z0-9]+/g, "-")
+        .replaceAll(/^-|-$/g, "");
 
-	function resetFields() {
-		form.handleReset()
-		form.resetForm()
-	}
+      form.setFieldValue(STAFF_FORM_SCHEMA_KEYS.slug, slug);
+    }
+  );
 
-	const onSubmit = form.handleSubmit(async (v) => {
-		toast.info("Mengupload file...")
+  function resetForm() {
+    sessionStorage.removeItem(SESSION_STORAGE_KEYS.CREATE_STAFF_FORM);
+    form.resetForm();
+  }
 
-		// TODO: handle submit
-		const res = await Promise.all([
-			ppUploader
-				.upload(v.profile_picture),
-			cvUploader
-				.upload(v.cv),
-		])
+  function resetFields() {
+    form.handleReset();
+    form.resetForm();
+  }
 
-		const success = res.every(p => !!p)
-		if (!success) {
-			toast.error("Gagal mengupload file")
-			return
-		}
+  const onSubmit = form.handleSubmit(async (v) => {
+    toast.info("Mengupload file...");
 
-		const [
-			profilePictureURL,
-			cvURL,
-		] = res
+    // TODO: handle submit
+    const res = await Promise.all([
+      ppUploader.upload(v.profile_picture),
+      cvUploader.upload(v.cv),
+    ]);
 
-		const collectionRef = getCollectionRef(firestore, "staff")
+    const success = res.every((p) => !!p);
 
-		const duplicateSlugQuery = query(collectionRef, where("slug", "==", v.slug), limit(1))
-		const docs = await getDocs(duplicateSlugQuery)
+    if (!success) {
+      toast.error("Gagal mengupload file");
 
-		if (!docs.empty) {
-			toast.error("Harap gunakan nama lain, nama ini sudah digunakan")
-			return
-		}
+      return;
+    }
 
-		toast.info("Harap tunggu profil sedang dibuat...", { duration: 3000 })
-		try {
-			await addDoc(collectionRef, {
-				type: v.type,
-				fullname: v.fullname,
-				slug: v.slug,
-				email: v.email,
-				linkedin_url: v.linkedin_url,
-				short_bio: v.short_bio,
-				bio: v.bio,
-				cv_url: cvURL,
-				profile_picture_url: profilePictureURL,
-			})
-		}
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		catch (e) {
-			toast.error("Gagal membuat profil")
-			return
-		}
+    const [profilePictureURL, cvURL] = res;
 
-		toast.success("Profil sukses dibuat")
-		resetForm()
+    const collectionRef = getCollectionRef(firestore, "staff");
 
-		router.replace("/dashboard/profiles")
-	})
+    const duplicateSlugQuery = query(
+      collectionRef,
+      where("slug", "==", v.slug),
+      limit(1)
+    );
 
-	return {
-		form,
-		resetForm,
-		resetFields,
-		onSubmit,
-	}
+    const docs = await getDocs(duplicateSlugQuery);
+
+    if (!docs.empty) {
+      toast.error("Harap gunakan nama lain, nama ini sudah digunakan");
+
+      return;
+    }
+
+    toast.info("Harap tunggu profil sedang dibuat...", { duration: 3000 });
+
+    try {
+      await addDoc(collectionRef, {
+        type: v.type,
+        fullname: v.fullname,
+        slug: v.slug,
+        email: v.email,
+        linkedin_url: v.linkedin_url,
+        short_bio: v.short_bio,
+        bio: v.bio,
+        cv_url: cvURL,
+        profile_picture_url: profilePictureURL,
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch {
+      toast.error("Gagal membuat profil");
+
+      return;
+    }
+
+    toast.success("Profil sukses dibuat");
+    resetForm();
+
+    router.replace("/dashboard/profiles");
+  });
+
+  return {
+    form,
+    resetForm,
+    resetFields,
+    onSubmit,
+  };
 }

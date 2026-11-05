@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import VueDatePicker from "@vuepic/vue-datepicker"
-import "@vuepic/vue-datepicker/dist/main.css"
+import VueDatePicker from "@vuepic/vue-datepicker";
 
-type Props = {
-	clearable?: boolean
-	format?: string
+import "@vuepic/vue-datepicker/dist/main.css";
+
+interface Props {
+  clearable?: boolean;
+  format?: string;
 }
 
 withDefaults(defineProps<Props>(), {
-	clearable: true,
-	format: "dd MMMM yyyy HH:mm",
-})
+  clearable: true,
+  format: "dd MMMM yyyy HH:mm",
+});
 
-const model = defineModel<Date>()
+const model = defineModel<Date>();
 </script>
 
 <template>
-	<client-only>
-		<vue-date-picker
-			v-model="model"
-			vertical
-			:clearable="clearable"
-			:format="format"
-			:disabled-dates="(date) => date > new Date()"
-		/>
-	</client-only>
+  <client-only>
+    <vue-date-picker
+      v-model="model"
+      vertical
+      :clearable="clearable"
+      :format="format"
+      :disabled-dates="(date) => date > new Date()"
+    />
+  </client-only>
 </template>
