@@ -79,7 +79,7 @@ import HamburgerMenu from "~/components/audience/hamburger-menu.vue";
 							login
 						</NuxtLink> -->
           </div>
-          <div class="items-center hover:cursor-pointer md:hidden">
+          <div class="items-center hover:cursor-pointer lg:hidden">
             <HamburgerMenu />
           </div>
         </div>

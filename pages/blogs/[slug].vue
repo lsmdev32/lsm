@@ -84,6 +84,39 @@ const relatedContents = data?.data?.related_contents ?? [];
         </div>
       </div>
     </section>
+    <section v-if="relatedContents.length" class="px-4 pb-8 md:hidden">
+      <h2 class="mb-4 font-[Marcellus] text-2xl text-[#4B3D2A]">
+        Related Articles
+      </h2>
+      <div class="flex flex-col gap-6">
+        <NuxtLink
+          v-for="content in relatedContents"
+          :key="content.slug"
+          :to="`/blogs/${content.slug}`"
+          class="block"
+        >
+          <NuxtImg
+            :src="content.image_url || LogoSVG"
+            :alt="content.title || 'Related article thumbnail'"
+            class="mb-3 h-48 w-full object-cover"
+          />
+          <span class="font-[Ubuntu] text-sm text-[#DAB38D]">
+            {{ content.category }}
+          </span>
+          <h3
+            class="related-article-title font-[Marcellus] text-xl leading-snug text-[#4B3D2A]"
+          >
+            {{ content.title }}
+          </h3>
+          <div
+            class="mt-3 flex items-center gap-4 font-[Ubuntu] text-xs text-[#DAB38D]"
+          >
+            <span>{{ content.author?.name || "LSM Content Team" }}</span>
+            <span>{{ content.published_at }}</span>
+          </div>
+        </NuxtLink>
+      </div>
+    </section>
     <section class="md:hidden">
       <div class="p-4">
         <Publications />
@@ -187,7 +220,9 @@ const relatedContents = data?.data?.related_contents ?? [];
               <span class="font-[Ubuntu] text-sm text-[#DAB38D]">{{
                 content.category
               }}</span>
-              <h3 class="font-[Marcellus] text-xl leading-snug text-[#4B3D2A]">
+              <h3
+                class="related-article-title font-[Marcellus] text-xl leading-snug text-[#4B3D2A]"
+              >
                 {{ content.title }}
               </h3>
               <div
@@ -223,3 +258,14 @@ const relatedContents = data?.data?.related_contents ?? [];
     </section>
   </div>
 </template>
+
+<style scoped>
+.related-article-title {
+  display: -webkit-box;
+  overflow: hidden;
+  height: 2.75rem;
+  line-height: 1.375rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+</style>
