@@ -9,7 +9,7 @@ const sendEmailBodySchema = z.object({
 });
 
 
-const LOGO_URL = "https://i.imgur.com/AMLGIhV.png";
+const LOGO_URL = "https://i.imgur.com/1gI2Tvc.png";
 
 // Warna brand
 const BRAND_COLOR = "#dab38d"; 
