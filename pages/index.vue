@@ -294,6 +294,9 @@ const images = [
           </p>
         </div>
       </div>
+      <div class="container mx-auto max-w-7xl px-4 py-8">
+        <ThreePic />
+      </div>
       <div>
         <div class="mt-8 grid-cols-1 gap-12">
           <!-- Left column with Light gray text -->
