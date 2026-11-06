@@ -41,7 +41,7 @@
           :style="{ backgroundImage: `url(${getBackgroundImage(activeItem)})` }"
           class="relative mb-4 flex h-36 w-full items-center justify-start bg-cover bg-center px-4"
         >
-          <div class="bg-opacity-40 absolute inset-0 bg-black" />
+          <div class="absolute inset-0 bg-black/40" />
           <h2
             class="font-marcellus relative z-10 text-4xl font-light text-white"
           >
@@ -172,7 +172,7 @@
               }"
               class="relative mb-4 flex h-72 w-full items-end justify-start bg-cover bg-center px-4 pb-8"
             >
-              <div class="bg-opacity-40 absolute inset-0 bg-black" />
+              <div class="absolute inset-0 bg-black/40" />
               <h2 class="font-marcellus relative z-10 text-4xl text-white">
                 {{ activeItem.title }}
               </h2>
