@@ -54,7 +54,9 @@ export default defineEventHandler(async (event) => {
     });
 
     return { success: true };
-  } catch {
+  } catch (error) {
+    console.error("Error sending email:", error);
+
     return { success: false, error: "Gagal mengirim email." };
   }
 });
