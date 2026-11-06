@@ -65,22 +65,22 @@ export const CREATE_STAFF_FORM_SCHEMA = z.object({
     )
 
     .refine(async (v) => {
-      const imageEl = await new Promise<HTMLImageElement>((resolve, reject) => {
-        const image = new Image();
+      try {
+        const bitmap = await createImageBitmap(v);
 
-        image.addEventListener("load", () => {
-          resolve(image);
-        });
-
-        image.addEventListener("error", reject);
-        image.src = URL.createObjectURL(v);
-      });
-
-      return (
-        imageEl.width <=
-          CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_WIDTH &&
-        imageEl.height <= CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_HEIGHT
-      );
+        try {
+          return (
+            bitmap.width <=
+              CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_WIDTH &&
+            bitmap.height <=
+              CREATE_STAFF_FORM_CONSTANTS.PROFILE_PICTURE.MAX_HEIGHT
+          );
+        } finally {
+          bitmap.close();
+        }
+      } catch {
+        return false;
+      }
     }, CREATE_STAFF_FORM_CONSTANTS.MSG.PP_IMAGE_DIMENSION_MSG),
   [STAFF_FORM_SCHEMA_KEYS.type]: z.enum(STAFF_TYPES_LIST).default("associate"),
   [STAFF_FORM_SCHEMA_KEYS.fullname]: z.string(),
