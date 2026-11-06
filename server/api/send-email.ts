@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 
   if (type === "contact") {
     subject = `From Contact Us : ${name} ingin menghubungi Anda`;
-    to = "lsmlawfirm@lsmlaw.co.id";
+    to = "rayhanhamada1999@gmail.com";
   } else {
     subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`;
     to = "hrd@lsmlaw.co.id";
