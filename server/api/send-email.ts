@@ -8,44 +8,49 @@ const sendEmailBodySchema = z.object({
   description: z.string().min(1),
 });
 
+
+const LOGO_URL = "https://imgur.com/a/AUpzazN";
+
+// Warna brand
+const BRAND_COLOR = "#dab38d"; 
+const BRAND_DARK = "#4B3D2A"; 
+const BRAND_LINK = "#8a6a3f"; 
+const BRAND_SOFT = "#f8f1e9"; 
+
 // Mencegah HTML injection dari input pengguna
 const escapeHtml = (value: string): string =>
   value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 
-interface EmailTemplateData {
+type EmailTemplateData = {
+  title: string;
+  intro: string;
+  descriptionLabel: string;
   name: string;
   email: string;
   description: string;
-  isCareer: boolean;
-}
+};
 
+// Template HTML (inline style + table layout supaya aman di Gmail/Outlook)
 const buildEmailHtml = ({
+  title,
+  intro,
+  descriptionLabel,
   name,
   email,
   description,
-  isCareer,
 }: EmailTemplateData): string => {
+  const safeTitle = escapeHtml(title);
+  const safeIntro = escapeHtml(intro);
+  const safeLabel = escapeHtml(descriptionLabel);
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
-  const safeDescription = escapeHtml(description).replaceAll("\n", "<br />");
+  const safeDescription = escapeHtml(description).replace(/\n/g, "<br />");
   const year = new Date().getFullYear();
-
-  const badge = isCareer ? "Career" : "Contact Us";
-
-  const title = isCareer
-    ? "Lamaran Pekerjaan Baru"
-    : "Pesan Baru dari Pengunjung";
-
-  const intro = isCareer
-    ? `<strong>${safeName}</strong> mengirimkan lamaran pekerjaan melalui website.`
-    : `<strong>${safeName}</strong> ingin menghubungi Anda melalui website.`;
-
-  const descriptionLabel = isCareer ? "Pesan / Deskripsi" : "Pesan";
 
   return `
 <!DOCTYPE html>
@@ -53,40 +58,44 @@ const buildEmailHtml = ({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${title}</title>
+    <title>${safeTitle}</title>
   </head>
-  <body style="margin:0;padding:0;background-color:#f3f4f6;font-family:Arial,Helvetica,sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f4f6;padding:24px 12px;">
+  <body style="margin:0;padding:0;background-color:#f5f3f0;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5f3f0;padding:24px 12px;">
       <tr>
         <td align="center">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background-color:#ffffff;border-radius:8px;overflow:hidden;">
 
-            <!-- Header -->
+            <!-- Header + Logo -->
             <tr>
-              <td style="background-color:#1d4ed8;padding:28px 32px;">
-                <span style="display:inline-block;padding:4px 10px;background-color:rgba(255,255,255,0.18);border-radius:999px;color:#ffffff;font-size:11px;font-weight:bold;letter-spacing:0.5px;text-transform:uppercase;">${badge}</span>
-                <h1 style="margin:12px 0 0;font-size:22px;color:#ffffff;">${title}</h1>
+              <td align="center" style="background-color:${BRAND_COLOR};padding:28px 32px 20px;">
+                <img src="${LOGO_URL}" alt="LSM Law Firm" width="180" style="display:block;width:180px;height:auto;border:0;margin:0 auto;" />
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="background-color:${BRAND_COLOR};padding:0 32px 28px;">
+                <h1 style="margin:0;font-size:20px;color:${BRAND_DARK};">${safeTitle}</h1>
               </td>
             </tr>
 
             <!-- Body -->
             <tr>
-              <td style="padding:32px;color:#111827;font-size:15px;line-height:1.6;">
-                <p style="margin:0 0 20px;">${intro}</p>
+              <td style="padding:32px;color:#1f2937;font-size:15px;line-height:1.6;">
+                <p style="margin:0 0 20px;">${safeIntro}</p>
 
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:6px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eadfd2;border-radius:6px;">
                   <tr>
-                    <td style="padding:12px 16px;width:120px;color:#6b7280;border-bottom:1px solid #e5e7eb;"><strong>Nama</strong></td>
-                    <td style="padding:12px 16px;border-bottom:1px solid #e5e7eb;">${safeName}</td>
+                    <td style="padding:12px 16px;width:110px;color:#6b5b4a;background-color:${BRAND_SOFT};border-bottom:1px solid #eadfd2;vertical-align:top;"><strong>Nama</strong></td>
+                    <td style="padding:12px 16px;border-bottom:1px solid #eadfd2;">${safeName}</td>
                   </tr>
                   <tr>
-                    <td style="padding:12px 16px;color:#6b7280;border-bottom:1px solid #e5e7eb;"><strong>Email</strong></td>
-                    <td style="padding:12px 16px;border-bottom:1px solid #e5e7eb;">
-                      <a href="mailto:${safeEmail}" style="color:#1d4ed8;text-decoration:none;">${safeEmail}</a>
+                    <td style="padding:12px 16px;color:#6b5b4a;background-color:${BRAND_SOFT};border-bottom:1px solid #eadfd2;vertical-align:top;"><strong>Email</strong></td>
+                    <td style="padding:12px 16px;border-bottom:1px solid #eadfd2;">
+                      <a href="mailto:${safeEmail}" style="color:${BRAND_LINK};text-decoration:none;">${safeEmail}</a>
                     </td>
                   </tr>
                   <tr>
-                    <td style="padding:12px 16px;color:#6b7280;vertical-align:top;"><strong>${descriptionLabel}</strong></td>
+                    <td style="padding:12px 16px;color:#6b5b4a;background-color:${BRAND_SOFT};vertical-align:top;"><strong>${safeLabel}</strong></td>
                     <td style="padding:12px 16px;">${safeDescription}</td>
                   </tr>
                 </table>
@@ -94,8 +103,8 @@ const buildEmailHtml = ({
                 <!-- Tombol balas -->
                 <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
                   <tr>
-                    <td style="background-color:#1d4ed8;border-radius:6px;">
-                      <a href="mailto:${safeEmail}" style="display:inline-block;padding:12px 24px;color:#ffffff;font-size:14px;font-weight:bold;text-decoration:none;">Balas ${safeName}</a>
+                    <td style="background-color:${BRAND_COLOR};border-radius:6px;">
+                      <a href="mailto:${safeEmail}" style="display:inline-block;padding:12px 24px;color:${BRAND_DARK};font-size:14px;font-weight:bold;text-decoration:none;">Balas ${safeName}</a>
                     </td>
                   </tr>
                 </table>
@@ -104,7 +113,7 @@ const buildEmailHtml = ({
 
             <!-- Footer -->
             <tr>
-              <td style="background-color:#f9fafb;padding:16px 32px;color:#9ca3af;font-size:12px;text-align:center;">
+              <td align="center" style="background-color:${BRAND_SOFT};padding:16px 32px;color:#8b7d6b;font-size:12px;border-top:3px solid ${BRAND_COLOR};">
                 Email ini dikirim otomatis dari Website LSM &copy; ${year}
               </td>
             </tr>
@@ -129,13 +138,22 @@ export default defineEventHandler(async (event) => {
 
   let subject = "";
   let to = "";
+  let title = "";
+  let intro = "";
+  let descriptionLabel = "";
 
   if (type === "contact") {
     subject = `From Contact Us : ${name} ingin menghubungi Anda`;
     to = "rayhanhamada1999@gmail.com";
+    title = "Pesan Baru dari Contact Us";
+    intro = "Ada pesan baru yang masuk lewat formulir Contact Us:";
+    descriptionLabel = "Pesan";
   } else {
     subject = `From Career : ${name} ingin mengirimkan lamaran pekerjaan`;
     to = "hrd@lsmlaw.co.id";
+    title = "Lamaran Pekerjaan Baru";
+    intro = "Ada lamaran pekerjaan baru yang masuk lewat halaman Career:";
+    descriptionLabel = "Deskripsi";
   }
 
   const config = useRuntimeConfig();
@@ -153,16 +171,18 @@ export default defineEventHandler(async (event) => {
   try {
     await transporter.sendMail({
       from: `"Website LSM" <${config.smtpUser}>`,
-      replyTo: email,
       to,
       subject,
       html: buildEmailHtml({
+        title,
+        intro,
+        descriptionLabel,
         name,
         email,
         description,
-        isCareer: type !== "contact",
       }),
-      text: `${subject}\n\nNama: ${name}\nEmail: ${email}\nDeskripsi: ${description}`,
+      // Fallback untuk email client yang tidak mendukung HTML
+      text: `${title}\n\nNama: ${name}\nEmail: ${email}\n${descriptionLabel}: ${description}`,
     });
 
     return { success: true };
