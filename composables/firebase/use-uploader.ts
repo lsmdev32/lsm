@@ -1,36 +1,38 @@
-import { getDownloadURL, ref as storageRef } from "firebase/storage"
-import { useFirebaseStorage, useStorageFile } from "vuefire"
-import type { IMAGES_STORAGE_PATH } from "~/lib/constants"
+import { getDownloadURL, ref as storageRef } from "firebase/storage";
+import { useFirebaseStorage, useStorageFile } from "vuefire";
 
-type ImageStoragePath = typeof IMAGES_STORAGE_PATH
-type Paths = ImageStoragePath[keyof ImageStoragePath]
+import type { IMAGES_STORAGE_PATH } from "~/lib/constants";
 
-export function useUploader<P extends Paths>(path: P) {
-	const storage = useFirebaseStorage()
+type ImageStoragePath = typeof IMAGES_STORAGE_PATH;
 
-	const filename = crypto.randomUUID()
-	const fileRef = storageRef(storage, `${path}/${filename}`)
+type Paths = ImageStoragePath[keyof ImageStoragePath];
 
-	const storageFile = useStorageFile(fileRef)
+export function useUploader(path: Paths) {
+  const storage = useFirebaseStorage();
 
-	/**
-     * returns the download URL of the file
-     */
-	async function upload(file: File) {
-		try {
-			await storageFile.upload(file)
+  const filename = crypto.randomUUID();
+  const fileRef = storageRef(storage, `${path}/${filename}`);
 
-			return await getDownloadURL(fileRef)
-		}
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		catch (_e) {
-			return ""
-		}
-	}
+  const storageFile = useStorageFile(fileRef);
 
-	return {
-		upload,
-		progress: storageFile.uploadProgress,
-		error: storageFile.uploadError,
-	}
+  /**
+   * returns the download URL of the file
+   */
+  async function upload(file: File) {
+    try {
+      await storageFile.upload(file);
+
+      return await getDownloadURL(fileRef);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch {
+      return "";
+    }
+  }
+
+  return {
+    upload,
+    progress: storageFile.uploadProgress,
+    error: storageFile.uploadError,
+  };
 }

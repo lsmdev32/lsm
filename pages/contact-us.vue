@@ -1,228 +1,225 @@
 <script setup lang="ts">
-import Button from "~/components/audience/Button.vue"
-import LogoSVG from "~/assets/images/logo-lsm-main.svg"
+import LogoSVG from "~/assets/images/logo-lsm-main.svg";
+import Button from "~/components/audience/button.vue";
 
-const name = ref("")
-const email = ref("")
-const description = ref("")
-const info = ref("")
-const loading = ref(false)
+const name = ref("");
+const email = ref("");
+const description = ref("");
+const info = ref("");
+const loading = ref(false);
 
 const submit = async () => {
-	if (!name.value || !email.value || !description.value) {
-		info.value = "Semua field wajib diisi."
-		return
-	}
+  if (!name.value || !email.value || !description.value) {
+    info.value = "Semua field wajib diisi.";
 
-	loading.value = true
-	const { data } = await useFetch("/api/send-email", {
-		method: "POST",
-		body: {
-			name: name.value,
-			email: email.value,
-			type: "contact",
-			description: description.value,
-		},
-	})
-	loading.value = false
+    return;
+  }
 
-	if (data.value?.success) {
-		info.value = "Pesan berhasil dikirim!"
-		name.value = ""
-		email.value = ""
-		description.value = ""
-	}
-	else {
-		info.value = "Gagal mengirim pesan."
-	}
+  loading.value = true;
 
-	setTimeout(() => {
-		info.value = ""
-	}, 2000)
-}
+  const { data } = await useFetch("/api/send-email", {
+    method: "POST",
+    body: {
+      name: name.value,
+      email: email.value,
+      type: "contact",
+      description: description.value,
+    },
+  });
+
+  loading.value = false;
+
+  if (data.value?.success) {
+    info.value = "Pesan berhasil dikirim!";
+    name.value = "";
+    email.value = "";
+    description.value = "";
+  } else {
+    info.value = "Gagal mengirim pesan.";
+  }
+
+  setTimeout(() => {
+    info.value = "";
+  }, 2000);
+};
 </script>
 
 <template>
-	<div>
-		<section class="hidden md:block">
-			<div class="max-w-7xl mx-auto px-2 pb-12 sm:px-6 lg:px-8 md:pt-12 z-0 grid grid-cols-1 md:grid-cols-2 gap-12">
-				<!-- Left column with Light gray text -->
-				<div class="row mb-150">
-					<!-- Form Section -->
-					<div class="col-12 col-md-6">
-						<h3 class="fs-48 font-[Marcellus]">
-							Contact Us
-						</h3>
-						<div class="sub mb-5 mt-2">
-							Contact us for legal support or questions.
-						</div>
-						<form @submit.prevent="submit">
-							<div class="input-row">
-								<input
-									v-model="name"
-									type="text"
-									class="px-4 font-[Ubuntu] input-box"
-									placeholder="Name*"
-									required
-								>
-								<input
-									v-model="email"
-									type="email"
-									class="px-4 font-[Ubuntu] input-box"
-									placeholder="Email*"
-									required
-								>
-							</div>
-							<textarea
-								v-model="description"
-								class="px-4 pt-4 font-[Ubuntu]"
-								placeholder="Please describe what you need."
-								required
-							/>
-							<Button
-								type="submit"
-								class="mt-2 cursor-pointer"
-								text-button="Send Message"
-							>
-								{{ loading ? "Mengirim..." : "Kirim" }}
-							</button>
-							<p v-if="info">
-								{{ info }}
-							</p>
-						</form>
-					</div>
-				</div>
-				<!-- Right column with content -->
-				<div class="space-y-8">
-					<!-- Two paragraphs of text -->
-					<div class="col-12 col-md-6 right-col">
-						<h4 class="reach">
-							Reach Out Now
-						</h4>
-						<div class="flex-shrink-0 py-6">
-							<img
-								:src="LogoSVG"
-								class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
-							>
-						</div>
-						<div class="left-section">
-							Equity Tower<br>
-							12th Floor Sudirman Central Business District (SCBD)<br>
-							Lot.9 Jl. Jend. Sudirman Kav. 52-53, Jakarta 12190<br>
-							Indonesia<br><br>
-							E-mail: lsmlawfirm@lsmlaw.co.id<br>
-							Telephone: (62-21)2903-5900<br>
-							Fax: (62-21)2903-5909<br><br>
-							<div class="flex items-center text-[#C19A6B] font-semibold space-x-2">
-								<img
-									class="mr-2"
-									src="../assets/images/icon-maps.svg"
-									alt="icon-map"
-									height="20"
-									width="20"
-								>
-								<nuxt-link
-									href="https://maps.app.goo.gl/QThiKek4Pg5E4B4p7?g_st=iw"
-									target="_blank"
-									rel="noopener"
-									class="map-link"
-								>
-									View on Google Map
-								</nuxt-link>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- Mobile -->
-		<section class="md:hidden px-4">
-			<div class="max-w-7xl mx-auto px-2 sm:px-6 grid gap-12">
-				<!-- Left column with Light gray text -->
-				<div class="row ">
-					<!-- Form Section -->
-					<div class="col-12 col-md-6">
-						<h3 class="fs-48 font-[Marcellus]">
-							Contact Us
-						</h3>
-						<div class="sub mb-5 mt-2">
-							Contact us for legal support or questions.
-						</div>
-						<form @submit.prevent="submit">
-							<div class="input-row">
-								<input
-									v-model="name"
-									type="text"
-									class="px-4 font-[Ubuntu] input-box"
-									placeholder="Name*"
-									required
-								>
-								<input
-									v-model="email"
-									type="email"
-									class="px-4 font-[Ubuntu] input-box"
-									placeholder="Email*"
-									required
-								>
-							</div>
-							<textarea
-								v-model="description"
-								type="textarea"
-								class="px-4 pt-4 font-[Ubuntu]"
-								placeholder="Please describe what you need."
-								required
-							/>
-							<Button
-								class="mt-2 cursor-pointer"
-								text-button="Send Message"
-							/>
-						</form>
-					</div>
-				</div>
-				<!-- Right column with content -->
-				<div class="space-y-8">
-					<!-- Two paragraphs of text -->
-					<div class="">
-						<h4 class="reach">
-							Reach Out Now
-						</h4>
-						<div class="flex-shrink-0 py-6">
-							<img
-								:src="LogoSVG"
-								class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
-							>
-						</div>
-						<div class="left-section">
-							Equity Tower<br>
-							12th Floor Sudirman Central Business District (SCBD)<br>
-							Lot.9 Jl. Jend. Sudirman Kav. 52-53, Jakarta 12190<br>
-							Indonesia<br><br>
-							E-mail: lsmlawfirm@lsmlaw.co.id<br>
-							Telephone: (62-21)2903-5900<br>
-							Fax: (62-21)2903-5909<br><br>
-							<div class="flex items-center text-[#C19A6B] font-semibold pb-16 space-x-2">
-								<img
-									class="mr-2"
-									src="../assets/images/icon-maps.svg"
-									alt="icon-map"
-									height="20"
-									width="20"
-								>
-								<nuxt-link
-									href="https://maps.app.goo.gl/QThiKek4Pg5E4B4p7?g_st=iw"
-									target="_blank"
-									rel="noopener"
-									class="map-link"
-								>
-									View on Google Map
-								</nuxt-link>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
+  <div>
+    <section class="hidden md:block">
+      <div
+        class="z-0 mx-auto grid max-w-7xl grid-cols-1 gap-12 px-2 pb-12 sm:px-6 md:grid-cols-2 md:pt-12 lg:px-8"
+      >
+        <!-- Left column with Light gray text -->
+        <div class="row mb-150">
+          <!-- Form Section -->
+          <div class="col-md-6 col-12">
+            <h3 class="fs-48 font-[Marcellus]">Contact Us</h3>
+            <div class="sub mt-2 mb-5">
+              Contact us for legal support or questions.
+            </div>
+            <form @submit.prevent="submit">
+              <div class="input-row">
+                <input
+                  v-model="name"
+                  type="text"
+                  class="input-box px-4 font-[Ubuntu]"
+                  placeholder="Name*"
+                  required
+                />
+                <input
+                  v-model="email"
+                  type="email"
+                  class="input-box px-4 font-[Ubuntu]"
+                  placeholder="Email*"
+                  required
+                />
+              </div>
+              <textarea
+                v-model="description"
+                class="px-4 pt-4 font-[Ubuntu]"
+                placeholder="Please describe what you need."
+                required
+              />
+              <Button
+                type="submit"
+                class="mt-2 cursor-pointer"
+                text-button="Send Message"
+              >
+                {{ loading ? "Mengirim..." : "Kirim" }}
+              </Button>
+              <p v-if="info">
+                {{ info }}
+              </p>
+            </form>
+          </div>
+        </div>
+        <!-- Right column with content -->
+        <div class="space-y-8">
+          <!-- Two paragraphs of text -->
+          <div class="col-md-6 right-col col-12">
+            <h4 class="reach">Reach Out Now</h4>
+            <div class="flex-shrink-0 py-6">
+              <img
+                :src="LogoSVG"
+                class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
+              />
+            </div>
+            <div class="left-section">
+              Equity Tower<br />
+              12th Floor Sudirman Central Business District (SCBD)<br />
+              Lot.9 Jl. Jend. Sudirman Kav. 52-53, Jakarta 12190<br />
+              Indonesia<br /><br />
+              E-mail: lsmlawfirm@lsmlaw.co.id<br />
+              Telephone: (62-21)2903-5900<br />
+              Fax: (62-21)2903-5909<br /><br />
+              <div
+                class="flex items-center space-x-2 font-semibold text-[#C19A6B]"
+              >
+                <img
+                  class="mr-2"
+                  src="../assets/images/icon-maps.svg"
+                  alt="icon-map"
+                  height="20"
+                  width="20"
+                />
+                <nuxt-link
+                  href="https://maps.app.goo.gl/QThiKek4Pg5E4B4p7?g_st=iw"
+                  target="_blank"
+                  rel="noopener"
+                  class="map-link"
+                >
+                  View on Google Map
+                </nuxt-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Mobile -->
+    <section class="px-4 md:hidden">
+      <div class="mx-auto grid max-w-7xl gap-12 px-2 sm:px-6">
+        <!-- Left column with Light gray text -->
+        <div class="row">
+          <!-- Form Section -->
+          <div class="col-md-6 col-12">
+            <h3 class="fs-48 font-[Marcellus]">Contact Us</h3>
+            <div class="sub mt-2 mb-5">
+              Contact us for legal support or questions.
+            </div>
+            <form @submit.prevent="submit">
+              <div class="input-row">
+                <input
+                  v-model="name"
+                  type="text"
+                  class="input-box px-4 font-[Ubuntu]"
+                  placeholder="Name*"
+                  required
+                />
+                <input
+                  v-model="email"
+                  type="email"
+                  class="input-box px-4 font-[Ubuntu]"
+                  placeholder="Email*"
+                  required
+                />
+              </div>
+              <textarea
+                v-model="description"
+                type="textarea"
+                class="px-4 pt-4 font-[Ubuntu]"
+                placeholder="Please describe what you need."
+                required
+              />
+              <Button class="mt-2 cursor-pointer" text-button="Send Message" />
+            </form>
+          </div>
+        </div>
+        <!-- Right column with content -->
+        <div class="space-y-8">
+          <!-- Two paragraphs of text -->
+          <div class="">
+            <h4 class="reach">Reach Out Now</h4>
+            <div class="flex-shrink-0 py-6">
+              <img
+                :src="LogoSVG"
+                class="lsm-logo-nav h-[36px] w-auto lg:h-[44px] lg:w-[auto]"
+              />
+            </div>
+            <div class="left-section">
+              Equity Tower<br />
+              12th Floor Sudirman Central Business District (SCBD)<br />
+              Lot.9 Jl. Jend. Sudirman Kav. 52-53, Jakarta 12190<br />
+              Indonesia<br /><br />
+              E-mail: lsmlawfirm@lsmlaw.co.id<br />
+              Telephone: (62-21)2903-5900<br />
+              Fax: (62-21)2903-5909<br /><br />
+              <div
+                class="flex items-center space-x-2 pb-16 font-semibold text-[#C19A6B]"
+              >
+                <img
+                  class="mr-2"
+                  src="../assets/images/icon-maps.svg"
+                  alt="icon-map"
+                  height="20"
+                  width="20"
+                />
+                <nuxt-link
+                  href="https://maps.app.goo.gl/QThiKek4Pg5E4B4p7?g_st=iw"
+                  target="_blank"
+                  rel="noopener"
+                  class="map-link"
+                >
+                  View on Google Map
+                </nuxt-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <style scoped>
@@ -316,6 +313,5 @@ textarea {
     font-size: 32px;
     margin-bottom: 15px;
   }
-
 }
 </style>

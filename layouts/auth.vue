@@ -1,27 +1,30 @@
 <script lang="ts" setup>
-import { SidebarProvider } from "~/components/ui/sidebar"
-import AppSidebar from "~/components/AdminSidebar.vue"
-import { Toaster } from "~/components/ui/sonner"
+import AppSidebar from "~/components/admin-sidebar.vue";
+import ConfirmDialog from "~/components/confirm-dialog.vue";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "~/components/ui/sidebar";
+import { Toaster } from "~/components/ui/sonner";
 
 useHead({
-	title: "LSM Dashboard",
-})
+  title: "LSM Dashboard",
+});
 </script>
 
 <template>
-	<client-only>
-		<SidebarProvider>
-			<Toaster
-				position="top-right"
-				:duration="2000"
-				rich-colors
-			/>
-			<AppSidebar />
-			<ClientOnly>
-				<main class="flex flex-col w-full min-h-full m-4">
-					<slot />
-				</main>
-			</ClientOnly>
-		</SidebarProvider>
-	</client-only>
+  <client-only>
+    <SidebarProvider>
+      <Toaster position="top-right" :duration="2000" rich-colors />
+      <ConfirmDialog />
+      <AppSidebar />
+      <SidebarInset class="min-w-0">
+        <div class="flex flex-1 flex-col gap-2 p-4">
+          <SidebarTrigger class="-mt-1 -ml-1" />
+          <slot />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  </client-only>
 </template>
