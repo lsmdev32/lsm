@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint . --fix",
+    "lint": "oxlint . --fix && oxfmt --check",
     "check": "ultracite check",
     "fix": "ultracite fix"
   },

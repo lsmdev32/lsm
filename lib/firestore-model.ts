@@ -19,6 +19,10 @@ interface CommonDocumentType {
   updated_at: Timestamp;
 }
 
+interface ContentDocumentType extends CommonDocumentType {
+  published_at: Timestamp;
+}
+
 type AppModelOfType<T extends Record<string, unknown>> = Exclude<
   T,
   keyof CommonAppModelType
@@ -30,6 +34,12 @@ type DocumentModelOfType<T extends Record<string, unknown>> = Exclude<
   keyof CommonDocumentType
 > &
   CommonDocumentType;
+
+type ContentDocumentModelOfType<T extends Record<string, unknown>> = Exclude<
+  T,
+  keyof ContentDocumentType
+> &
+  ContentDocumentType;
 
 const createFirestoreConverter = <
   AppModel extends CommonAppModelType,
@@ -61,6 +71,32 @@ const createFirestoreConverter = <
       id: snapshot.id,
       created_at,
       updated_at,
+    };
+  },
+});
+
+/**
+ * Contents store `published_at` as a Firestore `Timestamp`; every reader
+ * wants a `Date`. Converting in the converter keeps the stored shape and the
+ * app shape separate instead of re-deriving seconds at each call site.
+ */
+const createContentFirestoreConverter = <
+  AppModel extends CommonAppModelType,
+  DocumentModel extends ContentDocumentType,
+>() => ({
+  ...createFirestoreConverter<AppModel, DocumentModel>(),
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot<DocumentModel>,
+    options?: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+
+    return {
+      ...createFirestoreConverter<AppModel, DocumentModel>().fromFirestore(
+        snapshot,
+        options
+      ),
+      published_at: data.published_at.toDate(),
     };
   },
 });
@@ -112,14 +148,14 @@ export type BlogAppModel = AppModelOfType<{
   tags: string[];
 }>;
 
-export type BlogDocumentModel = DocumentModelOfType<{
+export type BlogDocumentModel = ContentDocumentModelOfType<{
   type: "blog";
   title: string;
   slug: string;
   cover_image_url: string;
   content: string;
   status: "not_published" | "published";
-  published_at: Date;
+  published_at: Timestamp;
   author_id?: string | null;
   category_id: string;
   tags: string[];
@@ -139,14 +175,14 @@ export type PublicationAppModel = AppModelOfType<{
   publication: string;
 }>;
 
-export type PublicationDocumentModel = DocumentModelOfType<{
+export type PublicationDocumentModel = ContentDocumentModelOfType<{
   type: "publication";
   title: string;
   slug: string;
   cover_image_url: string;
   content: string;
   status: "not_published" | "published";
-  published_at: Date;
+  published_at: Timestamp;
   author_id?: string | null;
   category_id: string;
   tags: string[];
@@ -163,12 +199,12 @@ const categoryConverter = createFirestoreConverter<
   CategoryDocumentModel
 >();
 
-const blogsConverter = createFirestoreConverter<
+const blogsConverter = createContentFirestoreConverter<
   BlogAppModel,
   BlogDocumentModel
 >();
 
-const publicationConverter = createFirestoreConverter<
+const publicationConverter = createContentFirestoreConverter<
   PublicationAppModel,
   PublicationDocumentModel
 >();

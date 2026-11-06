@@ -29,7 +29,7 @@ export function extractInlineArticleImages(
   const images: InlineArticleImage[] = [];
 
   for (const match of content.matchAll(INLINE_IMAGE_PATTERN)) {
-    const [, , mime, base64] = match;
+    const { mime, base64 } = match.groups ?? {};
 
     if (mime !== undefined && base64 !== undefined) {
       images.push({ mime, base64 });

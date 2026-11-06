@@ -49,11 +49,7 @@ export function useEditBlogForm(id: string) {
       author: v.author_id ?? undefined,
       status: v.status,
       image_url: v.cover_image_url ?? undefined,
-      // @ts-expect-error - Firestore stores published_at as a Timestamp, not a Date
-      published_at:
-        v.published_at === null || v.published_at === undefined
-          ? undefined
-          : new Date(v.published_at.seconds * 1000),
+      published_at: v.published_at,
       tags: v.tags,
       type: CONTENT_FORM_TYPE.blog,
     });

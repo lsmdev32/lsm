@@ -1,24 +1,65 @@
 import dayjs from "dayjs";
-import type {
-  DocumentData,
-  Firestore,
-  QueryDocumentSnapshot,
-} from "firebase/firestore";
+import type { DataSnapshot } from "firebase/database";
+import type { Firestore } from "firebase/firestore";
 import { getDoc } from "firebase/firestore";
+import { z } from "zod";
 
 import { getCategoryDocRef, getStaffDocRef } from "~/lib/firestore-model";
+import type {
+  BlogAppModel,
+  PublicationAppModel,
+  StaffAppModel,
+} from "~/lib/firestore-model";
 
 import type { ContentSummary } from "./types";
 
-export function isNonEmptyString(value: string | null): value is string {
-  return value !== null && value !== "";
+/** A staff record always carries the snapshot id once it is read back. */
+export type StaffRecord = StaffAppModel & { id: string };
+
+/** Fields shared by the blog and publication variants of a content document. */
+export type ContentSource = BlogAppModel | PublicationAppModel;
+
+const ID_LIST_SCHEMA = z.array(z.string().min(1));
+const ID_SCHEMA = z.string().min(1);
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value !== "";
+}
+
+/**
+ * Realtime Database values are untyped, so id lists are parsed at this
+ * boundary rather than trusted. Malformed data degrades to an empty list.
+ */
+export function readIdList(snapshot: DataSnapshot): string[] {
+  const parsed = ID_LIST_SCHEMA.safeParse(snapshot.val());
+
+  return parsed.success ? parsed.data : [];
+}
+
+/** Reads a single id from a Realtime Database node, or `null` when absent. */
+export function readId(snapshot: DataSnapshot): string | null {
+  const parsed = ID_SCHEMA.safeParse(snapshot.val());
+
+  return parsed.success ? parsed.data : null;
+}
+
+function collectIds(values: (string | null)[]): string[] {
+  const ids = new Set<string>();
+
+  for (const value of values) {
+    if (isNonEmptyString(value)) {
+      ids.add(value);
+    }
+  }
+
+  return [...ids];
 }
 
 export async function getCategoryName(
   firestore: Firestore,
   categoryId: string | null
 ): Promise<string | null> {
-  if (!categoryId) {
+  if (categoryId === null || categoryId === "") {
     return null;
   }
 
@@ -28,14 +69,14 @@ export async function getCategoryName(
     return null;
   }
 
-  return categoryDoc.data().name ?? null;
+  return categoryDoc.data().name;
 }
 
 export async function getStaffData(
   firestore: Firestore,
   staffId: string | null
-): Promise<DocumentData | null> {
-  if (!staffId) {
+): Promise<StaffRecord | null> {
+  if (staffId === null || staffId === "") {
     return null;
   }
 
@@ -45,18 +86,19 @@ export async function getStaffData(
     return null;
   }
 
-  return staffDoc.data() ?? null;
+  return { ...staffDoc.data(), id: staffDoc.id };
 }
 
-export function toContentSummary(doc: QueryDocumentSnapshot): ContentSummary {
-  const data = doc.data();
-
+export function toContentSummary(
+  id: string,
+  data: ContentSource
+): ContentSummary {
   return {
-    id: doc.id,
+    id,
     title: data.title,
     slug: data.slug,
     image_url: data.cover_image_url,
-    published_at: dayjs(data.published_at.seconds * 1000).format("MMM D, YYYY"),
+    published_at: dayjs(data.published_at).format("MMM D, YYYY"),
     category_id: data.category_id ?? null,
     author_id: data.author_id ?? null,
     category: null,
@@ -68,20 +110,14 @@ export async function enrichContentSummaries(
   firestore: Firestore,
   contents: ContentSummary[]
 ) {
-  const categoryIds = [
-    ...new Set(
-      contents.map((content) => content.category_id).filter(isNonEmptyString)
-    ),
-  ];
+  const categoryIds = collectIds(
+    contents.map((content) => content.category_id)
+  );
 
-  const authorIds = [
-    ...new Set(
-      contents.map((content) => content.author_id).filter(isNonEmptyString)
-    ),
-  ];
+  const authorIds = collectIds(contents.map((content) => content.author_id));
 
   const categoryNames = new Map<string, string | null>();
-  const staffById = new Map<string, DocumentData | null>();
+  const staffById = new Map<string, StaffRecord | null>();
 
   await Promise.all([
     ...categoryIds.map(async (categoryId) => {
@@ -96,15 +132,17 @@ export async function enrichContentSummaries(
   ]);
 
   for (const content of contents) {
-    if (content.category_id) {
+    if (content.category_id !== null) {
       content.category = categoryNames.get(content.category_id) ?? null;
     }
 
-    const authorData = content.author_id
-      ? staffById.get(content.author_id)
-      : null;
+    if (content.author_id === null) {
+      continue;
+    }
 
-    if (authorData) {
+    const authorData = staffById.get(content.author_id);
+
+    if (authorData !== null && authorData !== undefined) {
       content.author = {
         name: authorData.fullname,
         photo_url: authorData.profile_picture_url,

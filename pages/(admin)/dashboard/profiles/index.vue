@@ -5,6 +5,7 @@ import { RefreshCcw, UserPlus2 } from "lucide-vue-next";
 import { toast } from "vue-sonner";
 
 import EmptyListPlaceholder from "~/components/admin/empty-list-placeholder.vue";
+import { confirmAction } from "~/composables/use-confirm";
 import { getStaffDocRef } from "~/lib/firestore-model";
 import type { StaffAppModel } from "~/lib/firestore-model";
 
@@ -30,9 +31,12 @@ const { refresh, isLoading, result } = useSearch<StaffAppModel>(
 );
 
 async function onOpenDialog(payload: { id: string; fullname: string }) {
-  const confirmed = window.confirm(
-    `Are you sure you want to delete the profile of ${payload.fullname}?`
-  );
+  const confirmed = await confirmAction({
+    title: "Hapus profil?",
+    description: `Are you sure you want to delete the profile of ${payload.fullname}?`,
+    confirmLabel: "Hapus profil",
+    tone: "destructive",
+  });
 
   if (!confirmed) {
     return;

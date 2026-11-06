@@ -226,21 +226,22 @@ export const MUTATE_BLOGS_FORM_SCHEMA = z.object({
       CREATE_CONTENT_FORM_CONSTANTS.MSG.COVER_IMAGE_SIZE_MSG
     )
     .refine(async (v) => {
-      const imageEl = await new Promise<HTMLImageElement>((resolve, reject) => {
-        const image = new Image();
+      try {
+        const bitmap = await createImageBitmap(v);
 
-        image.addEventListener("load", () => {
-          resolve(image);
-        });
-
-        image.addEventListener("error", reject);
-        image.src = URL.createObjectURL(v);
-      });
-
-      return (
-        imageEl.width <= CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_WIDTH &&
-        imageEl.height <= CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_HEIGHT
-      );
+        try {
+          return (
+            bitmap.width <=
+              CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_WIDTH &&
+            bitmap.height <=
+              CREATE_CONTENT_FORM_CONSTANTS.COVER_IMAGE.MAX_HEIGHT
+          );
+        } finally {
+          bitmap.close();
+        }
+      } catch {
+        return false;
+      }
     }, CREATE_CONTENT_FORM_CONSTANTS.MSG.COVER_IMAGE_DIMENSION_MSG)
     .nullish()
     .default(null),
