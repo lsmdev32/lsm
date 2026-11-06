@@ -18,7 +18,11 @@ import {
   getStaffDocRef,
 } from "~/lib/firestore-model";
 
-import { enrichContentSummaries, toContentSummary } from "./helpers";
+import {
+  enrichContentSummaries,
+  readIdList,
+  toContentSummary,
+} from "./helpers";
 import type { ContentSummary, PageDataServices, StaffSummary } from "./types";
 
 interface PracticeAreasPageData {
@@ -30,16 +34,6 @@ interface PracticeAreasPageData {
     data: StaffSummary[];
     total: number;
   };
-}
-
-function toStringArray(value: unknown): string[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value.filter(
-    (item): item is string => typeof item === "string" && item !== ""
-  );
 }
 
 export async function getPracticeAreasPageData({
@@ -55,7 +49,10 @@ export async function getPracticeAreasPageData({
   );
 
   const contentsSnapshot = await getDocs(contentsQuery);
-  const contents = contentsSnapshot.docs.map((doc) => toContentSummary(doc));
+
+  const contents = contentsSnapshot.docs.map((doc) =>
+    toContentSummary(doc.id, doc.data())
+  );
 
   await enrichContentSummaries(firestore, contents);
 
@@ -64,17 +61,20 @@ export async function getPracticeAreasPageData({
   );
 
   const attorneyDocs = await Promise.all(
-    toStringArray(homeAttorneyIdsSnapshot.val()).map(
+    readIdList(homeAttorneyIdsSnapshot).map(
       async (id) => await getDoc(getStaffDocRef(firestore, id))
     )
   );
 
-  const attorneys: StaffSummary[] = attorneyDocs
-    .filter((doc) => doc.exists())
-    .map((doc) => {
-      const data = doc.data();
+  const attorneys: StaffSummary[] = attorneyDocs.flatMap((doc) => {
+    if (!doc.exists()) {
+      return [];
+    }
 
-      return {
+    const data = doc.data();
+
+    return [
+      {
         id: doc.id,
         name: data.fullname,
         slug: data.slug,
@@ -82,8 +82,9 @@ export async function getPracticeAreasPageData({
         type: data.type,
         email: data.email,
         linkedin_url: data.linkedin_url,
-      };
-    });
+      },
+    ];
+  });
 
   return {
     news_and_publications: {

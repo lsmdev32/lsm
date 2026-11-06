@@ -30,6 +30,7 @@ import {
   UiButton,
   UiInput,
 } from "#components";
+import { confirmAction } from "~/composables/use-confirm";
 import { RTDB_KEYS } from "~/lib/constants";
 import {
   getBlogDocRef,
@@ -139,9 +140,12 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
       }
 
       async function handleDeleteCategory() {
-        const confirmed = window.confirm(
-          "Apakah Anda yakin ingin menghapus kategori ini?"
-        );
+        const confirmed = await confirmAction({
+          title: "Hapus kategori?",
+          description: "Apakah Anda yakin ingin menghapus kategori ini?",
+          confirmLabel: "Hapus kategori",
+          tone: "destructive",
+        });
 
         if (!confirmed) {
           return;
@@ -273,7 +277,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
               )
             : h("span", {}, title),
           h(CopyIcon, {
-            class: cn("text-xs text-gray-500"),
+            class: cn("text-muted-foreground text-xs"),
             size: 20,
             onClick: copy,
           }),
@@ -301,8 +305,8 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
           class: cn(
             "flex w-[100px] justify-center text-xs",
             isPublished
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
+              ? "bg-success/15 text-success"
+              : "bg-destructive/15 text-destructive"
           ),
         },
         isPublished ? "Terbit" : "Tidak Terbit"
@@ -371,10 +375,12 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
       const isPublished = currentStatus === "published";
 
       async function handleDelete() {
-        // Implement delete logic here
-        const confirmed = window.confirm(
-          "Apakah Anda yakin ingin menghapus blog ini?"
-        );
+        const confirmed = await confirmAction({
+          title: "Hapus blog?",
+          description: "Apakah Anda yakin ingin menghapus blog ini?",
+          confirmLabel: "Hapus blog",
+          tone: "destructive",
+        });
 
         if (!confirmed) {
           return;
@@ -504,7 +510,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
               )
             : h("span", {}, title),
           h(CopyIcon, {
-            class: cn("text-xs text-gray-500"),
+            class: cn("text-muted-foreground text-xs"),
             size: 20,
             onClick: copy,
           }),
@@ -532,8 +538,8 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
           class: cn(
             "flex w-[100px] justify-center text-xs",
             isPublished
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
+              ? "bg-success/15 text-success"
+              : "bg-destructive/15 text-destructive"
           ),
         },
         isPublished ? "Terbit" : "Tidak Terbit"
@@ -599,7 +605,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         {
           href: row.original.publication,
           class: cn(
-            "flex w-[50px] justify-center text-blue-600 hover:underline"
+            "text-primary flex w-[50px] justify-center hover:underline"
           ),
           target: "_blank",
         },
@@ -626,10 +632,12 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
       const isPublished = currentStatus === "published";
 
       async function handleDelete() {
-        // Implement delete logic here
-        const confirmed = window.confirm(
-          "Yakin ingin menghapus publikasi ini?"
-        );
+        const confirmed = await confirmAction({
+          title: "Hapus publikasi?",
+          description: "Yakin ingin menghapus publikasi ini?",
+          confirmLabel: "Hapus publikasi",
+          tone: "destructive",
+        });
 
         if (!confirmed) {
           return;

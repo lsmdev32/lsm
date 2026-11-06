@@ -19,7 +19,12 @@ import {
   getStaffDocRef,
 } from "~/lib/firestore-model";
 
-import { enrichContentSummaries, toContentSummary } from "./helpers";
+import {
+  enrichContentSummaries,
+  readId,
+  readIdList,
+  toContentSummary,
+} from "./helpers";
 import type { ContentSummary, PageDataServices, StaffSummary } from "./types";
 
 interface HomePageData {
@@ -34,16 +39,6 @@ interface HomePageData {
   };
 }
 
-function toStringArray(value: unknown): string[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value.filter(
-    (item): item is string => typeof item === "string" && item !== ""
-  );
-}
-
 export async function getHomePageData({
   firestore,
   rtdb,
@@ -53,17 +48,20 @@ export async function getHomePageData({
   );
 
   const attorneyDocs = await Promise.all(
-    toStringArray(homeAttorneyIdsSnapshot.val()).map(
+    readIdList(homeAttorneyIdsSnapshot).map(
       async (id) => await getDoc(getStaffDocRef(firestore, id))
     )
   );
 
-  const attorneys: StaffSummary[] = attorneyDocs
-    .filter((doc) => doc.exists())
-    .map((doc) => {
-      const data = doc.data();
+  const attorneys: StaffSummary[] = attorneyDocs.flatMap((doc) => {
+    if (!doc.exists()) {
+      return [];
+    }
 
-      return {
+    const data = doc.data();
+
+    return [
+      {
         id: doc.id,
         name: data.fullname,
         slug: data.slug,
@@ -71,8 +69,9 @@ export async function getHomePageData({
         type: data.type,
         email: data.email,
         linkedin_url: data.linkedin_url,
-      };
-    });
+      },
+    ];
+  });
 
   const contentsQuery = query(
     getPublicationCollectionRef(firestore),
@@ -83,7 +82,10 @@ export async function getHomePageData({
   );
 
   const contentsSnapshot = await getDocs(contentsQuery);
-  const contents = contentsSnapshot.docs.map((doc) => toContentSummary(doc));
+
+  const contents = contentsSnapshot.docs.map((doc) =>
+    toContentSummary(doc.id, doc.data())
+  );
 
   await enrichContentSummaries(firestore, contents);
 
@@ -91,20 +93,20 @@ export async function getHomePageData({
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.HOME_PINNED_CONTENT))
   );
 
-  const latestContentIdValue: unknown = latestContentIdSnapshot.val();
-
-  const latestContentId =
-    typeof latestContentIdValue === "string" ? latestContentIdValue : null;
+  const latestContentId = readId(latestContentIdSnapshot);
 
   let latestContent: ContentSummary | null = null;
 
-  if (latestContentId != null && latestContentId !== "") {
+  if (latestContentId !== null) {
     const latestContentDoc = await getDoc(
       getPublicationDocRef(firestore, latestContentId)
     );
 
     if (latestContentDoc.exists()) {
-      latestContent = toContentSummary(latestContentDoc);
+      latestContent = toContentSummary(
+        latestContentDoc.id,
+        latestContentDoc.data()
+      );
       await enrichContentSummaries(firestore, [latestContent]);
     }
   }

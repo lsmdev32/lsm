@@ -17,5 +17,7 @@ export default defineConfig({
     "no-await-in-loop": "off",
     "require-await": "off",
     "sort-keys": "off",
+    complexity: "off",
+    "oxc/no-barrel-file": "off",
   },
 });

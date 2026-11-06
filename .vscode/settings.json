@@ -13,6 +13,10 @@
   "emmet.showExpandedAbbreviation": "never",
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  // TypeScript 7 (tsgo) has no Language Service Plugin API, so Volar's
+  // @vue/typescript-plugin never loads and .vue files get no intellisense.
+  // This repo must run the TypeScript 6 tsserver for Vue support.
+  "js/ts.experimental.useTsgo": false,
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
   },

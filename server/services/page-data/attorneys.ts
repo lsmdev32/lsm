@@ -12,7 +12,7 @@ import {
   getStaffCollectionRef,
 } from "~/lib/firestore-model";
 
-import { getCategoryName } from "./helpers";
+import { getCategoryName, readIdList } from "./helpers";
 import type { PageDataServices, StaffSummary } from "./types";
 
 interface AttorneysPageData {
@@ -33,7 +33,7 @@ interface StaffPublication {
   title: string;
   slug: string;
   image_url: string | null;
-  category: string;
+  category: string | null;
   published_at: string;
 }
 
@@ -56,18 +56,10 @@ interface AttorneyDetailPageData {
   other_of_counsels: StaffReference[];
 }
 
-function toStringArray(value: unknown): string[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value.filter((item): item is string => typeof item === "string");
-}
-
-function sortByPartnerOrder(
-  staff: StaffReference[],
+function sortByPartnerOrder<T extends StaffReference>(
+  staff: T[],
   partnerOrderIds: string[]
-): StaffReference[] {
+): T[] {
   return staff.toSorted((a, b) => {
     const indexA = partnerOrderIds.indexOf(a.id);
     const indexB = partnerOrderIds.indexOf(b.id);
@@ -103,7 +95,7 @@ export async function getAttorneysPageData({
     doc.data().fullname.toLowerCase().includes("hesti")
   );
 
-  let partners: StaffSummary[] = partnersSnapshot.docs
+  const listedPartners: StaffSummary[] = partnersSnapshot.docs
     .filter((doc) => !doc.data().slug.toLowerCase().includes("hesti"))
     .map((doc) => {
       const partnerData = doc.data();
@@ -123,11 +115,11 @@ export async function getAttorneysPageData({
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.ATTORNEY_ORDER))
   );
 
-  const partnerOrderIds = toStringArray(partnerOrderIdsSnapshot.val());
+  const partnerOrderIds = readIdList(partnerOrderIdsSnapshot);
 
-  partners = sortByPartnerOrder(partners, partnerOrderIds);
+  const partners = sortByPartnerOrder(listedPartners, partnerOrderIds);
 
-  if (hestiPartnerDoc != null) {
+  if (hestiPartnerDoc !== undefined) {
     const hestiPartner = hestiPartnerDoc.data();
 
     partners.push({
@@ -241,7 +233,7 @@ export async function getAttorneyDetailPageData(
 
   const staffDoc = staffSnapshot.docs.at(0);
 
-  if (staffDoc == null) {
+  if (staffDoc === undefined) {
     return null;
   }
 
@@ -258,40 +250,37 @@ export async function getAttorneyDetailPageData(
 
   const publicationsSnapshot = await getDocs(publicationsQuery);
 
+  const categoryNames = new Map<string, string>();
+
+  await Promise.all(
+    [
+      ...new Set(
+        publicationsSnapshot.docs.map((doc) => doc.data().category_id)
+      ),
+    ].map(async (categoryId) => {
+      const categoryName = await getCategoryName(firestore, categoryId);
+
+      if (categoryName !== null && categoryName !== "") {
+        categoryNames.set(categoryId, categoryName);
+      }
+    })
+  );
+
   const publications: StaffPublication[] = publicationsSnapshot.docs.map(
     (doc) => {
       const publicationData = doc.data();
+      const categoryId = publicationData.category_id;
 
       return {
         id: doc.id,
         title: publicationData.title,
         slug: publicationData.slug,
         image_url: publicationData.cover_image_url,
-        published_at: dayjs(publicationData.published_at.seconds * 1000).format(
-          "MMM D, YYYY"
-        ),
-        category: publicationData.category_id,
+        published_at: dayjs(publicationData.published_at).format("MMM D, YYYY"),
+        category: categoryNames.get(categoryId) ?? categoryId,
       };
     }
   );
-
-  const publicationCategoryIds = [
-    ...new Set(publications.map((publication) => publication.category)),
-  ].filter(Boolean);
-
-  for (const categoryId of publicationCategoryIds) {
-    const categoryName = await getCategoryName(firestore, categoryId);
-
-    if (categoryName == null || categoryName === "") {
-      continue;
-    }
-
-    for (const publication of publications) {
-      if (publication.category === categoryId) {
-        publication.category = categoryName;
-      }
-    }
-  }
 
   const otherAssociatesQuery = query(
     getStaffCollectionRef(firestore),
@@ -339,7 +328,7 @@ export async function getAttorneyDetailPageData(
     rtdbQuery(dbRef(rtdb, RTDB_KEYS.ATTORNEY_ORDER))
   );
 
-  const partnerOrderIds = toStringArray(partnerOrderIdsSnapshot.val());
+  const partnerOrderIds = readIdList(partnerOrderIdsSnapshot);
 
   const sortedOtherPartners = sortByPartnerOrder(
     otherPartners,
