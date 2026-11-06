@@ -1,7 +1,7 @@
 <template>
   <div class="relative w-full">
     <h2 class="font-[marcellus] text-3xl text-[#DAB38D]">Requirements</h2>
-    <select
+    <!-- <select
       disabled
       v-model="selectedJob"
       class="focus:ring-opacity-50 mx-auto mt-4 block w-full rounded-md pl-2 font-[Ubuntu] font-light text-[#4B3D2A] focus:ring"
@@ -11,8 +11,8 @@
       <option v-for="job in jobs" :key="job.position" :value="job.position">
         {{ job.position }}
       </option>
-    </select>
-    <div v-if="selectedJob" class="mt-4 p-4">
+    </select> -->
+    <!-- <div v-if="selectedJob" class="mt-4 p-4">
       <h3 class="font-[marcellus] text-xl text-[#4B3D2A] sm:text-2xl">
         {{ selectedJob }}
       </h3>
@@ -26,7 +26,7 @@
           {{ req }}
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 

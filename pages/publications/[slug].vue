@@ -97,6 +97,47 @@ const relatedContents = data?.data?.related_contents ?? [];
         </div>
       </div>
     </section>
+    <section
+      v-if="relatedContents.length"
+      class="related-articles-section px-4 pb-8 md:hidden"
+    >
+      <h2 class="mb-4 font-[Marcellus] text-2xl text-[#4B3D2A]">
+        Related Articles
+      </h2>
+      <div class="related-articles-grid gap-6">
+        <NuxtLink
+          v-for="content in relatedContents"
+          :key="content.slug"
+          :to="`/publications/${content.slug}`"
+          class="related-article-card"
+        >
+          <img
+            :src="content.image_url || LOGO_SRC"
+            :alt="content.title || 'Related publication thumbnail'"
+            class="related-article-image mb-3 w-full object-cover"
+          />
+          <span class="font-[Ubuntu] text-sm text-[#DAB38D]">
+            {{ content.category }}
+          </span>
+          <h3
+            class="related-article-title font-[Marcellus] text-xl text-[#4B3D2A]"
+          >
+            {{ content.title }}
+          </h3>
+          <div
+            class="related-article-meta mt-3 flex items-center gap-4 font-[Ubuntu] text-xs text-[#DAB38D]"
+          >
+            <span>{{ content.author?.name || "LSM Content Team" }}</span>
+            <span>{{ content.published_at }}</span>
+          </div>
+          <span
+            class="related-article-button w-fit rounded bg-[#91AEAC] px-4 py-2 text-sm text-white"
+          >
+            Read More
+          </span>
+        </NuxtLink>
+      </div>
+    </section>
     <section class="md:hidden">
       <div class="p-4">
         <Publications />
@@ -184,36 +225,44 @@ const relatedContents = data?.data?.related_contents ?? [];
           </div>
 
           <!-- Grid of Posts -->
-          <div class="mb-6 flex font-[Marcellus] text-2xl text-[#4B3D2A]">
+          <div
+            v-if="relatedContents.length"
+            class="mb-6 flex font-[Marcellus] text-2xl text-[#4B3D2A]"
+          >
             Related Articles
           </div>
-          <div class="grid grid-cols-3 gap-4">
+          <div
+            v-if="relatedContents.length"
+            class="related-articles-grid grid-cols-3 gap-4"
+          >
             <nuxt-link
-              v-for="(content, index) in relatedContents"
-              :key="index"
-              class="mb-6"
+              v-for="content in relatedContents"
+              :key="content.slug"
+              class="related-article-card"
               :to="`/publications/${content.slug}`"
             >
               <img
                 v-if="content.image_url"
                 :src="content.image_url"
                 alt="Thumbnail"
-                class="mb-4 h-40 w-full object-cover"
+                class="related-article-image mb-4 w-full object-cover"
               />
               <img
                 v-else
                 :src="LOGO_SRC"
                 alt="Thumbnail"
-                class="mb-4 h-40 w-full object-cover"
+                class="related-article-image mb-4 w-full object-cover"
               />
               <span class="font-[Ubuntu] text-sm text-[#DAB38D]">{{
                 content.category
               }}</span>
-              <h3 class="font-[Marcellus] text-xl leading-snug text-[#4B3D2A]">
+              <h3
+                class="related-article-title font-[Marcellus] text-xl text-[#4B3D2A]"
+              >
                 {{ content.title }}
               </h3>
               <div
-                class="mt-4 flex items-center space-x-4 font-[Ubuntu] text-xs text-[#2e1e10]"
+                class="related-article-meta mt-4 flex items-center gap-4 font-[Ubuntu] text-xs text-[#2e1e10]"
               >
                 <div class="flex items-center space-x-1">
                   <img
@@ -233,11 +282,11 @@ const relatedContents = data?.data?.related_contents ?? [];
                   }}</span>
                 </div>
               </div>
-              <button
-                class="mt-4 w-fit rounded bg-[#91AEAC] px-4 py-2 text-sm text-white hover:bg-[#9aaea1]"
+              <span
+                class="related-article-button mt-4 w-fit rounded bg-[#91AEAC] px-4 py-2 text-sm text-white hover:bg-[#9aaea1]"
               >
                 Read More
-              </button>
+              </span>
             </nuxt-link>
           </div>
         </div>
@@ -245,3 +294,63 @@ const relatedContents = data?.data?.related_contents ?? [];
     </section>
   </div>
 </template>
+
+<style scoped>
+.related-articles-grid {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.related-article-card {
+  display: flex;
+  min-width: 0;
+  height: 100%;
+  flex-direction: column;
+}
+
+.related-article-image {
+  height: 12rem;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.related-article-title {
+  display: -webkit-box;
+  overflow: hidden;
+  height: 2.75rem;
+  min-height: 2.75rem;
+  max-height: 2.75rem;
+  line-height: 1.375rem;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.related-article-meta {
+  min-height: 2rem;
+}
+
+.related-article-button {
+  align-self: flex-start;
+}
+
+@media (min-width: 768px) {
+  .related-articles-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .related-article-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .related-article-button {
+    margin-top: 2rem;
+  }
+}
+</style>
