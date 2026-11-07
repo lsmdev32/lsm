@@ -20,7 +20,7 @@ const images = [
     <section class="md:hidden md:min-w-full">
       <div class="banner">
         <div
-          class="flex h-full flex-col items-start justify-between py-[30px] pl-[30px] text-left md:pl-12"
+          class="flex h-full flex-col items-start justify-between py-7.5 pl-7.5 text-left md:pl-12"
         >
           <div>
             <h1 class="text-6xl text-white">
@@ -40,10 +40,10 @@ const images = [
     <!-- Desktop -->
     <section class="hidden items-center justify-center md:flex md:min-w-full">
       <div
-        class="flex h-[50vh] w-full items-end justify-start bg-[url('/images/gambar-utama.jpg')] bg-cover bg-center bg-no-repeat py-[30px] pl-[30px] text-left md:pl-12"
+        class="flex h-[50vh] w-full items-end justify-start bg-[url('/images/gambar-utama.jpg')] bg-cover bg-center bg-no-repeat py-7.5 pl-7.5 text-left md:pl-12"
       >
         <div
-          class="flex flex-col items-start justify-start py-[60px] pl-[30px] text-left md:pl-12"
+          class="flex flex-col items-start justify-start py-15 pl-7.5 text-left md:pl-12"
         >
           <div>
             <h1 class="font-[philosopher] text-8xl text-white">

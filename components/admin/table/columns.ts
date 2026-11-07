@@ -277,7 +277,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
               )
             : h("span", {}, title),
           h(CopyIcon, {
-            class: cn("text-muted-foreground text-xs"),
+            class: cn("text-xs text-muted-foreground"),
             size: 20,
             onClick: copy,
           }),
@@ -510,7 +510,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
               )
             : h("span", {}, title),
           h(CopyIcon, {
-            class: cn("text-muted-foreground text-xs"),
+            class: cn("text-xs text-muted-foreground"),
             size: 20,
             onClick: copy,
           }),
@@ -605,7 +605,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         {
           href: row.original.publication,
           class: cn(
-            "text-primary flex w-[50px] justify-center hover:underline"
+            "flex w-[50px] justify-center text-primary hover:underline"
           ),
           target: "_blank",
         },

@@ -150,7 +150,7 @@ const table = useVueTable({
               :data-pinned="header.column.getIsPinned()"
               :class="
                 cn(
-                  { 'bg-background/95 sticky': header.column.getIsPinned() },
+                  { 'sticky bg-background/95': header.column.getIsPinned() },
                   header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
                   header.column.getCanSort() ? 'cursor-pointer select-none' : ''
                 )
@@ -188,7 +188,7 @@ const table = useVueTable({
                 v-for="col in columns"
                 :key="'skeleton-cell-' + n + '-' + col.id"
               >
-                <div class="bg-muted h-4 w-full animate-pulse rounded" />
+                <div class="h-4 w-full animate-pulse rounded bg-muted" />
               </UiTableCell>
             </UiTableRow>
           </template>
@@ -205,7 +205,7 @@ const table = useVueTable({
                   :data-pinned="cell.column.getIsPinned()"
                   :class="
                     cn(
-                      { 'bg-background/95 sticky': cell.column.getIsPinned() },
+                      { 'sticky bg-background/95': cell.column.getIsPinned() },
                       cell.column.getIsPinned() === 'left'
                         ? 'left-0'
                         : 'right-0'
@@ -241,7 +241,7 @@ const table = useVueTable({
     </div>
 
     <div class="flex items-center justify-end space-x-2 py-4">
-      <div v-if="props.selectable" class="text-muted-foreground flex-1 text-sm">
+      <div v-if="props.selectable" class="flex-1 text-sm text-muted-foreground">
         {{ table.getFilteredSelectedRowModel().rows.length }} of
         {{ table.getFilteredRowModel().rows.length }} row(s) selected.
       </div>

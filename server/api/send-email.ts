@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import { createTransport } from "nodemailer";
 import { z } from "zod";
 
 const sendEmailBodySchema = z.object({
@@ -157,7 +157,7 @@ export default defineEventHandler(async (event) => {
 
   const config = useRuntimeConfig();
 
-  const transporter = nodemailer.createTransport({
+  const transporter = createTransport({
     host: config.smtpHost,
     port: Number(config.smtpPort),
     secure: true,

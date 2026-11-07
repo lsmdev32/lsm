@@ -45,13 +45,13 @@ function onClear() {
         <span
           class="absolute inset-y-0 start-0 flex items-center justify-center px-3"
         >
-          <Search class="text-muted-foreground size-4" />
+          <Search class="size-4 text-muted-foreground" />
         </span>
         <!-- Clear button -->
         <button
           v-if="selectedItem"
           type="button"
-          class="text-muted-foreground hover:text-foreground absolute inset-y-0 end-0 flex items-center justify-center px-3 focus:outline-none"
+          class="absolute inset-y-0 end-0 flex items-center justify-center px-3 text-muted-foreground hover:text-foreground focus:outline-none"
           tabindex="-1"
           aria-label="Clear selection"
           @click="onClear"
