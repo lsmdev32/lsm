@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import Button from "~/components/audience/button.vue";
 import ThreePic from "~/components/audience/three-pic.vue";
+
+const companyProfileUrl = await useCompanyProfileUrl(
+  "https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
+);
 </script>
 
 <template>
@@ -148,7 +152,7 @@ import ThreePic from "~/components/audience/three-pic.vue";
           <NuxtLink
             type="button"
             class="custom-button-about d-flex font-[Ubuntu]"
-            to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
+            :to="companyProfileUrl"
           >
             <span>Download Company Profile</span>
           </NuxtLink>
@@ -265,7 +269,7 @@ import ThreePic from "~/components/audience/three-pic.vue";
             <NuxtLink
               type="button"
               class="custom-button-about d-flex font-[Ubuntu]"
-              to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2F20240718%20-%20LSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=0ab68c79-3d89-4194-a66c-cc8438eed494"
+              :to="companyProfileUrl"
             >
               <span>Download Company Profile</span>
             </NuxtLink>

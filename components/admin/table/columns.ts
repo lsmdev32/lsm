@@ -14,6 +14,7 @@ import {
   ArrowUpIcon,
   CopyIcon,
   DownloadIcon,
+  ImageOffIcon,
   PencilIcon,
   PinIcon,
   SaveIcon,
@@ -49,7 +50,7 @@ export interface Blog {
   objectID: string;
   title: string;
   status: "published" | "not_published";
-  cover_image_url: string;
+  cover_image_url: string | null;
   tags: string[];
   created_at: { _seconds: number; _nanoseconds: number };
   published_at: { _seconds: number; _nanoseconds: number } | null;
@@ -60,7 +61,7 @@ export interface Publication {
   objectID: string;
   title: string;
   status: "published" | "not_published";
-  cover_image_url: string;
+  cover_image_url: string | null;
   tags: string[];
   created_at: { _seconds: number; _nanoseconds: number };
   published_at: { _seconds: number; _nanoseconds: number } | null;
@@ -201,7 +202,7 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
               title: "Simpan perubahan nama kategori",
               onClick: updateCategoryName,
             },
-            h(SaveIcon)
+            { default: () => h(SaveIcon) }
           ),
           h(
             UiButton,
@@ -210,13 +211,36 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
               title: "Hapus kategori ini",
               onClick: handleDeleteCategory,
             },
-            h(Trash2Icon)
+            { default: () => h(Trash2Icon) }
           ),
         ]
       );
     },
   }),
 ];
+
+function renderCoverImageCell(src: string | null | undefined) {
+  if (src === null || src === undefined || src === "") {
+    return h(
+      "div",
+      {
+        class: cn(
+          "flex aspect-video w-25 flex-col items-center justify-center gap-y-1 rounded border border-dashed text-muted-foreground"
+        ),
+        title: "Tidak ada gambar sampul",
+      },
+      [
+        h(ImageOffIcon, { size: 20 }),
+        h("span", { class: cn("text-xs leading-none") }, "Tanpa sampul"),
+      ]
+    );
+  }
+
+  return h(NuxtImg, {
+    src,
+    class: cn("aspect-video w-25 object-cover"),
+  });
+}
 
 export const blogColumns: ColumnDef<Blog, never>[] = [
   blogHelper.accessor("cover_image_url", {
@@ -225,15 +249,11 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
       h(
         "span",
         {
-          class: cn("w-[20px] text-center"),
+          class: cn("w-5 text-center"),
         },
         "Gambar Sampul"
       ),
-    cell: ({ getValue }) =>
-      h(NuxtImg, {
-        src: getValue(),
-        class: cn("aspect-video w-[100px] object-cover"),
-      }),
+    cell: ({ getValue }) => renderCoverImageCell(getValue()),
   }),
   blogHelper.accessor("title", {
     id: "Judul",
@@ -241,7 +261,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
       h(
         "span",
         {
-          class: cn("w-[20px] text-center"),
+          class: cn("w-5 text-center"),
         },
         "Judul"
       ),
@@ -262,7 +282,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
       return h(
         "div",
         {
-          class: cn("flex items-center gap-x-2"),
+          class: cn("flex max-w-[280px] items-start gap-x-2"),
         },
         [
           isPublished
@@ -271,13 +291,17 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
                 {
                   href: `/blogs/${row.original.slug}`,
                   target: "_blank",
-                  class: cn("line-clamp-2 underline"),
+                  class: cn("min-w-0 break-words whitespace-normal underline"),
                 },
-                title
+                { default: () => title }
               )
-            : h("span", {}, title),
+            : h(
+                "span",
+                { class: cn("min-w-0 break-words whitespace-normal") },
+                title
+              ),
           h(CopyIcon, {
-            class: cn("text-muted-foreground text-xs"),
+            class: cn("shrink-0 text-xs text-muted-foreground"),
             size: 20,
             onClick: copy,
           }),
@@ -309,7 +333,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
               : "bg-destructive/15 text-destructive"
           ),
         },
-        isPublished ? "Terbit" : "Tidak Terbit"
+        { default: () => (isPublished ? "Terbit" : "Tidak Terbit") }
       );
     },
   }),
@@ -462,11 +486,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         },
         "Gambar Sampul"
       ),
-    cell: ({ getValue }) =>
-      h(NuxtImg, {
-        src: getValue(),
-        class: cn("aspect-video w-[100px] object-cover"),
-      }),
+    cell: ({ getValue }) => renderCoverImageCell(getValue()),
   }),
   publicationHelper.accessor("title", {
     id: "Judul",
@@ -495,7 +515,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
       return h(
         "div",
         {
-          class: cn("flex items-center gap-x-2"),
+          class: cn("flex max-w-[280px] items-start gap-x-2"),
         },
         [
           isPublished
@@ -504,13 +524,17 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
                 {
                   href: `/publications/${row.original.slug}`,
                   target: "_blank",
-                  class: cn("line-clamp-2 underline"),
+                  class: cn("min-w-0 break-words whitespace-normal underline"),
                 },
-                title
+                { default: () => title }
               )
-            : h("span", {}, title),
+            : h(
+                "span",
+                { class: cn("min-w-0 break-words whitespace-normal") },
+                title
+              ),
           h(CopyIcon, {
-            class: cn("text-muted-foreground text-xs"),
+            class: cn("shrink-0 text-xs text-muted-foreground"),
             size: 20,
             onClick: copy,
           }),
@@ -542,7 +566,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
               : "bg-destructive/15 text-destructive"
           ),
         },
-        isPublished ? "Terbit" : "Tidak Terbit"
+        { default: () => (isPublished ? "Terbit" : "Tidak Terbit") }
       );
     },
   }),
@@ -597,7 +621,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         {
           class: cn("w-[20px] text-center"),
         },
-        "Link Publikasi"
+        h("p", {}, "Publikasi")
       ),
     cell: ({ row }) =>
       h(
@@ -605,11 +629,11 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         {
           href: row.original.publication,
           class: cn(
-            "text-primary flex w-[50px] justify-center hover:underline"
+            "flex w-[50px] justify-center text-primary hover:underline"
           ),
           target: "_blank",
         },
-        h(DownloadIcon)
+        { default: () => h(DownloadIcon) }
       ),
   }),
 

@@ -1,12 +1,12 @@
 <template>
   <IconMenu
     v-if="!isOpen"
-    class="hamburger-menu animate-in spin-in my-4 size-[40px] cursor-pointer text-[#4B3D2A] duration-200"
+    class="hamburger-menu my-4 size-[40px] animate-in cursor-pointer text-[#4B3D2A] duration-200 spin-in"
     @click="toggleMenu"
   />
   <IconX
     v-else
-    class="hamburger-menu animate-in spin-in my-auto size-[40px] cursor-pointer text-[#4B3D2A] duration-200"
+    class="hamburger-menu my-auto size-[40px] animate-in cursor-pointer text-[#4B3D2A] duration-200 spin-in"
     @click="toggleMenu"
   />
 

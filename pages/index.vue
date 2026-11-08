@@ -12,6 +12,10 @@ const images = [
   "/images/bedge7.png",
   "/images/bedge8.png",
 ];
+
+const companyProfileUrl = await useCompanyProfileUrl(
+  "https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=657a761e-5459-4834-98f1-802d223e95aa"
+);
 </script>
 
 <template lang="html">
@@ -20,7 +24,7 @@ const images = [
     <section class="md:hidden md:min-w-full">
       <div class="banner">
         <div
-          class="flex h-full flex-col items-start justify-between py-[30px] pl-[30px] text-left md:pl-12"
+          class="flex h-full flex-col items-start justify-between py-7.5 pl-7.5 text-left md:pl-12"
         >
           <div>
             <h1 class="text-6xl text-white">
@@ -40,10 +44,10 @@ const images = [
     <!-- Desktop -->
     <section class="hidden items-center justify-center md:flex md:min-w-full">
       <div
-        class="flex h-[50vh] w-full items-end justify-start bg-[url('/images/gambar-utama.jpg')] bg-cover bg-center bg-no-repeat py-[30px] pl-[30px] text-left md:pl-12"
+        class="flex h-[50vh] w-full items-end justify-start bg-[url('/images/gambar-utama.jpg')] bg-cover bg-center bg-no-repeat py-7.5 pl-7.5 text-left md:pl-12"
       >
         <div
-          class="flex flex-col items-start justify-start py-[60px] pl-[30px] text-left md:pl-12"
+          class="flex flex-col items-start justify-start py-15 pl-7.5 text-left md:pl-12"
         >
           <div>
             <h1 class="font-[philosopher] text-8xl text-white">
@@ -214,7 +218,7 @@ const images = [
           <NuxtLink
             type="button"
             class="custom-button-about d-flex font-[Ubuntu]"
-            to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=657a761e-5459-4834-98f1-802d223e95aa"
+            :to="companyProfileUrl"
           >
             <span>Download Company Profile</span>
           </NuxtLink>
@@ -342,7 +346,7 @@ const images = [
               <NuxtLink
                 type="button"
                 class="custom-button-about d-flex font-[Ubuntu]"
-                to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=657a761e-5459-4834-98f1-802d223e95aa"
+                :to="companyProfileUrl"
               >
                 <span>Download Company Profile</span>
               </NuxtLink>

@@ -1,41 +1,27 @@
 <script setup lang="ts">
+import { InboxIcon } from "lucide-vue-next";
+
 interface Props {
-  itemName?: `${string}${"s" | "es"}`;
+  itemName?: string;
+  description?: string;
 }
 
-const { itemName = "items" } = defineProps<Props>();
+const {
+  itemName = "data",
+  description = "Belum ada yang bisa ditampilkan di sini.",
+} = defineProps<Props>();
 </script>
 
 <template>
-  <div class="empty-list-placeholder">
-    <svg class="icon" viewBox="0 0 64 64" width="48" height="48" fill="none">
-      <rect x="8" y="20" width="48" height="32" rx="4" fill="#f3f4f6" />
-      <rect x="16" y="28" width="32" height="4" rx="2" fill="#e5e7eb" />
-      <rect x="16" y="36" width="24" height="4" rx="2" fill="#e5e7eb" />
-    </svg>
-    <p class="message">No {{ itemName }} found</p>
+  <div
+    class="flex flex-col items-center justify-center gap-2 px-6 py-14 text-center"
+  >
+    <span
+      class="flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground"
+    >
+      <InboxIcon class="size-5" aria-hidden="true" />
+    </span>
+    <p class="text-sm font-medium">Belum ada {{ itemName }}</p>
+    <p class="max-w-xs text-sm text-muted-foreground">{{ description }}</p>
   </div>
 </template>
-
-<style scoped>
-.empty-list-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 0;
-  color: #6b7280;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px dashed #e5e7eb;
-}
-
-.icon {
-  margin-bottom: 16px;
-}
-
-.message {
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-</style>

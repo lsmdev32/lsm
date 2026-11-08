@@ -23,3 +23,5 @@ export * from "./lists/use-publication-list";
 export * from "./form/use-create-publication-form";
 
 export * from "./form/use-edit-publication-form";
+
+export * from "./form/use-page-settings-form";

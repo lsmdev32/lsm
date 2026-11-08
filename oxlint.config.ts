@@ -10,7 +10,7 @@ export default defineConfig({
   env: core.env,
   extends: [core, vue, shadcn, antiSlop],
   ignorePatterns: [...(core.ignorePatterns ?? []), ...ignorePatterns],
-  jsPlugins: shadcn.jsPlugins,
+  jsPlugins: [...shadcn.jsPlugins, "oxlint-tailwindcss"],
   options: { typeAware: true },
   rules: {
     "func-style": "off",
@@ -19,5 +19,18 @@ export default defineConfig({
     "sort-keys": "off",
     complexity: "off",
     "oxc/no-barrel-file": "off",
+    // Both plugins report these; hand each problem to one of them.
+    "shadcn/no-unknown-classes": "off",
+    "tailwindcss/no-unknown-classes": "error",
+    "tailwindcss/no-conflicting-classes": "error",
+    "tailwindcss/no-duplicate-classes": "warn",
+    "tailwindcss/enforce-sort-order": "error",
+    "tailwindcss/enforce-shorthand": "error",
+    "tailwindcss/enforce-canonical": "error",
+  },
+  settings: {
+    tailwindcss: {
+      entryPoint: "assets/css/main.css",
+    },
   },
 });

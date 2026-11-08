@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getDoc } from "firebase/firestore";
-import { PlusIcon, RefreshCwIcon } from "lucide-vue-next";
+import { PlusIcon, RotateCwIcon } from "lucide-vue-next";
 
 import { blogColumns } from "~/components/admin/table/columns";
 import { getCategoryDocRef, getStaffDocRef } from "~/lib/firestore-model";
@@ -24,9 +24,9 @@ const {
   setPage,
   isLoading,
   totalPages,
+  refresh,
 } = useBlogList();
 
-const tableLoading = computed(() => isLoading.value);
 const tempCategorySearch = ref("");
 const tempAuthorSearch = ref("");
 
@@ -36,16 +36,12 @@ const { result: resultCategories } = useSearch<CategoryAppModel>(
   ["name"]
 );
 
-const mappedCategories = computed(() => {
-  if (!resultCategories.value) {
-    return [];
-  }
-
-  return resultCategories.value.hits.map((item) => ({
+const mappedCategories = computed(() =>
+  (resultCategories.value?.hits ?? []).map((item) => ({
     label: item.name,
     value: item.objectID,
-  }));
-});
+  }))
+);
 
 const { result: resultAuthors } = useSearch<StaffAppModel>(
   "staffs",
@@ -53,16 +49,12 @@ const { result: resultAuthors } = useSearch<StaffAppModel>(
   ["fullname"]
 );
 
-const mappedAuthors = computed(() => {
-  if (!resultAuthors.value) {
-    return [];
-  }
-
-  return resultAuthors.value.hits.map((item) => ({
+const mappedAuthors = computed(() =>
+  (resultAuthors.value?.hits ?? []).map((item) => ({
     label: item.fullname,
     value: item.objectID,
-  }));
-});
+  }))
+);
 
 watch(tempCategorySearch, (value) => {
   if (!value) {
@@ -99,13 +91,43 @@ function handleChangeAuthor(value?: string | null) {
   author.value = value ?? "";
 }
 
-function refresh() {
-  location.reload();
+const hasActiveFilters = computed(
+  () => keyword.value !== "" || category.value !== "" || author.value !== ""
+);
+
+function clearFilters() {
+  keyword.value = "";
+  tempCategorySearch.value = "";
+  tempAuthorSearch.value = "";
+  category.value = "";
+  author.value = "";
+  setPage(0);
 }
 </script>
 
 <template>
-  <AdminPage page-title="Blogs">
+  <AdminPage
+    page-title="Blog"
+    description="Tulisan yang tampil di halaman blog situs publik."
+  >
+    <template #actions>
+      <UiButton
+        variant="outline"
+        size="sm"
+        :disabled="isLoading"
+        @click="refresh"
+      >
+        <RotateCwIcon :class="isLoading ? 'animate-spin' : ''" />
+        <span>Muat ulang</span>
+      </UiButton>
+      <UiButton variant="brand" size="sm" as-child>
+        <NuxtLink to="/dashboard/blogs/create">
+          <PlusIcon />
+          <span>Blog baru</span>
+        </NuxtLink>
+      </UiButton>
+    </template>
+
     <AdminTableDataTable
       v-if="results"
       :columns="blogColumns as []"
@@ -113,54 +135,51 @@ function refresh() {
       :current-page="currentPage"
       :total-pages="totalPages"
       :page-size="10"
-      :loading="tableLoading"
+      :loading="isLoading"
       :selectable="false"
       :no-toggle-column-visibility="true"
       @update:page="setPage($event)"
     >
-      <template #upper="{}">
-        <div class="flex w-full items-end gap-x-2">
-          <div class="flex flex-col gap-y-2">
-            <UiInput
+      <template #upper>
+        <div class="flex w-full flex-wrap items-center gap-2">
+          <div class="max-w-sm min-w-60 flex-1">
+            <AdminSearchField
               v-model="keyword"
-              class="max-w-[420px]"
-              placeholder="Cari berdasarkan judul"
+              placeholder="Cari judul blog…"
             />
-            <div class="flex gap-x-2">
-              <div class="w-[200px]">
-                <AdminSearchableComboBox
-                  v-model:model-value="tempCategorySearch"
-                  :items="mappedCategories"
-                  placeholder="Pilih kategori"
-                  @select="handleChangeCategory($event)"
-                />
-              </div>
-              <div class="w-[200px]">
-                <AdminSearchableComboBox
-                  v-model:model-value="tempAuthorSearch"
-                  :items="mappedAuthors"
-                  placeholder="Pilih Penulis"
-                  @select="handleChangeAuthor($event)"
-                />
-              </div>
-            </div>
           </div>
-          <UiButton class="" color="primary" @click="refresh">
-            <RefreshCwIcon :size="24" />
-          </UiButton>
-          <UiButton class="ml-auto" color="primary">
-            <NuxtLink
-              class="flex items-center gap-x-1"
-              to="/dashboard/blogs/create"
-            >
-              <PlusIcon />
-              <span> Buat Blog Baru </span>
-            </NuxtLink>
-          </UiButton>
+          <div class="w-44">
+            <AdminSearchableComboBox
+              v-model:model-value="tempCategorySearch"
+              :items="mappedCategories"
+              placeholder="Kategori"
+              @select="handleChangeCategory($event)"
+            />
+          </div>
+          <div class="w-44">
+            <AdminSearchableComboBox
+              v-model:model-value="tempAuthorSearch"
+              :items="mappedAuthors"
+              placeholder="Penulis"
+              @select="handleChangeAuthor($event)"
+            />
+          </div>
+          <AdminClearFilterButton
+            :disabled="!hasActiveFilters"
+            @clear="clearFilters"
+          />
         </div>
       </template>
-      <template #empty-list="{}">
-        <AdminEmptyListPlaceholder item-name="Blogs" />
+
+      <template #empty-list>
+        <AdminEmptyListPlaceholder
+          :item-name="hasActiveFilters ? 'hasil' : 'blog'"
+          :description="
+            hasActiveFilters
+              ? 'Coba kata kunci atau filter lain.'
+              : 'Blog yang dibuat akan muncul di sini.'
+          "
+        />
       </template>
     </AdminTableDataTable>
   </AdminPage>

@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { PATH_NAMES } from "~/lib/constants";
-
 definePageMeta({
   middleware: ["auth"],
-  redirect(_) {
-    return {
-      path: PATH_NAMES.BLOGS,
-    };
-  },
+  redirect: "/dashboard/blogs",
 });
 </script>
 

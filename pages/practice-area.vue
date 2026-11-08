@@ -37,12 +37,12 @@ import PracticeAreaDetails from "~/components/audience/practice-area-details.vue
 
     <section class="hidden lg:block">
       <div
-        class="mx-auto grid max-w-7xl grid-cols-2 gap-12 px-8 pt-16 xl:px-12 pb-8"
+        class="mx-auto grid max-w-7xl grid-cols-2 gap-12 px-8 pt-16 pb-8 xl:px-12"
       >
         <h1 class="font-[Marcellus] text-5xl font-light text-[#DAB38D]">
           Practice Area
         </h1>
-        <p class="font-[Ubuntu] leading-relaxed font-light text-gray-500 ">
+        <p class="font-[Ubuntu] leading-relaxed font-light text-gray-500">
           Lawyers at LSM are experts in their fields and are dedicated to
           providing the best legal services to our clients. We have a wide range
           of practice areas, and we work closely with our clients to understand
@@ -50,7 +50,7 @@ import PracticeAreaDetails from "~/components/audience/practice-area-details.vue
         </p>
       </div>
 
-       <div class="z-0 grid grid-cols-1 gap-12 md:grid-cols-2">
+      <div class="z-0 grid grid-cols-1 gap-12 md:grid-cols-2">
         <!-- Left column with Down arrow -->
         <div />
         <!-- Right column with content -->

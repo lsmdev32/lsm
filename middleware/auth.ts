@@ -10,7 +10,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const isToDashboard = to.path.includes("/dashboard");
 
   /**
-   * if user is not authenticated and the route is an auth page, redirect to login
+   * if user is not authenticated and the route is a dashboard page, redirect to login
    */
   if (isToDashboard && !user) {
     return await navigateTo("/login");

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDebounce, useFileDialog } from "@vueuse/core";
 import { getDoc } from "firebase/firestore";
-import { PencilIcon } from "lucide-vue-next";
+import { LoaderCircleIcon, SaveIcon, SendIcon } from "lucide-vue-next";
 
 import RichTextEditor from "~/components/rte/rich-text-editor.vue";
 import { useEditBlogForm } from "~/composables/form/use-edit-blog-form";
@@ -22,25 +22,14 @@ const firestore = useFirestore();
 const form = useEditBlogForm(id);
 const isFormSubmitting = form.isSubmitting;
 
-const imageURL = computed(() => {
-  const value = form.form.values.image_url;
+const coverPreview = computed(() => form.form.values.image_url ?? undefined);
+const isPublished = computed(() => form.form.values.status === "published");
 
-  if (!value) {
-    return;
-  }
-
-  return value;
-});
-
-const dialog = useFileDialog();
+const coverDialog = useFileDialog();
 
 onMounted(() => {
-  const listener = dialog.onChange(async (files) => {
-    if (!files) {
-      return;
-    }
-
-    const file = files.item(0);
+  const listener = coverDialog.onChange(async (files) => {
+    const file = files?.item(0);
 
     if (!file) {
       return;
@@ -59,33 +48,33 @@ onMounted(() => {
   };
 });
 
+function selectCoverImage() {
+  coverDialog.open({ accept: "image/*", multiple: false });
+}
+
 const category = ref("");
 const debouncedCategory = useDebounce(category, DEBOUNCE_DEFAULT_TIME);
 
 const author = ref("");
 const debouncedAuthor = useDebounce(author, DEBOUNCE_DEFAULT_TIME);
 
-const status = ref("");
-
 watch(
   form.form.values,
-  async (v) => {
-    if (v.image_url) {
-      localStorage.setItem(LOCAL_STORAGE_KEYS.IMAGE_COVER, v.image_url);
+  async (values) => {
+    if (values.image_url) {
+      localStorage.setItem(LOCAL_STORAGE_KEYS.IMAGE_COVER, values.image_url);
     }
 
-    if (v.category) {
-      const doc = await getDoc(getCategoryDocRef(firestore, v.category));
-      category.value = doc.data()?.name || "";
+    if (values.category) {
+      const doc = await getDoc(getCategoryDocRef(firestore, values.category));
+
+      category.value = doc.data()?.name ?? "";
     }
 
-    if (v.author) {
-      const doc = await getDoc(getStaffDocRef(firestore, v.author));
-      author.value = doc.data()?.fullname || "";
-    }
+    if (values.author) {
+      const doc = await getDoc(getStaffDocRef(firestore, values.author));
 
-    if (v.status) {
-      status.value = v.status;
+      author.value = doc.data()?.fullname ?? "";
     }
   },
   { deep: true }
@@ -97,16 +86,12 @@ const { result: resultCategories } = useSearch<CategoryAppModel>(
   ["name"]
 );
 
-const mappedCategories = computed(() => {
-  if (!resultCategories.value) {
-    return [];
-  }
-
-  return resultCategories.value.hits.map((item) => ({
+const mappedCategories = computed(() =>
+  (resultCategories.value?.hits ?? []).map((item) => ({
     label: item.name,
     value: item.objectID,
-  }));
-});
+  }))
+);
 
 const { result: resultAuthors } = useSearch<StaffAppModel>(
   "staffs",
@@ -114,194 +99,164 @@ const { result: resultAuthors } = useSearch<StaffAppModel>(
   ["fullname"]
 );
 
-const mappedAuthors = computed(() => {
-  if (!resultAuthors.value) {
-    return [];
-  }
-
-  return resultAuthors.value.hits.map((item) => ({
+const mappedAuthors = computed(() =>
+  (resultAuthors.value?.hits ?? []).map((item) => ({
     label: item.fullname,
     value: item.objectID,
-  }));
-});
-
-function onChooseFile() {
-  dialog.open({
-    accept: "image/*",
-    multiple: false,
-  });
-}
+  }))
+);
 </script>
 
 <template>
   <AdminPage
-    page-title="Ubah Blog"
-    :transform-crumbs="{
-      2: () => form.values.value.title,
-    }"
+    page-title="Ubah blog"
+    :description="
+      isPublished ? 'Sudah terbit di situs publik.' : 'Masih draft.'
+    "
+    :transform-crumbs="{ 2: () => form.values.value.title }"
   >
-    <form class="flex w-full flex-col gap-y-4 py-20" @submit="form.onSubmit">
-      <div class="flex text-base tracking-wider">
-        <template v-if="status === 'published'">
-          <UiBadge variant="default" class="bg-green-100 p-2 text-green-800">
-            Terbit
-          </UiBadge>
-        </template>
-        <template v-else>
-          <UiBadge variant="default" class="bg-red-100 p-2 text-red-800">
-            Belum Terbit
-          </UiBadge>
-        </template>
-      </div>
-      <div class="flex flex-col gap-y-2 self-center">
-        <UiFormField
-          v-slot="{ handleChange, meta }"
-          name="cover_image"
-          class="self-center"
+    <template #actions>
+      <UiBadge :variant="isPublished ? 'default' : 'secondary'">
+        {{ isPublished ? "Terbit" : "Draft" }}
+      </UiBadge>
+      <UiButton variant="outline" size="sm" as-child v-if="isPublished">
+        <a
+          :href="`/blogs/${form.form.values.slug}`"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <UiFormItem class="self-center">
-            <UiFormLabel :required="meta.required"> Gambar Sampul </UiFormLabel>
-            <div class="group aspect-video w-[600px] rounded-lg border">
-              <NuxtImg
-                :src="imageURL"
-                loading="lazy"
-                class="h-full w-full rounded-lg bg-gray-300 object-fill object-center group-hover:hidden"
-              />
-              <div
-                class="bg-opacity-60 hidden h-full w-full cursor-pointer flex-col items-center justify-center gap-y-2 bg-gray-300 group-hover:flex"
-                @click="onChooseFile"
-              >
-                <PencilIcon class="h-8 w-8 text-gray-500" />
-                <span class="text-lg text-gray-500">Ubah Gambar Sampul</span>
-              </div>
-            </div>
-            <UiFormControl>
-              <UiInput
-                id="image_cover"
-                type="file"
-                accept=".jpg,.jpeg,.png"
-                placeholder="shadcn"
-                class="hidden bg-transparent text-transparent outline"
-                :disabled="isFormSubmitting"
-                @change="handleChange"
-              />
-            </UiFormControl>
-            <UiFormMessage />
-          </UiFormItem>
-        </UiFormField>
-        <ui-button
-          v-if="imageURL"
-          variant="ghost"
-          class="mx-auto"
-          @click.prevent="form.removeCoverImage"
-        >
-          Hapus Gambar
-        </ui-button>
+          Lihat di situs
+        </a>
+      </UiButton>
+    </template>
+
+    <form
+      class="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]"
+      @submit="form.onSubmit"
+    >
+      <div class="flex min-w-0 flex-col gap-6">
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <UiFormField v-slot="{ componentField, meta }" name="title">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Judul</UiFormLabel>
+                <UiFormControl>
+                  <UiInput
+                    v-bind="componentField"
+                    type="text"
+                    :disabled="isFormSubmitting"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+
+            <UiFormField v-slot="{ handleChange, value, meta }" name="content">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Isi blog</UiFormLabel>
+                <UiFormControl>
+                  <RichTextEditor
+                    class="max-w-full"
+                    :initial-value="value"
+                    :disabled="isFormSubmitting"
+                    @handle-change="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
       </div>
 
-      <UiFormField v-slot="{ componentField, meta }" name="title">
-        <UiFormItem class="w-full">
-          <UiFormLabel :required="meta.required"> Judul </UiFormLabel>
-          <UiFormControl>
-            <UiInput
-              type="text"
-              placeholder="John Doe"
-              v-bind="componentField"
+      <aside class="flex min-w-0 flex-col gap-6">
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <AdminCoverImageField
+              name="cover_image"
+              :preview-url="coverPreview"
               :disabled="isFormSubmitting"
+              @select="selectCoverImage"
+              @remove="form.removeCoverImage()"
             />
-          </UiFormControl>
-          <UiFormMessage />
-        </UiFormItem>
-      </UiFormField>
 
-      <UiFormField v-slot="{ handleChange, value, meta }" name="content">
-        <UiFormItem class="mb-4 w-full">
-          <UiFormLabel :required="meta.required"> Isi Blog </UiFormLabel>
-          <UiFormControl>
-            <RichTextEditor
-              class="max-w-full"
-              :initial-value="value"
-              :disabled="isFormSubmitting"
-              @handle-change="handleChange($event)"
-            />
-          </UiFormControl>
-          <UiFormMessage />
-        </UiFormItem>
-      </UiFormField>
+            <UiFormField v-slot="{ handleChange, meta }" name="category">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Kategori</UiFormLabel>
+                <UiFormControl>
+                  <AdminSearchableComboBox
+                    v-model:model-value="category"
+                    :items="mappedCategories"
+                    placeholder="Pilih kategori"
+                    @select="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
 
-      <div class="flex justify-start gap-x-8">
-        <UiFormField v-slot="{ handleChange, meta }" name="category">
-          <UiFormItem class="w-[400px]">
-            <UiFormLabel :required="meta.required"> Kategori </UiFormLabel>
-            <UiFormControl>
-              <AdminSearchableComboBox
-                v-model:model-value="category"
-                :items="mappedCategories"
-                @select="handleChange($event)"
-              />
-            </UiFormControl>
-            <UiFormMessage />
-          </UiFormItem>
-        </UiFormField>
+            <UiFormField v-slot="{ handleChange, meta }" name="author">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Penulis</UiFormLabel>
+                <UiFormControl>
+                  <AdminSearchableComboBox
+                    v-model:model-value="author"
+                    :items="mappedAuthors"
+                    placeholder="Pilih penulis"
+                    @select="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
 
-        <UiFormField v-slot="{ handleChange, meta }" name="author">
-          <UiFormItem class="w-[400px]">
-            <UiFormLabel :required="meta.required"> Penulis </UiFormLabel>
-            <UiFormControl>
-              <AdminSearchableComboBox
-                v-model:model-value="author"
-                :items="mappedAuthors"
-                @select="handleChange($event)"
-              />
-            </UiFormControl>
-            <UiFormMessage />
-          </UiFormItem>
-        </UiFormField>
-      </div>
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <UiFormField
+              v-slot="{ handleChange, meta, value }"
+              name="published_at"
+            >
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">
+                  Tanggal terbit
+                </UiFormLabel>
+                <UiFormControl>
+                  <AdminDatePicker
+                    class="w-full"
+                    :model-value="value"
+                    @update:model-value="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
 
-      <UiFormField v-slot="{ handleChange, meta, value }" name="published_at">
-        <UiFormItem class="flex w-[400px] flex-col">
-          <UiFormLabel :required="meta.required">
-            Dipublikasikan pada
-          </UiFormLabel>
-          <UiFormControl>
-            <AdminDatePicker
-              :model-value="value"
-              @update:model-value="handleChange($event)"
-            />
-          </UiFormControl>
-          <UiFormMessage />
-        </UiFormItem>
-      </UiFormField>
-
-      <div class="flex w-full items-center justify-center gap-x-4 pt-10">
-        <ui-button
-          class="flex-1 items-center capitalize"
-          :disabled="isFormSubmitting"
-          @click="form.saveAsPublished()"
-        >
-          Simpan dan publikasikan
-        </ui-button>
-        <ui-button
-          class="flex-1 border-2 capitalize"
-          variant="secondary"
-          :disabled="isFormSubmitting"
-          @click="form.saveAsDraft()"
-        >
-          {{
-            form.form.values.published_at ? "Simpan" : "Simpan sebagai Draft"
-          }}
-        </ui-button>
-      </div>
-      <ui-button
-        type="button"
-        variant="outline"
-        class="mt-4 w-full"
-        :disabled="isFormSubmitting"
-        @click="form.resetForm()"
-      >
-        Reset Formulir
-      </ui-button>
+        <div class="flex flex-col gap-2">
+          <UiButton
+            type="button"
+            variant="brand"
+            :disabled="isFormSubmitting"
+            @click="form.saveAsPublished()"
+          >
+            <LoaderCircleIcon v-if="isFormSubmitting" class="animate-spin" />
+            <SendIcon v-else />
+            {{ isFormSubmitting ? "Menyimpan…" : "Simpan dan terbitkan" }}
+          </UiButton>
+          <UiButton
+            type="button"
+            variant="outline"
+            :disabled="isFormSubmitting"
+            @click="form.saveAsDraft()"
+          >
+            <SaveIcon />
+            Simpan sebagai draft
+          </UiButton>
+        </div>
+      </aside>
     </form>
   </AdminPage>
 </template>

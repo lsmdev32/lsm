@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { ref as dbRef, set as dbSet, getDatabase } from "@firebase/database";
+import {
+  ExternalLinkIcon,
+  MailIcon,
+  MoreHorizontalIcon,
+  PencilIcon,
+  Trash2Icon,
+} from "lucide-vue-next";
 import { toast } from "vue-sonner";
 
 import { RTDB_KEYS } from "~/lib/constants";
-import { cn } from "~/lib/utils";
 
 interface Props {
   id: string;
@@ -22,133 +28,161 @@ type Emits = (
 const emit = defineEmits<Emits>();
 const { id, type, fullname, linkedinUrl, email, ppUrl } = defineProps<Props>();
 
-async function handleSetOrderHome(staffId: string, order: number) {
-  const staffRef = dbRef(
-    getDatabase(),
-    `${RTDB_KEYS.HOME_ATTORNEY_ORDER}/${order}`
-  );
+function rankLabelOf(value: string) {
+  switch (value) {
+    case "founder": {
+      return "Founder";
+    }
 
-  try {
-    await dbSet(staffRef, staffId);
-  } catch {
-    toast.error("Gagal mengatur urutan home");
+    case "partner": {
+      return "Partner";
+    }
 
-    return;
+    case "associate": {
+      return "Associate";
+    }
+
+    case "of_counsel": {
+      return "Of Counsel";
+    }
+
+    default: {
+      return value.replaceAll("_", " ");
+    }
   }
-
-  toast.success("Berhasil mengatur urutan home");
 }
 
-async function handleSetOrderPracticeAreas(staffId: string, order: number) {
-  const staffRef = dbRef(
-    getDatabase(),
-    `${RTDB_KEYS.PRACTICE_AREA_ATTORNEY_ORDER}/${order}`
-  );
+const rankLabel = computed(() => rankLabelOf(type));
 
+async function setOrder(
+  key: string,
+  staffId: string,
+  order: number,
+  label: string
+) {
   try {
-    await dbSet(staffRef, staffId);
+    await dbSet(dbRef(getDatabase(), `${key}/${order}`), staffId);
   } catch {
-    toast.error("Gagal mengatur urutan practice area");
+    toast.error(`Gagal mengatur urutan ${label}`);
 
     return;
   }
 
-  toast.success("Berhasil mengatur urutan practice area");
+  toast.success(`Urutan ${label} diperbarui`);
+}
+
+function handleSetOrderHome(staffId: string, order: number) {
+  return setOrder(RTDB_KEYS.HOME_ATTORNEY_ORDER, staffId, order, "home");
+}
+
+function handleSetOrderPracticeAreas(staffId: string, order: number) {
+  return setOrder(
+    RTDB_KEYS.PRACTICE_AREA_ATTORNEY_ORDER,
+    staffId,
+    order,
+    "practice area"
+  );
 }
 </script>
 
 <template>
-  <div
-    :class="
-      cn(
-        'flex h-[340px] w-64 flex-col items-center rounded-lg border bg-white bg-gradient-to-br from-white to-orange-100 p-4 shadow-sm'
-      )
-    "
+  <article
+    class="group relative flex h-full flex-col items-center gap-3 rounded-xl border bg-card px-5 pt-6 pb-4 text-center shadow-sm transition-shadow hover:shadow-md"
   >
-    <div class="self-end hover:opacity-50">
-      <UiDropdownMenu>
-        <UiDropdownMenuTrigger>
-          <div class="group flex items-center">
-            <Icon name="material-symbols:action-key" size="16" />
-            <span class="hidden text-sm group-hover:block">Menu</span>
-          </div>
-        </UiDropdownMenuTrigger>
-        <UiDropdownMenuContent>
-          <UiDropdownMenuLabel>Menu</UiDropdownMenuLabel>
-          <UiDropdownMenuItem>
-            <NuxtLink :to="`/dashboard/profiles/${id}/edit`">
-              <Icon name="mdi:pencil" /> Ubah Profil
-            </NuxtLink>
-          </UiDropdownMenuItem>
-          <UiDropdownMenuItem @click="emit('click-delete', { id, fullname })">
-            <Icon name="mdi:trash" /> Hapus
-          </UiDropdownMenuItem>
-          <UiDropdownMenuSub>
-            <UiDropdownMenuSubTrigger>
-              <span>Set Urutan Home</span>
-            </UiDropdownMenuSubTrigger>
-            <UiDropdownMenuPortal>
-              <UiDropdownMenuSubContent>
-                <UiDropdownMenuItem
-                  v-for="i in 4"
-                  :key="i"
-                  @click="handleSetOrderHome(id, i - 1)"
-                >
-                  <span>Ke - {{ i }}</span>
-                </UiDropdownMenuItem>
-              </UiDropdownMenuSubContent>
-            </UiDropdownMenuPortal>
-          </UiDropdownMenuSub>
-          <UiDropdownMenuSub>
-            <UiDropdownMenuSubTrigger>
-              <span>Set Urutan Practice Area</span>
-            </UiDropdownMenuSubTrigger>
-            <UiDropdownMenuPortal>
-              <UiDropdownMenuSubContent>
-                <UiDropdownMenuItem
-                  v-for="i in 4"
-                  :key="i"
-                  @click="handleSetOrderPracticeAreas(id, i - 1)"
-                >
-                  <span>Ke - {{ i }}</span>
-                </UiDropdownMenuItem>
-              </UiDropdownMenuSubContent>
-            </UiDropdownMenuPortal>
-          </UiDropdownMenuSub>
-        </UiDropdownMenuContent>
-      </UiDropdownMenu>
-    </div>
-    <NuxtImg
-      :src="ppUrl"
-      alt="Profile"
-      class="mb-4 flex size-36 items-center justify-center rounded-full object-cover"
-    />
-    <div class="mb-4">
-      <span
-        class="rounded-full bg-orange-300 p-2 text-xs font-bold tracking-wide text-black capitalize"
-        >{{ type.replaceAll("_", " ") }}</span
+    <UiDropdownMenu>
+      <UiDropdownMenuTrigger as-child>
+        <UiButton
+          variant="ghost"
+          size="icon"
+          class="absolute top-2 right-2 size-8 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+          :aria-label="`Menu ${fullname}`"
+        >
+          <MoreHorizontalIcon />
+        </UiButton>
+      </UiDropdownMenuTrigger>
+      <UiDropdownMenuContent align="end" class="w-56">
+        <UiDropdownMenuItem as-child>
+          <NuxtLink :to="`/dashboard/profiles/${id}/edit`">
+            <PencilIcon />
+            <span>Ubah profil</span>
+          </NuxtLink>
+        </UiDropdownMenuItem>
+        <UiDropdownMenuSeparator />
+        <UiDropdownMenuLabel class="text-xs font-normal text-muted-foreground">
+          Urutan home
+        </UiDropdownMenuLabel>
+        <UiDropdownMenuItem
+          v-for="i in 4"
+          :key="`home-${i}`"
+          @click="handleSetOrderHome(id, i - 1)"
+        >
+          <span>Posisi {{ i }}</span>
+        </UiDropdownMenuItem>
+        <UiDropdownMenuSeparator />
+        <UiDropdownMenuLabel class="text-xs font-normal text-muted-foreground">
+          Urutan practice area
+        </UiDropdownMenuLabel>
+        <UiDropdownMenuItem
+          v-for="i in 4"
+          :key="`pa-${i}`"
+          @click="handleSetOrderPracticeAreas(id, i - 1)"
+        >
+          <span>Posisi {{ i }}</span>
+        </UiDropdownMenuItem>
+        <UiDropdownMenuSeparator />
+        <UiDropdownMenuItem
+          class="text-destructive"
+          @click="emit('click-delete', { id, fullname })"
+        >
+          <Trash2Icon />
+          <span>Hapus profil</span>
+        </UiDropdownMenuItem>
+      </UiDropdownMenuContent>
+    </UiDropdownMenu>
+
+    <UiAvatar class="size-24 shrink-0 ring-1 ring-border">
+      <UiAvatarImage :src="ppUrl" :alt="fullname" />
+      <UiAvatarFallback
+        class="bg-[#4B3D2A]/10 text-2xl font-medium text-[#4B3D2A]"
       >
-    </div>
-    <div class="mb-2 flex items-center gap-2 [&_a]:cursor-pointer">
-      <NuxtLink
-        :to="`mailto:${email}`"
-        class="flex cursor-pointer items-center gap-x-2 text-sm text-gray-500 hover:cursor-pointer hover:underline"
+        {{ fullname.charAt(0) }}
+      </UiAvatarFallback>
+    </UiAvatar>
+
+    <div class="flex w-full min-w-0 flex-col items-center gap-1.5">
+      <h2
+        class="line-clamp-2 text-base leading-snug font-medium text-balance"
+        :title="fullname"
       >
-        <Icon name="material-symbols:mail-outline" size="28" />
-      </NuxtLink>
-      <NuxtLink
-        :to="linkedinUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center gap-x-2 text-sm text-blue-600 hover:underline"
+        {{ fullname }}
+      </h2>
+      <UiBadge variant="secondary" class="font-normal">{{ rankLabel }}</UiBadge>
+    </div>
+
+    <div class="mt-auto flex items-center gap-1 pt-1">
+      <UiButton
+        variant="ghost"
+        size="icon"
+        as-child
+        class="size-8 text-muted-foreground"
       >
-        <Icon name="devicon:linkedin" size="24" />
-      </NuxtLink>
+        <a :href="`mailto:${email}`">
+          <MailIcon />
+          <span class="sr-only">Email {{ fullname }}</span>
+        </a>
+      </UiButton>
+      <UiButton
+        v-if="linkedinUrl"
+        variant="ghost"
+        size="icon"
+        as-child
+        class="size-8 text-muted-foreground"
+      >
+        <a :href="linkedinUrl" target="_blank" rel="noopener noreferrer">
+          <ExternalLinkIcon />
+          <span class="sr-only">LinkedIn {{ fullname }}</span>
+        </a>
+      </UiButton>
     </div>
-    <div
-      class="mb-1 line-clamp-2 truncate text-center text-sm font-semibold text-wrap text-ellipsis"
-    >
-      {{ fullname }}
-    </div>
-  </div>
+  </article>
 </template>

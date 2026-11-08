@@ -13,8 +13,11 @@ export const LOGIN_FORM_SCHEMA_KEYS = {
 } as const;
 
 export const LOGIN_FORM_SCHEMA = z.object({
-  [LOGIN_FORM_SCHEMA_KEYS.email]: z.string().nonempty(),
-  [LOGIN_FORM_SCHEMA_KEYS.password]: z.string().nonempty(),
+  [LOGIN_FORM_SCHEMA_KEYS.email]: z
+    .string()
+    .min(1, "Enter your email address.")
+    .email("Enter a valid email address."),
+  [LOGIN_FORM_SCHEMA_KEYS.password]: z.string().min(1, "Enter your password."),
 });
 
 export const STAFF_FORM_SCHEMA_KEYS = {

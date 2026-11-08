@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import { createTransport } from "nodemailer";
 import { z } from "zod";
 
 const sendEmailBodySchema = z.object({
@@ -8,32 +8,31 @@ const sendEmailBodySchema = z.object({
   description: z.string().min(1),
 });
 
-
 const LOGO_URL = "https://i.imgur.com/1gI2Tvc.png";
 
 // Warna brand
-const BRAND_COLOR = "#dab38d"; 
-const BRAND_DARK = "#4B3D2A"; 
-const BRAND_LINK = "#8a6a3f"; 
-const BRAND_SOFT = "#f8f1e9"; 
+const BRAND_COLOR = "#dab38d";
+const BRAND_DARK = "#4B3D2A";
+const BRAND_LINK = "#8a6a3f";
+const BRAND_SOFT = "#f8f1e9";
 
 // Mencegah HTML injection dari input pengguna
 const escapeHtml = (value: string): string =>
   value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 
-type EmailTemplateData = {
+interface EmailTemplateData {
   title: string;
   intro: string;
   descriptionLabel: string;
   name: string;
   email: string;
   description: string;
-};
+}
 
 // Template HTML (inline style + table layout supaya aman di Gmail/Outlook)
 const buildEmailHtml = ({
@@ -49,7 +48,7 @@ const buildEmailHtml = ({
   const safeLabel = escapeHtml(descriptionLabel);
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
-  const safeDescription = escapeHtml(description).replace(/\n/g, "<br />");
+  const safeDescription = escapeHtml(description).replaceAll("\n", "<br />");
   const year = new Date().getFullYear();
 
   return `
@@ -158,7 +157,7 @@ export default defineEventHandler(async (event) => {
 
   const config = useRuntimeConfig();
 
-  const transporter = nodemailer.createTransport({
+  const transporter = createTransport({
     host: config.smtpHost,
     port: Number(config.smtpPort),
     secure: true,

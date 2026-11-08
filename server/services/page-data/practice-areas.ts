@@ -56,12 +56,12 @@ export async function getPracticeAreasPageData({
 
   await enrichContentSummaries(firestore, contents);
 
-  const homeAttorneyIdsSnapshot = await rtdbGet(
-    rtdbQuery(dbRef(rtdb, RTDB_KEYS.HOME_ATTORNEY_ORDER))
+  const practiceAreaAttorneyIdsSnapshot = await rtdbGet(
+    rtdbQuery(dbRef(rtdb, RTDB_KEYS.PRACTICE_AREA_ATTORNEY_ORDER))
   );
 
   const attorneyDocs = await Promise.all(
-    readIdList(homeAttorneyIdsSnapshot).map(
+    readIdList(practiceAreaAttorneyIdsSnapshot).map(
       async (id) => await getDoc(getStaffDocRef(firestore, id))
     )
   );
