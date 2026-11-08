@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "oxlint-tailwindcss": {
+      "source": "sergioazoc/oxlint-tailwindcss",
+      "sourceType": "github",
+      "skillPath": "skills/oxlint-tailwindcss/SKILL.md",
+      "computedHash": "c6d63d22697ad5eebbbf0123459dec756b978e56407e050d0b7fcd7825e148e3"
+    },
+    "shadcn-vue": {
+      "source": "unovue/shadcn-vue",
+      "sourceType": "github",
+      "skillPath": "skills/shadcn-vue/SKILL.md",
+      "computedHash": "8f889bee4622048473cab8272b5bbcdf3e0e83929afb1b444adf572fa9c252a3"
+    },
+    "ultracite": {
+      "source": "haydenbleasel/ultracite",
+      "sourceType": "github",
+      "skillPath": "skills/ultracite/SKILL.md",
+      "computedHash": "c543d7dd84476545b8f65d14af9ec5e221eb8ee14ebe801cd4315638551d8663"
+    }
+  }
+}

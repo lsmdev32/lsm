@@ -1,105 +1,139 @@
 <script setup lang="ts">
-import { useRouteQuery } from "@vueuse/router"
-import { deleteDoc } from "firebase/firestore"
-import { RefreshCcw, UserPlus2 } from "lucide-vue-next"
-import { toast } from "vue-sonner"
-import EmptyListPlaceholder from "~/components/admin/EmptyListPlaceholder.vue"
-import { getStaffDocRef } from "~/lib/firestore-model"
-import type { StaffAppModel } from "~/lib/firestore-model"
+import { useRouteQuery } from "@vueuse/router";
+import { deleteDoc } from "firebase/firestore";
+import { RotateCcw, UserPlus2 } from "lucide-vue-next";
+import { toast } from "vue-sonner";
+
+import { confirmAction } from "~/composables/use-confirm";
+import { getStaffDocRef } from "~/lib/firestore-model";
+import type { StaffAppModel } from "~/lib/firestore-model";
 
 definePageMeta({
-	layout: "auth",
-	middleware: ["auth"],
-})
+  layout: "auth",
+  middleware: ["auth"],
+});
 
-const keyword = useRouteQuery("keyword", "")
+const keyword = useRouteQuery("keyword", "");
 
-const { refresh, isLoading, result } = useSearch<StaffAppModel>("staffs", keyword, [
-	"fullname",
-	"email",
-	"linkedin_url",
-	"type",
-	"profile_picture_url",
-	"slug",
-	"id",
-])
+const hasActiveFilters = computed(() => keyword.value !== "");
 
-async function onOpenDialog(payload: { id: string, fullname: string }) {
-	const confirmed = window.confirm(`Are you sure you want to delete the profile of ${payload.fullname}?`)
-	if (!confirmed) return
+function clearFilters() {
+  keyword.value = "";
+}
 
-	deleteDoc(getStaffDocRef(useFirestore(), payload.id))
-		.then(() => {
-			toast.success(`Profil ${payload.fullname} berhasil dihapus.`)
-			refresh()
-		})
-		.catch(() => {
-			toast.error(`Gagal menghapus profil ${payload.fullname}`)
-		})
+const { refresh, isLoading, result } = useSearch<StaffAppModel>(
+  "staffs",
+  keyword,
+  [
+    "fullname",
+    "email",
+    "linkedin_url",
+    "type",
+    "profile_picture_url",
+    "slug",
+    "id",
+  ]
+);
+
+async function onOpenDialog(payload: { id: string; fullname: string }) {
+  const confirmed = await confirmAction({
+    title: "Hapus profil?",
+    description: `Profil ${payload.fullname} akan dihapus permanen dari situs publik.`,
+    confirmLabel: "Hapus profil",
+    tone: "destructive",
+  });
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    await deleteDoc(getStaffDocRef(useFirestore(), payload.id));
+  } catch {
+    toast.error(`Gagal menghapus profil ${payload.fullname}`);
+
+    return;
+  }
+
+  toast.success(`Profil ${payload.fullname} dihapus.`);
+  refresh();
 }
 </script>
 
 <template>
-	<AdminPage
-		page-title="Profil Staff"
-	>
-		<div class="flex flex-col py-10 gap-y-4">
-			<div class="flex justify-end w-full">
-				<NuxtLink
-					to="/dashboard/profiles/create"
-					class=" flex items-center border justify-center"
-				>
-					<UiButton variant="outline">
-						<UserPlus2 />
-						<span>
-							Create Profile
-						</span>
-					</UiButton>
-				</NuxtLink>
-			</div>
-			<UiInput
-				v-model:model-value="keyword"
-				placeholder="Cari profile dengan nama atau email"
-			/>
-			<div class="flex">
-				<UiButton
-					class="capitalize"
-					@click="refresh"
-				>
-					<RefreshCcw /> Refresh list
-				</UiButton>
-			</div>
-			<div class="flex flex-wrap gap-6">
-				<template v-if="isLoading">
-					<UiSkeleton
-						v-for="i in 8"
-						:key="i"
-						class="w-[255px] h-[219px] rounded-xl shadow-md"
-					/>
-				</template>
-				<template v-else-if="result.hits.length === 0">
-					<EmptyListPlaceholder
-						v-if="result.hits.length === 0 && !isLoading"
-						class="w-full h-[300px] flex items-center justify-center"
-						item-name="profiles"
-					/>
-				</template>
-				<template
-					v-for="person in result.hits ?? []"
-					v-else
-					:key="person.objectID"
-				>
-					<AdminStaffCard
-						:id="person.objectID!"
-						:fullname="person.fullname"
-						:email="person.email"
-						:type="person.type"
-						:linkedin-url="person.linkedin_url"
-						:pp-url="person.profile_picture_url"
-						@click-delete="onOpenDialog($event)"
-					/>
-				</template>
-			</div>
-		</div>
-	</AdminPage>
+  <AdminPage
+    page-title="Profil Organisasi"
+    description="Advokat firma yang tampil di halaman attorneys."
+  >
+    <template #actions>
+      <UiButton
+        variant="outline"
+        size="sm"
+        :disabled="isLoading"
+        @click="refresh"
+      >
+        <RotateCcw :class="isLoading ? 'animate-spin' : ''" />
+        <span>Muat ulang</span>
+      </UiButton>
+      <UiButton variant="brand" size="sm" as-child>
+        <NuxtLink to="/dashboard/profiles/create">
+          <UserPlus2 />
+          <span>Profil baru</span>
+        </NuxtLink>
+      </UiButton>
+    </template>
+
+    <div class="flex w-full flex-col gap-4">
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="max-w-md min-w-60 flex-1">
+          <AdminSearchField
+            v-model="keyword"
+            placeholder="Cari nama atau email…"
+          />
+        </div>
+        <AdminClearFilterButton
+          :disabled="!hasActiveFilters"
+          @clear="clearFilters"
+        />
+      </div>
+
+      <div
+        v-if="isLoading"
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+      >
+        <UiSkeleton
+          v-for="i in 8"
+          :key="i"
+          class="h-[248px] w-full rounded-xl"
+        />
+      </div>
+
+      <AdminEmptyListPlaceholder
+        v-else-if="result.hits.length === 0"
+        :item-name="hasActiveFilters ? 'hasil' : 'profil'"
+        :description="
+          hasActiveFilters
+            ? 'Coba nama atau email lain.'
+            : 'Profil advokat yang dibuat akan muncul di sini.'
+        "
+      />
+
+      <div
+        v-else
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+      >
+        <AdminStaffCard
+          v-for="person in result.hits"
+          :key="person.objectID"
+          :id="person.objectID!"
+          :fullname="person.fullname"
+          :email="person.email"
+          :type="person.type"
+          :linkedin-url="person.linkedin_url"
+          :pp-url="person.profile_picture_url"
+          @click-delete="onOpenDialog($event)"
+        />
+      </div>
+    </div>
+  </AdminPage>
 </template>

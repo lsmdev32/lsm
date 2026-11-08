@@ -1,319 +1,296 @@
 <script setup lang="ts">
-import { Pencil, UserIcon } from "lucide-vue-next"
-import RichTextEditor from "~/components/rte/RichTextEditor.vue"
+import {
+  CameraIcon,
+  FileUpIcon,
+  LoaderCircleIcon,
+  PlusIcon,
+} from "lucide-vue-next";
+
+import RichTextEditor from "~/components/rte/rich-text-editor.vue";
 
 definePageMeta({
-	layout: "auth",
-	middleware: ["auth"],
-})
+  layout: "auth",
+  middleware: ["auth"],
+});
 
-const router = useRouter()
+const router = useRouter();
 
-const form = useCreateStaffForm()
-const isFormSubmitting = form.form.isSubmitting
+const form = useCreateStaffForm();
+const isFormSubmitting = form.form.isSubmitting;
 
-const imageURL = computed(() => {
-	const value = form.form.values.profile_picture
-	if (!value) return undefined
-	if (!(value instanceof File)) return undefined
+const RANKS = [
+  { value: "founder", label: "Founder" },
+  { value: "partner", label: "Partner" },
+  { value: "associate", label: "Associate" },
+  { value: "of_counsel", label: "Of Counsel" },
+];
 
-	return URL.createObjectURL(value)
-})
+const photoPreview = computed(() => {
+  const value = form.form.values.profile_picture;
 
-function onChooseFile() {
-	const target = document.querySelector("#pp")
+  return value instanceof File ? URL.createObjectURL(value) : undefined;
+});
 
-	if (!target) return
-	if (!(target instanceof HTMLInputElement)) return
+const cvName = computed(() => {
+  const value = form.form.values.cv;
 
-	target.click()
+  return value instanceof File ? value.name : "";
+});
+
+const photoInput = ref<{ $el?: unknown }>();
+const cvInput = ref<{ $el?: unknown }>();
+
+function chooseFile(input: { $el?: unknown } | undefined) {
+  const element = input?.$el;
+
+  if (element instanceof HTMLInputElement) {
+    element.click();
+  }
 }
 
-function onCancel() {
-	onResetForm()
-	router.replace({ path: "/dashboard/profiles" })
+function resetForm() {
+  form.resetForm();
+  window.location.reload();
 }
 
-function onResetForm() {
-	form.resetForm()
-	window.location.reload()
+function cancel() {
+  form.resetForm();
+  void router.replace({ path: "/dashboard/profiles" });
 }
 </script>
 
 <template>
-	<AdminPage
-		page-title="Create Profile"
-	>
-		<form
-			class="w-full flex flex-col py-10"
-			@submit="form.onSubmit"
-		>
-			<div class="flex gap-8">
-				<div class="flex flex-col items-center space-y-4">
-					<UiFormField
-						v-slot="{ handleChange, meta }"
-						name="profile_picture"
-					>
-						<UiFormItem
-							class="w-[200px]"
-						>
-							<UiFormLabel :required="meta.required">
-								Foto Profil
-							</UiFormLabel>
-							<UiAvatar
-								class="size-[200px] cursor-pointer hover:opacity-80 group"
-								shape="square"
-								@click="onChooseFile"
-							>
-								<UiAvatarImage
-									:src="imageURL ?? ''"
-									alt="@unovue"
-									class="group-hover:hidden"
-								/>
-								<div
-									:class="[
-										'hidden flex-col items-center gap-y-4',
-										imageURL ? 'group-hover:flex' : 'hidden']"
-								>
-									<Pencil
-										:size="50"
-										color="gray"
-									/>
-									<span class="font-semibold">Change Picture</span>
-								</div>
-								<UiAvatarFallback class="">
-									<UserIcon
-										:size="100"
-										color="gray"
-										class="block group-hover:hidden"
-									/>
-									<div class="hidden group-hover:flex flex-col items-center gap-y-4">
-										<Pencil
-											:size="50"
-											color="gray"
-										/>
-										<span class="font-semibold">Change Picture</span>
-									</div>
-								</UiAvatarFallback>
-							</UiAvatar>
-							<UiFormControl>
-								<UiInput
-									id="pp"
-									type="file"
-									accept=".jpg,.jpeg,.png"
-									placeholder="shadcn"
-									class="bg-transparent text-transparent outline hidden"
-									:disabled="isFormSubmitting"
-									@change="handleChange"
-								/>
-							</UiFormControl>
-							<UiFormMessage />
-						</UiFormItem>
-					</UiFormField>
-				</div>
-				<keep-alive>
-					<div class="flex flex-col w-1/2 gap-y-4">
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="type"
-						>
-							<UiFormItem
-								class="w-fit"
-								:required="meta.required"
-							>
-								<UiFormLabel :required="meta.required">
-									Tipe Staff
-								</UiFormLabel>
-								<UiSelect
-									v-bind="componentField"
-									:disabled="isFormSubmitting"
-								>
-									<UiFormControl>
-										<UiSelectTrigger>
-											<UiSelectValue class="pr-4" />
-										</UiSelectTrigger>
-									</UiFormControl>
-									<UiSelectContent>
-										<UiSelectGroup>
-											<UiSelectItem value="partner">
-												Partner
-											</UiSelectItem>
-											<UiSelectItem value="associate">
-												Associate
-											</UiSelectItem>
-											<UiSelectItem value="founder">
-												Founder
-											</UiSelectItem>
-											<UiSelectItem value="of_counsel">
-												Of Counsel
-											</UiSelectItem>
-										</UiSelectGroup>
-									</UiSelectContent>
-								</UiSelect>
-								<UiFormDescription>
-									Pilih tipe staff
-								</UiFormDescription>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+  <AdminPage
+    page-title="Profil baru"
+    description="Profil akan tampil di halaman attorneys setelah disimpan."
+  >
+    <template #actions>
+      <UiButton
+        variant="ghost"
+        size="sm"
+        :disabled="isFormSubmitting"
+        @click="cancel"
+      >
+        Batal
+      </UiButton>
+      <UiButton
+        variant="outline"
+        size="sm"
+        :disabled="isFormSubmitting"
+        @click="resetForm"
+      >
+        Reset
+      </UiButton>
+    </template>
 
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="fullname"
-						>
-							<UiFormItem
-								class="w-full"
-							>
-								<UiFormLabel :required="meta.required">
-									Nama Lengkap
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="text"
-										placeholder="John Doe"
-										v-bind="componentField"
-										:disabled="isFormSubmitting"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+    <form
+      class="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]"
+      @submit="form.onSubmit"
+    >
+      <div class="flex min-w-0 flex-col gap-6">
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <div class="grid gap-5 sm:grid-cols-2">
+              <UiFormField v-slot="{ componentField, meta }" name="fullname">
+                <UiFormItem>
+                  <UiFormLabel :required="meta.required">
+                    Nama lengkap
+                  </UiFormLabel>
+                  <UiFormControl>
+                    <UiInput
+                      v-bind="componentField"
+                      type="text"
+                      placeholder="Nama lengkap advokat"
+                      autofocus
+                      :disabled="isFormSubmitting"
+                    />
+                  </UiFormControl>
+                  <UiFormMessage />
+                </UiFormItem>
+              </UiFormField>
 
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="email"
-						>
-							<UiFormItem class="w-full">
-								<UiFormLabel :required="meta.required">
-									Email
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="email"
-										placeholder="john@doe.com"
-										v-bind="componentField"
-										:disabled="isFormSubmitting"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+              <UiFormField v-slot="{ componentField, meta }" name="type">
+                <UiFormItem>
+                  <UiFormLabel :required="meta.required">Jabatan</UiFormLabel>
+                  <UiSelect
+                    v-bind="componentField"
+                    :disabled="isFormSubmitting"
+                  >
+                    <UiFormControl>
+                      <UiSelectTrigger class="w-full">
+                        <UiSelectValue placeholder="Pilih jabatan" />
+                      </UiSelectTrigger>
+                    </UiFormControl>
+                    <UiSelectContent>
+                      <UiSelectItem
+                        v-for="rank in RANKS"
+                        :key="rank.value"
+                        :value="rank.value"
+                      >
+                        {{ rank.label }}
+                      </UiSelectItem>
+                    </UiSelectContent>
+                  </UiSelect>
+                  <UiFormMessage />
+                </UiFormItem>
+              </UiFormField>
 
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="linkedin_url"
-						>
-							<UiFormItem class="w-full">
-								<UiFormLabel :required="meta.required">
-									Linkedin URL
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="url"
-										placeholder="https://www.linkedin.com/in/johndoe"
-										v-bind="componentField"
-										:disabled="isFormSubmitting"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+              <UiFormField v-slot="{ componentField, meta }" name="email">
+                <UiFormItem>
+                  <UiFormLabel :required="meta.required">Email</UiFormLabel>
+                  <UiFormControl>
+                    <UiInput
+                      v-bind="componentField"
+                      type="email"
+                      placeholder="nama@lsmlaw.co.id"
+                      autocapitalize="none"
+                      spellcheck="false"
+                      :disabled="isFormSubmitting"
+                    />
+                  </UiFormControl>
+                  <UiFormMessage />
+                </UiFormItem>
+              </UiFormField>
 
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="short_bio"
-						>
-							<UiFormItem class="w-full">
-								<UiFormLabel :required="meta.required">
-									Short Biography
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="text"
-										placeholder="Saya adalah..."
-										v-bind="componentField"
-										:disabled="isFormSubmitting"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+              <UiFormField
+                v-slot="{ componentField, meta }"
+                name="linkedin_url"
+              >
+                <UiFormItem>
+                  <UiFormLabel :required="meta.required">LinkedIn</UiFormLabel>
+                  <UiFormControl>
+                    <UiInput
+                      v-bind="componentField"
+                      type="url"
+                      placeholder="https://www.linkedin.com/in/…"
+                      autocapitalize="none"
+                      spellcheck="false"
+                      :disabled="isFormSubmitting"
+                    />
+                  </UiFormControl>
+                  <UiFormMessage />
+                </UiFormItem>
+              </UiFormField>
+            </div>
 
-						<UiFormField
-							v-slot="{ handleChange, value, meta }"
-							name="bio"
-						>
-							<UiFormItem class="w-full mb-24">
-								<UiFormLabel :required="meta.required">
-									Biography
-								</UiFormLabel>
-								<UiFormControl>
-									<RichTextEditor
-										class="min-h-[200px] max-w-full"
-										:initial-value="value"
-										:disabled="isFormSubmitting"
-										@handle-change="handleChange($event)"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+            <UiFormField v-slot="{ componentField, meta }" name="short_bio">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Bio singkat</UiFormLabel>
+                <UiFormControl>
+                  <UiInput
+                    v-bind="componentField"
+                    type="text"
+                    placeholder="Satu kalimat tentang advokat ini"
+                    :disabled="isFormSubmitting"
+                  />
+                </UiFormControl>
+                <UiFormDescription>
+                  Tampil di kartu profil dan daftar advokat.
+                </UiFormDescription>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
 
-						<UiFormField
-							v-slot="{ handleChange, meta }"
-							name="cv"
-						>
-							<UiFormItem class="">
-								<UiFormLabel :required="meta.required">
-									CV/Resume
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="file"
-										accept=".pdf"
-										placeholder="shadcn"
-										class="bg-transparent text-transparent outline w-[150px]"
-										:disabled="isFormSubmitting"
-										@change="handleChange"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-								<UiFormDescription v-if="form.form.values.cv">
-									{{ form.form.values.cv.name }}
-								</UiFormDescription>
-								<UiFormDescription>
-									Upload dalam format PDF
-								</UiFormDescription>
-							</UiFormItem>
-						</UiFormField>
-						<ui-button
-							type="submit"
-							class=""
-							:disabled="isFormSubmitting"
-						>
-							Simpan
-						</ui-button>
-						<div class="flex justify-between gap-x-2">
-							<ui-button
-								variant="secondary"
-								class="flex-grow"
-								:disabled="isFormSubmitting"
-								@click="onResetForm"
-							>
-								Reset
-							</ui-button>
-							<ui-button
-								variant="outline"
-								class="flex-grow"
-								:disabled="isFormSubmitting"
-								@click="onCancel"
-							>
-								Batal
-							</ui-button>
-						</div>
-					</div>
-				</keep-alive>
-			</div>
-		</form>
-	</AdminPage>
+            <UiFormField v-slot="{ handleChange, value, meta }" name="bio">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Biografi</UiFormLabel>
+                <UiFormControl>
+                  <RichTextEditor
+                    class="max-w-full"
+                    :initial-value="value"
+                    :disabled="isFormSubmitting"
+                    @handle-change="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
+      </div>
+
+      <aside class="flex min-w-0 flex-col gap-6">
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <UiFormField v-slot="{ handleChange, meta }" name="profile_picture">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Foto profil</UiFormLabel>
+                <UiFormControl>
+                  <UiInput
+                    ref="photoInput"
+                    type="file"
+                    accept=".jpg,.jpeg,.png"
+                    class="hidden"
+                    :disabled="isFormSubmitting"
+                    @change="handleChange"
+                  />
+                </UiFormControl>
+                <button
+                  type="button"
+                  class="group relative flex aspect-square w-40 items-center justify-center overflow-hidden rounded-full border bg-muted/50 transition-colors hover:border-[#4B3D2A]/40"
+                  :disabled="isFormSubmitting"
+                  @click="chooseFile(photoInput)"
+                >
+                  <img
+                    v-if="photoPreview"
+                    :src="photoPreview"
+                    alt=""
+                    class="size-full object-cover"
+                  />
+                  <span
+                    v-else
+                    class="flex flex-col items-center gap-2 text-muted-foreground"
+                  >
+                    <CameraIcon class="size-6" aria-hidden="true" />
+                    <span class="text-xs">Pilih foto</span>
+                  </span>
+                  <span
+                    v-if="photoPreview"
+                    class="absolute inset-0 flex items-center justify-center bg-black/50 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100"
+                  >
+                    Ganti foto
+                  </span>
+                </button>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+
+            <UiFormField v-slot="{ handleChange, meta }" name="cv">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">CV</UiFormLabel>
+                <UiFormControl>
+                  <UiInput
+                    ref="cvInput"
+                    type="file"
+                    accept=".pdf"
+                    class="hidden"
+                    :disabled="isFormSubmitting"
+                    @change="handleChange"
+                  />
+                </UiFormControl>
+                <button
+                  type="button"
+                  class="flex w-full items-center justify-between gap-2 rounded-md border border-dashed px-3 py-2 text-sm transition-colors hover:border-[#4B3D2A]/40 hover:bg-muted"
+                  :disabled="isFormSubmitting"
+                  @click="chooseFile(cvInput)"
+                >
+                  <span class="min-w-0 truncate">
+                    {{ cvName || "Pilih file PDF" }}
+                  </span>
+                  <FileUpIcon class="size-4 shrink-0 text-muted-foreground" />
+                </button>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
+
+        <UiButton type="submit" variant="brand" :disabled="isFormSubmitting">
+          <LoaderCircleIcon v-if="isFormSubmitting" class="animate-spin" />
+          <PlusIcon v-else />
+          {{ isFormSubmitting ? "Menyimpan…" : "Simpan profil" }}
+        </UiButton>
+      </aside>
+    </form>
+  </AdminPage>
 </template>

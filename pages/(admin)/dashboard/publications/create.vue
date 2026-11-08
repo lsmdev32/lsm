@@ -1,286 +1,295 @@
 <script setup lang="ts">
-import { useDebounce } from "@vueuse/core"
-import { getDoc } from "firebase/firestore"
-import { PencilIcon, Trash2 } from "lucide-vue-next"
-import RichTextEditor from "~/components/rte/RichTextEditor.vue"
-import { DEBOUNCE_DEFAULT_TIME, LOCAL_STORAGE_KEYS, SESSION_STORAGE_KEYS } from "~/lib/constants"
-import { getCategoryDocRef, getStaffDocRef } from "~/lib/firestore-model"
-import type { CategoryAppModel, StaffAppModel } from "~/lib/firestore-model"
+import { useDebounce } from "@vueuse/core";
+import { getDoc } from "firebase/firestore";
+import {
+  FileUpIcon,
+  LoaderCircleIcon,
+  SaveIcon,
+  SendIcon,
+} from "lucide-vue-next";
+
+import RichTextEditor from "~/components/rte/rich-text-editor.vue";
+import {
+  DEBOUNCE_DEFAULT_TIME,
+  LOCAL_STORAGE_KEYS,
+  SESSION_STORAGE_KEYS,
+} from "~/lib/constants";
+import { getCategoryDocRef, getStaffDocRef } from "~/lib/firestore-model";
+import type { CategoryAppModel, StaffAppModel } from "~/lib/firestore-model";
 
 definePageMeta({
-	layout: "auth",
-	middleware: ["auth"],
-})
+  layout: "auth",
+  middleware: ["auth"],
+});
 
-const firestore = useFirestore()
+const firestore = useFirestore();
 
-const form = useCreatePublicationForm()
-const isFormSubmitting = form.isSubmitting
+const form = useCreatePublicationForm();
+const isFormSubmitting = form.isSubmitting;
 
-const imageURL = computed(() => {
-	const value = form.values.value.cover_image
-	if (!value) return undefined
-	if (!(value instanceof File)) return undefined
+const coverFile = computed(() => {
+  const value = form.values.value.cover_image;
 
-	return URL.createObjectURL(value)
-})
+  return value instanceof File ? value : undefined;
+});
 
-watch(imageURL, (v) => {
-	if (!v) return
+const coverPreview = computed(() =>
+  coverFile.value ? URL.createObjectURL(coverFile.value) : undefined
+);
 
-	localStorage.setItem(LOCAL_STORAGE_KEYS.IMAGE_COVER, v)
-})
+watch(coverPreview, (url) => {
+  if (url) {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.IMAGE_COVER, url);
+  }
+});
 
-const category = ref("")
-const debouncedCategory = useDebounce(category, DEBOUNCE_DEFAULT_TIME)
+const pdfFileName = computed(() => {
+  const value = form.values.value.publication;
 
-const author = ref("")
-const debouncedAuthor = useDebounce(author, DEBOUNCE_DEFAULT_TIME)
+  return value instanceof File ? value.name : "";
+});
+
+const category = ref("");
+const debouncedCategory = useDebounce(category, DEBOUNCE_DEFAULT_TIME);
+
+const author = ref("");
+const debouncedAuthor = useDebounce(author, DEBOUNCE_DEFAULT_TIME);
 
 onMounted(async () => {
-	const parsed = JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEYS.CREATE_PUBLICATION_FORM) || "{}")
+  const parsed = JSON.parse(
+    sessionStorage.getItem(SESSION_STORAGE_KEYS.CREATE_PUBLICATION_FORM) || "{}"
+  );
 
-	if (parsed.category) {
-		const q = await getDoc(getCategoryDocRef(firestore, parsed.category))
+  if (parsed.category) {
+    const doc = await getDoc(getCategoryDocRef(firestore, parsed.category));
 
-		category.value = q.data()?.name || ""
-	}
+    category.value = doc.data()?.name ?? "";
+  }
 
-	if (parsed.author) {
-		const q = await getDoc(getStaffDocRef(firestore, parsed.author))
-		author.value = q.data()?.fullname || ""
-	}
-})
+  if (parsed.author) {
+    const doc = await getDoc(getStaffDocRef(firestore, parsed.author));
 
-function onChooseImage() {
-	const target = document.querySelector("#image_cover")
+    author.value = doc.data()?.fullname ?? "";
+  }
+});
 
-	if (!target) return
-	if (!(target instanceof HTMLInputElement)) return
+const { result: resultCategories } = useSearch<CategoryAppModel>(
+  "categories",
+  debouncedCategory,
+  ["name"]
+);
 
-	target.click()
+const mappedCategories = computed(() =>
+  (resultCategories.value?.hits ?? []).map((item) => ({
+    label: item.name,
+    value: item.objectID,
+  }))
+);
+
+const { result: resultAuthors } = useSearch<StaffAppModel>(
+  "staffs",
+  debouncedAuthor,
+  ["fullname"]
+);
+
+const mappedAuthors = computed(() =>
+  (resultAuthors.value?.hits ?? []).map((item) => ({
+    label: item.fullname,
+    value: item.objectID,
+  }))
+);
+
+function selectCoverImage(file: File) {
+  form.form.setFieldValue("cover_image", file);
 }
 
-const { result: resultCategories } = useSearch<CategoryAppModel>("categories", debouncedCategory, ["name"])
-const mappedCategories = computed(() => {
-	if (!resultCategories.value) return []
+function selectPublicationFile(event: Event) {
+  // SAFETY: bound to `@change` on the PDF file input itself.
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.item(0);
 
-	return resultCategories.value.hits.map(item => ({
-		label: item.name,
-		value: item.objectID,
-	}))
-})
+  if (!file) {
+    return;
+  }
 
-const { result: resultAuthors } = useSearch<StaffAppModel>("staffs", debouncedAuthor, ["fullname"])
-const mappedAuthors = computed(() => {
-	if (!resultAuthors.value) return []
-
-	return resultAuthors.value.hits.map(item => ({
-		label: item.fullname,
-		value: item.objectID,
-	}))
-})
+  form.form.setFieldValue("publication", file);
+}
 </script>
 
 <template>
-	<AdminPage page-title="Buat Publikasi Baru">
-		<form
-			class="w-full flex flex-col gap-y-4 py-20"
-			@submit="form.onSubmit"
-		>
-			<div class="self-center flex flex-col gap-y-2">
-				<UiFormField
-					v-slot="{ handleChange, meta }"
-					name="cover_image"
-					class="self-center"
-				>
-					<UiFormItem class="self-center">
-						<UiFormLabel :required="meta.required">
-							Gambar Sampul
-						</UiFormLabel>
-						<div class="group w-[600px] aspect-video rounded-lg border">
-							<NuxtImg
-								:src="imageURL"
-								class="w-full h-full bg-gray-300 group-hover:hidden object-fill object-center rounded-lg"
-							/>
-							<div
-								class="w-full h-full hidden group-hover:flex flex-col items-center justify-center cursor-pointer bg-gray-300 bg-opacity-60 gap-y-2"
-								@click="onChooseImage"
-							>
-								<PencilIcon class="w-8 h-8 text-gray-500" />
-								<span class="text-lg text-gray-500">Ubah Gambar Sampul</span>
-							</div>
-						</div>
-						<UiFormControl>
-							<UiInput
-								id="image_cover"
-								type="file"
-								accept=".jpg,.jpeg,.png"
-								placeholder="shadcn"
-								class="bg-transparent text-transparent outline hidden"
-								:disabled="isFormSubmitting"
-								@change="handleChange"
-							/>
-						</UiFormControl>
-						<UiFormMessage />
-					</UiFormItem>
-				</UiFormField>
-				<ui-button
-					v-if="imageURL"
-					variant="outline"
-					class="mx-auto"
-					@click.prevent="form.removeCoverImage"
-				>
-					<Trash2 /> Hapus Gambar
-				</ui-button>
-			</div>
+  <AdminPage
+    page-title="Publikasi baru"
+    description="Ringkasan di situs, PDF untuk diunduh."
+  >
+    <template #actions>
+      <UiButton
+        variant="outline"
+        size="sm"
+        :disabled="isFormSubmitting"
+        @click="form.resetForm()"
+      >
+        Reset
+      </UiButton>
+    </template>
 
-			<UiFormField
-				v-slot="{ componentField, meta }"
-				name="title"
-			>
-				<UiFormItem
-					class="w-full"
-				>
-					<UiFormLabel :required="meta.required">
-						Judul
-					</UiFormLabel>
-					<UiFormControl>
-						<UiInput
-							type="text"
-							placeholder="John Doe"
-							v-bind="componentField"
-							:disabled="isFormSubmitting"
-						/>
-					</UiFormControl>
-					<UiFormMessage />
-				</UiFormItem>
-			</UiFormField>
+    <form
+      class="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]"
+      @submit="form.onSubmit"
+    >
+      <div class="flex min-w-0 flex-col gap-6">
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <UiFormField v-slot="{ componentField, meta }" name="title">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Judul</UiFormLabel>
+                <UiFormControl>
+                  <UiInput
+                    v-bind="componentField"
+                    type="text"
+                    placeholder="Judul publikasi"
+                    autofocus
+                    :disabled="isFormSubmitting"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
 
-			<UiFormField
-				v-slot="{ handleChange, value, meta }"
-				name="content"
-			>
-				<UiFormItem class="w-full mb-4">
-					<UiFormLabel :required="meta.required">
-						Deskripsi Publikasi
-					</UiFormLabel>
-					<UiFormControl>
-						<RichTextEditor
-							class="max-w-full"
-							:initial-value="value"
-							:disabled="isFormSubmitting"
-							@handle-change="handleChange($event)"
-						/>
-					</UiFormControl>
-					<UiFormMessage />
-				</UiFormItem>
-			</UiFormField>
+            <UiFormField v-slot="{ handleChange, value, meta }" name="content">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">
+                  Ringkasan publikasi
+                </UiFormLabel>
+                <UiFormControl>
+                  <RichTextEditor
+                    class="max-w-full"
+                    :initial-value="value"
+                    :disabled="isFormSubmitting"
+                    @handle-change="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
+      </div>
 
-			<div class="flex gap-x-8 justify-start">
-				<UiFormField
-					v-slot="{ handleChange, meta }"
-					name="category"
-				>
-					<UiFormItem class="w-[400px]">
-						<UiFormLabel :required="meta.required">
-							Kategori
-						</UiFormLabel>
-						<UiFormControl>
-							<AdminSearchableComboBox
-								v-model:model-value="category"
-								:items="mappedCategories"
-								@select="handleChange($event)"
-							/>
-						</UiFormControl>
-						<UiFormMessage />
-					</UiFormItem>
-				</UiFormField>
+      <aside class="flex min-w-0 flex-col gap-6">
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <AdminCoverImageField
+              name="cover_image"
+              :preview-url="coverPreview"
+              :disabled="isFormSubmitting"
+              @select="selectCoverImage"
+              @remove="form.removeCoverImage()"
+            />
 
-				<UiFormField
-					v-slot="{ handleChange, meta }"
-					name="author"
-				>
-					<UiFormItem class="w-[400px]">
-						<UiFormLabel :required="meta.required">
-							Penulis
-						</UiFormLabel>
-						<UiFormControl>
-							<AdminSearchableComboBox
-								v-model:model-value="author"
-								:items="mappedAuthors"
-								@select="handleChange($event)"
-							/>
-						</UiFormControl>
-						<UiFormMessage />
-					</UiFormItem>
-				</UiFormField>
-			</div>
+            <UiFormField v-slot="{ meta }" name="publication">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">File PDF</UiFormLabel>
+                <UiFormControl>
+                  <label
+                    class="flex cursor-pointer items-center justify-between gap-2 rounded-md border border-dashed px-3 py-2 text-sm transition-colors hover:border-[#4B3D2A]/40 hover:bg-muted"
+                    :class="
+                      isFormSubmitting ? 'pointer-events-none opacity-60' : ''
+                    "
+                  >
+                    <span class="min-w-0 truncate">
+                      {{ pdfFileName || "Pilih file PDF" }}
+                    </span>
+                    <FileUpIcon class="size-4 shrink-0 text-muted-foreground" />
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      class="hidden"
+                      :disabled="isFormSubmitting"
+                      @change="selectPublicationFile"
+                    />
+                  </label>
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
 
-			<UiFormField
-				v-slot="{ handleChange, meta }"
-				name="publication"
-			>
-				<UiFormItem class="w-full">
-					<UiFormLabel :required="meta.required">
-						File Publikasi
-					</UiFormLabel>
-					<UiFormControl>
-						<UiInput
-							type="file"
-							accept=".pdf"
-							placeholder="Input File"
-							@change="handleChange($event)"
-						/>
-					</UiFormControl>
-					<UiFormMessage />
-				</UiFormItem>
-			</UiFormField>
+            <UiFormField v-slot="{ handleChange, meta }" name="category">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Kategori</UiFormLabel>
+                <UiFormControl>
+                  <AdminSearchableComboBox
+                    v-model:model-value="category"
+                    :items="mappedCategories"
+                    placeholder="Pilih kategori"
+                    @select="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
 
-			<UiFormField
-				v-slot="{ handleChange, meta, value }"
-				name="published_at"
-			>
-				<UiFormItem class="w-[400px] flex flex-col">
-					<UiFormLabel :required="meta.required">
-						Dipublikasikan pada
-					</UiFormLabel>
-					<UiFormControl>
-						<AdminDatePicker
-							:model-value="value"
-							@update:model-value="handleChange($event)"
-						/>
-					</UiFormControl>
-					<UiFormMessage />
-				</UiFormItem>
-			</UiFormField>
+            <UiFormField v-slot="{ handleChange, meta }" name="author">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Penulis</UiFormLabel>
+                <UiFormControl>
+                  <AdminSearchableComboBox
+                    v-model:model-value="author"
+                    :items="mappedAuthors"
+                    placeholder="Pilih penulis"
+                    @select="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
 
-			<div class="flex w-full items-center justify-center pt-10 gap-x-4">
-				<ui-button
-					class="capitalize flex-1 items-center"
-					:disabled="isFormSubmitting"
-					@click="form.saveAsPublished()"
-				>
-					Simpan dan publikasikan
-				</ui-button>
-				<ui-button
-					class="capitalize flex-1"
-					variant="secondary"
-					:disabled="isFormSubmitting"
-					@click="form.saveAsDraft()"
-				>
-					Simpan Draft
-				</ui-button>
-			</div>
-			<ui-button
-				type="button"
-				variant="outline"
-				class="mt-4 w-full"
-				:disabled="isFormSubmitting"
-				@click="form.resetForm()"
-			>
-				Reset Formulir
-			</ui-button>
-		</form>
-	</AdminPage>
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <UiFormField
+              v-slot="{ handleChange, meta, value }"
+              name="published_at"
+            >
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">
+                  Tanggal terbit
+                </UiFormLabel>
+                <UiFormControl>
+                  <AdminDatePicker
+                    class="w-full"
+                    :model-value="value"
+                    @update:model-value="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
+
+        <div class="flex flex-col gap-2">
+          <UiButton
+            type="button"
+            variant="brand"
+            :disabled="isFormSubmitting"
+            @click="form.saveAsPublished()"
+          >
+            <LoaderCircleIcon v-if="isFormSubmitting" class="animate-spin" />
+            <SendIcon v-else />
+            {{ isFormSubmitting ? "Menyimpan…" : "Simpan dan terbitkan" }}
+          </UiButton>
+          <UiButton
+            type="button"
+            variant="outline"
+            :disabled="isFormSubmitting"
+            @click="form.saveAsDraft()"
+          >
+            <SaveIcon />
+            Simpan sebagai draft
+          </UiButton>
+        </div>
+      </aside>
+    </form>
+  </AdminPage>
 </template>

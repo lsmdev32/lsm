@@ -1,328 +1,321 @@
 <script setup lang="ts">
-import { Download, Pencil } from "lucide-vue-next"
-import { toast } from "vue-sonner"
-import RichTextEditor from "~/components/rte/RichTextEditor.vue"
+import {
+  CameraIcon,
+  DownloadIcon,
+  FileUpIcon,
+  LoaderCircleIcon,
+} from "lucide-vue-next";
+import { toast } from "vue-sonner";
+
+import RichTextEditor from "~/components/rte/rich-text-editor.vue";
 
 definePageMeta({
-	layout: "auth",
-	middleware: ["auth"],
-})
+  layout: "auth",
+  middleware: ["auth"],
+});
 
-const route = useRoute()
-const id = ref<string>(route.params.id as string)
+const route = useRoute();
 
-const form = useEditStaffForm(id)
-const isFormSubmitting = form.form.isSubmitting
+// SAFETY: `/dashboard/profiles/[id]/edit` always matches exactly one `id`
+// segment, which the router types as `string`.
+const id = ref<string>(route.params.id as string);
 
-const tempImageRef = ref<File>()
-const tempCVRef = ref<File>()
+const form = useEditStaffForm(id);
+const isFormSubmitting = form.form.isSubmitting;
 
-function onChooseFile() {
-	const target = document.querySelector("#pp")
+const RANKS = [
+  { value: "founder", label: "Founder" },
+  { value: "partner", label: "Partner" },
+  { value: "associate", label: "Associate" },
+  { value: "of_counsel", label: "Of Counsel" },
+];
 
-	if (!target) return
-	if (!(target instanceof HTMLInputElement)) return
+const photoUploading = ref(false);
+const cvUploading = ref(false);
 
-	target.click()
+const photoInput = ref<{ $el?: unknown }>();
+const cvInput = ref<{ $el?: unknown }>();
+
+function chooseFile(input: { $el?: unknown } | undefined) {
+  const element = input?.$el;
+
+  if (element instanceof HTMLInputElement) {
+    element.click();
+  }
 }
 
-async function handlePPChange(event: Event) {
-	const target = event.target as HTMLInputElement
+async function handlePhotoChange(event: Event) {
+  // SAFETY: bound to `@change` on the photo input itself.
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.item(0);
 
-	const file = target.files?.item(0)
+  if (!file) {
+    return;
+  }
 
-	if (!file) return
-	if (!(file instanceof File)) return
+  photoUploading.value = true;
 
-	form.updateProfilePicture(file)
-		.catch(() => {
-			toast.error("Gagal mengupload foto profil")
-		})
-	tempImageRef.value = file
+  try {
+    await form.updateProfilePicture(file);
+  } catch {
+    toast.error("Gagal mengunggah foto profil");
+  } finally {
+    photoUploading.value = false;
+    input.value = "";
+  }
 }
 
-async function handleCVChange(event: Event) {
-	const target = event.target as HTMLInputElement
+async function handleCvChange(event: Event) {
+  // SAFETY: bound to `@change` on the CV input itself.
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.item(0);
 
-	const file = target.files?.item(0)
+  if (!file) {
+    return;
+  }
 
-	if (!file) return
-	if (!(file instanceof File)) return
+  cvUploading.value = true;
 
-	await form.updateCV(file)
-		.catch(() => {
-			toast.error("Gagal mengupload CV")
-		})
-	tempCVRef.value = file
+  try {
+    await form.updateCV(file);
+  } catch {
+    toast.error("Gagal mengunggah CV");
+  } finally {
+    cvUploading.value = false;
+    input.value = "";
+  }
 }
-
-const ppAlt = computed(() => {
-	if (!tempImageRef.value) return
-
-	return URL.createObjectURL(tempImageRef.value)
-})
 </script>
 
 <template>
-	<AdminPage
-		page-title="Edit Profile"
-		:transform-crumbs="{
-			2: () => form.form.values.fullname,
-		}"
-	>
-		<form
-			class="w-full flex flex-col py-10"
-			@submit="form.onSubmit"
-		>
-			<div class="flex gap-8">
-				<div class="flex flex-col items-center space-y-4">
-					<UiFormField
-						v-slot="{ meta }"
-						name="profile_picture"
-					>
-						<UiFormItem
-							class="w-[200px]"
-						>
-							<UiFormLabel :required="meta.required">
-								Foto Profil
-							</UiFormLabel>
-							<UiAvatar
-								class="size-[200px] cursor-pointer hover:opacity-80 group"
-								shape="square"
-								@click="onChooseFile"
-							>
-								<UiAvatarImage
-									:src="form.form.values.pp_url ?? ''"
-									:alt="ppAlt"
-									class="group-hover:opacity-30"
-								/>
-								<div
-									:class="[
-										'absolute hidden flex-col items-center gap-y-4',
-										form.form.values.pp_url ? 'group-hover:flex bg-transparent' : 'hidden']"
-								>
-									<Pencil
-										:size="50"
-										color="gray"
-									/>
-									<span class="font-semibold">Change Picture</span>
-								</div>
-							</UiAvatar>
-							<UiFormControl>
-								<UiInput
-									id="pp"
-									type="file"
-									accept=".jpg,.jpeg,.png"
-									placeholder="shadcn"
-									class="bg-transparent text-transparent outline hidden"
-									:disabled="isFormSubmitting"
-									@change="handlePPChange"
-								/>
-							</UiFormControl>
-							<UiFormMessage />
-						</UiFormItem>
-					</UiFormField>
-				</div>
-				<keep-alive>
-					<div class="flex flex-col w-1/2 gap-y-4">
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="type"
-						>
-							<UiFormItem
-								class="w-fit"
-								:required="meta.required"
-							>
-								<UiFormLabel :required="meta.required">
-									Tipe Staff
-								</UiFormLabel>
-								<UiSelect
-									v-bind="componentField"
-									:disabled="isFormSubmitting"
-								>
-									<UiFormControl>
-										<UiSelectTrigger>
-											<UiSelectValue class="pr-4" />
-										</UiSelectTrigger>
-									</UiFormControl>
-									<UiSelectContent>
-										<UiSelectGroup>
-											<UiSelectItem value="partner">
-												Partner
-											</UiSelectItem>
-											<UiSelectItem value="associate">
-												Associate
-											</UiSelectItem>
-											<UiSelectItem value="founder">
-												Founder
-											</UiSelectItem>
-											<UiSelectItem value="of_counsel">
-												Of Counsel
-											</UiSelectItem>
-										</UiSelectGroup>
-									</UiSelectContent>
-								</UiSelect>
-								<UiFormDescription>
-									Pilih tipe staff
-								</UiFormDescription>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+  <AdminPage
+    page-title="Ubah profil"
+    description="Perubahan langsung tampil di halaman attorneys."
+    :transform-crumbs="{ 2: () => form.form.values.fullname }"
+  >
+    <form
+      class="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]"
+      @submit="form.onSubmit"
+    >
+      <div class="flex min-w-0 flex-col gap-6">
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <div class="grid gap-5 sm:grid-cols-2">
+              <UiFormField v-slot="{ componentField, meta }" name="fullname">
+                <UiFormItem>
+                  <UiFormLabel :required="meta.required">
+                    Nama lengkap
+                  </UiFormLabel>
+                  <UiFormControl>
+                    <UiInput
+                      v-bind="componentField"
+                      type="text"
+                      :disabled="isFormSubmitting"
+                    />
+                  </UiFormControl>
+                  <UiFormMessage />
+                </UiFormItem>
+              </UiFormField>
 
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="fullname"
-						>
-							<UiFormItem
-								class="w-full"
-							>
-								<UiFormLabel :required="meta.required">
-									Nama Lengkap
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="text"
-										placeholder="John Doe"
-										v-bind="componentField"
-										:disabled="isFormSubmitting"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+              <UiFormField v-slot="{ componentField, meta }" name="type">
+                <UiFormItem>
+                  <UiFormLabel :required="meta.required">Jabatan</UiFormLabel>
+                  <UiSelect
+                    v-bind="componentField"
+                    :disabled="isFormSubmitting"
+                  >
+                    <UiFormControl>
+                      <UiSelectTrigger class="w-full">
+                        <UiSelectValue placeholder="Pilih jabatan" />
+                      </UiSelectTrigger>
+                    </UiFormControl>
+                    <UiSelectContent>
+                      <UiSelectItem
+                        v-for="rank in RANKS"
+                        :key="rank.value"
+                        :value="rank.value"
+                      >
+                        {{ rank.label }}
+                      </UiSelectItem>
+                    </UiSelectContent>
+                  </UiSelect>
+                  <UiFormMessage />
+                </UiFormItem>
+              </UiFormField>
 
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="email"
-						>
-							<UiFormItem class="w-full">
-								<UiFormLabel :required="meta.required">
-									Email
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="email"
-										placeholder="john@doe.com"
-										v-bind="componentField"
-										:disabled="isFormSubmitting"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+              <UiFormField v-slot="{ componentField, meta }" name="email">
+                <UiFormItem>
+                  <UiFormLabel :required="meta.required">Email</UiFormLabel>
+                  <UiFormControl>
+                    <UiInput
+                      v-bind="componentField"
+                      type="email"
+                      autocapitalize="none"
+                      spellcheck="false"
+                      :disabled="isFormSubmitting"
+                    />
+                  </UiFormControl>
+                  <UiFormMessage />
+                </UiFormItem>
+              </UiFormField>
 
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="linkedin_url"
-						>
-							<UiFormItem class="w-full">
-								<UiFormLabel :required="meta.required">
-									Linkedin URL
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="url"
-										placeholder="https://www.linkedin.com/in/johndoe"
-										v-bind="componentField"
-										:disabled="isFormSubmitting"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+              <UiFormField
+                v-slot="{ componentField, meta }"
+                name="linkedin_url"
+              >
+                <UiFormItem>
+                  <UiFormLabel :required="meta.required">LinkedIn</UiFormLabel>
+                  <UiFormControl>
+                    <UiInput
+                      v-bind="componentField"
+                      type="url"
+                      autocapitalize="none"
+                      spellcheck="false"
+                      :disabled="isFormSubmitting"
+                    />
+                  </UiFormControl>
+                  <UiFormMessage />
+                </UiFormItem>
+              </UiFormField>
+            </div>
 
-						<UiFormField
-							v-slot="{ componentField, meta }"
-							name="short_bio"
-						>
-							<UiFormItem class="w-full">
-								<UiFormLabel :required="meta.required">
-									Short Biography
-								</UiFormLabel>
-								<UiFormControl>
-									<UiInput
-										type="text"
-										placeholder="Saya adalah..."
-										v-bind="componentField"
-										:disabled="isFormSubmitting"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+            <UiFormField v-slot="{ componentField, meta }" name="short_bio">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Bio singkat</UiFormLabel>
+                <UiFormControl>
+                  <UiInput
+                    v-bind="componentField"
+                    type="text"
+                    :disabled="isFormSubmitting"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
 
-						<UiFormField
-							v-slot="{ handleChange, value, meta }"
-							name="bio"
-						>
-							<UiFormItem class="w-full mb-24">
-								<UiFormLabel :required="meta.required">
-									Biography
-								</UiFormLabel>
-								<UiFormControl>
-									<RichTextEditor
-										class="min-h-[200px] max-w-full"
-										:initial-value="value"
-										:disabled="isFormSubmitting"
-										@handle-change="handleChange($event)"
-									/>
-								</UiFormControl>
-								<UiFormMessage />
-							</UiFormItem>
-						</UiFormField>
+            <UiFormField v-slot="{ handleChange, value, meta }" name="bio">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Biografi</UiFormLabel>
+                <UiFormControl>
+                  <RichTextEditor
+                    class="max-w-full"
+                    :initial-value="value"
+                    :disabled="isFormSubmitting"
+                    @handle-change="handleChange($event)"
+                  />
+                </UiFormControl>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
+      </div>
 
-						<UiFormField
-							v-slot="{ meta }"
-							name="cv"
-						>
-							<UiFormItem class="">
-								<UiFormLabel :required="meta.required">
-									CV/Resume
-								</UiFormLabel>
-								<div class="flex items-center gap-x-2">
-									<div>
-										<UiFormControl>
-											<UiInput
-												type="file"
-												accept=".pdf"
-												placeholder="shadcn"
-												class="bg-transparent text-transparent outline w-[150px]"
-												:disabled="isFormSubmitting"
-												@change="handleCVChange"
-											/>
-										</UiFormControl>
-										<UiFormMessage />
-									</div>
-									<UiFormDescription
-										v-if="form.form.values.cv_url"
-									>
-										<NuxtLink
-											:to="form.form.values.cv_url"
-											target="_blank"
-											class="text-blue-500 hover:text-blue-600 flex items-center border border-blue-400 p-2 rounded-lg justify-center"
-										>
-											<Download />
-											<span>
-												Download URL
-											</span>
-										</NuxtLink>
-									</UiFormDescription>
-								</div>
-							</UiFormItem>
-						</UiFormField>
-						<ui-button
-							type="submit"
-							class=""
-							:disabled="isFormSubmitting"
-						>
-							Perbarui
-						</ui-button>
-						<div class="flex justify-between gap-x-2">
-							<!--  -->
-						</div>
-					</div>
-				</keep-alive>
-			</div>
-		</form>
-	</AdminPage>
+      <aside class="flex min-w-0 flex-col gap-6">
+        <UiCard>
+          <UiCardContent class="flex flex-col gap-5 p-5 sm:p-6">
+            <UiFormField v-slot="{ meta }" name="profile_picture">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">Foto profil</UiFormLabel>
+                <UiFormControl>
+                  <UiInput
+                    ref="photoInput"
+                    type="file"
+                    accept=".jpg,.jpeg,.png"
+                    class="hidden"
+                    :disabled="isFormSubmitting || photoUploading"
+                    @change="handlePhotoChange"
+                  />
+                </UiFormControl>
+                <button
+                  type="button"
+                  class="group relative flex aspect-square w-40 items-center justify-center overflow-hidden rounded-full border bg-muted/50 transition-colors hover:border-[#4B3D2A]/40"
+                  :disabled="isFormSubmitting || photoUploading"
+                  @click="chooseFile(photoInput)"
+                >
+                  <img
+                    v-if="form.form.values.pp_url"
+                    :src="form.form.values.pp_url"
+                    alt=""
+                    class="size-full object-cover"
+                  />
+                  <span
+                    v-else
+                    class="flex flex-col items-center gap-2 text-muted-foreground"
+                  >
+                    <CameraIcon class="size-6" aria-hidden="true" />
+                    <span class="text-xs">Pilih foto</span>
+                  </span>
+                  <span
+                    class="absolute inset-0 flex items-center justify-center bg-black/50 text-xs font-medium text-white transition-opacity"
+                    :class="
+                      photoUploading || !form.form.values.pp_url
+                        ? 'opacity-100'
+                        : 'opacity-0 group-hover:opacity-100'
+                    "
+                  >
+                    <LoaderCircleIcon
+                      v-if="photoUploading"
+                      class="mr-1 size-4 animate-spin"
+                    />
+                    {{ photoUploading ? "Mengunggah…" : "Ganti foto" }}
+                  </span>
+                </button>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+
+            <UiFormField v-slot="{ meta }" name="cv">
+              <UiFormItem>
+                <UiFormLabel :required="meta.required">CV</UiFormLabel>
+                <UiFormControl>
+                  <UiInput
+                    ref="cvInput"
+                    type="file"
+                    accept=".pdf"
+                    class="hidden"
+                    :disabled="isFormSubmitting || cvUploading"
+                    @change="handleCvChange"
+                  />
+                </UiFormControl>
+                <button
+                  type="button"
+                  class="flex w-full items-center justify-between gap-2 rounded-md border border-dashed px-3 py-2 text-sm transition-colors hover:border-[#4B3D2A]/40 hover:bg-muted"
+                  :disabled="isFormSubmitting || cvUploading"
+                  @click="chooseFile(cvInput)"
+                >
+                  <span class="min-w-0 truncate">
+                    {{ cvUploading ? "Mengunggah…" : "Ganti file PDF" }}
+                  </span>
+                  <FileUpIcon class="size-4 shrink-0 text-muted-foreground" />
+                </button>
+                <UiButton
+                  v-if="form.form.values.cv_url"
+                  variant="link"
+                  size="sm"
+                  as-child
+                  class="w-fit px-0"
+                >
+                  <a
+                    :href="form.form.values.cv_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <DownloadIcon />
+                    <span>Buka CV saat ini</span>
+                  </a>
+                </UiButton>
+                <UiFormMessage />
+              </UiFormItem>
+            </UiFormField>
+          </UiCardContent>
+        </UiCard>
+
+        <UiButton type="submit" variant="brand" :disabled="isFormSubmitting">
+          <LoaderCircleIcon v-if="isFormSubmitting" class="animate-spin" />
+          {{ isFormSubmitting ? "Menyimpan…" : "Simpan perubahan" }}
+        </UiButton>
+      </aside>
+    </form>
+  </AdminPage>
 </template>
