@@ -55,11 +55,11 @@ async function handleSubmit(_payload: LoginFormPayload) {
     <div class="flex min-h-screen w-full flex-col items-center justify-center">
       <div
         :class="[
-          'flex min-h-[315px] min-w-[416px] flex-col items-center space-y-6 rounded-lg p-4 shadow-xl outline outline-1 outline-black',
+          'flex min-h-78.75 min-w-104 flex-col items-center space-y-6 rounded-lg p-4 shadow-xl outline outline-black',
           isSubmitting ? 'opacity-50' : 'opacity-100',
         ]"
       >
-        <NuxtImg :src="LogoSVG" class="aspect-square size-[75px]" />
+        <NuxtImg :src="LogoSVG" class="aspect-square size-18.75" />
         <ClientOnly>
           <AutoForm
             :schema="LOGIN_FORM_SCHEMA"
