@@ -11,6 +11,7 @@ export function useSearch<
   >[],
 >(index: string, query: Ref<string>, onlyAttributes?: [...TA]) {
   const isLoading = ref(false);
+  const refreshToken = ref(0);
   const debouncedValue = useDebounce(query, DEBOUNCE_DEFAULT_TIME);
 
   const { result, search } = useAlgoliaSearch<Pick<T, TA[number]>>(index);
@@ -22,10 +23,11 @@ export function useSearch<
   };
 
   watch(
-    debouncedValue,
-    async (v) => {
+    [debouncedValue, refreshToken],
+    async ([value]) => {
       isLoading.value = true;
-      await search({ query: v, requestOptions }).finally(() => {
+
+      await search({ query: value, requestOptions }).finally(() => {
         isLoading.value = false;
       });
     },
@@ -34,9 +36,9 @@ export function useSearch<
     }
   );
 
-  async function refresh() {
-    isLoading.value = true;
-    window.location.reload();
+  /** Re-runs the current query without reloading the page. */
+  function refresh() {
+    refreshToken.value += 1;
   }
 
   return {

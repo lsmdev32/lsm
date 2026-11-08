@@ -16,6 +16,7 @@ export function useBlogList() {
   const debouncedCategory = useDebounce(category, DEBOUNCE_DEFAULT_TIME);
   const debouncedAuthor = useDebounce(author, DEBOUNCE_DEFAULT_TIME);
   const isLoading = ref(false);
+  const refreshToken = ref(0);
 
   const { search, result } = useAlgoliaSearch<BlogAppModel>("contents");
   const results = computed(() => result?.value?.hits ?? []);
@@ -24,7 +25,13 @@ export function useBlogList() {
   const currentPage = computed(() => result?.value?.page ?? 0);
 
   watch(
-    [debouncedSearch, debouncedPage, debouncedCategory, debouncedAuthor],
+    [
+      debouncedSearch,
+      debouncedPage,
+      debouncedCategory,
+      debouncedAuthor,
+      refreshToken,
+    ],
     async ([s, p, c, a]) => {
       const filter = [`type:blog`];
 
@@ -69,6 +76,10 @@ export function useBlogList() {
     page.value = value;
   }
 
+  function refresh() {
+    refreshToken.value += 1;
+  }
+
   return {
     keyword,
     category,
@@ -81,5 +92,6 @@ export function useBlogList() {
     totalPages,
     currentPage,
     setPage,
+    refresh,
   };
 }

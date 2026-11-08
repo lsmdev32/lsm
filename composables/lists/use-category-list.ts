@@ -11,6 +11,7 @@ export function useCategoryList() {
   const debouncedSearch = useDebounce(searchString, DEBOUNCE_DEFAULT_TIME);
   const debouncedPage = useDebounce(page, DEBOUNCE_DEFAULT_TIME);
   const isLoading = ref(false);
+  const refreshToken = ref(0);
 
   const { search, result } = useAlgoliaSearch<CategoryAppModel>("categories");
   const results = computed(() => result?.value?.hits ?? []);
@@ -19,7 +20,7 @@ export function useCategoryList() {
   const currentPage = computed(() => result?.value?.page ?? 0);
 
   watch(
-    [debouncedSearch, debouncedPage],
+    [debouncedSearch, debouncedPage, refreshToken],
     async ([s, p]) => {
       const requestOptions: SearchOptions & RequestOptions = {
         page: p,
@@ -43,6 +44,10 @@ export function useCategoryList() {
     page.value = value;
   }
 
+  function refresh() {
+    refreshToken.value += 1;
+  }
+
   return {
     searchString,
     isLoading,
@@ -51,5 +56,6 @@ export function useCategoryList() {
     totalPages,
     currentPage,
     setPage,
+    refresh,
   };
 }

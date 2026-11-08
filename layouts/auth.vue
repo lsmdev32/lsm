@@ -20,8 +20,14 @@ useHead({
       <ConfirmDialog />
       <AppSidebar />
       <SidebarInset class="min-w-0">
-        <div class="flex flex-1 flex-col gap-2 p-4">
-          <SidebarTrigger class="-mt-1 -ml-1" />
+        <header
+          class="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b bg-background/85 px-4 backdrop-blur md:px-6"
+        >
+          <SidebarTrigger class="-ml-2" />
+          <span class="h-5 w-px bg-border" aria-hidden="true" />
+          <p class="text-sm font-medium text-muted-foreground">Panel admin</p>
+        </header>
+        <div class="flex flex-1 flex-col px-4 py-6 md:px-6 lg:px-8">
           <slot />
         </div>
       </SidebarInset>
