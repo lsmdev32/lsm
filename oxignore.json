@@ -1,1 +1,1 @@
-["**/components/ui/**", "**/.agents/**"]
+["**/components/ui/**", "**/.agents/**", "**/*.md", "docs"]
