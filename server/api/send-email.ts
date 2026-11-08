@@ -143,7 +143,7 @@ export default defineEventHandler(async (event) => {
 
   if (type === "contact") {
     subject = `From Contact Us : ${name} ingin menghubungi Anda`;
-    to = "rayhanhamada1999@gmail.com";
+    to = "lsmlawfirm@lsmlaw.co.id";
     title = "Pesan Baru dari Contact Us";
     intro = "Ada pesan baru yang masuk lewat formulir Contact Us:";
     descriptionLabel = "Pesan";
