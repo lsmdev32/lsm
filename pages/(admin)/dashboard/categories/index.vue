@@ -21,6 +21,13 @@ function refresh() {
   location.reload();
 }
 
+const hasActiveFilters = computed(() => searchString.value !== "");
+
+function clearFilters() {
+  searchString.value = "";
+  setPage(0);
+}
+
 async function submitCreateCategory() {
   await submit();
 
@@ -50,6 +57,10 @@ async function submitCreateCategory() {
               class="max-w-xs"
               placeholder="Cari kategori"
               :disabled="isSubmitting"
+            />
+            <AdminClearFilterButton
+              :disabled="!hasActiveFilters || isSubmitting"
+              @clear="clearFilters"
             />
             <UiButton
               class=""

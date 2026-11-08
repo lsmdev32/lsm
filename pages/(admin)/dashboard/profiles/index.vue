@@ -16,6 +16,12 @@ definePageMeta({
 
 const keyword = useRouteQuery("keyword", "");
 
+const hasActiveFilters = computed(() => keyword.value !== "");
+
+function clearFilters() {
+  keyword.value = "";
+}
+
 const { refresh, isLoading, result } = useSearch<StaffAppModel>(
   "staffs",
   keyword,
@@ -73,10 +79,14 @@ async function onOpenDialog(payload: { id: string; fullname: string }) {
         v-model:model-value="keyword"
         placeholder="Cari profile dengan nama atau email"
       />
-      <div class="flex">
+      <div class="flex gap-x-2">
         <UiButton class="capitalize" @click="refresh">
           <RefreshCcw /> Refresh list
         </UiButton>
+        <AdminClearFilterButton
+          :disabled="!hasActiveFilters"
+          @clear="clearFilters"
+        />
       </div>
       <div class="flex flex-wrap gap-6">
         <template v-if="isLoading">

@@ -102,6 +102,19 @@ function handleChangeAuthor(value?: string | null) {
 function refresh() {
   location.reload();
 }
+
+const hasActiveFilters = computed(
+  () => keyword.value !== "" || category.value !== "" || author.value !== ""
+);
+
+function clearFilters() {
+  keyword.value = "";
+  tempCategorySearch.value = "";
+  tempAuthorSearch.value = "";
+  category.value = "";
+  author.value = "";
+  setPage(0);
+}
 </script>
 
 <template>
@@ -145,6 +158,10 @@ function refresh() {
               </div>
             </div>
           </div>
+          <AdminClearFilterButton
+            :disabled="!hasActiveFilters"
+            @clear="clearFilters"
+          />
           <UiButton class="" color="primary" @click="refresh">
             <RefreshCwIcon :size="24" />
           </UiButton>
