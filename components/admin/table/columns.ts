@@ -14,6 +14,7 @@ import {
   ArrowUpIcon,
   CopyIcon,
   DownloadIcon,
+  ImageOffIcon,
   PencilIcon,
   PinIcon,
   SaveIcon,
@@ -49,7 +50,7 @@ export interface Blog {
   objectID: string;
   title: string;
   status: "published" | "not_published";
-  cover_image_url: string;
+  cover_image_url: string | null;
   tags: string[];
   created_at: { _seconds: number; _nanoseconds: number };
   published_at: { _seconds: number; _nanoseconds: number } | null;
@@ -60,7 +61,7 @@ export interface Publication {
   objectID: string;
   title: string;
   status: "published" | "not_published";
-  cover_image_url: string;
+  cover_image_url: string | null;
   tags: string[];
   created_at: { _seconds: number; _nanoseconds: number };
   published_at: { _seconds: number; _nanoseconds: number } | null;
@@ -218,6 +219,27 @@ export const categoryColumns: ColumnDef<Category, string>[] = [
   }),
 ];
 
+function renderCoverImageCell(src: string | null | undefined) {
+  if (src === null || src === undefined || src === "") {
+    return h(
+      "div",
+      {
+        class: cn(
+          "flex aspect-video w-[100px] flex-col items-center justify-center gap-y-1 rounded border border-dashed text-muted-foreground"
+        ),
+        title: "Tidak ada gambar sampul",
+      },
+      h(ImageOffIcon, { size: 20 }),
+      h("span", { class: cn("text-xs leading-none") }, "Tanpa sampul")
+    );
+  }
+
+  return h(NuxtImg, {
+    src,
+    class: cn("aspect-video w-[100px] object-cover"),
+  });
+}
+
 export const blogColumns: ColumnDef<Blog, never>[] = [
   blogHelper.accessor("cover_image_url", {
     id: "Gambar sampul",
@@ -229,11 +251,7 @@ export const blogColumns: ColumnDef<Blog, never>[] = [
         },
         "Gambar Sampul"
       ),
-    cell: ({ getValue }) =>
-      h(NuxtImg, {
-        src: getValue(),
-        class: cn("aspect-video w-[100px] object-cover"),
-      }),
+    cell: ({ getValue }) => renderCoverImageCell(getValue()),
   }),
   blogHelper.accessor("title", {
     id: "Judul",
@@ -462,11 +480,7 @@ export const publicationColumns: ColumnDef<Publication, never>[] = [
         },
         "Gambar Sampul"
       ),
-    cell: ({ getValue }) =>
-      h(NuxtImg, {
-        src: getValue(),
-        class: cn("aspect-video w-[100px] object-cover"),
-      }),
+    cell: ({ getValue }) => renderCoverImageCell(getValue()),
   }),
   publicationHelper.accessor("title", {
     id: "Judul",
