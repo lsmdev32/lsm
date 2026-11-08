@@ -7,6 +7,7 @@ import {
   LogOut,
   PenLine,
   PlusIcon,
+  SlidersHorizontal,
   UserRound,
 } from "lucide-vue-next";
 import type { FunctionalComponent } from "vue";
@@ -67,6 +68,11 @@ const items: NavItem[] = [
     to: "/dashboard/profiles",
     icon: UserRound,
     create: { label: "Profil baru", to: "/dashboard/profiles/create" },
+  },
+  {
+    label: "Pengaturan Halaman",
+    to: "/dashboard/page-settings",
+    icon: SlidersHorizontal,
   },
 ];
 

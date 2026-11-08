@@ -47,7 +47,8 @@ export const RTDB_KEYS = createPairFromEnum(
   "HOME_PINNED_CONTENT",
   "HOME_ATTORNEY_ORDER",
   "PRACTICE_AREA_ATTORNEY_ORDER",
-  "ATTORNEY_ORDER"
+  "ATTORNEY_ORDER",
+  "PAGE_SETTINGS"
 );
 
 export const LOCAL_STORAGE_KEYS = createPairFromEnum("IMAGE_COVER");
@@ -173,4 +174,24 @@ export const IMAGES_STORAGE_PATH = {
   BLOG_IMAGES: "blog_images",
   PUBLICATIONS: "publications",
   PUBLICATION_IMAGES: "publication_images",
+} as const;
+
+export const FILES_STORAGE_PATH = {
+  COMPANY_PROFILE: "global_static/company_profile",
+} as const;
+
+export const PAGE_SETTINGS_CONSTANTS = {
+  COMPANY_PROFILE: {
+    // SAFETY: callers only use this list with `Array#includes` on an arbitrary
+    // `File.type` value, so the literal tuple is widened to `string[]`.
+    FILE_TYPES: ["application/pdf"] as string[],
+    // 20MB
+    MAX_SIZE: 20 * 1024 * 1024,
+  },
+  MSG: {
+    COMPANY_PROFILE_TYPE_MSG: "File profil perusahaan harus berupa PDF",
+    COMPANY_PROFILE_SIZE_MSG: "Ukuran file profil perusahaan maksimal 20MB",
+    COMPANY_PROFILE_REQUIRED_MSG:
+      "Pilih file profil perusahaan terlebih dahulu",
+  },
 } as const;

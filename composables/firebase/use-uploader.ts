@@ -1,17 +1,19 @@
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { useFirebaseStorage, useStorageFile } from "vuefire";
 
-import type { IMAGES_STORAGE_PATH } from "~/lib/constants";
+import type { FILES_STORAGE_PATH, IMAGES_STORAGE_PATH } from "~/lib/constants";
 
-type ImageStoragePath = typeof IMAGES_STORAGE_PATH;
+type Paths =
+  | (typeof IMAGES_STORAGE_PATH)[keyof typeof IMAGES_STORAGE_PATH]
+  | (typeof FILES_STORAGE_PATH)[keyof typeof FILES_STORAGE_PATH];
 
-type Paths = ImageStoragePath[keyof ImageStoragePath];
-
-export function useUploader(path: Paths) {
+export function useUploader(path: Paths, filename?: string) {
   const storage = useFirebaseStorage();
 
-  const filename = crypto.randomUUID();
-  const fileRef = storageRef(storage, `${path}/${filename}`);
+  const _filename =
+    filename !== undefined && filename.length ? filename : crypto.randomUUID();
+
+  const fileRef = storageRef(storage, `${path}/${_filename}`);
 
   const storageFile = useStorageFile(fileRef);
 

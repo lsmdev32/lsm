@@ -12,6 +12,10 @@ const images = [
   "/images/bedge7.png",
   "/images/bedge8.png",
 ];
+
+const companyProfileUrl = await useCompanyProfileUrl(
+  "https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=657a761e-5459-4834-98f1-802d223e95aa"
+);
 </script>
 
 <template lang="html">
@@ -214,7 +218,7 @@ const images = [
           <NuxtLink
             type="button"
             class="custom-button-about d-flex font-[Ubuntu]"
-            to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=657a761e-5459-4834-98f1-802d223e95aa"
+            :to="companyProfileUrl"
           >
             <span>Download Company Profile</span>
           </NuxtLink>
@@ -342,7 +346,7 @@ const images = [
               <NuxtLink
                 type="button"
                 class="custom-button-about d-flex font-[Ubuntu]"
-                to="https://firebasestorage.googleapis.com/v0/b/lsm-develop-a1e58.firebasestorage.app/o/global_static%2FLSM%20-%20Firm%20Profile%20Capability%20Statement.pdf?alt=media&token=657a761e-5459-4834-98f1-802d223e95aa"
+                :to="companyProfileUrl"
               >
                 <span>Download Company Profile</span>
               </NuxtLink>
