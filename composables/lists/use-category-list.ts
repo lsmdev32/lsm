@@ -19,9 +19,15 @@ export function useCategoryList() {
   const totalHits = computed(() => result?.value?.nbHits ?? 0);
   const currentPage = computed(() => result?.value?.page ?? 0);
 
+  const algRef = useAlgoliaRef();
+
   watch(
     [debouncedSearch, debouncedPage, refreshToken],
-    async ([s, p]) => {
+    async ([s, p, newRefreshToken], [, __, oldRefreshToken]) => {
+      if (newRefreshToken !== oldRefreshToken) {
+        await algRef.clearCache();
+      }
+
       const requestOptions: SearchOptions & RequestOptions = {
         page: p,
         hitsPerPage: 10,
