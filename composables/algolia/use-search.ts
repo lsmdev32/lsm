@@ -16,6 +16,8 @@ export function useSearch<
 
   const { result, search } = useAlgoliaSearch<Pick<T, TA[number]>>(index);
 
+  const algRef = useAlgoliaRef();
+
   type Options = RequestOptions & SearchOptions;
 
   const requestOptions: Options = {
@@ -24,7 +26,11 @@ export function useSearch<
 
   watch(
     [debouncedValue, refreshToken],
-    async ([value]) => {
+    async ([value, newRefreshToken], [, oldRefreshToken]) => {
+      if (newRefreshToken !== oldRefreshToken) {
+        await algRef.clearCache();
+      }
+
       isLoading.value = true;
 
       await search({ query: value, requestOptions }).finally(() => {

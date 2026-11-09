@@ -24,6 +24,8 @@ export function usePublicationList() {
   const totalHits = computed(() => result?.value?.nbHits ?? 0);
   const currentPage = computed(() => result?.value?.page ?? 0);
 
+  const algRef = useAlgoliaRef();
+
   watch(
     [
       debouncedSearch,
@@ -32,7 +34,14 @@ export function usePublicationList() {
       debouncedAuthor,
       refreshToken,
     ],
-    async ([s, p, c, a]) => {
+    async (
+      [s, p, c, a, newRefreshToken],
+      [, __, ___, ____, oldRefreshToken]
+    ) => {
+      if (newRefreshToken !== oldRefreshToken) {
+        await algRef.clearCache();
+      }
+
       const filter = [`type:publication`];
 
       if (c) {

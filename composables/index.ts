@@ -20,6 +20,8 @@ export * from "./lists/use-blog-list";
 
 export * from "./lists/use-publication-list";
 
+export * from "./lists/use-staff-list";
+
 export * from "./form/use-create-publication-form";
 
 export * from "./form/use-edit-publication-form";
