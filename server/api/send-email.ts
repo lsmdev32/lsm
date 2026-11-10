@@ -141,9 +141,11 @@ export default defineEventHandler(async (event) => {
   let intro = "";
   let descriptionLabel = "";
 
+  const config = useRuntimeConfig();
+
   if (type === "contact") {
     subject = `From Contact Us : ${name} ingin menghubungi Anda`;
-    to = "rayhanhamada1999@gmail.com";
+    to = config.emailRecipient;
     title = "Pesan Baru dari Contact Us";
     intro = "Ada pesan baru yang masuk lewat formulir Contact Us:";
     descriptionLabel = "Pesan";
@@ -154,8 +156,6 @@ export default defineEventHandler(async (event) => {
     intro = "Ada lamaran pekerjaan baru yang masuk lewat halaman Career:";
     descriptionLabel = "Deskripsi";
   }
-
-  const config = useRuntimeConfig();
 
   const transporter = createTransport({
     host: config.smtpHost,

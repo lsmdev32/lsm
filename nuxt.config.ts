@@ -69,6 +69,7 @@ export default defineNuxtConfig({
     smtpPass: process.env.SMTP_PASS,
     smtpHost: process.env.SMTP_HOST,
     smtpPort: process.env.SMTP_PORT,
+    emailRecipient: process.env.EMAIL_RECIPIENT,
   },
   build: {
     transpile: ["@vuepic/vue-datepicker"],
