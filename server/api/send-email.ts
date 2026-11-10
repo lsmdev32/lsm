@@ -143,7 +143,7 @@ export default defineEventHandler(async (event) => {
 
   if (type === "contact") {
     subject = `From Contact Us : ${name} ingin menghubungi Anda`;
-    to = "lsmlawfirm@lsmlaw.co.id";
+    to = "rayhanhamada1999@gmail.com";
     title = "Pesan Baru dari Contact Us";
     intro = "Ada pesan baru yang masuk lewat formulir Contact Us:";
     descriptionLabel = "Pesan";
@@ -185,7 +185,9 @@ export default defineEventHandler(async (event) => {
     });
 
     return { success: true };
-  } catch {
+  } catch (error) {
+    console.error(`error:`, error);
+
     return { success: false, error: "Gagal mengirim email." };
   }
 });
