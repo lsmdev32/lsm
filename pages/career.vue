@@ -70,6 +70,9 @@ const submit = async () => {
             <img src="/images/hiring-Mid-level-Associate.jpg" />
           </p>
           <!-- <p class="mt-6"><img src="/images/hiring-Receptonist.jpg" /></p> -->
+		  <p class="mt-6">
+			<img src="/images/hiring-Junior-Associate.jpg" />
+		  </p>
           <p
             class="text-md mt-6 text-left font-[Ubuntu] font-light text-[#949494]"
           >
@@ -268,6 +271,9 @@ const submit = async () => {
             <img src="/images/hiring-Mid-level-Associate.jpg" />
           </p>
           <!-- <p class="mt-6"><img src="/images/hiring-Receptonist.jpg" /></p> -->
+		  <p class="mt-6">
+			<img src="/images/hiring-Junior-Associate.jpg" />
+		  </p>
           <p
             class="text-md mt-6 text-left font-[Ubuntu] font-light text-[#949494]"
           >
